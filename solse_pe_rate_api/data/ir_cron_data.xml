@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ir_cron_api_exchange_rate" model="ir.cron">
+            <field name="name">API: Tipo de cambio</field>
+            <field name="model_id" ref="base.model_res_currency"/>
+            <field name="state">code</field>
+            <field name="active" eval="True"/>
+            <field name="code">model.update_exchange_rate(False)</field>
+            <field name="interval_number" eval="1"/>
+            <field name="interval_type">hours</field>
+            <field name="numbercall" eval="-1"/>
+        </record>
+    </data>
+</odoo>

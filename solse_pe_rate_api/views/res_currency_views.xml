@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_currency_tree" model="ir.ui.view">
+        <field name="name">res.currency.inherit.view.tree</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="rate_type"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_currency_form" model="ir.ui.view">
+        <field name="name">res.currency.inherit.view.form</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="rate_type"/>
+            </xpath>
+            <field name="write_date" position="before">
+                <button type="object" name="actualizar_tc" string="Actualizar"/>
+            </field>
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="auto_update_simple" string="Actualizar T.C." type="object"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_move_form_bcr" model="ir.ui.view">
+		<field name="name">account.move.form.bcr</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="l10n_latam_invoice_document.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='currency_id']" position="after">
+				<field name="currency_available_ids" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='currency_id']" position="attributes">
+				<attribute name="domain">[('id','in',currency_available_ids)]</attribute>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>
