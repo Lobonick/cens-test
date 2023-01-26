@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_target_move_manager,solse.target.move.user,model_solse_target_move,,1,1,1,1
+access_generar_asiento_destino,saccount.generar.asientos.destino,model_saccount_generar_asientos_destino,,1,1,1,1
+access_ir_actions_act_window_s,ir.actions.act_window.user,base.model_ir_actions_act_window,,1,0,0,0

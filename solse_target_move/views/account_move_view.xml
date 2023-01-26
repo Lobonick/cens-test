@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Account.Entry Edition -->
+        
+        <record id="target_view_move_form" model="ir.ui.view">
+            <field name="name">target.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <div class="oe_button_box" position="inside">
+                    <button name="open_target_move_view" class="oe_stat_button" icon="fa-bars" type="object" attrs="{'invisible': ['|', ('id', '=', False), ('target_move_count', '=', 0)]}" string="Entradas de destino">
+                    </button>
+                    <field name='target_move_count' invisible="True"/>
+                </div>              
+            </field>
+        </record>
+
+        <record id="generar_asientos_destino" model="ir.actions.act_window">
+            <field name="name">Generar Asiento Destino</field>
+            <field name="res_model">saccount.generar.asientos.destino</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_action_generar_asiento_destino" parent="account.menu_finance_entries_actions" action="generar_asientos_destino" groups="account.group_account_user" sequence="45"/>
+
+    </data>
+</odoo>

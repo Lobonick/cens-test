@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="starget_move_view_account_account_form" model="ir.ui.view">
+			<field name="name">account.account.form</field>
+            <field name="model">account.account</field>
+	      	<field name="inherit_id" ref="account.view_account_form"/>
+	      	<field name="arch" type="xml">
+				<field name="deprecated" position="after">
+                    <field name="target_account"/>
+					<field name="target_journal_id" attrs="{'invisible':[('target_account','=',False)],'required':[('target_account','=',True)]}" domain="[('company_id','=',company_id)]"/>
+					<field name="target_line_ids" widget="one2many_list" mode="tree,kanban" context="{'default_account_id': id}" attrs="{'invisible': [('target_account', '=', False)]}">
+                        <tree string="Asientos de destino" editable="bottom" create="1">
+                            <field name="target_account_id"/>
+                            <field name="type"/>
+                            <field name="percent"/>
+                        </tree>
+                    </field>					
+				</field> 
+			</field>
+		</record>
+
+	</data>
+</odoo>
