@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- nueva vista lista lote -->
+    <record id="detalle_ventas_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.cpe.sale.tree</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="id" invisible="1"/>              
+                <field name="fecha_pedido"/>
+                <field name="nro_ov"/>
+                <field name="nro_comprobante"/>
+                <field name="nro_ruc_dni" string="Nro RUC/DNI" optional="show"/>
+                <field name="cliente" string="Cliente"/>
+                <field name="product_id"/>
+                <field name="product_uom_qty"/>
+                <field name="price_unit"/>
+                <field name="price_total" optional="show"/>
+                <field name="salesman_id"/>
+                <field name="company_id"/>
+                <field name="uom_po_id" string="Und. Medida" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_detalles_ventas_search" model="ir.ui.view">
+		<field name="name">sale.order.line.search.cpe.sale.view</field>
+		<field name="model">sale.order.line</field>
+		<field name="arch" type="xml">
+			<search string="Detalle de Ventas">
+				<field name="product_id"/>
+                <field name="nro_ov"/>
+                <field name="nro_comprobante"/>
+                <field name="cliente" string="Cliente"/>
+                <field name="salesman_id"/>
+
+				<group expand="1" string="Group By">
+					<filter string="Producto" name='producto' context="{'group_by':'product_id'}"/>
+                    <filter string="Fecha" name='fecha_pedido' context="{'group_by':'fecha_pedido'}"/>
+                    <filter string="Nro OC" name='nro_ov' context="{'group_by':'nro_ov'}"/>
+                    <filter string="Nro. Factura Cliente" name='nro_comprobante' context="{'group_by':'nro_comprobante'}"/>
+                    <filter string="Cliente" name='cliente' context="{'group_by':'cliente'}"/>
+                    <filter string="Vendedor" name='salesman_id' context="{'group_by':'salesman_id'}"/>
+					<separator orientation="vertical" />
+				</group>
+				
+			</search>
+		</field>
+	</record>
+
+    <!-- accion lote -->
+    <record id="detalle_ventas_action" model="ir.actions.act_window">
+        <field name="name">Detalles Venta</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="detalle_ventas_tree"/>
+        <field name="search_view_id" ref="view_detalles_ventas_search"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record> 
+
+    <menuitem id="menu_detalle_venta" name="Ordenes de venta detallado" parent="sale.menu_sale_report" action="detalle_ventas_action" sequence="20"/>
+
+  </data>
+</odoo>

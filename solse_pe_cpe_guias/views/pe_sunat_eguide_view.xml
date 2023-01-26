@@ -1,0 +1,113 @@
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="view_pe_sunat_eguide_tree">
+			<field name="name">solse.cpe.eguide.tree</field>
+			<field name="model">solse.cpe.eguide</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="type" />
+					<field name="date" />
+					<field name="response" />
+					<field name="error_code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_pe_sunat_eguide_from" model="ir.ui.view">
+			<field name="name">solse.cpe.eguide.form</field>
+			<field name="model">solse.cpe.eguide</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="action_draft" string="Borrador" states="generate,cancel" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_generate" string="Generar" states="draft" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_send" string="Enviar" states="generate" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_verify" string="Esperar" states="send" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_document_status" string="Estado del documento" states="generate,send,verify" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_done" string="Hecho" states="verify" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<button name="action_cancel" string="Cancelar" states="generate,send,verify" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+						<field name="state" widget="statusbar" statusbar_visible="draft,generate,send" />
+					</header>
+					<sheet string="Comprobante de pago electrónico">
+						<h1 class="mt0">
+							<field name="name" readonly="1" class="oe_inline" attrs="{'invisible': [('state','in',('draft','generate'))]}" />
+						</h1>
+						<group>
+							<group>
+								<field name="type" readonly="1" />
+								<field name="error_code" />
+								<field name="response" />
+							</group>
+							<group>
+								<field name="date" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="send_date" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="ticket" attrs="{'invisible': [('type','not in',('ra', 'rc'))]}" />
+								<field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
+							</group>
+						</group>
+						<notebook colspan="4">
+							<page string="Detalles del comprobante electrónico">
+								<group>
+									<group>
+										<field name="datas" filename="datas_fname" />
+										<field name="datas_fname" invisible="1" class="oe_inline oe_right" />
+										<field name="datas_sign" filename="datas_sign_fname" />
+										<field name="datas_sign_fname" invisible="1" class="oe_inline oe_right" />
+									</group>
+									<group>
+										<field name="datas_zip" filename="datas_zip_fname" />
+										<field name="datas_zip_fname" invisible="1" class="oe_inline oe_right" />
+										<field name="datas_response" filename="datas_response_fname" />
+										<field name="datas_response_fname" invisible="1" class="oe_inline oe_right" />
+									</group>
+								</group>
+								<div>
+									<label for="digest" string="Codigo:" />
+									<field name="digest" placeholder="Digest value..." />
+								</div>
+								<div>
+									<label for="signature" string="Valor de la firma:" />
+								</div>
+								<div>
+									<field name="signature" placeholder="Valor de la firma..." />
+								</div>
+								<div>
+									<label for="note" string="Notas adicionales:" />
+								</div>
+								<div>
+									<field name="note" placeholder="Notas adicionales..." />
+								</div>
+							</page>
+							<page string="Detalles XML">
+								<div>
+									<field name="xml_document" placeholder="XML Document..." attrs="{'readonly': [('state','not in',('draft'))]}" groups="solse_pe_cpe.group_solse_pe_cpe_user" />
+								</div>
+							</page>
+							<page string="Pickings" attrs="{'invisible': [('type','not in',('sync'))]}">
+								<field name="picking_ids" attrs="{'readonly': [('state','not in',('draft'))]}"></field>
+							</page>
+							<page string="Guía cancelada" attrs="{'invisible': [('type','not in',('low'))]}">
+								<field name="voided_ids" attrs="{'readonly': [('state','not in',('draft'))]}"></field>
+								-->
+							</page>
+
+						</notebook>
+					</sheet>
+
+				</form>
+			</field>
+		</record>
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="action_pe_sunat_eguide">
+			<field name="name">Guías Electrónicas</field>
+			<field name="res_model">solse.cpe.eguide</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<menuitem name="Guias electronicas" id="pe_eguide_menu" parent="solse_pe_cpe.pe_cpe_document_menu" action="action_pe_sunat_eguide" sequence="1" />
+	</data>
+</odoo>

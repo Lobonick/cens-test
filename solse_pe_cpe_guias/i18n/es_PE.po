@@ -1,0 +1,642 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_pe_eguide
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-04 15:35+0000\n"
+"PO-Revision-Date: 2020-06-04 10:43-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es\n"
+"X-Generator: Poedit 2.3\n"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_invoice_document_advance
+msgid "<b>Guia de Remisión:</b>"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>DNI:</span>"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>Electronic Remission Guide Sender </span>"
+msgstr "<span>Guía de remisión electrónica </span>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>License Plate:</span>"
+msgstr "<span>Placa:</span>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>Name:</span>"
+msgstr "<span>Nombre:</span>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>Private Transport</span><br/>"
+msgstr "<span>Transporte privado</span><br/>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>RUC:</span>"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<span>Transport Company</span><br/>"
+msgstr "<span>Compañía de transporte</span><br/>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<strong>Departure address</strong>"
+msgstr "<strong>Dirección de salida</strong>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_invoice_document
+msgid "<strong>Internal Guide:</strong>"
+msgstr "<strong>Guía interna:</strong>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<strong>Reason for transfer</strong>"
+msgstr "<strong>Razón de la transferencia.</strong>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_invoice_document
+msgid "<strong>Referral Guide:</strong>"
+msgstr "<strong>Guía de referencia:</strong>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.report_delivery_document
+msgid "<strong>Summary: </strong> <br/>"
+msgstr "<strong>Resumen: </strong> <br/>"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Additional notes..."
+msgstr "Notas adicionales…"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Additional notes:"
+msgstr "Notas adicionales:"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+msgid "Cancel E-Guide"
+msgstr "Cancelar Guía Electrónica"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__cancel
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_carrier_id
+msgid "Carrier"
+msgstr "transportista"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Carrier number document is required for %s"
+msgstr "El número de documento es necesario para Transportista %s"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Carrier type document is required for %s"
+msgstr "El tipo de documento es necesario para Transportista %s"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_res_company
+msgid "Companies"
+msgstr "Compañias"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__company_id
+msgid "Company"
+msgstr "Empresa"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_res_partner
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__create_uid
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__create_date
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Customer district is required for %s"
+msgstr "El distrito del cliente es requerido para %s"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Customer is required"
+msgstr "Se requiere un cliente"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Customer number document is required"
+msgstr "Se requiere el número de documento  del cliente"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Customer street is required for %s"
+msgstr "Es necesario la direccion para %s"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "Customer type document is required"
+msgstr "Se requiere el tipo de documento  del cliente"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_date_issue
+msgid "Date Issue"
+msgstr "Fecha de emisión"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__digest
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_digest
+msgid "Digest"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Digest value..."
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Digest value:"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__display_name
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__display_name
+msgid "Display Name"
+msgstr "Nombre para mostrar"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Document Status"
+msgstr "Estado de documento"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__done
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Done"
+msgstr "Listo"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__draft
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__driver_id
+msgid "Driver"
+msgstr "Conductor"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_res_partner__pe_driver_license
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_res_users__pe_driver_license
+msgid "Driver License"
+msgstr "Licencia de Conductor"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__picking_ids
+msgid "Eguide"
+msgstr "Guía Electrónica"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__voided_ids
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Eguide Canceled"
+msgstr "Guía Cancelada"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_warehouse__eguide_sequence_id
+msgid "Eguide Sequence"
+msgstr "Secuencia de Guía"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_res_company__pe_eguide_server_id
+msgid "Eguide Server"
+msgstr "Servidor de Guía Electrónica"
+
+#. module: l10n_pe_eguide
+#: model:ir.actions.act_window,name:l10n_pe_eguide.action_pe_sunat_eguide
+msgid "Electronic Guide"
+msgstr "Guía Electrónica"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+msgid "Electronic Guide Informations"
+msgstr "Información de la guía electrónica"
+
+#. module: l10n_pe_eguide
+#: model:ir.ui.menu,name:l10n_pe_eguide.pe_eguide_menu
+msgid "Electronic Guides"
+msgstr "Guías Electrónicas"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Electronic Payment Voucher"
+msgstr "Comprobante de pago electrónico"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Electronic voucher details"
+msgstr "Detalles del comprobante electrónico"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__date_end
+msgid "End Date"
+msgstr "Fecha final"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__error_code
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_error_code
+msgid "Error Code"
+msgstr "Código de Error"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_fleet_ids
+msgid "Fleet Private"
+msgstr "Flota Privada"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Generate"
+msgstr "Generar"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+msgid "Generate E-Guide"
+msgstr "Generar E-Guía"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__generate
+msgid "Generated"
+msgstr "Generado"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_gross_weight
+msgid "Gross Weigh"
+msgstr "Peso bruto"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_guide_id
+msgid "Guide Electronic"
+msgstr "Guía electrónica"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_guide_number
+msgid "Guide Number"
+msgstr "Número de Guía"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_guide_state
+msgid "Guide Status"
+msgstr "Estado de Guía"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_voided_id
+msgid "Guide canceled"
+msgstr "Guía Cancelada"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__id
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+msgid "Invoice Lines"
+msgstr "Líneas de factura"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_is_eguide
+msgid "Is EGuide"
+msgstr "Es E-Guía"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_is_realeted
+msgid "Is Related"
+msgstr "Está relacionado"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "It is necessary to add a vehicle and driver"
+msgstr "Es necesario agregar un vehículo y un conductor"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "It is necessary to enter the warehouse address for %s"
+msgstr "Es necesario ingresar la dirección del almacén para %s"
+
+#. module: l10n_pe_eguide
+#: code:addons/l10n_pe_eguide/models/stock.py:0
+#, python-format
+msgid "It is necessary to enter the warehouse district for %s"
+msgstr "Es necesario entrar en el distrito de almacenes para %s"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_account_move
+msgid "Journal Entries"
+msgstr "Asientos contables"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide____last_update
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__write_uid
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__write_date
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__name
+msgid "License Plate"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__type__low
+msgid "Low communication"
+msgstr "Comunicación de baja"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__is_main
+msgid "Main"
+msgstr "Principal"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__note
+msgid "Note"
+msgstr "Nota"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__sunat_pdf417_code
+msgid "Pdf 417 Code"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+msgid "Peruvian Customization"
+msgstr "Personalización peruana"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__picking_id
+msgid "Picking"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Pickings"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_account_move__guide_number
+msgid "Referral Guide"
+msgstr "Guía de referencia"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_related_number
+msgid "Related Number"
+msgstr "Numero relacionado"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_related_code
+msgid "Related Number Code"
+msgstr "Código de número relacionado"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__response
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_response
+msgid "Response"
+msgstr "Respuesta"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__response_code
+msgid "Response Code"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__send
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Send"
+msgstr "Enviar"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__send_date
+msgid "Send Date"
+msgstr "Fecha de envío"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__signature
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_signature
+msgid "Signature"
+msgstr "Firma"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Signature value..."
+msgstr "Valor de la firma …"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_company_form
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Signature value:"
+msgstr "Valor de la firma:"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_pe_stock_fleet
+msgid "Stock Fleet"
+msgstr "Stock de Flota"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_note
+msgid "Sunat Note"
+msgstr "Nota Sunat"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__supplier_id
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__type__sync
+msgid "Synchronous"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__ticket
+msgid "Ticket"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_stock_picking
+msgid "Transfer"
+msgstr "Transferir"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_is_programmed
+msgid "Transfer Programmed"
+msgstr "Transferencia programada"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_transfer_code
+msgid "Transfer code"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_transport_mode
+msgid "Transport Mode"
+msgstr "Modo de transporte"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_stock_picking__pe_unit_quantity
+msgid "Unit Quantity"
+msgstr "Cantidad unitaria"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_stock_fleet__fleet_id
+msgid "Vehicle"
+msgstr "Vehículo"
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "Wait"
+msgstr "Espere"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields.selection,name:l10n_pe_eguide.selection__pe_eguide__state__verify
+msgid "Waiting"
+msgstr "Esperando"
+
+#. module: l10n_pe_eguide
+#: model:ir.model,name:l10n_pe_eguide.model_stock_warehouse
+msgid "Warehouse"
+msgstr "Almacén"
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas
+msgid "XML Data"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__xml_document
+msgid "XML Document"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "XML Document..."
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_fname
+msgid "XML File Name"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_response
+msgid "XML Response Data"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_response_fname
+msgid "XML Response File Name"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_sign
+msgid "XML Sign Data"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_sign_fname
+msgid "XML Sign File Name"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_zip
+msgid "XML Zip Data"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model:ir.model.fields,field_description:l10n_pe_eguide.field_pe_eguide__datas_zip_fname
+msgid "XML Zip File Name"
+msgstr ""
+
+#. module: l10n_pe_eguide
+#: model_terms:ir.ui.view,arch_db:l10n_pe_eguide.view_pe_sunat_eguide_from
+msgid "XML details"
+msgstr ""

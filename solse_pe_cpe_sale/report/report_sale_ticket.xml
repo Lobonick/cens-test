@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="solse_pe_cpe_sale.report_saleorder_ticket">
+	    <t t-set="o" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+	     <t t-if="not company">
+			<!-- Multicompany -->
+			<t t-if="company_id">
+				<t t-set="company" t-value="company_id"/>
+			</t>
+			<t t-elif="o and 'company_id' in o">
+				<t t-set="company" t-value="o.company_id.sudo()"/>
+			</t>
+			<t t-else="else">
+				<t t-set="company" t-value="res_company"/>
+			</t>
+		</t>
+		<hr style="width:10%;text-align:left;margin-left:0"/>
+	    <div class="article pos-sale-ticket" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+	    	<t t-set="o" t-value="o.with_context(lang=lang)" />
+			<t t-set="address">
+				<address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+				<div t-if="o.partner_id.vat" class="mt16">
+					<t t-if="o.company_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
+					<t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
+			</t>
+
+	    	<div class="pos-sale-ticket">
+	    		
+		    	<t t-if="company.logo">
+					<img t-if="company.logo" t-att-src="image_data_uri(company.logo)"  alt="Logo" style="max-height: 70px; height: 70px; max-width: 120px; display:block; margin-left: auto; margin-right: auto; top: 3%;" />
+					<br/>
+				</t>
+				<div class="pos-receipt-center-align" style="text-align:center">
+					<t t-esc="o.name" />
+				</div>
+				<br/>
+				<div class="pos-receipt-contact">
+					<span class="">
+						<t t-esc="company.name" />
+					</span>
+					<br/>
+					<t t-if="company.vat">
+						<div>RUC:<t t-esc="company.vat" /></div>
+					</t>
+					<t>
+						<div>Dirección: <t t-esc="company.street_name" /></div>
+					</t>
+					<t t-if="company.phone">
+						<div>Telefono:<t t-esc="company.phone" /></div>
+					</t>
+
+				</div>
+
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<div class="pos-receipt-contact">
+					<div >
+						Fecha y hora: <t t-esc="o.date_order"/>
+					</div>
+					<div >
+						Usuario: <t t-esc="o.user_id.name"/>
+					</div>
+				</div>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<div class="pos-receipt-contact">
+					<t t-if="o.partner_id.type == 'invoice'" >
+						<t t-esc="o.partner_id.nombre_temp"/><br />
+					</t> 
+					<t t-else="">
+						<t t-esc="o.partner_id.name"/><br />
+					</t>
+					<t t-esc="o.partner_id.doc_number"/>
+					<br />
+					<t t-if="o.partner_id.street">
+						<t t-esc="o.partner_id.street"/><br />
+					</t>
+				</div>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+
+		        <div class="pos-sale-ticket" style="font-family: Monaco;">
+		            <!-- Is there a discount on at least one line? -->
+		            <t t-set="display_discount" t-value="any([l.discount for l in o.order_line])"/>
+		            <t t-set="item" t-value="0"/>
+
+		            <style>
+		              .table-striped &gt; tbody &gt; tr:nth-of-type(odd) {
+		                   background-color: #eef0f0;
+		               }
+		            </style>
+		            <table class="table table-condensed table-striped">
+		                <thead>
+		                    <tr>
+		                        <th class="text-center">N°</th>
+		                        <th class="text-center">U. Medida</th>
+		                        <th class="text-center">Descripcion</th>
+		                        <th class="text-center" style="width:85px;padding-right:15px">Cant.</th>
+		                  <!--  <th class="text-center">P.U.</th> -->
+		                        <th class="text-center">P.U.</th>
+		                        <th class="text-center">Importe</th>
+		                    </tr>
+		                </thead>
+		               <tbody class="sale_tbody">
+
+		                    <t t-foreach="o.order_line" t-as="l">
+		                        <tr>
+
+		                            <td class="text-center">
+		                                <t t-set="item" t-value="item + 1"/>
+		                                <span t-esc="item"/>
+		                            </td>
+		                            <td class="text-center">
+		                                <span t-field="l.product_uom"/>
+		                            </td>
+		                            <td><span t-field="l.product_id.name"/></td>
+		                          <td class="text-center" style="padding-right:15px">
+		                                <span t-field="l.product_uom_qty"/>
+		                            </td>
+		                     <!--   <td class="text-right">
+		                                <span t-esc="formatLang(o.env, l.price_unit, digits=2)"/>
+		                            </td> -->
+		                            <td class="text-right">
+		                      <!--  <span t-esc="formatLang(o.env, (l.price_unit * (1 - (l.discount or 0.0) / 100.0)), digits=2)"/> -->
+		                          <span t-esc="'{:.3f}'.format((l.price_unit * (1 - (l.discount or 0.0) / 100.0)))"/>
+		                            </td>
+		                            <td class="text-right" id="subtotal">
+		                                <span t-field="l.price_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.pricelist_id.currency_id}"/>
+		                            </td>
+		                        </tr>
+		                    </t>
+
+		                </tbody>
+		            </table>
+
+		        </div>
+		        <table class="table-condensedOLD">
+		          <tr style="border: 0px !important;">
+		            <td class="text-center" style="border: 0px !important; width:100%;">
+		              <span style="display:none"><strong>INFORMACIÓN ADICIONAL</strong></span> <br/>
+		              <span style="display:none" t-field="doc.note"/><br/>
+		            </td>
+		            <td style="border: 0px !important; width:100%;">
+		                <table class="table table-condensedOLD" style="width: 200px;page-break-inside: avoid;">
+		                    <tr>
+		                        <td><strong>Subtotal</strong></td>
+		                        <td class="text-right">
+		                        <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.pricelist_id.currency_id}"/>
+		                    </td>
+		                    </tr>
+		                    <t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+		                    <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+		                      <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+
+		                      <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+		                        <tr style="border-bottom:1px solid #dddddd;">
+		                          <t t-if="len(tax_totals['groups_by_subtotal'][subtotal_to_show]) > 1">
+		                              <td>
+		                                  <span t-esc="amount_by_group['tax_group_name']"/>
+		                                  <span class="text-nowrap"> on
+		                                      <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+		                                  </span>
+		                              </td>
+		                              <td class="text-right">
+		                                  <span class="text-nowrap" t-esc="amount_by_group['formatted_tax_group_amount']"/>
+		                              </td>
+		                          </t>
+		                          <t t-else="">
+		                              <td><span class="text-nowrap" t-esc="amount_by_group['tax_group_name']"/></td>
+		                              <td class="text-right">
+		                                  <span class="text-nowrap" t-esc="amount_by_group['formatted_tax_group_amount']" />
+		                              </td>
+		                          </t>
+		                        </tr>
+		                      </t>
+		                    </t>
+
+		                    <tr id="tr_total">
+		                      <td > TOTAL </td>
+		                      <td class="text-right"> 
+		                        <span t-esc="tax_totals['formatted_amount_total']"/> 
+		                      </td>
+		                    </tr>
+		                </table>
+		            </td>
+		          </tr>
+		          <tr>
+		              <td colspan="2" class="text-center"><br/>
+		                <span style="display:none"><span>SON: </span><span t-esc="o.currency_id.amount_to_text(o.amount_total)"/></span>
+		              </td>
+		            </tr>
+		        </table>
+		        <br/>
+		    </div>
+	    </div>
+	</template>
+
+
+	<template id="solse_pe_cpe_sale.sale_ticket_print">
+	    <t t-call="web.html_container">
+	        <t t-foreach="docs" t-as="doc">
+	            <t t-call="solse_pe_cpe_sale.report_saleorder_ticket" t-lang="doc.partner_id.lang"/>
+	        </t>
+	    </t>
+	</template>
+
+	<report 
+		id="report_invoice_ticket"
+		string="Ticket"
+		model="sale.order"
+		report_type="qweb-pdf"
+		name="solse_pe_cpe_sale.sale_ticket_print"
+	/>
+
+
+    <record id="solse_pe_cpe_sale.paperformat_ticket_pedido" model="report.paperformat">
+        <field name="name">Ticket Pedido</field>
+		<field name="default" eval="True" />
+		<field name="format">custom</field>
+		<field name="page_height">230</field>
+		<field name="page_width">80</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">1</field>
+		<field name="margin_bottom">1</field>
+		<field name="margin_left">1</field>
+		<field name="margin_right">1</field>
+		<field name="header_line" eval="False" />
+		<field name="dpi">90</field>
+    </record>
+
+    <record id="report_invoice_ticket" model="ir.actions.report">
+        <field name="paperformat_id" ref="solse_pe_cpe_sale.paperformat_ticket_pedido"/>
+    </record>
+
+</odoo>

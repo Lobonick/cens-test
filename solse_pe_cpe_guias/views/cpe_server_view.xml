@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<data>
+    <record id="view_pe_server_from" model="ir.ui.view">
+        <field name="name">cpe.server.form.guia</field>
+      	<field name="model">cpe.server</field>
+        <field name="inherit_id" ref="solse_pe_cpe.view_pe_server_from" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='url']" position="after">
+                <field name="es_guia" />
+                <field name="client_id" attrs="{'invisible': [('es_guia', '=', False)]}" />
+                <field name="client_secret" attrs="{'invisible': [('es_guia', '=', False)]}" />
+            </xpath>
+            <xpath expr="//field[@name='url']" position="attributes">
+                <attribute name="attrs">{'invisible': [('es_guia', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</data>
+</odoo>

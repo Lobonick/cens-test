@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="solse_pe_cpe_guias.cpe_guia_plantilla_n1">
+        
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <!-- Header 
+        <div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">-->
+        <div class="header o_company_#{company.id}_layout factura" style="font-family: Monaco; font-size: 13px;">
+            <div class="row">
+                <div class="col-3 col-xs-4 mt32">
+                    <div style="text-align:center;">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 90px; height: 90px; max-width: 150px; display:block; margin-left: auto; margin-right: auto; top: 30%;" alt="Logo"/>
+                    </div>
+                </div>
+                <div class="col-4 empresa" name="company_address">
+                    <strong><t t-esc="company.name"/></strong>
+                    <br/>
+                    <t t-esc="company.street"/>
+                    -
+                    <t t-esc="company.partner_id.l10n_pe_district.name"/>-
+                    <t t-esc="company.state_id.name"/>-
+                    <t t-esc="company.city"/>
+                    
+                    <span t-if="company.phone">
+                        Telf.:<t t-esc="company.phone"/>
+                    </span>
+                </div>
+                <div class="col-5 text-right" >
+                    <div class="nro-cpe">
+                        <div style="margin: auto; padding-top: 18px;">
+                            RUC: <t t-esc="company.vat"/>
+                            <br/>
+                            <span>
+                                <t t-if="o.pe_is_eguide" >
+                                    GUÍA DE REMISIÓN ELECTRÓNICA
+                                </t>
+                                <br/>
+                            </span>
+                            <t t-if="o.pe_is_eguide" t-esc="o.pe_guide_number"/>
+                            <t t-else="" t-esc="o.name"/>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="article o_report_layout_clean factura" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: Monaco; font-size: 13px;">
+            <t t-set="o" t-value="o.with_context(lang=lang)" />
+            <div class="factura">
+            	<div class="text-center" style="width: 100%;">
+                    <div class="row">
+                        <div class="col-4">
+                            <div style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%;">
+                                <div style="margin-left: 15px; text-align: left;">
+                                    Fecha de Emisión: 
+                                </div>
+                                <div style="margin-left: 15px; text-align: left;">
+                                    <t t-esc="o.pe_date_issue"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0 auto;">
+                                <div style="margin-left: 15px; text-align: left;">
+                                    Fecha de Inicio de traslado: 
+                                </div>
+                                <div style="margin-left: 15px; text-align: left;">
+                                    <t t-esc="str(o.scheduled_date).split(' ')[0]"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            
+                        </div>
+                    </div>
+                </div>
+                <br></br>
+                <div class="col-12" style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; ">
+                	<div style="width: 100%; text-align: left;">
+                		<strong>PUNTO DE PARTIDA</strong>
+                	</div>
+                    <t t-set="punto_partida" t-value="company.partner_id"  />
+                    <t t-if="o.picking_type_id.code == 'internal' and o.almacen_origen">
+                        <t t-set="punto_partida" t-value="o.almacen_origen.partner_id"  />
+                    </t>
+                    <div style="width: 100%; text-align: left;">
+                        <t t-esc="punto_partida.street"/> - 
+                        <t t-esc="punto_partida.l10n_pe_district.name"/>,
+                        <t t-esc="punto_partida.state_id.name"/>,
+                        <t t-esc="punto_partida.city_id.name"/>,
+                        <t t-esc="punto_partida.country_id.name"/>
+                    </div>
+                </div>
+                <br></br>
+                <div class="col-12" style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0 auto;">
+                	<div style="width: 100%; text-align: left;">
+                		<strong>PUNTO DE LLEGADA</strong>
+                	</div>
+                    <t t-set="punto_llegada" t-value="o.partner_id"  />
+                    <t t-if="o.picking_type_id.code == 'internal' and o.almacen_destino">
+                        <t t-set="punto_llegada" t-value="o.almacen_destino.partner_id"  />
+                    </t>
+                    <div style="width: 100%; text-align: left;">
+                        <t  style="margin-left: 12px;" t-esc="o._get_street(punto_llegada)"/> - <t t-esc="o._get_address_details(punto_llegada)"/>
+                    </div>
+                </div>
+                <br></br>
+                <div class="text-center" style="width: 100%;" >
+                	<div class="row">
+                        <div class="col-6">
+                            <div style="border: 1px solid #ddd !important; border-radius: 6px; ">
+                                <div style="width: 100%; text-align: left;">
+                            		<strong style="margin-left: 15px;"> DESTINATARIO</strong>
+                            	</div>
+                                <div style="text-align: left; overflow-wrap: break-word;"> 
+                                    <span style="margin-left: 12px;" t-esc="o.partner_id.name"/>
+                                </div>
+                                
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <br></br>
+                                </div>
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <strong style="margin-left: 15px;"> RUC:</strong><span t-esc="o.partner_id.vat" style="overflow-wrap: break-word;" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div style="border: 1px solid #ddd !important; border-radius: 6px; ">
+                                <div style="width: 100%; text-align: left;">
+                                    <strong style="margin-left: 15px;"> CARGA</strong>
+                                </div>
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <strong style="margin-left: 15px;"> Peso bruto:</strong><span t-esc="o.pe_gross_weight" style="overflow-wrap: break-word;" />
+                                </div>
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <strong style="margin-left: 15px;"> Cantidad Bultos:</strong><span t-esc="o.pe_unit_quantity" style="overflow-wrap: break-word;" />
+                                </div>
+                            </div>
+                        </div>
+                	</div>
+                </div>
+                <br/>
+                <div style="border: 2px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0;" class="defaulttable cpe-tabla">
+                    <div class="row">
+                        <div style="width: 55%; margin-left: 12px;"><strong>DESCRIPCION</strong></div>
+                        <div style="width: 15%;"><strong>CANTIDAD</strong></div>
+                        <div style="width: 15%;"><strong>MEDIDA</strong></div>
+                        <div style="width: 15%;"><strong>CODIGO</strong></div>
+                        
+                    </div>
+                    
+                    <t t-set="lines" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty)"/>
+                    <t t-foreach="lines" t-as="move">
+                        <br/>
+                        <div class="row">
+                            <div style="width: 55%; margin-left: 12px;">
+                                <span t-esc="move.product_id.name"/>
+                                <p t-if="move.description_picking != move.product_id.name">
+                                    <span t-esc="move.description_picking"/>
+                                </p>
+                            </div>
+
+                            <div style="width: 15%;">
+                                <span t-esc="move.product_uom_qty"/>
+                            </div>
+                            <div style="width: 15%;">
+                                <span t-esc="move.product_uom.name"/>
+                            </div>
+                            <div style="width: 15%;">
+                                <span t-esc="move.product_id.product_tmpl_id.default_code"/>
+                            </div>
+                            
+                        </div>
+                    </t>
+                </div>
+                <br/>
+                <div class="text-center" style="width: 100%;" >
+                    <t t-set="motivos" t-value="dict(o.fields_get(allfields=['pe_type_operation'])['pe_type_operation']['selection'])"/>
+                    <t t-set="trasnportistas" t-value="dict(o.fields_get(allfields=['pe_transport_mode'])['pe_transport_mode']['selection'])"/>
+                    <div class="row">
+                        <div class="col-6">
+                            <div style="border: 1px solid #ddd !important; border-radius: 6px; ">
+                                <div style="text-align: left;">
+                                    <strong style="margin-left: 15px;"> MOTIVO DEL TRASLADO</strong>
+                                </div>
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <span t-esc="dict(o.fields_get(allfields=['pe_transfer_code'])['pe_transfer_code']['selection'])[o.pe_transfer_code]" style="margin-left: 15px; overflow-wrap: break-word;" />
+                                </div>
+                                <div style="text-align: left;overflow-wrap: break-word;"> 
+                                    <br></br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <t t-if="o.pe_transport_mode=='01'">
+                                <div style="border: 1px solid #ddd !important; border-radius: 6px; ">
+                                    <div style="text-align: center;">
+                                        <strong>TRANSPORTISTA</strong>
+                                    </div>
+                                    
+                                    <div style="text-align: left;overflow-wrap: break-word;"> 
+                                        <strong style="margin-left: 15px;"> Nombre:</strong><span t-esc="o.pe_carrier_id.name" style="overflow-wrap: break-word;" />
+                                    </div>
+                                    <div style="text-align: left;overflow-wrap: break-word;"> 
+                                        <strong style="margin-left: 15px;"> Nro doc.:</strong><span t-esc="o.pe_carrier_id.doc_number" style="overflow-wrap: break-word;" />
+                                    </div>
+                                    <div style="text-align: left;overflow-wrap: break-word;"> 
+                                        <br></br>
+                                    </div>
+           
+                                </div>
+                            </t>
+                            <t t-else="else">
+                                <div style="border: 1px solid #ddd !important; border-radius: 6px; ">
+                                    <div style="text-align: center;">
+                                        <strong>UNIDAD DE TRANSPORTE / CONDUCTOR</strong>
+                                    </div>
+                                    <t t-set="ingreso" t-value="0"/>
+                                    <t t-if="o.pe_transport_mode=='02'">
+                                        <t t-foreach="o.pe_fleet_ids" t-as="fleet_id">
+                                            <t t-set="ingreso" t-value="1"/>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 12px;"> VEHICULO MARCA Y PLACA Nº: </strong>
+                                                
+                                                <span t-esc="fleet_id.fleet_id.model_id.display_name" style="overflow-wrap: break-word;" /> - 
+                                                <span t-esc="fleet_id.name" style="overflow-wrap: break-word;" />
+                                            </div>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 12px;"> CERTIFICADO DE INSCRIPCIÓN Nº: </strong><t t-esc="fleet_id.fleet_id.vin_sn"/>
+                                            </div>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 12px;"> LICENCIA DE CONDUCIR Nº: </strong><t t-esc="fleet_id.driver_id.pe_driver_license"/>
+                                            </div>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 15px;"> NOMBRE:</strong><span t-esc="fleet_id.driver_id.name" style="overflow-wrap: break-word;" />
+                                            </div>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 15px;"> TIPO DOC:</strong><span t-esc="fleet_id.driver_id.doc_name" style="overflow-wrap: break-word;" />
+                                            </div>
+                                            <div style="text-align: left;overflow-wrap: break-word;"> 
+                                                <strong style="margin-left: 15px;"> NRO DOC:</strong><span t-esc="fleet_id.driver_id.doc_number" style="overflow-wrap: break-word;" />
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <t t-if="ingreso == 0">
+                                        <div style="text-align: left;overflow-wrap: break-word;"> 
+                                            <br></br>
+                                        </div>
+                                        <div style="text-align: left;overflow-wrap: break-word;"> 
+                                            <br></br>
+                                        </div>
+                                        <div style="text-align: left;overflow-wrap: break-word;"> 
+                                            <br></br>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div t-if="o.signature" class="mt32 ml64 mr4" name="signature">
+                    <div class="offset-8">
+                        <strong>Firma</strong>
+                    </div>
+                    <div class="offset-8">
+                        <img t-att-src="image_data_uri(o.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                    </div>
+                    <div class="offset-8 text-center">
+                        <p t-field="o.partner_id.name"/>
+                    </div>
+                </div>
+
+                <div class="row" t-if="o.pe_is_eguide and o.pe_guide_number!='/'" >
+                    <div class="col-4" >
+                        <!--<img t-if="o.sunat_pdf417_code" t-att-src="'data:image/png;base64,%s' % to_text(o.sunat_pdf417_code)" 
+                        class="img-responsive center-block" style="width: 320px;  height: 65px;" />-->
+                        <p t-if="o.note" name="note">
+                            <span t-field="o.note"/>
+                        </p>
+
+                        <span t-field="o.sunat_qr_code" t-options="{'widget': 'image', 'width': 150,  'height': 150}" />
+                    </div>
+                    <div class="col-8" style="margin-left: 30px;">
+                        <div t-if="o.pe_invoice_ids" class="table table-sm o_main_table cpe-tabla" style="border: 1px solid #ddd !important; border-radius: 6px; width: 60%; margin: 0;">
+                            <div class="row" style="border-spacing: 0px;">
+                                <div class="col-12 text-center">
+                                    Comprobante de Pago
+                                </div>
+                            </div>
+                            <div style="height: 3px; width: 100%" />
+                            <t t-set="lineas" t-value="o.pe_invoice_ids"/>
+                            <t t-foreach="lineas" t-as="move">
+                                <div class="row" style="border-spacing: 0px;">
+                                    <div class="col-7">
+                                        Tipo de Comprobante
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-esc="move.l10n_latam_document_type_id.report_name"/>
+                                    </div>
+                                </div>
+                                <div style="height: 3px; width: 100%" />
+                                <div class="row" style="border-spacing: 0px;">
+                                    <div class="col-7">
+                                        Número de Comprobante
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-esc="move.l10n_latam_document_number"/>
+                                    </div>
+                                </div>
+                                <div style="height: 3px; width: 100%" />
+                                <div class="row" style="border-spacing: 0px;">
+                                    <div class="col-7">
+                                        Fecha de Comprobante
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-esc="move.invoice_date"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div style="height: 6px; width: 100%" />
+                        <div class="table table-sm o_main_table cpe-tabla" style="border: 1px solid #ddd !important; border-radius: 6px; width: 60%; margin: 0;">
+                            <div t-if="o.sale_id" class="row" style="border-spacing: 0px;">
+                                <div class="col-7">
+                                    Doc. de Referencia: 
+                                </div>
+                                <div class="col-5">
+                                    <span t-esc="o.sale_id.name"/>
+                                </div>
+                            </div>
+                            <div id="div_orden_compra" t-if="o.sale_id.orden_compra" class="row" style="border-spacing: 0px;">
+                                <div class="col-7">
+                                    Orden de Compra: 
+                                </div>
+                                <div class="col-5">
+                                    <span t-esc="o.sale_id.orden_compra"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer" >
+            <br/>
+            <div class="text-center" style="border-top: 1px solid black;">
+                <ul class="list-inline mb4">
+                    <li t-if="company.phone">Telefono: 
+                        <span t-field="company.phone"/></li>
+                    <li t-if="company.email">Email: 
+                        <span t-field="company.email"/></li>
+                    <li t-if="company.website">
+                        Representación impresa de guía de remisión electrónica, consulta en <span t-field="company.website"/></li>
+                </ul>
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+                <div class="text-muted">
+                    <span class="page"/>
+                    de  
+                    <span class="topage"/></div>
+            </div>
+            
+            <br/>
+        </div>
+    </template>
+
+    <template id="solse_pe_cpe_guias.report_guia_plantilla">
+        <t t-call="web.html_container">
+            <t t-call="solse_pe_cpe_guias.cpe_guia_plantilla_n1">
+            </t>
+        </t>
+    </template>
+
+    <template id="report_deliveryslip">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="solse_pe_cpe_guias.report_guia_plantilla" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+    <template id="stock.report_deliveryslip">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="solse_pe_cpe_guias.report_guia_plantilla" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+    <template id="report_guia_electronica">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="solse_pe_cpe_guias.report_guia_plantilla" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+    <record id="action_guia_electronica" model="ir.actions.report">
+        <field name="name">Guía Remision</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solse_pe_cpe_guias.report_guia_electronica</field>
+        <field name="report_file">solse_pe_cpe_guias.report_guia_electronica</field>
+        <field name="print_report_name">'Guía remision - %s - %s' % (object.partner_id.name or '',  object.pe_guide_number or object.name)</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

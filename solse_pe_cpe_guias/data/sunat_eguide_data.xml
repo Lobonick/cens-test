@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    	<record id="cpe_production_server" model="cpe.server">
+            <field name="name">Guia Electronica Produccion</field>
+            <field name="url">https://e-guiaremision.sunat.gob.pe/ol-ti-itemision-guia-gem/billService</field>
+        </record>
+        <record id="cpe_dev_server" model="cpe.server">
+            <field name="name">Guia Electronica  Desarrollo</field>
+            <field name="url">https://e-beta.sunat.gob.pe/ol-ti-itemision-guia-gem-beta/billService</field>
+            <field name="user">MODDATOS</field>
+            <field name="password">moddatos</field>
+        </record>
+        
+        <record id="eguide_sequence" model="ir.sequence">
+            <field name="name">Guia Electronica</field>
+            <field name="code">pe.eguide.sync</field>
+            <field name="prefix">T001-</field>
+            <field name="implementation">no_gap</field>
+            <field name="padding">5</field>
+        </record>
+        
+        <record id="eguide_cancel_sequence" model="ir.sequence">
+            <field name="name">Guia Electronica</field>
+            <field name="code">pe.eguide.cancel</field>
+            <field name="prefix">EG01-</field>
+            <field name="implementation">no_gap</field>
+            <field name="padding">0</field>
+        </record>
+        
+    </data>
+</openerp>

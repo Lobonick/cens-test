@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="report_invoice_document_cpe_sale" inherit_id="solse_pe_cpe.cpe_body_print">
+
+        <xpath expr="//div[@id='div_referencia']" position="replace">
+        	<div id="div_referencia" style="width: 20%;">
+				
+				<t t-if="o.move_type == 'in_invoice'" >
+					Factura Proveedor
+					<br/>
+					<t t-esc="o.ref"/>
+				</t>
+				<t t-else="">
+					Orden de compra
+					<br/>
+					<t t-esc="o.venta_id.name"/>
+				</t>
+				
+			</div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('detalles-precio')]//div[1]" position="before">
+        	<div class="row" style="padding: 1px;">
+				<div class="col-6 cpe-gris"> DESCUENTO </div>
+                <div class="col-6 text-right border-n1"> <span t-field="o.amount_discount"/> </div>
+			</div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_company_form_eguide">
+      <field name="name">res.company.form.inherit.cpe.eguide</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="solse_pe_cpe.view_company_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='pe_cpe_server_id']" position="after">
+          <field name="pe_cpe_eguide_server_id" options="{'no_create': True}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" domain="[('company_id', '=', id)]"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

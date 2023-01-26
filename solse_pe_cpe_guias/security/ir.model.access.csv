@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pe_stock_fleet,access_pe_stock_fleet,model_pe_stock_fleet,,1,1,1,1
+access_pe_eguide,access_pe_eguide,model_solse_cpe_eguide,,1,0,0,0
+access_pe_eguide_user,access_pe_eguide_user,model_solse_cpe_eguide,solse_pe_cpe.group_solse_pe_cpe_user,1,1,1,0
+access_pe_eguide_accountant,access_pe_eguide_accountant,model_solse_cpe_eguide,solse_pe_cpe.group_solse_pe_cpe_accountant,1,1,1,0
+access_pe_eguide_manager,access_pe_eguide_manager,model_solse_cpe_eguide,solse_pe_cpe.group_solse_pe_cpe_manager,1,1,1,1

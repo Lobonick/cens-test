@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_guias_en_factura" inherit_id="solse_pe_cpe.cpe_body_print">
+        <xpath expr="//div[@id='div_fecha_vencimiento']" position="after">
+        	<div class="linea-h1"/>
+        	<t t-if="o.guide_number">
+        		<div class="col-xs-2" t-if="o.guide_number">
+	                Guía electrónica
+	                <p t-field="o.guide_number" />
+	            </div>
+        	</t>
+        	<t t-else="">
+        		<div class="col-xs-2" t-if="o.pe_stock_name">
+	                Guía interna
+	                <p t-field="o.pe_stock_name" />
+	            </div>
+        	</t>
+        </xpath>
+    </template>
+</odoo>
