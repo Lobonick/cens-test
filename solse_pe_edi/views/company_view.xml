@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_company_form">
+      <field name="name">res.company.form.inherit</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//sheet/notebook/page" position="inside">
+          <group string="Localización peruana" name="peruvian_localization">
+            <group>
+              <field name="sunat_amount" />
+              <field name="cuenta_detraccion" />
+              <field name="monto_detraccion" />
+              <field name="agente_retencion" />
+              <field name="por_retencion" attrs="{'invisible': [('agente_retencion', '=', False)]}" />
+            </group>
+          </group>
+        </xpath>
+
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_cci_form">
+      <field name="name">res.partner.cci.view.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='bank_ids']//field[@name='acc_number']" position="after">
+          <field name="cci" />
+        </xpath>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_partner_bank_form">
+      <field name="name">res.partner.bank.cci.form</field>
+      <field name="model">res.partner.bank</field>
+      <field name="inherit_id" ref="base.view_partner_bank_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='acc_number']" position="after">
+          <field name="cci" />
+        </xpath>
+      </field>
+    </record>
+
+    
+
+  </data>
+</odoo>

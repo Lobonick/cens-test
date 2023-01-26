@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="401150" model="account.account.template">
+        <field name="name">Tributos y aportes ...- Gobierno central / Impuesto al Consumo de las bolsas de plástico - cuenta propia </field>
+        <field name="code">401150</field>
+        <field eval="False" name="reconcile" />
+        <field name="user_type_id" ref="account.data_account_type_current_liabilities" />
+        <field name="chart_template_id" ref="l10n_pe.pe_chart_template" />
+    </record>
+</odoo>

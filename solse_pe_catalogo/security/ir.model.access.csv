@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pe_datas,access_pe_datas,model_pe_datas,,1,0,0,0
+access_pe_datas_user,access_pe_datas_user,model_pe_datas,group_pe_datas_user,1,1,1,0
+access_pe_datas_manager,access_pe_datas_manager,model_pe_datas,group_pe_datas_manager,1,1,1,1
+access_ir_sequence_user,access_ir_sequence_user,base.model_ir_sequence,group_pe_datas_user,1,1,1,1

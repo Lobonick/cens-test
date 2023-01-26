@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+	<record id="pe_tabla27_01" model="pe.datas">
+		<field name="code">00</field>
+		<field name="name"></field>
+		<field name="un_ece_code"/>
+		<field name="table_code">PE.TABLA27</field>
+		<field name="description">Sin vinculación</field>
+	</record>
+	<record id="pe_tabla27_02" model="pe.datas">
+		<field name="code">01</field>
+		<field name="name">Articulo 24° numeral 1</field>
+		<field name="un_ece_code"/>
+		<field name="table_code">PE.TABLA27</field>
+		<field name="description">Una persona natural o jurídica posea más de treinta por ciento (30%) del capital de otra persona jurídica, directamente o por intermedio de un tercero</field>
+	</record>
+
+</data>
+</odoo>

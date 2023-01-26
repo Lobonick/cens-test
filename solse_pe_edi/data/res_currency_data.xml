@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Currencies -->
+        <record id="base.USD" model="res.currency">
+            <field name="plural_name">DOLARES</field>
+            <field name="singular_name">DOLAR</field>
+            <field name="fraction_name">centavos</field>
+        </record>
+		
+		<record id="base.EUR" model="res.currency">
+            <field name="plural_name">EUROS</field>
+            <field name="singular_name">EURO</field>
+            <field name="fraction_name">centimos</field>
+        </record>
+		
+		<record id="base.PEN" model="res.currency">
+            <field name="plural_name">SOLES</field>
+            <field name="singular_name">SOL</field>
+            <field name="fraction_name">centimos</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_document_type_tree" model="ir.ui.view">
+        <field name="name">l10n_latam.document.type.tree.view.inherit.solse_pe_edi</field>
+        <field name="model">l10n_latam.document.type</field>
+        <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="edit">1</attribute>
+                <attribute name="create">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_document_type_form" model="ir.ui.view">
+        <field name="name">l10n_latam.document.type.form.view.inherit.solse_pe_edi</field>
+        <field name="model">l10n_latam.document.type</field>
+        <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="edit">1</attribute>
+                <attribute name="create">1</attribute>
+            </xpath>
+            <xpath expr="//form//group[1]" position="before">
+                <div name="button_box" class="oe_button_box">
+                    <button class="oe_stat_button" type="object"
+                            name="crear_secuencia" icon="fa-book" string="Crear secuencia" attrs="{'invisible': ['|', '|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False), ('secuencia_id', '!=', False)]}" />
+
+                    <button class="oe_stat_button" type="object"
+                            name="reasignar_ultimo_numero" icon="fa-book" string="Reasignar ultimo numero" attrs="{'invisible': ['|', '|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False), ('secuencia_id', '=', False)]}" />
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="before">
+                <field name="company_id" />
+            </xpath>
+            <xpath expr="//field[@name='internal_type']" position="after">
+            	<field name="sub_type" attrs="{'invisible': [('country_id', '!=', %(base.pe)d)]}"/>
+            	<field name="is_cpe" attrs="{'invisible': [('country_id', '!=', %(base.pe)d)]}"/>
+                <field name="is_synchronous" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('is_cpe', '=', False)]}"/>
+                <field name="is_synchronous_anull" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('is_cpe', '=', False)]}"/>
+                <field name="nota_credito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}"/>
+                <field name="nota_debito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}"/>
+                <field name="usar_prefijo_personalizado" attrs="{'invisible': [('country_id', '!=', %(base.pe)d)]}"/>
+                <field name="prefijo" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False)]}"/>
+                <field name="secuencia_id" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False)]}"/>
+                <field name="sequence_number_next" attrs="{'invisible': ['|', '|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False), ('secuencia_id', '=', False)]}"/>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

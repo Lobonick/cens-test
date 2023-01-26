@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="group_plate_invoice" model="res.groups">
+            <field name="name">Plate in Invoice/Sale</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+        <record id="group_plate_invoice_line" model="res.groups">
+            <field name="name">Plate in Invoice/Sale Line</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="tipo_comprobante_rule" model="ir.rule">
+            <field name="name">Tipo y series para comprobantes</field>
+            <field name="model_id" ref="model_l10n_latam_document_type"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]</field>
+        </record>
+
+    </data>
+</odoo>

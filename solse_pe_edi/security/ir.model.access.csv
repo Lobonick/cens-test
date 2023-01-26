@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ir_sequence_user,access_ir_sequence_user,base.model_ir_sequence,solse_pe_catalogo.group_pe_datas_user,1,1,1,1
+access_res_company_conf,access_res_company_conf,solse_pe_edi.model_res_company_conf,solse_pe_catalogo.group_pe_datas_user,1,1,1,1

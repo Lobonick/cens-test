@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record model="ir.module.category" id="module_pe_datas">
+            <field name="name">Configuracion peruana</field>
+            <field name="description">Establecer permisos de usuarios</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="group_pe_datas_user" model="res.groups">
+            <field name="name">Usuario</field>
+            <field name="category_id" ref="module_pe_datas"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="group_pe_datas_manager" model="res.groups">
+            <field name="name">Administrador</field>
+            <field name="category_id" ref="module_pe_datas"/>
+            <field name="implied_ids" eval="[(4, ref('group_pe_datas_user'))]"/>
+        </record>
+        <record id="group_pe_datas_manager" model="res.groups">
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+    </data>
+</odoo>

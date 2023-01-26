@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_pe_datas_tree">
+      <field name="name">pe.datas.tree</field>
+      <field name="model">pe.datas</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="code"/>
+          <field name="table_code"/>
+          <field name="active"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="pe_datas_search_view" model="ir.ui.view">
+        <field name="name">pe.datas.search</field>
+        <field name="model">pe.datas</field>
+        <field name="arch" type="xml">
+            <search string="Catalogos SUNAT">
+                <field name="name"/>
+                <group expand="1" string="Group By">
+                    <filter string="Codigo Tabla" name="table_code" domain="[]" context="{'group_by':'table_code'}"/>
+                    <filter string="Activo" name="active" domain="[]" context="{'active':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+	<record id="view_pe_datas_from" model="ir.ui.view">
+        <field name="name">pe.datas.form</field>
+        <field name="model">pe.datas</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="un_ece_code"/>
+                    </group>
+                    <group>
+                    	<field name="value"/>
+                        <field name="table_code"/>
+                        <field name="active"/>
+                    </group>
+                </group>
+                <label for="description"/>
+                <field name="description" />
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_pe_datas" model="ir.actions.act_window">
+        <field name="name">Catalogos SUNAT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pe.datas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_pe_datas_tree"/>
+        <field name="help">Display and manage the Peruvian Datas.</field>
+    </record>
+
+    <menuitem name="SUNAT" id="solse_cpe_menu_root" sequence="4" web_icon="solse_pe_catalogo,static/description/icon.png" />
+
+    <menuitem name="Configuracion" id="pe_cpe_configuration_menu" parent="solse_cpe_menu_root" sequence="100" />
+
+    <menuitem name="Catalogo SUNAT" id="pe_cpe_datas_menu" parent="pe_cpe_configuration_menu" action="action_pe_datas" sequence="2" />
+    
+    
+  </data>
+</odoo>
