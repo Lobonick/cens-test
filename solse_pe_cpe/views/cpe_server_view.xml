@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="view_pe_server_tree">
+      <field name="name">cpe.server.tree</field>
+      <field name="model">cpe.server</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" />
+          <field name="url" />
+          <field name="user" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_pe_server_from" model="ir.ui.view">
+      <field name="name">cpe.server.form</field>
+      <field name="model">cpe.server</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="action_draft" string="Borrador" states="cancel" type="object" />
+            <button name="action_done" string="Hecho" states="draft" type="object" />
+            <button name="action_cancel" string="Cancelar" states="done" type="object" />
+            <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+          </header>
+          <group>
+            <group>
+              <field name="company_id" />
+              <field name="name" />
+              <field name="user" required="1" />
+              <field name="password" required="1" />
+            </group>
+            <group>
+              <field name="url" />
+              <field name="extension_xml" />
+              <field name="active" />
+            </group>
+          </group>
+          <label for="description" />
+          <field name="description" />
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="action_pe_server">
+      <field name="name">Servidores SUNAT</field>
+      <field name="res_model">cpe.server</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+  </data>
+</odoo>

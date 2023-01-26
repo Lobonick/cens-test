@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_company_form">
+      <field name="name">res.company.form.inherit</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="solse_pe_edi.view_company_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='sunat_amount']" position="after">
+          <field name="pe_is_sync" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+          <field name="pe_certificate_id" options="{'no_create': True}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" domain="[('company_id', '=', id)]"/>
+          <field name="pe_cpe_server_id" options="{'no_create': True}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" domain="[('company_id', '=', id)]"/>
+          <field name="enviar_email" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

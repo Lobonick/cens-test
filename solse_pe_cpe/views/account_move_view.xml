@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="invoice_view_form" model="ir.ui.view">
+			<field name="name">account_move_peruvian_inherit_form</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_move_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='l10n_latam_document_type_id']" position="after">
+					<field name="tipo_cambio_dolar_sistema" />
+				</xpath>
+				<xpath expr="//field[@name='currency_id']" position="after">
+					<!--<field name="annul" attrs="{'invisible':[('annul','=',False)]}" />-->
+					<field name="move_type" invisible="1" />
+					<field name="highest_name" invisible="1" />
+				</xpath>
+				<xpath expr="//field[@name='invoice_date']" position="after">
+					<field name="fecha_nota_credito_proveedor" attrs="{'invisible': [('move_type', '!=', 'in_refund')]}"  />
+				</xpath>
+
+				<xpath expr="//button[@name='button_cancel']" position="after">
+					<button name="button_annul" class="btn btn-danger" type="object" confirm="¿Seguro que quiere anular esta factura en Sunat? Los datos ya no podrán ser editados una vez anulado el comprobante y el número ya no podrá usarse mas" string="Anular Factura" attrs="{'invisible':['|', ('state', '!=', 'posted'), ('estado_sunat', 'not in', ['05', '09', '07'])]}" groups="account.group_account_invoice" />
+
+					<button name="consultar_estado_sunat" string="Consultar" type="object" attrs="{'invisible':[('is_cpe', '=', False)]}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+				</xpath> 
+				<xpath expr="//button[@name='button_cancel']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+
+				<!--<xpath expr="//field[@name='amount_untaxed']" position="attributes">
+					<attribute name="attrs">{}</attribute>
+					<attribute name="invisible">True</attribute>
+				</xpath>
+				<xpath expr="//field[@name='amount_untaxed']" position="after">
+					<field name="total_operaciones_gravadas"/>
+				</xpath>-->
+
+
+				<xpath expr="//widget[@name='web_ribbon']" position="after">
+					<widget name="web_ribbon" title="Anulado" bg_color="bg-danger" attrs="{'invisible' : [('state', 'not in', ('annul'))]}" />
+				</xpath>
+				<xpath expr="//field[@name='partner_id']" position="attributes">
+					<attribute name="context">{'search_default_customer':1, 'show_address': 1, 'default_company_type': 'company','force_pe_journal':True}</attribute>
+				</xpath>
+				<xpath expr="//button[@name='button_draft']" position="replace">
+					<button name="button_draft" string="Regresar a borrador" type="object" groups="account.group_account_invoice" attrs="{'invisible' : ['|', ('restrict_mode_hash_table', '=', True), ('state', 'in', ('draft','cancel','annul'))]}" />
+				</xpath>
+				<xpath expr="//div[@class='oe_title']" position="replace">
+					<!-- se deja solo por si una vista heredada la busca -->
+					<div class="oe_title">
+					</div>
+					<span class="o_form_label">
+						<field name="move_type" attrs="{'invisible': ['|', ('move_type', '=', 'entry'), ('state', '=', 'draft')]}" readonly="1" nolabel="1" />
+					</span>
+					<span class="text-warning" attrs="{'invisible': [('show_name_warning', '=', False)]}">El número más alto actual es <field name="highest_name"/>. Es posible que desee poner un número más alto aquí.</span>
+					<h1>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'out_invoice'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Invoice</span>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'out_refund'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Credit Note</span>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'in_invoice'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Bill</span>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'in_refund'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Refund</span>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'out_receipt'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Sales Receipt</span>
+						<span attrs="{'invisible': ['|', '|', ('move_type', '!=', 'in_receipt'), ('state', '!=', 'draft'), ('name', '!=', '/')]}">Draft Purchase Receipt</span>
+					</h1>
+					<!-- Number -->
+					<h1 class="mt0">
+						<field name="name" readonly="True" attrs="{'invisible':[('name', '=', '/')]}" />
+					</h1>
+					<div style="margin-top: -75px; float: right;">
+						<field name="sunat_qr_code" class="o_field_image oe_avatar" widget="image" style="width: 75px; height: 75px;" attrs="{'invisible': ['|', ('move_type', 'not in', ['out_invoice', 'out_refund']),('state', 'in', ['draft','cancel'])]}" />
+					</div>
+					
+				</xpath>
+
+
+				<!--<xpath expr="//div[@name='journal_div']" position="replace">
+					<div name="journal_div" class="d-flex" invisible="context.get('default_journal_id') and context.get('move_type', 'entry') != 'entry'">
+						<field name="journal_id"
+							groups="account.group_account_readonly"
+							options="{'no_create': True, 'no_open': True}"
+							attrs="{'readonly': [('posted_before', '=', True)]}"/>
+						<span class="oe_inline o_form_label mx-3"
+							groups="base.group_multi_currency" attrs="{'invisible': [('move_type', '=', 'entry')]}"> in </span>
+						<field name="currency_id"
+							groups="base.group_multi_currency"
+							attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('move_type', '=', 'entry')]}"/>
+					</div>
+
+					<field name="pe_sunat_transaction" attrs="{'invisible':True}" />
+					<field name="pe_sunat_transaction51" string="Tipo Transacción" attrs="{'invisible':[('is_cpe','=',False)]}" />
+					<field name="estado_sunat" attrs="{'invisible':[('is_cpe','=',False)]}" />
+					<field name="tipo_transaccion" invisible="1" force_save="1" />
+				   
+				</xpath>
+
+				<label for="journal_id"
+					   groups="account.group_account_readonly"
+					   invisible="context.get('default_journal_id') and context.get('move_type', 'entry') != 'entry'"/>
+				<div name="journal_div"
+					 class="d-flex"
+					 groups="account.group_account_readonly"
+					 invisible="context.get('default_journal_id') and context.get('move_type', 'entry') != 'entry'">
+					<field name="journal_id"
+						options="{'no_create': True, 'no_open': True}"
+						attrs="{'readonly': [('posted_before', '=', True)]}"/>
+					<span class="oe_inline o_form_label mx-3"
+						  groups="base.group_multi_currency"
+						  attrs="{'invisible': [('move_type', '=', 'entry')]}"> in </span>
+					<field name="currency_id"
+						   groups="base.group_multi_currency"
+						   attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('move_type', '=', 'entry')]}"/>
+				</div>-->
+				<xpath expr="//div[@name='journal_div']" position="after">
+					<field name="pe_sunat_transaction" attrs="{'invisible':True}" />
+					<field name="pe_sunat_transaction51" string="Tipo Transacción" attrs="{'invisible':[('is_cpe','=',False)]}" />
+					<field name="estado_sunat" attrs="{'invisible':[('is_cpe','=',False)]}" />
+					<field name="tipo_transaccion" invisible="1" force_save="1" />
+				   
+				</xpath>
+
+				<xpath expr="//field[@name='invoice_line_ids']//field[@name='discount']" position="after">
+					<field name="move_type" invisible="1" />
+					<field name="pe_affectation_code" groups="solse_pe_cpe.group_solse_pe_cpe_user" force_save="1" required="1" invisible="1"/>
+				</xpath>
+				<xpath expr="//field[@name='line_ids']//field[@name='discount_date']" position="after">
+					<field name="pe_affectation_code" groups="solse_pe_cpe.group_solse_pe_cpe_user" force_save="1" invisible="1" />
+				</xpath>
+				<xpath expr="//page[@name='other_info']" position="after">
+					<page string="Personalización Peruana" name="peruvian_customization" attrs="{'invisible':[('is_cpe','=',False)]}">
+						<group>
+							<group>
+								<field name="pe_cpe_id" attrs="{'readonly':[('state', 'not in', 'draft')]}" groups="solse_pe_cpe.group_solse_pe_cpe_user" />
+								<field name="pe_summary_id" attrs="{'invisible':[('pe_invoice_code','not in',('03','07','08')),('origin_doc_code','not in',('01'))]}" readonly="True" groups="solse_pe_cpe.group_solse_pe_cpe_user" />
+								<field name="pe_voided_id" readonly="True" attrs="{'invisible':[('state','not in',('annul'))]}" />
+								<field name="pe_debit_note_code" attrs="{'invisible':[('pe_invoice_code','not in',('08'))], 'required':[('pe_invoice_code','=','08')]}" />
+								<field name="pe_credit_note_code" attrs="{'invisible':[('pe_invoice_code','not in',('07'))],'required':[('pe_invoice_code','=','07')]}" />
+								<field name="is_cpe" invisible="1" />
+								<field name="pe_invoice_state" invisible="1" />
+								<field name="pe_response" attrs="{'invisible':[('is_cpe','=',False),('state', 'not in', ('draft'))]}" />
+							</group>
+							<group>
+								<field name="pe_additional_type" />
+								<field name="pe_additional_number" attrs="{'invisible':[('pe_additional_type','not in',['04','05', '99', '01', '02', '03'])], 'required':[('pe_additional_type','in',['04','05', '99', '01', '02', '03'])]}" />
+								<field name="pe_error_code" />
+								<field name="origin_doc_code" attrs="{'invisible':[('pe_invoice_code','not in',['07','08'])], 'required':[('pe_invoice_code','in',['07','08'])]}" />
+								<field name="origin_doc_number" attrs="{'invisible':[('pe_invoice_code','not in',['07','08'])], 'required':[('pe_invoice_code','in',['07','08'])]}" />
+								<field name="pe_invoice_code" invisible="1" />
+								<field name="sunat_estado_manual"/>
+							</group>
+						</group>
+						<div>
+							<label for="pe_digest" string="Valor de resumen:" />
+							<field name="pe_digest" />
+						</div>
+						<div>
+							<label for="pe_signature" string="Valor de la firma:" />
+						</div>
+						<div>
+							<field name="pe_signature" />
+						</div>
+						<field name="pe_additional_total_ids" attrs="{'readonly':[('pe_invoice_state', 'in', ['send','verify','done'])]}">
+							<tree editable="bottom" string="Total monto adicional">
+								<field name="code" />
+								<field name="total_amount" />
+							</tree>
+						</field>
+						<field name="pe_additional_property_ids" attrs="{'readonly':[('pe_invoice_state', 'in', ['send','verify','done'])]}">
+							<tree editable="bottom" string="Propiedad adicional">
+								<field name="code" />
+								<field name="value" />
+							</tree>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
+
+	   <record id="view_invoice_tree" model="ir.ui.view">
+			<field name="name">account_move_peruvian_inherit_form</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_invoice_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='state']" position="after">
+					<field name="estado_sunat" optional="show" />
+				</xpath>
+			</field>
+		</record>
+
+		<record id="view_tax_group_form" model="ir.ui.view">
+			<field name="name">account_tax_group_peruvian_inherit_form</field>
+			<field name="model">account.tax.group</field>
+			<field name="arch" type="xml">
+				<form>
+				  <header>
+					
+				  </header>
+				  <group>
+					<group>
+					  <field name="name" />
+					  <field name="property_tax_payable_account_id" />
+					  <field name="property_advance_tax_payment_account_id" />
+					  
+					</group>
+					<group>
+					  <field name="sequence" />
+					  <field name="property_tax_receivable_account_id" />
+					  <field name="mostrar_base" />
+					</group>
+				  </group>
+				</form>
+			</field>
+		</record>
+
+	</data>
+</odoo>

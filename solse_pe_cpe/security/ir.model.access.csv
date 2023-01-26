@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cpe_certificate,access_cpe_certificate,model_cpe_certificate,,1,0,0,0
+access_cpe_server,access_cpe_server,model_cpe_server,,1,0,0,0
+access_account_move_additional_total,access_account_move_additional_total,model_account_move_additional_total,,1,1,1,1
+access_account_move_additional_property,access_account_move_additional_property,model_account_move_additional_property,,1,1,1,1
+access_solse_pe_cpe,access_solse_pe_cpe,model_solse_cpe,,1,0,0,0
+access_solse_pe_cpe_user,access_solse_pe_cpe_user,model_solse_cpe,group_solse_pe_cpe_user,1,1,1,0
+access_solse_pe_cpe_accountant,access_solse_pe_cpe_accountant,model_solse_cpe,group_solse_pe_cpe_accountant,1,1,1,0
+access_solse_pe_cpe_manager,access_solse_pe_cpe_manager,model_solse_cpe,group_solse_pe_cpe_manager,1,1,1,1
+access_cpe_certificate_manager,access_cpe_certificate_manager,model_cpe_certificate,group_solse_pe_cpe_manager,1,1,1,1
+access_pe_datas_manager,access_pe_datas_manager,solse_pe_catalogo.model_pe_datas,group_solse_pe_cpe_manager,1,1,1,1
+access_cpe_server_manager,access_cpe_server_manager,model_cpe_server,group_solse_pe_cpe_manager,1,1,1,1

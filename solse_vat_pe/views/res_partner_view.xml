@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+	<record model="ir.ui.view" id="view_partner_form">
+		<field name="name">res.partner.view.form.inherit.l10n.pe.vat</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="l10n_latam_base.view_partner_latam_form" />
+		<field name="arch" type="xml">
+			<sheet position="before">
+				<header>
+					<button string="Buscar por RUC/DNI" type="object" name="update_document" context="{'force_update':True}" />
+				</header>
+			</sheet>
+
+			<xpath expr="//div[@name='button_box']" position="after">
+				<widget name="web_ribbon" title="Precaución" bg_color="bg-danger" attrs="{'invisible': [('condition', '=', 'HABIDO'),('state', '=', 'ACTIVO')]}" />
+			</xpath>
+			<xpath expr="//field[@name='company_type']" position="attributes">
+				<attribute name="groups">base.group_no_one</attribute>
+			</xpath>
+
+			<xpath expr="//label[@for='l10n_latam_identification_type_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='l10n_latam_identification_type_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='vat']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+			<xpath expr="//field[@name='vat']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//h1" position="after">
+				<div class="o_row">
+					<field name="l10n_latam_identification_type_id" placeholder="Tipo de documento" colspan="1" nolabel="1" style="font-size: 16px; width: 70%" attrs="{'invisible': [('parent_id', '!=', False)]}" />
+					<field name="doc_number" placeholder="Nro Documento" colspan="3" nolabel="1" style="font-size: 16px; width: 29%" attrs="{'invisible': [('parent_id', '!=', False)]}" />
+				</div>
+			</xpath>
+			<xpath expr="//field[@name='category_id']" position="after">
+				<field name="state" attrs="{'invisible': [('is_company','=',False)]}" />
+				<field name="condition" attrs="{'invisible': [('is_company','=',False)]}" />
+				<field name="buen_contribuyente" attrs="{'invisible': [('is_company','=',False)]}" />
+				<field name="a_partir_del" attrs="{'invisible': ['|',('is_company','=',False), ('buen_contribuyente', '=', False)]}" />
+				<field name="resolucion" attrs="{'invisible': ['|',('is_company','=',False), ('buen_contribuyente', '=', False)]}" />
+				<field name="busqueda_automatica" />
+				<field name="is_validate" invisible="True" />
+			</xpath>
+
+			<xpath expr="//field[@name='type']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+
+			<xpath expr="//page[@name='sales_purchases']" position="after">
+				<page name="sunat_details" string="SUNAT" attrs="{'invisible': [('is_company','=',False)]}">
+					<group name="container_sunat_general" attrs="{'invisible': [('is_company','=',False)]}">
+						<group string="Información general">
+							<field name="legal_name" placeholder="Nombre Legal" attrs="{'invisible': [('is_company','=',False)],'required': [('is_company','=',True)], 'readonly': [('is_validate','=',True)]}" force_save="1"/>
+							<field name="commercial_name" placeholder="Nombre comercial" attrs="{'invisible': [('is_company','=',False)],'required': [('is_company','=',True)]}" force_save="1"/>
+							<field name="last_update" attrs="{'invisible': [('is_company','=',False)]}" />
+						</group>
+						<!--separator string="Aconomic Pctivities" colspan="2" /-->
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="view_partner_form_sbase">
+		<field name="name">res.partner.view.form.inherit.base</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//div[@class='o_address_format']" position="replace">
+				<div attrs="{'invisible': [('country_code', '!=', 'PE')]}" class="o_address_format">
+                    <field name="country_enforce_cities" invisible="1"/>
+                    <field name="parent_id" invisible="1"/>
+                    <field name="type" invisible="1"/>
+                    <field name="street" placeholder="Street..." class="o_address_street"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="street2" placeholder="Street 2..." class="o_address_street"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="l10n_pe_district" placeholder="District..." class="o_address_street"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="city_id"
+                           placeholder="City"
+                           class="o_address_city"
+                           domain="[('country_id', '=', country_id)]"
+                           attrs="{'invisible': [('country_enforce_cities', '=', False)], 'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"
+                           context="{'default_country_id': country_id, 'default_state_id': state_id, 'default_zipcode': zip}"/>
+                    <field name="city"
+                           placeholder="City"
+                           class="o_address_city"
+                           attrs="{'invisible': [('country_enforce_cities', '=', True), '|', ('city_id', '!=', False), ('city', 'in', ['',False])],
+                                   'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}"
+                           context="{'default_country_id': country_id}"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="zip" placeholder="ZIP" class="o_address_zip"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </div>
+	                
+				<div attrs="{'invisible': [('country_code', '==', 'PE')]}" class="o_address_format">
+                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                    <field name="city" placeholder="City" class="o_address_city"/>
+                    <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'default_country_id': country_id}"/>
+                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                </div>
+				
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

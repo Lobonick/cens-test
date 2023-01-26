@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="cpe_production_server" model="cpe.server">
+            <field name="name">Produccion</field>
+            <field name="url">https://e-factura.sunat.gob.pe/ol-ti-itcpfegem/billService</field>
+        </record>
+        <record id="cpe_dev_server" model="cpe.server">
+            <field name="name">Desarrollo</field>
+            <field name="url">https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService</field>
+            <field name="user">MODDATOS</field>
+            <field name="password">moddatos</field>
+        </record>
+    </data>
+</odoo>

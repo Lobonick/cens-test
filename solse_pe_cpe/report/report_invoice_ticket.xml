@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<data>
+	<template id="solse_pe_cpe.cpe_ticket_body_print">
+		<t t-if="not company">
+			<!-- Multicompany -->
+			<t t-if="company_id">
+				<t t-set="company" t-value="company_id"/>
+			</t>
+			<t t-elif="o and 'company_id' in o">
+				<t t-set="company" t-value="o.company_id.sudo()"/>
+			</t>
+			<t t-else="else">
+				<t t-set="company" t-value="res_company"/>
+			</t>
+		</t>
+		<hr style="width:10%;text-align:left;margin-left:0"/>
+		<div class="article pos-sale-ticket" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+			<t t-set="o" t-value="o.with_context(lang=lang)" />
+			<t t-set="address">
+				<address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+				<div t-if="o.partner_id.vat" class="mt16">
+					<t t-if="o.company_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
+					<t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
+			</t>
+			<div class="pos-sale-ticket">
+				<t t-if="company.logo">
+					<img t-if="company.logo" t-att-src="image_data_uri(company.logo)"  alt="Logo" style="max-height: 70px; height: 70px; max-width: 120px; display:block; margin-left: auto; margin-right: auto; top: 3%;" />
+					<br/>
+				</t>
+				<div t-if="o.pe_invoice_code" class="pos-receipt-center-align" style="text-align:center">
+					<t t-if="o.pe_invoice_code=='01'">Factura</t>
+					<t t-if="o.pe_invoice_code=='03'">Boleta Electronica </t>
+					<t t-if="o.pe_invoice_code=='07'">Nota de Crédito </t>
+					<t t-if="o.pe_invoice_code=='00'">Comprobante </t>
+					<t t-esc="o.l10n_latam_document_number" />
+				</div>
+				<div t-else="" class="pos-receipt-center-align" style="text-align:center">
+					<t t-esc="o.name" />
+				</div>
+				<br/>
+				<!--<t t-if="!company.logo">
+					<h2 class="pos-receipt-center-align">
+						<t t-esc="company.name" />
+					</h2>
+					<br/>
+				</t>-->
+				
+				<div class="pos-receipt-contact" style="font-size: 14px;">
+					<span class="">
+						<t t-esc="company.name" />
+					</span>
+					<br/>
+					<t t-if="company.vat">
+						<div>RUC:<t t-esc="company.vat" /></div>
+					</t>
+					<t>
+						<div>Dirección: <t t-esc="company.street" /></div>
+					</t>
+					<t t-if="company.phone">
+						<div>Telefono:<t t-esc="company.phone" /></div>
+					</t>
+
+				</div>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<h2>
+					<span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">Factura cancelada</span>
+				</h2>
+				<div class="pos-receipt-contact" style="font-size: 14px;">
+					<div >
+						Fecha y hora: <t t-esc="o.invoice_date"/>
+					</div>
+					<div >
+						Usuario: <t t-esc="o.invoice_user_id.name"/>
+					</div>
+					<t t-if="o.ref">
+						<span>Comprobante de origen: </span>
+						<t t-esc="o.ref" /><br />
+					</t>
+				</div>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<div class="pos-receipt-contact" style="font-size: 14px;">
+					<t t-if="o.partner_id.type == 'invoice'" >
+						<t t-esc="o.partner_id.nombre_temp"/><br />
+					</t> 
+					<t t-else="">
+						<t t-esc="o.partner_id.name"/><br />
+					</t>
+					<t t-esc="o.partner_id.doc_number"/>
+					<br />
+					<t t-if="o.partner_id.street">
+						<t t-esc="o.partner_id.street"/><br />
+					</t>
+				</div>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<table class="tabla" style="width: 100%; font-size: 85%; ">
+					<tr>
+						<td style="width: 40%;">Producto</td>
+						<td style="width: 20%;">Cant.</td>
+						<td style="width: 20%;">P.Unit</td>
+						<td style="width: 18%;">Total</td>
+					</tr>
+					<tr>
+						<td colspan="4" style="width: 100%;">
+							<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+						</td>
+					</tr>
+					<t t-set="current_subtotal" t-value="0"/>
+                    <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+					<t t-foreach="lines" t-as="line" t-key="line.id">
+			            <tr>
+							<td style="width: 40%;">
+								<t t-esc="line.name"/>
+							</td>
+							<td style="width: 20%;">
+								<span t-field="line.quantity"/>
+								<!--
+								<t t-if="!line.is_in_unit" >
+									( <t t-esc="line.unit_name" style="font-size: 10px;" /> )
+								</t>
+								-->
+								( <t t-esc="line.product_uom_id.name" style="font-size: 10px;" /> )
+							</td>
+							<td style="width: 20%;">
+								<span t-field="line.price_unit" />
+							</td>
+							<td style="width: 18%;">
+								<span t-field="line.price_total" class="price_display pos-receipt-right-align"/>
+							</td>
+						</tr>
+			        </t>
+
+				</table>
+
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				
+				<!-- Subtotal -->
+				<t t-set="tax_totals" t-value="o.tax_totals"/>
+				<table class="tabla" style="width: 100%; font-size: 85%; ">
+					<tr>
+						<td style="width: 20%;"></td>
+						<td style="width: 20%;"></td>
+						<td style="width: 35%;">
+							TOTAL A PAGAR
+						</td>
+						<td style="width: 25%; text-align: right;">
+							<span t-esc="tax_totals['formatted_amount_total']" class="pos-receipt-right-align"/>
+						</td>
+					</tr>
+					<t t-if="o.pe_total_discount">
+						<tr>
+							<td style="width: 20%;"></td>
+							<td style="width: 20%;"></td>
+							<td style="width: 35%;">
+								Total descuentos:
+							</td>
+							<td style="width: 25%; text-align: right;">
+								<span t-field="o.pe_total_discount" class="pos-receipt-right-align"/>
+							</td>
+						</tr>
+					</t>
+
+					<tr>
+						<td style="width: 20%;"></td>
+						<td style="width: 20%;"></td>
+						<td style="width: 35%;">
+							Op. Gravadas:
+						</td>
+						<td style="width: 25%; text-align: right;">
+							<span t-field="o.amount_untaxed" class="pos-receipt-right-align"/>
+						</td>
+					</tr>
+
+					<t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                        <!--<tr>
+							<td style="width: 5%;"></td>
+							<td style="width: 5%;"></td>
+							<td style="width: 50%;">
+								<span t-esc="subtotal['name']"/>:
+							</td>
+							<td style="width: 40%;">
+								<span
+                                    t-att-class="oe_subtotal_footer_separator"
+                                    t-esc="subtotal['formatted_amount']"
+                                />
+							</td>
+						</tr>-->
+
+                        <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                        <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+			                <tr>
+			                    <t t-if="len(tax_totals['groups_by_subtotal'][subtotal_to_show]) > 1">
+			                    	<td style="width: 20%;"></td>
+									<td style="width: 20%;"></td>
+			                        <td style="width: 35%;">
+			                            <span t-esc="amount_by_group['tax_group_name']"/>
+			                            <span class="text-nowrap"> on
+			                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+			                            </span>
+			                        </td>
+			                        <td style="width: 25%; text-align: right;">
+			                            <span t-esc="amount_by_group['formatted_tax_group_amount']"/>
+			                        </td>
+			                    </t>
+			                    <t t-else="">
+			                    	<td style="width: 20%;"></td>
+									<td style="width: 20%;"></td>
+			                        <td style="width: 35%;"><span class="text-nowrap" t-esc="amount_by_group['tax_group_name']"/></td>
+			                        <td style="width: 25%; text-align: right;">
+			                            <span t-esc="amount_by_group['formatted_tax_group_amount']" />
+			                        </td>
+			                    </t>
+			                </tr>
+			            </t>
+                    </t>
+
+					<tr id="tr_total">
+						<td style="width: 20%;"></td>
+						<td style="width: 20%;"></td>
+						<td style="width: 35%;">
+							Importe Total
+						</td>
+						<td style="width: 25%; text-align: right;">
+							<span t-esc="tax_totals['formatted_amount_total']" class="pos-receipt-right-align"/>
+						</td>
+					</tr>
+				</table>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<br/>
+				<p class="text-left">
+					Son: <strong><span t-field="o.amount_text" /></strong>
+					<t t-if="o.tiene_detraccion">
+						<br/>
+                        OPERACIÓN SUJETA AL SISTEMA DE PAGO DE OBLIGACIONES TRIBUTARIAS
+                     </t>
+				</p>
+				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
+				<div style="text-align:center; font-size: 75%; ">
+					<t t-if="o.is_cpe">
+						<br />
+						<div>
+							<strong>Tipo de pago: </strong>
+							<t t-esc="o.tipo_transaccion"/>
+						</div>
+						<br />
+						<div t-if="o.tipo_transaccion == 'credito' ">
+		                    <table style="border: 1px solid #ddd !important; border-radius: 6px; width: 75%;margin: 0 auto;"  >
+		                        <thead>
+		                            <tr> 
+		                                <td class="cpe-gris">Nº DE CUOTA</td>
+		                                <td class="cpe-gris">IMPORTE</td>
+		                                <td class="cpe-gris">FECHA DE PAGO</td>
+		                            </tr>
+		                        </thead>
+		                        <tbody style="border: 0px;margin: 0px; padding: 0px;">
+		                            <tr style="margin: 0px; padding: 0px;">
+		                                <td class="td-n1" style="border: 0px;margin: 0px; padding: 0px;">Cuota001</td>
+		                                <td class="td-n1" style="border: 0px;margin: 0px; padding: 0px;"><span t-esc="'%.2f'%(o.monto_neto_pagar)"/></td>
+		                                <td class="td-n1" style="border: 0px;margin: 0px; padding: 0px;"><span t-esc="o.invoice_date_due"/></td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+	                	</div>
+						<div class="col-xs-12  text-center" t-if="o.is_cpe" style="padding: 2mm">
+							<span t-field="o.sunat_qr_code" t-options="{'widget': 'image', 'width': 150,  'height': 150}" />
+						</div>
+						<!--<t t-else="">
+							<div class="qr-code" id="qr-code" style="display: flex; justify-content: center;"></div>
+						</t>-->
+						
+						<br />
+						<t t-if="o.is_cpe">
+							<b class="doc-sunat">Representación impresa de 
+							<t t-if="o.pe_invoice_code=='01'">Factura </t>
+							<t t-if="o.pe_invoice_code=='03'">Boleta de Venta </t>
+							<t t-if="o.pe_invoice_code=='07'">Nota de Crédito </t>
+							Electrónica consulte en <span t-field="company.website"/> </b>
+						</t>
+					</t>
+				</div>
+			</div>
+		</div>
+		
+	</template>
+	
+	<template id="report_invoice_ticket_pagos" inherit_id="solse_pe_cpe.cpe_ticket_body_print" primary="True">
+		<xpath expr="//tr[@id='tr_total']" position="after">
+			<t t-set="payments_vals" t-value="o.sudo().invoice_payments_widget and o.sudo().invoice_payments_widget['content'] or []"/>
+			<t t-foreach="payments_vals" t-as="payment_vals">
+				<tr>
+					<td>
+						<i class="oe_form_field text-right oe_payment_label">Pagado en <t t-esc="payment_vals['date']" t-options='{"widget": "date"}'/></i>
+					</td>
+					<td class="text-right">
+						<span t-esc="payment_vals['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+					</td>
+				</tr>
+			</t>
+			<t t-if="len(payments_vals) > 0">
+				<tr class="border-black">
+					<td><strong>Monto adeudado</strong></td>
+					<td class="text-right">
+						 <span t-field="o.amount_residual"/>
+					</td>
+				</tr>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="solse_pe_cpe.cpe_ticket_print" name="solse_pe_cpe.cpe_ticket_print">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+				<t t-call="solse_pe_cpe.report_invoice_ticket_pagos" t-lang="lang"/>
+			</t>
+		</t>
+	</template>
+
+	<report 
+		id="report_invoice_ticket"
+		string="Ticket"
+		model="account.move"
+		report_type="qweb-pdf"
+		name="solse_pe_cpe.cpe_ticket_print"
+	/>
+
+	<record id="paperformat_ticket" model="report.paperformat">
+		<field name="name">Ticket</field>
+		<field name="default" eval="True" />
+		<field name="format">custom</field>
+		<field name="page_height">230</field>
+		<field name="page_width">80</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">1</field>
+		<field name="margin_bottom">1</field>
+		<field name="margin_left">1</field>
+		<field name="margin_right">1</field>
+		<field name="header_line" eval="False" />
+		<field name="dpi">90</field>
+	</record>
+	<record id="report_invoice_ticket" model="ir.actions.report">
+		<field name="paperformat_id" ref="solse_pe_cpe.paperformat_ticket"/>
+	</record>
+
+</data>
+</odoo>

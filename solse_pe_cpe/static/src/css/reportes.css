@@ -1,0 +1,191 @@
+
+
+.defaulttable {
+  display: table;
+}
+.defaulttable thead {
+  display: table-header-group;
+}
+.defaulttable tbody {
+  display: table-row-group;
+}
+.defaulttable tfoot {
+  display: table-footer-group;
+}
+.defaulttable tbody>tr:hover,
+.defaulttable tbody>tr {
+  display: table-row;
+}
+.defaulttable tbody>tr:hover>td,
+.defaulttable tbody>tr>td {
+  display: table-cell;
+}
+.defaulttable,
+.defaulttable tbody,
+.defaulttable tbody>tr:hover,
+.defaulttable tbody>tr,
+.defaulttable tbody>tr:hover>td,
+.defaulttable tbody>tr>td,
+.defaulttable tbody>tr:hover>th,
+.defaulttable tbody>tr>th,
+.defaulttable thead>tr:hover>td,
+.defaulttable thead>tr>td,
+.defaulttable thead>tr:hover>th,
+.defaulttable thead>tr>th,
+.defaulttable tfoot>tr:hover>td,
+.defaulttable tfoot>tr>td,
+.defaulttable tfoot>tr:hover>th,
+.defaulttable tfoot>tr>th {
+  background: transparent;
+  border: 0px solid #000;
+  border-spacing: 0px;
+  border-collapse: separate;
+  empty-cells: show;
+  padding: 0px;
+  margin: 0px;
+  outline: 0px;
+  font-size: 100%;
+  color: #000;
+  vertical-align: top;
+  text-align: left;
+  font-family: sans-serif;
+  table-layout: auto;
+  caption-side: top;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+
+.factura {
+	color: #585656;
+}
+.datos_izquierda {
+	border: 0px;
+	color: red;
+	background-color: red;
+}
+.cpe-tabla {
+	padding: 0px 20px 0px 20px; 
+	margin:0; 
+	font-family: Arial,Helvetica, sans-serif; 
+	background:#fff; 
+	line-height:20px; 
+	border: 0px;
+	border-width: 0px;
+	font-size: 13px;
+	color: #585656;
+}
+.cpe-tabla table, .cpe-tabla caption, .cpe-tabla tbody, .cpe-tabla tfoot, 
+.cpe-tabla thead, .cpe-tabla tr, .cpe-tabla th, .cpe-tabla td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    color: #585656;
+}
+.cpe-tabla tr { 
+	padding: 0;
+	border-collapse:separate;
+    border-spacing: 0px;
+    border: 0px;
+	border-width: 0px;
+}
+.cpe-tabla span { 
+	padding: 0;
+	border-collapse:separate;
+    border-spacing: 0px;
+    border: 0px;
+	border-width: 0px;
+}
+
+.cpe-gris {
+	border-radius: 6px;
+	border: 1px solid #ddd !important;
+	background: #B2B2B2;
+	text-align: center;
+	color: #fff;
+}
+.cpe-gris strong{
+	text-align: center;
+	color: #fff;
+
+}
+
+.cpe-celeste {
+	border-radius: 6px;
+	border: 1px solid #ddd !important;
+	background: #00B9DE;
+	text-align: center;
+	color: #fff;
+}
+.cpe-celeste strong{
+	text-align: center;
+	color: #fff;
+}
+
+.detalles-precio {
+	font-size: 12px;
+}
+.texto-12 {
+	font-size: 12px;
+}
+.numeros-texto {
+	color: #5E6060;
+	font-size: 12px;
+	padding: 6px;
+}
+.footer-cpe {
+	background: blue;
+	height: 300px;
+	padding: 0;
+	margin: 0;
+}
+.nro-cpe {
+	text-align:center; 
+	border: 1px solid #ddd !important; 
+	border-radius: 6px; 
+	width: 90%; 
+	height: 114px;
+	font-size: 15px;
+	margin-left: auto;
+}
+.nro-cpe span {
+	font-size: 18px;
+	font-weight: bold
+}
+.empresa {
+	font-size: 15px;
+}
+.empresa strong {
+	font-size: 18px;
+}
+.linea-h1 {
+	width: 1px;
+	background: #ddd;
+}
+.border-n1 {
+	border: 1.5px solid #ddd !important; 
+	border-radius: 6px; 
+	margin-left: 3px;
+}
+.border-n2 {
+	border: 1.5px solid #00B9DE !important; 
+	border-radius: 6px; 
+	margin-left: 3px;
+	color: #00B9DE;
+}
+
+.td-n1 {
+	border: 0px;
+	text-align: center;
+	color: gray;
+	margin: 0px;
+	padding: 0px;
+}

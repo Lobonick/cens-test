@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="l10n_pe.city_pe_0701" model="res.city">
+        <field name="name">Prov. Const. del Callao</field>
+    </record>
+</odoo>

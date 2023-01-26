@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <data>
+
+    <record id="view_account_move_reversal" model="ir.ui.view">
+      <field name="name">account.invoice.refund.form</field>
+      <field name="model">account.move.reversal</field>
+      <field name="inherit_id" ref="account.view_account_move_reversal" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='reason']" position="after">
+          <field name="pe_credit_note_code" required="1" />
+        </xpath>
+        <xpath expr="//button[@name='reverse_moves']" position="attributes">
+          <attribute name="context">{'default_pe_credit_note_code': pe_credit_note_code}</attribute>
+        </xpath>
+        <field name="journal_id" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+        <xpath expr="//field[@name='date']" position="after">
+          <field name="fecha_nota_credito_proveedor" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}" />
+          <field name="payment_reference"  attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
+        </xpath>
+
+      </field>
+    </record>
+
+    <record id="view_account_debit_note" model="ir.ui.view">
+      <field name="name">account.invoice.debit.form</field>
+      <field name="model">account.debit.note</field>
+      <field name="inherit_id" ref="account_debit_note.view_account_debit_note" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='reason']" position="after">
+          <field name="pe_debit_note_code" required="1" />
+        </xpath>
+        <xpath expr="//button[@name='create_debit']" position="attributes">
+          <attribute name="context">{'default_pe_debit_note_code': pe_debit_note_code}</attribute>
+        </xpath>
+        <xpath expr="//field[@name='copy_lines']" position="attributes">
+          <attribute name="string">Copiar Lineas</attribute>
+        </xpath>
+        <xpath expr="//field[@name='date']" position="attributes">
+          <attribute name="string">Fecha de la nota de débito</attribute>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

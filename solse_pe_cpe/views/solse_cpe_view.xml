@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="view_pe_sunat_cpe_tree">
+			<field name="name">solse.cpe.tree</field>
+			<field name="model">solse.cpe</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name" />
+					<field name="type" />
+					<field name="date" />
+					<field name="estado_sunat" />
+					<field name="response" />
+					<field name="error_code" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_pe_sunat_cpe_from" model="ir.ui.view">
+			<field name="name">solse.cpe.form</field>
+			<field name="model">solse.cpe</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="action_draft" string="Borrador" states="generate,cancel" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						<button name="action_generate" string="Generar" states="draft" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						<button name="action_send" string="Enviar" states="generate" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						<button name="action_verify" string="Esperar" states="send" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" invisible="1"/>
+						<button name="action_done" string="Hecho" states="verify" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						<button name="action_document_status" string="Estado del documento" attrs="{'invisible': [('type','in',('rc', 'ra')),('state','not in', ('generate','send','verify'))]}" type="object" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						
+						<!--<button name="action_document_status_manual" string="Obtener estado manual"  type="object" />
+						<button name="action_recalcular_estados" string="Obtener de todos"  type="object" />-->
+
+						<button name="action_cancel" string="Cancelar" type="object" states="draft,generate,send,verify" groups="solse_pe_cpe.group_solse_pe_cpe_accountant" />
+						<field name="state" widget="statusbar" statusbar_visible="draft,generate,send" />
+					</header>
+					<sheet string="Comprobante de pago electrónico">
+						<h1 class="mt0">
+							<!--<field name="name" readonly="1" class="oe_inline" attrs="{'invisible': [('state','in',('draft','generate'))]}" />-->
+							<field name="name" class="oe_inline" />
+						</h1>
+						<group>
+							<group>
+								<field name="type" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="error_code" />
+								<field name="estado_sunat" />
+								<field name="response" />
+							</group>
+							<group>
+								<field name="date" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="send_date" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}" />
+								<field name="ticket" attrs="{'invisible': [('type','not in',('ra', 'rc'))]}" />
+								<field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
+							</group>
+						</group>
+						<notebook colspan="4">
+							<page string="Detalles del comprobante electrónico">
+								<group>
+									<group>
+										<field name="datas" filename="datas_fname" />
+										<field name="datas_fname" invisible="1" class="oe_inline oe_right" />
+										<field name="datas_sign" filename="datas_sign_fname" />
+										<field name="datas_sign_fname" invisible="1" class="oe_inline oe_right" />
+									</group>
+									<group>
+										<field name="datas_zip" filename="datas_zip_fname" />
+										<field name="datas_zip_fname" invisible="1" class="oe_inline oe_right" />
+										<field name="datas_response" filename="datas_response_fname" />
+										<field name="datas_response_fname" invisible="1" class="oe_inline oe_right" />
+									</group>
+								</group>
+								<div>
+									<!-- <label string="Digest value:" /> -->
+									<field name="digest" placeholder="Digest value..." />
+								</div>
+								<div>
+									<!-- <label string="Signature value:" /> -->
+								</div>
+								<div>
+									<field name="signature" placeholder="Signature value..." />
+								</div>
+								<div>
+									<!-- <label string="Additional notes:" /> -->
+								</div>
+								<div>
+									<field name="note" placeholder="Additional notes..." />
+								</div>
+							</page>
+							<page string="Detalles XML">
+								<div>
+									<field name="xml_document" placeholder="XML Document..." attrs="{'readonly': [('state','not in',('draft'))]}" />
+								</div>
+							</page>
+							<page string="Facturas" attrs="{'invisible': [('type','not in',('sync'))]}">
+								<field name="invoice_ids" attrs="{'readonly': [('state','not in',('draft'))]}"></field>
+							</page>
+							<page string="Facturas anuladas" attrs="{'invisible': [('type','not in',('ra'))]}">
+								<field name="voided_ids" attrs="{'readonly': [('state','not in',('draft'))]}"></field>
+							</page>
+							<page string="Resumenes" attrs="{'invisible': [('type','not in',('rc'))]}">
+								<field name="summary_ids" attrs="{'readonly': [('state','not in',('draft'))]}"></field>
+							</page>
+
+						</notebook>
+					</sheet>
+
+				</form>
+			</field>
+		</record>
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="action_pe_cpe">
+			<field name="name">Comprobantes electronicos</field>
+			<field name="res_model">solse.cpe</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('type', 'in', ['sync']), ('is_voided', '=', False)]</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_pe_cpe_resumen">
+			<field name="name">Resumen de boletas</field>
+			<field name="res_model">solse.cpe</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('type', 'in', ['rc']), ('is_voided', '=', False)]</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_pe_cpe_anulaciones">
+			<field name="name">Comunicaciones de baja</field>
+			<field name="res_model">solse.cpe</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">['|', ('type', 'in', ['ra']), ('is_voided', '=', True)]</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_pe_cpe_todos">
+			<field name="name">Todos</field>
+			<field name="res_model">solse.cpe</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+
+		<menuitem name="Documentos electronicos" id="pe_cpe_document_menu" parent="solse_pe_catalogo.solse_cpe_menu_root" sequence="1" />
+
+		<menuitem name="Comprobantes electronicos" id="pe_cpe_menu" parent="pe_cpe_document_menu" action="action_pe_cpe" sequence="1" />
+		<menuitem name="Resumen de boletas" id="pe_cpe_resumen_menu" parent="pe_cpe_document_menu" action="action_pe_cpe_resumen" sequence="2" />
+		<menuitem name="Comunicaciones de baja" id="pe_cpe_anulaciones_menu" parent="pe_cpe_document_menu" action="action_pe_cpe_anulaciones" sequence="3" />
+		<!--<menuitem name="Todos" id="pe_cpe_todos_menu" parent="pe_cpe_document_menu" action="action_pe_cpe_todos" sequence="3" />-->
+
+		<menuitem name="Servidores" id="pe_server_menu" parent="solse_pe_catalogo.pe_cpe_configuration_menu" action="solse_pe_cpe.action_pe_server" sequence="3" />
+
+		<menuitem name="Certificados" id="pe_certificate_menu" parent="solse_pe_catalogo.pe_cpe_configuration_menu" action="solse_pe_cpe.action_pe_certificate" sequence="4" />
+
+	</data>
+</odoo>
