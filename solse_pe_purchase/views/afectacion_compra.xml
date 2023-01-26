@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="afectacion_compra_form_view" model="ir.ui.view">
+            <field name="name">afectacion_compra.form</field>
+            <field name="model">solse.pe.afectacion.compra</field>
+            <field name="arch" type="xml">
+                <form string="Afectación compra">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="nro_col_importe_afectacion"/>
+                            <field name="impuesto_afect_ids">
+                                <tree editable="buttom">
+                                    <field name="impuesto_id" domain="[('type_tax_use', 'in', ['purchase'])]" required="True"/>
+                                    <field name="nro_col_importe_impuesto"/>
+                                </tree>
+                            </field>
+                            <field name="impuesto_defecto"/>
+                            
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="afectacion_compra_tree_view" model="ir.ui.view">
+            <field name="name">solse.pe.afectacion.compra.tree</field>
+            <field name="model">solse.pe.afectacion.compra</field>
+            <field name="arch" type="xml">
+                <tree string="Afectación compra">
+                    <field name="name"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="afectacion_compra_search_view" model="ir.ui.view">
+            <field name="name">solse.pe.afectacion.compra.search</field>
+            <field name="model">solse.pe.afectacion.compra</field>
+            <field name="arch" type="xml">
+                <search string="Afectación compra">
+                    <field name="name"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Activo" name="active" domain="[]"
+                                context="{'active':True}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="afectacion_compra_act_window" model="ir.actions.act_window">
+            <field name="name">Afectación compra</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">solse.pe.afectacion.compra</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Aquí puedes crear un afectacion compra.
+                </p>
+            </field>
+        </record>
+
+
+		<menuitem name="Afectación compra" id="pe_afectacion_compra_menu" parent="account.account_invoicing_menu" action="afectacion_compra_act_window" sequence="9" />
+
+    </data>
+</odoo>

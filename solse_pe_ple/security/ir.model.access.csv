@@ -1,0 +1,6 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_ple_report_templ,ple.report.templ,model_ple_report_templ,,1,1,1,1
+access_ple_report_05,ple.report.05,model_ple_report_05,,1,1,1,1
+access_ple_report_06,ple.report.06,model_ple_report_06,,1,1,1,1
+access_ple_report_08,ple.report.08,model_ple_report_08,,1,1,1,1
+access_ple_report_14,ple.report.14,model_ple_report_14,,1,1,1,1

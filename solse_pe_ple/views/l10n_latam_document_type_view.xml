@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_document_type_form" model="ir.ui.view">
+        <field name="name">l10n_latam.document.type.form.view.inherit.solse_pe_ple</field>
+        <field name="model">l10n_latam.document.type</field>
+        <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='internal_type']" position="after">
+                <field name="inc_ple_ventas" attrs="{'invisible': [('sub_type', '!=', 'sale')]}"/>
+                <field name="inc_ple_compras" attrs="{'invisible': [('sub_type', '!=', 'purchase')]}"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_solse_pe_afectacion_compra,solse.pe.afectacion.compra,model_solse_pe_afectacion_compra,,1,1,1,1
+access_solse_pe_impuesto_afectacion_compra,solse.pe.impuesto.afectacion.compra,model_solse_pe_impuesto_afectacion_compra,,1,1,1,1

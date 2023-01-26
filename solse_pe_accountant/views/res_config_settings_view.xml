@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">solse.account.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='analytic']"  position="after">
+                <h2>Configuración Peruana</h2>
+                <div class="row mt16 o_settings_container" id="pe_account">
+                    <div class="col-12 col-lg-6 o_setting_box" id="default_detraccion">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cuenta de detracción</span>
+                            <div class="text-muted">
+                                Cuenta de detracción por defecto
+                            </div>
+                            <div class="text-muted">
+                                <field name="cuenta_detracciones"/>
+                            </div>
+
+                            <div class="mt16">
+                                <b>Registrar entradas de diferencias de cambio en:</b>
+                            </div>
+                            <div class="row mt8">
+                                <label for="cuenta_detrac_ganancias" class="col-lg-3 o_light_label"/>
+                                <field name="cuenta_detrac_ganancias"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="cuenta_detrac_perdidas" class="col-lg-3 o_light_label"/>
+                                <field name="cuenta_detrac_perdidas"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box" id="default_detraccion">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cuenta de retención</span>
+                            <div class="text-muted">
+                                Cuenta de retención por defecto
+                            </div>
+                            <div class="text-muted">
+                                <field name="cuenta_retenciones"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</data>
+</odoo>

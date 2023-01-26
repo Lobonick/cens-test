@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <menuitem id="menu_ple_report"
+        name="Libros electrónicos (PLE)"
+        parent="solse_pe_catalogo.solse_cpe_menu_root"
+        sequence="10"/>
+
+    
+    <menuitem name="Estructura 05 - Libro Diario"
+        id="menu_action_ple_report_05"
+        parent="menu_ple_report"
+        action="action_ple_report_05"
+        sequence="5"/>
+    
+    <!--<menuitem name="Estructura 06 - Libro Mayor"
+        id="menu_action_ple_report_06"
+        parent="menu_ple_report"
+        action="action_ple_report_06"
+        sequence="6"/>-->
+    
+    <menuitem name="Estructura 08 - Registro de Compras"
+        id="menu_action_ple_report_08"
+        parent="menu_ple_report"
+        action="action_ple_report_08"
+        sequence="8"/>
+
+    
+    <menuitem name="Estructura 14 - Registro de Ventas e Ingresos"
+        id="menu_action_ple_report_14"
+        parent="menu_ple_report"
+        action="action_ple_report_14"
+        sequence="14"/>
+</data>
+</odoo>

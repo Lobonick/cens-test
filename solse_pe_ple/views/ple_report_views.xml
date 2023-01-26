@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_ple_report_templ_tree" model="ir.ui.view">
+            <field name="name">ple.report.templ.tree</field>
+            <field name="model">ple.report.templ</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="year" options="{'type':'number', 'step':1}"/>
+                    <field name="month" invisible="1"/>
+                    <field name="day" options="{'type':'number', 'step':1}" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <button name="update_report" string="Actualizar Datos" type="object" class="oe_highlight"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_ple_report_templ_form" model="ir.ui.view">
+            <field name="name">ple.report.templ.form</field>
+            <field name="model">ple.report.templ</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" invisible="1" />
+                        <button name="update_report" string="Actualizar Datos" type="object" attrs="{'invisible': [('state','=', 'declarado')]}"/>
+                        <button name="generate_report" string="Generar Estructuras" type="object" class="oe_highlight" attrs="{'invisible': [('state','=', 'declarado')]}"/>
+
+                        <button name="declarar_ple" string="Declarar PLE" type="object" attrs="{'invisible': [('state','=', 'declarado')]}"/>
+                        <button name="regresar_borrador" string="Regresar a Borrador" type="object" attrs="{'invisible': [('state','=', 'draft')]}" groups="solse_pe_cpe.group_solse_pe_cpe_accountant"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box"/>
+                        <group name="data_file_groups">
+                            <group name="data_group">
+                                <label for="year" name="year"/>
+                                <div class="o_row" name="year">
+                                    <field name="year" class="oe_edit_only" options="{'type':'number', 'step':1}"/>
+                                    <field name="year_char" class="oe_read_only"/>
+                                </div>
+                                <field name="month" invisible="1"/>
+                                <field name="day" options="{'type':'number', 'step':1}" invisible="1"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group name="file_group">
+                                <field name="date_generated" attrs="{'invisible': [('date_generated','=',False)]}"/>
+                                <field name="ple_txt_01_filename" invisible="1"/>
+                                <field name="ple_txt_01_binary" filename="ple_txt_01_filename" attrs="{'invisible': [('ple_txt_01_binary','=',False)]}"/>
+                                <field name="ple_xls_01_filename" invisible="1"/>
+                                <field name="ple_xls_01_binary" filename="ple_xls_01_filename" attrs="{'invisible': [('ple_xls_01_binary','=',False)]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="ple_txt_01" invisible="1">
+                                <group name="ple_txt_01">
+                                    <field name="ple_txt_01"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_ple_report_templ_search">
+            <field name="name">ple.report.templ.search</field>
+            <field name="model">ple.report.templ</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="company_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_date_year" string="Fecha" domain="[]" context="{'group_by':'date:year'}" invisible="1"/>
+                        <filter name="group_by_date_month" string="Fecha" domain="[]" context="{'group_by':'date:month'}" invisible="1"/>
+                        <filter name="group_by_date_day" string="Fecha" domain="[]" context="{'group_by':'date:day'}" invisible="1"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        
+        <record id="view_ple_report_05_tree" model="ir.ui.view">
+            <field name="name">ple.report.05.tree</field>
+            <field name="model">ple.report.05</field>
+            <field name="inherit_id" ref="view_ple_report_templ_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_05_form" model="ir.ui.view">
+            <field name="name">ple.report.05.form</field>
+            <field name="model">ple.report.05</field>
+            <field name="inherit_id" ref="view_ple_report_templ_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="eximido_presentar_caja_bancos" invisible="0" />
+                </xpath>
+                <xpath expr="//group[@name='file_group']" position="inside">
+                    <field name="ple_txt_03_filename" invisible="1"/>
+                    <field name="ple_txt_03_binary" filename="ple_txt_03_filename" attrs="{'invisible': [('ple_txt_03_binary','=',False)]}"/>
+                    <field name="ple_xls_03_filename" invisible="1"/>
+                    <field name="ple_xls_03_binary" filename="ple_xls_03_filename" attrs="{'invisible': [('ple_xls_03_binary','=',False)]}"/>
+                    <div class="o_td_label o_form_label"/>
+                    <div>
+                        <br/>
+                    </div>
+                    <field name="ple_txt_02_filename" invisible="1"/>
+                    <field name="ple_txt_02_binary" filename="ple_txt_02_filename" attrs="{'invisible': [('ple_txt_02_binary','=',False)]}"/>
+                    <field name="ple_xls_02_filename" invisible="1"/>
+                    <field name="ple_xls_02_binary" filename="ple_xls_02_filename" attrs="{'invisible': [('ple_xls_02_binary','=',False)]}"/>
+                    <field name="ple_txt_04_filename" invisible="1"/>
+                    <field name="ple_txt_04_binary" filename="ple_txt_04_filename" attrs="{'invisible': [('ple_txt_04_binary','=',False)]}"/>
+                    <field name="ple_xls_04_filename" invisible="1"/>
+                    <field name="ple_xls_04_binary" filename="ple_xls_04_filename" attrs="{'invisible': [('ple_xls_04_binary','=',False)]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="ple_txt_03" invisible="1">
+                        <group name="ple_txt_03">
+                            <field name="ple_txt_03"/>
+                        </group>
+                    </page>
+                    <page name="ple_txt_02" invisible="1">
+                        <group name="ple_txt_02">
+                            <field name="ple_txt_02"/>
+                        </group>
+                    </page>
+                    <page name="ple_txt_04" invisible="1">
+                        <group name="ple_txt_04">
+                            <field name="ple_txt_04"/>
+                        </group>
+                    </page>
+                    <page name="report_05_line" string="Líneas">
+                        <field name="line_ids" nolabel="1"/>
+                    </page>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_05_search" model="ir.ui.view">
+            <field name="name">ple.report.05.search</field>
+            <field name="model">ple.report.05</field>
+            <field name="inherit_id" ref="view_ple_report_templ_search"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//filter[@name='group_by_date_year']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="view_ple_report_06_tree" model="ir.ui.view">
+            <field name="name">ple.report.06.tree</field>
+            <field name="model">ple.report.06</field>
+            <field name="inherit_id" ref="view_ple_report_templ_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_06_form" model="ir.ui.view">
+            <field name="name">ple.report.06.form</field>
+            <field name="model">ple.report.06</field>
+            <field name="inherit_id" ref="view_ple_report_templ_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="report_06_line" string="Líneas">
+                        <field name="line_ids" nolabel="1"/>
+                    </page>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_06_search" model="ir.ui.view">
+            <field name="name">ple.report.06.search</field>
+            <field name="model">ple.report.06</field>
+            <field name="inherit_id" ref="view_ple_report_templ_search"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//filter[@name='group_by_date_year']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="view_ple_report_08_tree" model="ir.ui.view">
+            <field name="name">ple.report.08.tree</field>
+            <field name="model">ple.report.08</field>
+            <field name="inherit_id" ref="view_ple_report_templ_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_08_form" model="ir.ui.view">
+            <field name="name">ple.report.08.form</field>
+            <field name="model">ple.report.08</field>
+            <field name="inherit_id" ref="view_ple_report_templ_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="documento_compra_ids" widget="many2many_tags" invisible="0" />
+                </xpath>
+                <xpath expr="//group[@name='file_group']" position="inside">
+                    <field name="ple_txt_02_filename" invisible="1"/>
+                    <field name="ple_txt_02_binary" filename="ple_txt_02_filename" attrs="{'invisible': [('ple_txt_02_filename','=',False)]}"/>
+                    <field name="ple_xls_02_filename" invisible="1"/>
+                    <field name="ple_xls_02_binary" filename="ple_xls_02_filename" attrs="{'invisible': [('ple_xls_02_binary','=',False)]}"/>
+
+                    <field name="ple_txt_03_filename" invisible="1"/>
+                    <field name="ple_txt_03_binary" filename="ple_txt_03_filename" attrs="{'invisible': [('ple_txt_03_binary','=',False)]}"/>
+                    <field name="ple_xls_03_filename" invisible="1"/>
+                    <field name="ple_xls_03_binary" filename="ple_xls_03_filename" attrs="{'invisible': [('ple_xls_03_binary','=',False)]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="ple_txt_03" invisible="1">
+                        <group name="ple_txt_03">
+                            <field name="ple_txt_03"/>
+                        </group>
+                    </page>
+                    <page name="report_08_bill" string="Facturas">
+                        <field name="bill_ids" nolabel="1"/>
+                    </page>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_08_search" model="ir.ui.view">
+            <field name="name">ple.report.08.search</field>
+            <field name="model">ple.report.08</field>
+            <field name="inherit_id" ref="view_ple_report_templ_search"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//filter[@name='group_by_date_year']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="view_ple_report_14_tree" model="ir.ui.view">
+            <field name="name">ple.report.14.tree</field>
+            <field name="model">ple.report.14</field>
+            <field name="inherit_id" ref="view_ple_report_templ_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_14_form" model="ir.ui.view">
+            <field name="name">ple.report.14.form</field>
+            <field name="model">ple.report.14</field>
+            <field name="inherit_id" ref="view_ple_report_templ_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//field[@name='month']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="documento_compra_ids" widget="many2many_tags" invisible="0" />
+                </xpath>
+                <xpath expr="//group[@name='file_group']" position="inside">
+                    <field name="ple_txt_02_filename" invisible="1"/>
+                    <field name="ple_txt_02_binary" filename="ple_txt_02_filename" attrs="{'invisible': [('ple_txt_02_binary','=',False)]}"/>
+                    <field name="ple_xls_02_filename" invisible="1"/>
+                    <field name="ple_xls_02_binary" filename="ple_xls_02_filename" attrs="{'invisible': [('ple_xls_02_binary','=',False)]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="ple_txt_02" invisible="1">
+                        <group name="ple_txt_02">
+                            <field name="ple_txt_02"/>
+                        </group>
+                    </page>
+                    <page name="report_14_invoice" string="Comprobantes">
+                        <field name="invoice_ids" nolabel="1"/>
+                    </page>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        <record id="view_ple_report_14_search" model="ir.ui.view">
+            <field name="name">ple.report.14.search</field>
+            <field name="model">ple.report.14</field>
+            <field name="inherit_id" ref="view_ple_report_templ_search"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <data>
+                <xpath expr="//filter[@name='group_by_date_year']" position="attributes">
+                    <attribute name="invisible"/>
+                </xpath>
+                </data>
+            </field>
+        </record>
+        
+        
+        <record id="action_ple_report_05" model="ir.actions.act_window">
+            <field name="name">Libro Diario</field>
+            <field name="res_model">ple.report.05</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_group_by_date_year': 1}</field>
+        </record>
+        <record id="action_ple_report_06" model="ir.actions.act_window">
+            <field name="name">Libro Mayor</field>
+            <field name="res_model">ple.report.06</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_group_by_date_year': 1}</field>
+        </record>
+        <record id="action_ple_report_08" model="ir.actions.act_window">
+            <field name="name">Registro de Compras</field>
+            <field name="res_model">ple.report.08</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_group_by_date_year': 1}</field>
+        </record>
+        <record id="action_ple_report_14" model="ir.actions.act_window">
+            <field name="name">Registro de Ventas e Ingresos</field>
+            <field name="res_model">ple.report.14</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_group_by_date_year': 1}</field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_register_form" model="ir.ui.view">
+        <field name="name">account.payment.register.form</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="source_amount_currency"/>
+                <field name="mostrar_check" invisible="1"/>
+                <field name="es_detraccion_retencion" attrs="{'invisible': [('mostrar_check', '=', False)]}" />
+                <field name="tipo" attrs="{'invisible': [('mostrar_check', '=', False)]}" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_register_form_accountant" model="ir.ui.view">
+        <field name="name">account.payment.register.form.solse</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="solse_pe_cpe.view_account_payment_register_form_cpe"/>
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='transaction_number']" position="attributes">
+                <attribute name="attrs">{'required': [('es_detraccion_retencion', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    
+
+</odoo>

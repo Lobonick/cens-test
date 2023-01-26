@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_form" model="ir.ui.view">
+            <field name="name">account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//group[@name='group1']" position="inside">
+                    <field name="l10n_pe_payment_method_code"/>
+                </xpath>
+            </data>
+            </field>
+        </record>
+    </data>
+</odoo>

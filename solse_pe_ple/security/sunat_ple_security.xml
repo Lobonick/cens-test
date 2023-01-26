@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.rule" id="ple_report_templ_comp_rule">
+            <field name="name">PLE report tmpl multi-company</field>
+            <field name="model_id" ref="model_ple_report_templ"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id','=',False),
+                    ('company_id','in',company_ids),
+            ]</field>
+        </record>
+
+        
+        <record model="ir.rule" id="ple_report_05_comp_rule">
+            <field name="name">PLE Report 05 multi-company</field>
+            <field name="model_id" ref="model_ple_report_05"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id','=',False),
+                    ('company_id','in',company_ids),
+            ]</field>
+        </record>
+        
+        <record model="ir.rule" id="ple_report_06_comp_rule">
+            <field name="name">PLE Report 06 multi-company</field>
+            <field name="model_id" ref="model_ple_report_06"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id','=',False),
+                    ('company_id','in',company_ids),
+            ]</field>
+        </record>
+        
+        <record model="ir.rule" id="ple_report_08_comp_rule">
+            <field name="name">PLE Report 08 multi-company</field>
+            <field name="model_id" ref="model_ple_report_08"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id','=',False),
+                    ('company_id','in',company_ids),
+            ]</field>
+        </record>
+        
+
+        <record model="ir.rule" id="ple_report_14_comp_rule">
+            <field name="name">PLE Report 14 multi-company</field>
+            <field name="model_id" ref="model_ple_report_14"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[
+                '|',
+                    ('company_id','=',False),
+                    ('company_id','in',company_ids),
+            ]</field>
+        </record>
+    </data>
+</odoo>

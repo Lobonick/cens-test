@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_res_bank_form" model="ir.ui.view">
+            <field name="name">res.bank.form</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//group[@name='bank_details']" position="inside">
+                    <field name="l10n_pe_bank_code"/>
+                </xpath>
+            </data>
+            </field>
+        </record>
+    </data>
+</odoo>
