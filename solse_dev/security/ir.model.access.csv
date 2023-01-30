@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sdev_borrar,sdev.borrar.user,model_sdev_borrar,base.group_user,1,1,1,1
+access_sdev_herramientas,sdev.herramientas.user,model_sdev_herramientas,base.group_user,1,1,1,1
+access_sdev_facturas,sdev.facturas.user,model_sdev_facturas,base.group_user,1,1,1,1
+access_sdev_facturas_pago,sdev.facturas.pago.user,model_sdev_facturas_pago,base.group_user,1,1,1,1
+access_sdev_stock_quant,sdev.stock.quant.user,stock.model_stock_quant,base.group_user,1,1,1,1
+access_sdev_stock_valuation_layer,sdev.stock.valuation.layer.user,stock_account.model_stock_valuation_layer,base.group_user,1,1,1,1

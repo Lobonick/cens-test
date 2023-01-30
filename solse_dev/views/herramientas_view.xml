@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+	<record id="view_herramientas_form" model="ir.ui.view">
+		<field name="name">sdev.herramientas.form</field>
+		<field name="model">sdev.herramientas</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+			<form string="herramientas">
+			<sheet>
+				<group>
+					<group>
+						<button
+							name="llenar_direccion_usando_ubigeo"
+							type="object"
+							string="Completar direccion por ubigeo"
+						/>
+						<button
+							name="buscar_con_doc_number"
+							type="object"
+							string="Completar busqueda"
+						/>
+						<button
+							name="llenar_vat_con_doc_number"
+							type="object"
+							string="Llenar vat con doc_number"
+						/>
+						<button
+							name="llenar_doc_number_con_doc_vat"
+							type="object"
+							string="Llenar doc_number con vat"
+						/>
+						<button
+							name="aplicar_estados_importacion"
+							type="object"
+							string="Aplicar estados importación"
+						/>
+						<button
+							name="aplicar_pagos_factura"
+							type="object"
+							string="Aplicar pagos factura"
+						/>
+						<button
+							name="aplicar_notas_credito"
+							type="object"
+							string="Aplicar notas de credito"
+						/>
+						<button
+							name="aplicar_notas_credito_2"
+							type="object"
+							string="Aplicar notas de credito 2"
+						/>
+						<button
+							name="aplicar_tipo_operacion_facturas"
+							type="object"
+							string="Aplicar tipo operacion (facturas)"
+						/>
+						<button
+							name="completar_pdf_faltantes"
+							type="object"
+							string="Completar pdf's"
+						/>
+						<button
+							name="obtener_datos_cpe"
+							type="object"
+							string="Obtner datos cpe"
+						/>
+						<button
+							name="aplicar_estados_guias_importacion"
+							type="object"
+							string="Aplicar estados guias importación"
+						/>
+					</group>
+					<group>
+						<button
+							name="borrar_pagos"
+							type="object"
+							string="Borrar pagos"
+						/>
+						<button
+							name="borrar_pagos_pos"
+							type="object"
+							string="Borrar pagos del POS"
+						/>
+						<button
+							name="borrar_supplierinfo"
+							type="object"
+							string="Borrar Supplierinfo"
+						/>
+						<button
+							name="borrar_notas_credito"
+							type="object"
+							string="Borrar notas credito"
+						/>
+						<button
+							name="borrar_facturas"
+							type="object"
+							string="Borrar facturas"
+						/>
+						<button
+							name="borrar_cpe"
+							type="object"
+							string="Borrar facturas electronicas"
+						/>
+						<button
+							name="borrar_inventarios"
+							type="object"
+							string="Borrar inventarios"
+						/>
+						<button
+							name="borrar_ventas_pos"
+							type="object"
+							string="Borrar ventas de POS"
+						/>
+						<button
+							name="borrar_ventas"
+							type="object"
+							string="Borrar ventas"
+						/>
+						<button
+							name="borrar_compras"
+							type="object"
+							string="Borrar compras"
+						/>
+						<button
+							name="borrar_datos_crm"
+							type="object"
+							string="Borrar crm"
+						/>
+						<button
+							name="borrar_producciones"
+							type="object"
+							string="Borrar producciones"
+						/>
+					</group>
+				</group>
+				<group>
+					<field name="datas_zip" filename="datas_zip_fname" />
+					<field name="datas_zip_fname" invisible="1" class="oe_inline oe_right" />
+					<field name="utl_fecha_ejecucion" />
+					<field name="nombre_modelo_procesar" />
+				</group>
+				<notebook>
+					<page string="Borrado especial">
+						<group>
+							<button
+								name="borrar_datos_modelo"
+								type="object"
+								string="Borrar Datos Modelo"
+							/>
+						</group>
+					</page>
+				</notebook>
+			</sheet>
+			</form>
+		</field>
+	</record>
+	<record id="action_herramientas_form" model="ir.actions.act_window">
+		<field name="name">Herramientas (dev)</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">sdev.herramientas</field>
+		<field name="view_mode">form</field>
+		<field name="filter" eval="True"/>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+
+	<record id="action_facturas_e_form" model="ir.actions.act_window">
+		<field name="name">Facturas electronicas</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">sdev.facturas</field>
+		<field name="view_mode">tree,form</field>
+		<field name="filter" eval="True"/>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+
+	<record id="action_facturas_cpe_form" model="ir.actions.act_window">
+		<field name="name">Facturas electronicas</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">solse.cpe</field>
+		<field name="view_mode">tree,form</field>
+		<field name="filter" eval="True"/>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+
+	<record id="action_facturas_pagos_form" model="ir.actions.act_window">
+		<field name="name">Pagos</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">sdev.facturas.pago</field>
+		<field name="view_mode">tree,form</field>
+		<field name="filter" eval="True"/>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+	
+	<!-- Inicio -->
+	<menuitem name="Herramientas (dev)" id="sdev_menu_g" sequence="2"/>
+	<menuitem name="Herramientas (dev)" id="sdev_menu_herramientas" parent="sdev_menu_g" sequence="10" action="action_herramientas_form"/>
+
+	<menuitem name="Importar datos" id="sdev_menu_importar" parent="sdev_menu_g" sequence="20"/>
+	<menuitem name="Facturas electronicas" id="sdev_menu_facturas_e" parent="sdev_menu_importar" sequence="1" action="action_facturas_cpe_form"/>
+	<menuitem name="Pagos de Facturas" id="sdev_menu_fac_pagos" parent="sdev_menu_importar" sequence="2" action="action_facturas_pagos_form"/>
+
+</data>
+</odoo>
