@@ -43,8 +43,10 @@ TYPE2JOURNAL = {'out_invoice':'sale',
 
 def encodestring(datos):
 	respuesta = datos
+	if not respuesta:
+		return respuesta
 	if sys.version_info >= (3, 9):
-		respuesta = base64.encode(datos)
+		respuesta = base64.b64encode(datos)
 	else:
 		respuesta = base64.encodestring(datos)
 
