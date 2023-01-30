@@ -3,3 +3,6 @@
 
 # 10/11/2022
 * Se soluciona bug con el campo fecha de vencimiento en el libro de ventas
+
+# 30/01/2023
+* toma en cuenta signo negativo

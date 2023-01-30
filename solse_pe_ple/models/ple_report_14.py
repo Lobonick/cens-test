@@ -142,13 +142,16 @@ class PLEReport14(models.Model) :
 				else :
 					m_1.extend(['', '', '', ''])
 				#14-18
-				total_sin_impuestos = abs(move.amount_untaxed_signed)
-				total_impuestos = abs(move.amount_tax_signed)
+				#total_sin_impuestos = abs(move.amount_untaxed_signed)
+				total_sin_impuestos = move.amount_untaxed_signed
+				#total_impuestos = abs(move.amount_tax_signed)
+				total_impuestos = move.amount_tax_signed
 				m_1.extend([format(total_sin_impuestos, '.2f'), '', format(total_impuestos, '.2f'), '', ''])
 				#19-24
 				m_1.extend(['', '', '', '', '0.00', '']) #ICBP
 				#25-27
-				monto_total = abs(move.amount_total_signed)
+				#monto_total = abs(move.amount_total_signed)
+				monto_total = move.amount_total_signed
 				#m_1.extend([format(move.amount_total, '.2f'), '', ''])
 				fecha_busqueda = str(invoice_date)
 				currency_rate_id = [
