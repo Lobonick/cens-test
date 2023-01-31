@@ -26,6 +26,7 @@
 	'data': [
 		#'security/ir.model.access.csv',
 		'report/report_invoice.xml',
+		'report/report_invoice_p2.xml',
 	],
 	'assets': {
 		'web.report_assets_common': [
