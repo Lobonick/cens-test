@@ -442,7 +442,7 @@
 		</xpath>
 	</template>
 
-	<!--<template id="account.report_invoice">
+	<template id="account.report_invoice">
 		<t t-call="web.html_container">
 			<t t-foreach="docs" t-as="o">
 				<t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
@@ -458,7 +458,7 @@
 				<t t-call="solse_pe_cpe.report_invoice_advanced_main_duplicate" t-lang="lang"/>
 			</t>
 		</t>
-	</template>-->
+	</template>
 
 	<record id="solse_pe_cpe.paperformat_factura_n1" model="report.paperformat">
 		<field name="name">Factura (cpe)</field>
@@ -476,12 +476,12 @@
 		<field name="dpi">90</field>
 	</record>
 
-	<!--<record id="account.account_invoices" model="ir.actions.report">
+	<record id="account.account_invoices" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe.paperformat_factura_n1"/>
 	</record>
 	<record id="account.account_invoices_without_payment" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe.paperformat_factura_n1"/>
-	</record>-->
+	</record>
 
 </data>
 </odoo>

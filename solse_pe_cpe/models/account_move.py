@@ -675,6 +675,8 @@ class AccountMove(models.Model):
 				tmpf = BytesIO()
 				image.save(tmpf, 'png')
 				invoice_id.sunat_pdf417_code = encodestring(tmpf.getvalue())
+			else:
+				invoice_id.sunat_pdf417_code = False
 
 	@api.depends('name', 'l10n_latam_document_type_id.is_cpe', 'l10n_latam_document_type_id.code', 'amount_tax', 'amount_total', 'invoice_date', 'partner_id.doc_number', 'partner_id.doc_type', 'company_id.partner_id.doc_number')
 	def _compute_get_qr_code(self):
@@ -905,7 +907,10 @@ class AccountMove(models.Model):
 			invoice_id.pe_free_amount = total_1004
 			invoice_id.pe_export_amount = invoice_id.currency_id.round(pe_export_amount)
 			pe_amount_tax = sum(round_curr(line.price_total) for line in invoice_id.line_ids.filtered(lambda tax: tax.tax_line_id.l10n_pe_edi_tax_code in ('1000', '1016', '2000', '9999')))
-			invoice_id.pe_amount_tax = pe_amount_tax - invoice_id.pe_charge_total
+			sub_total = sum(round_curr(line.price_subtotal) for line in invoice_id.invoice_line_ids.filtered(lambda linea: linea.tax_ids.l10n_pe_edi_tax_code == '1000'))
+			price_total = sum(round_curr(line.price_total) for line in invoice_id.invoice_line_ids.filtered(lambda linea: linea.tax_ids.l10n_pe_edi_tax_code == '1000'))
+			igv = price_total - sub_total
+			invoice_id.pe_amount_tax = igv - invoice_id.pe_charge_total
 
 	@api.depends('currency_id')
 	def _get_additionals(self):

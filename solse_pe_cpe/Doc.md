@@ -43,3 +43,6 @@
 # 06/12/2022
 * Se soluciona bug al emitir notas de credito con items con cantidades mayores a 1.
 * Se soluciona bug al instalar el modulo usando libreria de python >= 3.9 (libreria base64)
+
+# 15/02/2023
+* Uso del campo pe_amount_tax para calcular el total de igv
