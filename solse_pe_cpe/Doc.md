@@ -46,3 +46,6 @@
 
 # 15/02/2023
 * Uso del campo pe_amount_tax para calcular el total de igv
+
+# 18/02/2023
+* Se mejora el uso de mas decimales dentro del sistema

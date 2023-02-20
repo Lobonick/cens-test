@@ -14,6 +14,10 @@ TYPE_TAX_USE = [
 	('none', 'None'),
 ]	
 
+def round_up(n, decimals=0):
+	multiplier = 10 ** decimals
+	return math.ceil(n * multiplier) / multiplier
+
 class AccountTaxGroup(models.Model):
 	_inherit = 'account.tax.group'
 
@@ -128,7 +132,9 @@ class AccountTax(models.Model):
 		#   Line 2: sum(taxes) = 10920 - 2176 = 8744
 		#   amount_tax = 4311 + 8744 = 13055
 		#   amount_total = 31865 + 13055 = 37920
-		base = currency.round(price_unit * quantity)
+		decimal_precision_obj = self.env['decimal.precision']
+		digits = decimal_precision_obj.precision_get('Product Price') or 2
+		base = round_up(price_unit * quantity, digits)
 
 		# For the computation of move lines, we could have a negative base value.
 		# In this case, compute all with positive values and negate them at the end.

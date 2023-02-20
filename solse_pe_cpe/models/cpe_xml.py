@@ -14,10 +14,19 @@ import dateutil.parser
 import pytz
 import json
 from dateutil.tz import gettz
+import math
 from . import constantes
 
 _logging = logging.getLogger(__name__)
 tz = pytz.timezone('America/Lima')
+
+def round_up(n, decimals=0):
+	multiplier = 10 ** decimals
+	return math.ceil(n * multiplier) / multiplier
+
+def round_down(n, decimals=0):
+	multiplier = 10 ** decimals
+	return math.floor(n * multiplier) / multiplier
 
 # clase generadora del xml
 class CPE:
@@ -90,7 +99,7 @@ class CPE:
 					if line.pe_invoice_code == '03':
 						etree.SubElement(prepaid, (tag.text), schemeID='03', schemeName='SUNAT:Identificador de Documentos Relacionados', schemeAgencyName='PE:SUNAT', nsmap={'cbc': tag.namespace}).text = line.name
 				tag = etree.QName(self._cbc, 'PaidAmount')
-				etree.SubElement(prepaid, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(line.amount_total, 2))
+				etree.SubElement(prepaid, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(line.amount_total, 2))
 				tag = etree.QName(self._cbc, 'InstructionID')
 				etree.SubElement(prepaid, (tag.text), schemeID=(invoice_id.partner_id.doc_type or '-'), nsmap={'cbc': tag.namespace}).text = line.partner_id.doc_number or '-'
 		except Exception as e:
@@ -440,10 +449,10 @@ class CPE:
 			tag = etree.QName(self._cbc, 'MultiplierFactorNumeric')
 			etree.SubElement(allowance_charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(invoice_id.porc_retencion / 100)
 			tag = etree.QName(self._cbc, 'Amount')
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.monto_retencion_base, 5))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.monto_retencion_base, 5))
 			tag = etree.QName(self._cbc, 'BaseAmount')
 			amount_total = invoice_id.amount_total
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 		elif invoice_id.pe_total_discount > 0.0:
 			tag = etree.QName(self._cac, 'AllowanceCharge')
 			allowance_charge = etree.SubElement((self._root), (tag.text), nsmap={'cac': tag.namespace})
@@ -452,12 +461,12 @@ class CPE:
 			tag = etree.QName(self._cbc, 'AllowanceChargeReasonCode')
 			etree.SubElement(allowance_charge, (tag.text), listAgencyName='PE:SUNAT', listName='Cargo/descuento', listURI='urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53', nsmap={'cbc': tag.namespace}).text = '02'
 			tag = etree.QName(self._cbc, 'MultiplierFactorNumeric')
-			etree.SubElement(allowance_charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round((invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax) / (invoice_id.amount_untaxed + (invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax)), 5))
+			etree.SubElement(allowance_charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round_up((invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax) / (invoice_id.amount_untaxed + (invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax)), 5))
 			tag = etree.QName(self._cbc, 'Amount')
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax, 2))
 			tag = etree.QName(self._cbc, 'BaseAmount')
 			amount_total = invoice_id.amount_untaxed + (invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax)
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 		elif self._obtener_comprobantes_anticipos(invoice_id):
 			tag = etree.QName(self._cac, 'AllowanceCharge')
 			allowance_charge = etree.SubElement((self._root), (tag.text), nsmap={'cac': tag.namespace})
@@ -478,9 +487,9 @@ class CPE:
 				monto_sub_total = monto_sub_total + amount_sub_total
 
 			tag = etree.QName(self._cbc, 'Amount')
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(monto_sub_total, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(monto_sub_total, 2))
 			tag = etree.QName(self._cbc, 'BaseAmount')
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(monto_sub_total, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(monto_sub_total, 2))
 
 	def _agregar_informacion_descuentos_globales_anterior(self, invoice_id):
 		if invoice_id.pe_total_discount > 0.0:
@@ -494,7 +503,7 @@ class CPE:
 			total_descuentos = (invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax)
 			factor = total_descuentos / (invoice_id.amount_untaxed + total_descuentos) 
 
-			factor = round(factor, 5)
+			factor = round_up(factor, 5)
 			"""
 			total descuentosss 
 			2022-06-01 03:47:29,921 15076 INFO ropa15 odoo.addons.solse_pe_cpe.models.cpe_xml: 0.03 
@@ -505,13 +514,13 @@ class CPE:
 			"""
 			etree.SubElement(allowance_charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(factor)
 			tag = etree.QName(self._cbc, 'Amount')
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax, 2))
 			tag = etree.QName(self._cbc, 'BaseAmount')
 			if len(factor_str) > 10 and "." in factor_str:
 				amount_total = invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax
 			else:
 				amount_total = invoice_id.amount_untaxed + (invoice_id.pe_total_discount - invoice_id.pe_total_discount_tax)
-			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(allowance_charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 
 	# (22, 23) Monto Total de Impuestos.
 	def _agregar_informacion_de_impuestos(self, invoice_id):
@@ -520,6 +529,8 @@ class CPE:
 		total = etree.SubElement((self._root), (tag.text), nsmap={'cac': tag.namespace})
 		tag = etree.QName(self._cbc, 'TaxAmount')
 		tax_amount_all = 0.0
+		decimal_precision_obj = invoice_id.env['decimal.precision']
+		digits = decimal_precision_obj.precision_get('Product Price') or 2
 		"""_logging.info('calcular total de impuestosss')
 		invoice_id._compute_invoice_taxes_by_group()
 		_logging.info('recalculando impuestos')"""
@@ -562,7 +573,7 @@ class CPE:
 				tax_amount_all += tax_amount
 				continue
 
-		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(tax_amount_all, 2))
+		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_amount_all, 2))
 		
 		# 23
 		for group_tax in amount_by_group:
@@ -584,9 +595,9 @@ class CPE:
 				tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 				if tax.l10n_pe_edi_tax_code != constantes.IMPUESTO['ICBPER']:
 					tag = etree.QName(self._cbc, 'TaxableAmount')
-					etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(base_tax_line, 2))
+					etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(base_tax_line, 2))
 				tag = etree.QName(self._cbc, 'TaxAmount')
-				etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_tax_line, 2))
+				etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_tax_line, 2))
 				tag = etree.QName(self._cac, 'TaxCategory')
 				category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 				tag = etree.QName(self._cac, 'TaxScheme')
@@ -606,6 +617,8 @@ class CPE:
 	
 	# (25) Total valor de venta - operaciones inafectas
 	def _agregar_informacion_de_impuestos_especiales(self, invoice_id, total):
+		decimal_precision_obj = invoice_id.env['decimal.precision']
+		digits = decimal_precision_obj.precision_get('Product Price') or 2
 		line_ids = invoice_id.invoice_line_ids.filtered(lambda ln: ln.pe_affectation_code not in ('10', '20', '30', '40'))
 		tax_ids = line_ids.mapped('tax_ids')
 		for tax in tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['gratuito'] and tax.pe_is_charge == False):
@@ -618,19 +631,19 @@ class CPE:
 					price_unit = line.price_unit
 				if tax.id in line.tax_ids.ids:
 					tax_values = tax.with_context(round=False).compute_all(price_unit, currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
-					base_amount += invoice_id.currency_id.round(tax_values['total_excluded'])
+					base_amount += invoice_id.currency_id.round_up(tax_values['total_excluded'])
 					if line.pe_affectation_code in ['11', '12', '13', '14', '15', '16', '17']:
-						tax_amount += invoice_id.currency_id.round(tax_values['taxes'][0]['amount'])
+						tax_amount += invoice_id.currency_id.round_up(tax_values['taxes'][0]['amount'])
 
 			tag = etree.QName(self._cac, 'TaxSubtotal')
 			tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cbc, 'TaxableAmount')
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(base_amount, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(base_amount, 2))
 			tag = etree.QName(self._cbc, 'TaxAmount')
 
 			#amount_tax_line = tax.amount
 			amount_tax_line = tax_amount
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_tax_line, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_tax_line, 2))
 			tag = etree.QName(self._cac, 'TaxCategory')
 			category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cac, 'TaxScheme')
@@ -650,16 +663,16 @@ class CPE:
 				price_unit = line.price_unit
 				if tax.id in line.tax_ids.ids:
 					tax_values = tax.with_context(round=False).compute_all(price_unit, currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
-					base_amount += invoice_id.currency_id.round(tax_values['total_excluded'])
-					tax_amount += invoice_id.currency_id.round(tax_values['taxes'][0]['amount'])
+					base_amount += invoice_id.currency_id.round_up(tax_values['total_excluded'])
+					tax_amount += invoice_id.currency_id.round_up(tax_values['taxes'][0]['amount'])
 
 			tag = etree.QName(self._cac, 'TaxSubtotal')
 			tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cbc, 'TaxableAmount')
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(base_amount + tax_amount, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(base_amount + tax_amount, 2))
 			tag = etree.QName(self._cbc, 'TaxAmount')
 			amount_tax_line = tax.amount
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = '0.00'#str(round(amount_tax_line, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = '0.00'#str(round_up(amount_tax_line, 2))
 			tag = etree.QName(self._cac, 'TaxCategory')
 			category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cac, 'TaxScheme')
@@ -674,6 +687,8 @@ class CPE:
 	def _agregar_informacion_de_impuestos_inafectos(self, invoice_id, total):
 		line_ids = invoice_id.invoice_line_ids.filtered(lambda ln: ln.pe_affectation_code in ('30'))
 		tax_ids = line_ids.mapped('tax_ids')
+		decimal_precision_obj = invoice_id.env['decimal.precision']
+		digits = decimal_precision_obj.precision_get('Product Price') or 2
 		for tax in tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['inafecto'] and tax.pe_is_charge == False):
 			base_amount = 0.0
 			tax_amount = 0.0
@@ -684,16 +699,16 @@ class CPE:
 					price_unit = line.price_unit
 				if tax.id in line.tax_ids.ids:
 					tax_values = tax.with_context(round=False).compute_all(price_unit, currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
-					base_amount += invoice_id.currency_id.round(tax_values['total_excluded'])
-					tax_amount += invoice_id.currency_id.round(tax_values['taxes'][0]['amount'])
+					base_amount += invoice_id.currency_id.round_up(tax_values['total_excluded'])
+					tax_amount += invoice_id.currency_id.round_up(tax_values['taxes'][0]['amount'])
 
 			tag = etree.QName(self._cac, 'TaxSubtotal')
 			tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cbc, 'TaxableAmount')
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(base_amount + tax_amount, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(base_amount + tax_amount, 2))
 			tag = etree.QName(self._cbc, 'TaxAmount')
 			amount_tax_line = tax.amount
-			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = '0.00'#str(round(amount_tax_line, 2))
+			etree.SubElement(tax_subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = '0.00'#str(round_up(amount_tax_line, 2))
 			tag = etree.QName(self._cac, 'TaxCategory')
 			category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cac, 'TaxScheme')
@@ -721,6 +736,8 @@ class CPE:
 		prepaid_amount = 0
 		prepaid_amount_untaxed = 0
 		tiene_anticipos = False
+		decimal_precision_obj = invoice_id.env['decimal.precision']
+		digits = decimal_precision_obj.precision_get('Product Price') or 2
 		try:
 			for line in self._obtener_comprobantes_anticipos(invoice_id):
 				tiene_anticipos = True
@@ -734,7 +751,7 @@ class CPE:
 
 		other = 0.0
 		for tax in invoice_id.line_ids.filtered(lambda t: t.tax_line_id.pe_is_charge == True):
-			other += invoice_id.currency_id.round(tax.price_total)
+			other += invoice_id.currency_id.round_up(tax.price_total)
 
 		amount_total = invoice_id.amount_total
 		amount_untaxed = invoice_id.amount_untaxed
@@ -747,9 +764,9 @@ class CPE:
 		"""
 		tag = etree.QName(self._cbc, 'LineExtensionAmount')
 		if tiene_anticipos:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(prepaid_amount_untaxed, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount_untaxed, 2))
 		else:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_untaxed, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_untaxed, 2))
 		# 31 Total Precio de Venta
 		"""
 		A través de este elemento se debe indicar el valor de venta total de la operación incluido
@@ -757,13 +774,13 @@ class CPE:
 		"""
 		tag = etree.QName(self._cbc, 'TaxInclusiveAmount')
 		if tiene_anticipos:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(prepaid_amount, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, digits))
 		else:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, digits))
 		
 		if tiene_anticipos:
 			tag = etree.QName(self._cbc, 'PrepaidAmount')
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(prepaid_amount, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, digits))
 
 		# 32 Total de Descuentos.
 		"""
@@ -775,7 +792,7 @@ class CPE:
 		 la sumatoria de los descuentos de línea (ítem) + descuentos globales
 		"""
 		#tag = etree.QName(self._cbc, 'AllowanceTotalAmount')
-		#etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_amount_discount, 2))
+		#etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_amount_discount, 2))
 
 		# 33 Monto total de otros cargos del comprobante
 		"""
@@ -786,7 +803,7 @@ class CPE:
 		"""
 		if not tiene_anticipos:
 			tag = etree.QName(self._cbc, 'ChargeTotalAmount')
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(other, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(other, digits))
 		
 		# 56 Monto de redondeo del importe total
 		total_redondeo = 0
@@ -795,7 +812,7 @@ class CPE:
 
 		if total_redondeo != 0:
 			tag = etree.QName(self._cbc, 'PayableRoundingAmount')
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(total_redondeo, 2))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(total_redondeo, digits))
 		
 		# 34 Importe total de la venta, cesión en uso o del servicio prestado
 		"""
@@ -805,7 +822,7 @@ class CPE:
 		"""
 		# Este debe ser el ultimo campo si o si
 		tag = etree.QName(self._cbc, 'PayableAmount')
-		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, digits))
 
 
 
@@ -814,8 +831,9 @@ class CPE:
 		cont = 1
 		decimal_precision_obj = invoice_id.env['decimal.precision']
 		digits = decimal_precision_obj.precision_get('Product Price') or 2
+		bases_json = {}
 		for line in invoice_id.invoice_line_ids.filtered(lambda ln: ln.price_subtotal >= 0 and ln.display_type in ['product']):
-			#price_unit = round(float_round(line.get_price_unit()['total_included'], digits), 10)
+			#price_unit = round_up(float_round(line.get_price_unit()['total_included'], digits), digits)
 			#price_unit = price_unit * (1 - (line.discount or 0.0) / 100.0)
 			price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
 			# 35
@@ -850,9 +868,13 @@ class CPE:
 				precio_incluido = datos_precio['total_excluded']
 			elif line.discount > 0 and line.discount < 100:
 				precio_incluido = line.price_subtotal
-			#extension_amount = str(round(float_round(line.get_price_unit()['total_included'], digits), 2))
-			extension_amount = str(round(float_round(precio_incluido, digits), 2))
-			#etree.SubElement(inv_line, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(line.price_subtotal, 2))
+			#extension_amount = str(round_up(float_round(line.get_price_unit()['total_included'], digits), 2))
+			primer_monto = float_round(precio_incluido, 2)
+			extension_amount = round_down(precio_incluido, 2)
+			bases_json[line.id] = extension_amount
+			extension_amount = str(extension_amount)
+
+			#etree.SubElement(inv_line, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(line.price_subtotal, 2))
 			etree.SubElement(inv_line, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = extension_amount
 			
 			# inicio 38
@@ -865,14 +887,14 @@ class CPE:
 				alternative = etree.SubElement(pricing, (tag.text), nsmap={'cac': tag.namespace})
 				tag = etree.QName(self._cbc, 'PriceAmount')
 				if price_unit_all == 0 or invoice_id.pe_invoice_code in ('07', '08'):
-					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(price_unit_all, digits), 10))
+					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(price_unit_all, digits), digits))
 				elif line.discount > 0:
-					precio_descuento = round(float_round(line.get_price_unit()['total_included'], digits), 10)
+					precio_descuento = round_up(float_round(line.get_price_unit()['total_included'], digits), digits)
 					precio_descuento = precio_descuento * (1 - (line.discount or 0.0) / 100.0)
-					#etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(price_unit, digits), 10))
-					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(precio_descuento, digits), 10))
+					#etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(price_unit, digits), digits))
+					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(precio_descuento, digits), digits))
 				else:
-					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.get_price_unit()['total_included'], digits), 10))
+					etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.get_price_unit()['total_included'], digits), digits))
 					
 				tag = etree.QName(self._cbc, 'PriceTypeCode')
 				"""if invoice_id.pe_invoice_code == '08':
@@ -888,7 +910,7 @@ class CPE:
 				tag = etree.QName(self._cac, 'AlternativeConditionPrice')
 				alternative = etree.SubElement(pricing, (tag.text), nsmap={'cac': tag.namespace})
 				tag = etree.QName(self._cbc, 'PriceAmount')
-				etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.get_price_unit()['total_included'], digits), 10))
+				etree.SubElement(alternative, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.get_price_unit()['total_included'], digits), digits))
 				tag = etree.QName(self._cbc, 'PriceTypeCode')
 				codigo_precio = '02'
 				if line.pe_affectation_code in ['30']:
@@ -907,13 +929,13 @@ class CPE:
 				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = '00'
 				# Es el porcentaje que le corresponde por el descuento aplicado. Para el caso de retención por ejemplo es 0.03.
 				tag = etree.QName(self._cbc, 'MultiplierFactorNumeric')
-				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round(line.discount / 100, 5))
+				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round_up(line.discount / 100, 5))
 				# Monto del descuento del ítem
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.discount == 100 and 0.0 or line.amount_discount, digits), 2))
+				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.discount == 100 and 0.0 or line.amount_discount, digits), 2))
 				# Monto sobre el cual se le debe aplicar el descuento del ítem
 				tag = etree.QName(self._cbc, 'BaseAmount')
-				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.price_subtotal + line.amount_discount, digits), 2))
+				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.price_subtotal + line.amount_discount, digits), 2))
 			
 			# 41
 			if line.pe_charge_amount > 0 and invoice_id.pe_invoice_code not in ('07', '08'):
@@ -925,11 +947,11 @@ class CPE:
 				tag = etree.QName(self._cbc, 'AllowanceChargeReasonCode')
 				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = '50'
 				tag = etree.QName(self._cbc, 'MultiplierFactorNumeric')
-				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round(line.pe_charge_amount / line.price_subtotal, 5))
+				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round_up(line.pe_charge_amount / line.price_subtotal, 5))
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.pe_charge_amount, digits), 2))
+				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.pe_charge_amount, digits), 2))
 				tag = etree.QName(self._cbc, 'BaseAmount')
-				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.price_subtotal + line.amount_discount, digits), 2))
+				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.price_subtotal + line.amount_discount, digits), 2))
 
 			# 42
 			tag = etree.QName(self._cac, 'TaxTotal')
@@ -946,11 +968,11 @@ class CPE:
 					tax_total_amount += tax_val.get('amount', 0.0)
 				tax_vals[tax_val.get('id')] = tax_val
 
-			digits_rounding_precision = invoice_id.currency_id.rounding
+			#digits = invoice_id.currency_id.rounding
 			if line.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['gratuito']):
 				#tax_total_values = line.tax_ids.with_context(round=False).filtered(lambda tax: tax.pe_tax_type.code != constantes.IMPUESTO['gratuito']).compute_all((line.price_unit), currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
 				tax_total_values = line.tax_ids.with_context(round=False).filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['gratuito']).compute_all((line.price_unit), currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
-				#etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_total_values.get('total_included', 0.0) - tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits_rounding_precision), 2))
+				#etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_total_values.get('total_included', 0.0) - tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits), 2))
 				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = "0.00"
 				tax_total_amount = 0.0
 				tax_vals = {}
@@ -962,7 +984,7 @@ class CPE:
 
 			elif line.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['inafecto']):
 				tax_total_values = line.tax_ids.with_context(round=False).filtered(lambda tax: tax.pe_tax_type.code != constantes.IMPUESTO['inafecto']).compute_all((line.price_unit), currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
-				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_total_values.get('total_included', 0.0) - tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits_rounding_precision), 2))
+				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_total_values.get('total_included', 0.0) - tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits), 2))
 				tax_total_amount = 0.0
 				tax_vals = {}
 				for tax_val in tax_total_values.get('taxes', []):
@@ -972,7 +994,7 @@ class CPE:
 					tax_vals[line.tax_ids.filtered(lambda tax: tax.pe_tax_type.code == constantes.IMPUESTO['inafecto'])[0].id] = tax_val
 			else:
 				tax_total_values = False
-				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(tax_total_amount, precision_rounding=digits_rounding_precision), 2))
+				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_total_amount, 2))
 			
 			for tax in line.tax_ids.filtered(lambda tax: tax.pe_is_charge == False):
 				if tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['gratuito']:
@@ -981,13 +1003,13 @@ class CPE:
 					tag = etree.QName(self._cbc, 'TaxableAmount')
 					
 					if line.pe_affectation_code in ['21', '31', '32', '33', '34', '35', '36']:
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits_rounding_precision), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits), 2))
 						tag = etree.QName(self._cbc, 'TaxAmount')
 						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = "0.00"
 					elif line.pe_affectation_code in ['11', '12', '13', '14', '15', '16', '17']:
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('base', 0.0)), precision_rounding=digits_rounding_precision), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('base', 0.0)), precision_rounding=digits), 2))
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits_rounding_precision), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
 
 					tag = etree.QName(self._cac, 'TaxCategory')
 					category = etree.SubElement(subtotal, (tag.text), nsmap={'cac': tag.namespace})
@@ -1015,10 +1037,10 @@ class CPE:
 					tag = etree.QName(self._cac, 'TaxSubtotal')
 					subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 					tag = etree.QName(self._cbc, 'TaxableAmount')
-					etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(line.price_subtotal, 2))
-					#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.get_price_unit()['total_included'], digits), 10))
+					etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(line.price_subtotal, 2))
+					#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.get_price_unit()['total_included'], digits), digits))
 					tag = etree.QName(self._cbc, 'TaxAmount')
-					etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits_rounding_precision), 2))
+					etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
 					tag = etree.QName(self._cac, 'TaxCategory')
 					category = etree.SubElement(subtotal, (tag.text), nsmap={'cac': tag.namespace})
 						
@@ -1048,7 +1070,7 @@ class CPE:
 						tag = etree.QName(self._cac, 'TaxSubtotal')
 						subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits_rounding_precision), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
 						tag = etree.QName(self._cbc, 'BaseUnitMeasure')
 						etree.SubElement(subtotal, (tag.text), unitCode='NIU', nsmap={'cbc': tag.namespace}).text = str(int(line.quantity))
 						tag = etree.QName(self._cac, 'TaxCategory')
@@ -1076,7 +1098,7 @@ class CPE:
 						tax_total_values = line.tax_ids.with_context(round=False).filtered(lambda tax: tax.pe_tax_type.code != constantes.IMPUESTO['gratuito']).compute_all((line.price_unit), currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
 						monto_incluido = tax_total_values.get('total_included', 0.0)
 						monto_excluido = tax_total_values.get('total_excluded', 0.0)
-						impuesto_aplicado = round(float_round((monto_incluido - monto_excluido), precision_rounding=digits_rounding_precision), 2)
+						impuesto_aplicado = round_up(float_round((monto_incluido - monto_excluido), precision_rounding=digits), 2)
 						
 						tag = etree.QName(self._cac, 'TaxSubtotal')
 						subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
@@ -1086,12 +1108,17 @@ class CPE:
 							sign = 1
 						else:
 							sign = -1
-						monto_base = sign * (line.amount_currency if len(currencies) == 1 else line.balance)
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((monto_base), precision_rounding=digits_rounding_precision), 2))
-						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('base', 0.0)), precision_rounding=digits_rounding_precision), 2))
-						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(monto_incluido, precision_rounding=digits_rounding_precision), 2))
+						monto_base_o = sign * (line.amount_currency if len(currencies) == 1 else line.balance)
+						monto_base = round_down(monto_base_o, 2)
+						if len(line.tax_ids) == 1 and monto_base != bases_json[line.id]:
+							monto_base = round_up(monto_base_o, 2)
+
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(monto_base)
+						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('base', 0.0)), precision_rounding=digits), 2))
+						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(monto_incluido, precision_rounding=digits), 2))
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits_rounding_precision), 2))
+						monto_impuestos = tax_vals.get(tax.id, {}).get('amount', 0.0)
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(monto_impuestos, 2))
 						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(impuesto_aplicado)
 						
 						
@@ -1177,16 +1204,17 @@ class CPE:
 			price = etree.SubElement(inv_line, (tag.text), nsmap={'cac': tag.namespace})
 			tag = etree.QName(self._cbc, 'PriceAmount')
 			if line.pe_affectation_code in ['30']:
-				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.get_price_unit_sunat()['total_excluded'], 6), 6))
+				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.get_price_unit_sunat()['total_excluded'], 6), 6))
 			elif line.pe_affectation_code in ['31', '32', '33', '34', '35', '36']:
 				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = "0.00"
 			elif price_unit_all == 0.0:
-				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(price_unit_all, 6))
+				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(price_unit_all, 6))
 			elif invoice_id.move_type in ['out_refund']:
-				extension_amount_refund = str(round(float_round(line.get_price_unit_sunat()['total_excluded'], 6), 6))
+				extension_amount_refund = str(round_up(float_round(line.get_price_unit_sunat()['total_excluded'], 6), 6))
 				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = extension_amount_refund
 			else:
-				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.get_price_unit_sunat()['total_excluded'], 6), 6))
+				precio_sunat = line.get_price_unit_sunat()['total_excluded']
+				etree.SubElement(price, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(precio_sunat, 6), 6))
 			
 
 	# Para la parte donde indica si la factura es de detraccion
@@ -1211,11 +1239,11 @@ class CPE:
 			etree.SubElement(payment_terms, (tag.text), schemeAgencyName='PE:SUNAT', schemeName='Codigo de detraccion', schemeURI='urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo54', nsmap={'cbc': tag.namespace}).text = invoice_id.detraccion_id
 			tag = etree.QName(self._cbc, 'Note')
 			amount_total = invoice_id.amount_total
-			etree.SubElement(payment_terms, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.monto_neto_pagar, 2))
+			etree.SubElement(payment_terms, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.monto_neto_pagar, 2))
 			tag = etree.QName(self._cbc, 'PaymentPercent')
 			etree.SubElement(payment_terms, (tag.text), nsmap={'cbc': tag.namespace}).text = str(invoice_id.porc_detraccion)
 			tag = etree.QName(self._cbc, 'Amount')
-			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.moneda_base.name), nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.monto_detraccion, 2))
+			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.moneda_base.name), nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.monto_detraccion, 2))
 
 	# Crear la parte del xml donde se asigna si es al "credito" o al "contado"
 	def _agregar_informacion_tipo_transaccion(self, invoice_id):
@@ -1234,7 +1262,7 @@ class CPE:
 			else:
 				amount_total = invoice_id.monto_neto_pagar_base
 
-			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 
 			cuotas_pago = invoice_id.obtener_cuotas_pago()
 			contador = 0
@@ -1247,7 +1275,7 @@ class CPE:
 				tag = etree.QName(self._cbc, 'PaymentMeansID')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = 'Cuota'+ ("{0:03d}".format(contador))
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(cuota['amount'], 2))
+				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(cuota['amount'], 2))
 				tag = etree.QName(self._cbc, 'PaymentDueDate')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = str(cuota['date_maturity'])
 		else:
@@ -1283,7 +1311,7 @@ class CPE:
 			else:
 				amount_total = factura_origen.monto_neto_pagar_base
 
-			etree.SubElement(payment_terms, (tag.text), currencyID=(factura_origen.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(amount_total, 2))
+			etree.SubElement(payment_terms, (tag.text), currencyID=(factura_origen.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 
 			cuotas_pago = factura_origen.obtener_cuotas_pago()
 			contador = 0
@@ -1296,7 +1324,7 @@ class CPE:
 				tag = etree.QName(self._cbc, 'PaymentMeansID')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = 'Cuota'+ ("{0:03d}".format(contador))
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(factura_origen.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(cuota['amount'], 2))
+				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(factura_origen.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(cuota['amount'], 2))
 				tag = etree.QName(self._cbc, 'PaymentDueDate')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = str(cuota['date_maturity'])
 		else:
@@ -1539,33 +1567,33 @@ class CPE:
 					else:
 						etree.SubElement(status, (tag.text), nsmap={'cbc': tag.namespace}).text = '1'
 					tag = etree.QName(self._sac, 'TotalAmount')
-					etree.SubElement(line, (tag.text), currencyID=currency_code, nsmap={'sac': tag.namespace}).text = str(round(total, 2))
+					etree.SubElement(line, (tag.text), currencyID=currency_code, nsmap={'sac': tag.namespace}).text = str(round_up(total, 2))
 					if invoice_id.pe_taxable_amount > 0:
 						tag = etree.QName(self._sac, 'BillingPayment')
 						billing = etree.SubElement(line, (tag.text), nsmap={'sac': tag.namespace})
 						tag = etree.QName(self._cbc, 'PaidAmount')
-						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_taxable_amount, 2))
+						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_taxable_amount, 2))
 						tag = etree.QName(self._cbc, 'InstructionID')
 						etree.SubElement(billing, (tag.text), nsmap={'cbc': tag.namespace}).text = '01'
 					if invoice_id.pe_exonerated_amount > 0:
 						tag = etree.QName(self._sac, 'BillingPayment')
 						billing = etree.SubElement(line, (tag.text), nsmap={'sac': tag.namespace})
 						tag = etree.QName(self._cbc, 'PaidAmount')
-						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_exonerated_amount, 2))
+						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_exonerated_amount, 2))
 						tag = etree.QName(self._cbc, 'InstructionID')
 						etree.SubElement(billing, (tag.text), nsmap={'cbc': tag.namespace}).text = '02'
 					if invoice_id.pe_unaffected_amount > 0:
 						tag = etree.QName(self._sac, 'BillingPayment')
 						billing = etree.SubElement(line, (tag.text), nsmap={'sac': tag.namespace})
 						tag = etree.QName(self._cbc, 'PaidAmount')
-						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_unaffected_amount, 2))
+						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_unaffected_amount, 2))
 						tag = etree.QName(self._cbc, 'InstructionID')
 						etree.SubElement(billing, (tag.text), nsmap={'cbc': tag.namespace}).text = '03'
 					if invoice_id.pe_free_amount > 0:
 						tag = etree.QName(self._sac, 'BillingPayment')
 						billing = etree.SubElement(line, (tag.text), nsmap={'sac': tag.namespace})
 						tag = etree.QName(self._cbc, 'PaidAmount')
-						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_free_amount, 2))
+						etree.SubElement(billing, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_free_amount, 2))
 						tag = etree.QName(self._cbc, 'InstructionID')
 						etree.SubElement(billing, (tag.text), nsmap={'cbc': tag.namespace}).text = '05'
 					if summary_allowcharge > 0:
@@ -1574,24 +1602,24 @@ class CPE:
 						tag = etree.QName(self._cbc, 'ChargeIndicator')
 						etree.SubElement(allowance, (tag.text), nsmap={'cbc': tag.namespace}).text = 'false'
 						tag = etree.QName(self._cbc, 'Amount')
-						etree.SubElement(allowance, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(summary_allowcharge, 2))
+						etree.SubElement(allowance, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(summary_allowcharge, 2))
 					if invoice_id.pe_charge_total > 0:
 						tag = etree.QName(self._cac, 'AllowanceCharge')
 						allowance = etree.SubElement(line, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cbc, 'ChargeIndicator')
 						etree.SubElement(allowance, (tag.text), nsmap={'cbc': tag.namespace}).text = 'true'
 						tag = etree.QName(self._cbc, 'Amount')
-						etree.SubElement(allowance, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(invoice_id.pe_charge_total, 2))
+						etree.SubElement(allowance, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(invoice_id.pe_charge_total, 2))
 				for tax in taxes:
 					if tax['tax_name'] == '9999' and tax['amount_tax_line'] > 0:
 						tag = etree.QName(self._cac, 'TaxTotal')
 						total = etree.SubElement(line, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+						etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 						tag = etree.QName(self._cac, 'TaxSubtotal')
 						tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cbc, 'TotalAmount')
-						etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+						etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 						tag = etree.QName(self._cac, 'TaxCategory')
 						category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cac, 'TaxScheme')
@@ -1607,11 +1635,11 @@ class CPE:
 							tag = etree.QName(self._cac, 'TaxTotal')
 							total = etree.SubElement(line, (tag.text), nsmap={'cac': tag.namespace})
 							tag = etree.QName(self._cbc, 'TaxAmount')
-							etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+							etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 							tag = etree.QName(self._cac, 'TaxSubtotal')
 							tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 							tag = etree.QName(self._cbc, 'TaxAmount')
-							etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+							etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 							tag = etree.QName(self._cac, 'TaxCategory')
 							category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 							tag = etree.QName(self._cac, 'TaxScheme')
@@ -1627,11 +1655,11 @@ class CPE:
 								tag = etree.QName(self._cac, 'TaxTotal')
 								total = etree.SubElement(line, (tag.text), nsmap={'cac': tag.namespace})
 								tag = etree.QName(self._cbc, 'TaxAmount')
-								etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+								etree.SubElement(total, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 								tag = etree.QName(self._cac, 'TaxSubtotal')
 								tax_subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 								tag = etree.QName(self._cbc, 'TaxAmount')
-								etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round(tax['amount_tax_line'], 2))
+								etree.SubElement(tax_subtotal, (tag.text), currencyID=currency_code, nsmap={'cbc': tag.namespace}).text = str(round_up(tax['amount_tax_line'], 2))
 								tag = etree.QName(self._cac, 'TaxCategory')
 								category = etree.SubElement(tax_subtotal, (tag.text), nsmap={'cac': tag.namespace})
 								tag = etree.QName(self._cac, 'TaxScheme')
