@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solse_pe_cpe_report,access_solse_pe_cpe_report,model_solse_pe_cpe_report,,1,1,1,1
+access_solse_pe_cpe_report_wizard,access_solse_pe_cpe_report_wizard,model_solse_pe_cpe_report_wizard,,1,1,1,1
+access_solse_pe_cpe_descargar,access_solse_pe_cpe_descargar,model_solse_pe_cpe_descargar,,1,1,1,1

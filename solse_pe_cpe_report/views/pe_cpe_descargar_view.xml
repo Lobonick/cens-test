@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="view_scpe_descargar_form" model="ir.ui.view">
+		<field name="name">Descargar CPE's</field>
+		<field name="model">solse.pe.cpe.descargar</field>
+		<field name="arch" type="xml">
+			<form string="Descargar">
+				<group>
+					<group>
+						<field name="datas_zip_fname" invisible="1" />
+						<field name="datas_zip" filename="datas_zip_fname" />
+					</group>
+					<group>
+						
+					</group>
+				</group>
+
+			</form>
+		</field>
+	</record>
+
+	<record id="action_scpe_descargar" model="ir.actions.act_window">
+		<field name="name">Descargar CPE's</field>
+		<field name="res_model">solse.pe.cpe.descargar</field>
+		<field name="view_mode">tree,form,search</field>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+				Haga clic para añadir un nuevo codigo.
+			</p>
+		</field>
+	</record>
+
+</odoo>

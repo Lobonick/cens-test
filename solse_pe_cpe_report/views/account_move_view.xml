@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_invoice_tree" model="ir.ui.view">
+        <field name="name">account_move_cpe_report_inherit_form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_date']" position="before">
+                <field name="partner_doc_type" optional="hide" />
+                <field name="partner_doc_number" optional="hide" />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

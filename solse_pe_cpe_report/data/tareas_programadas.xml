@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+    	<record id="tp_envio_cpe_reportes" model="ir.cron">
+            <field name="name">Envió de reporte - Comprobantes electrónicos</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="state">code</field>
+            <field name="model_id" ref="solse_pe_cpe_report.model_solse_pe_cpe_report" />
+            <field name="code">model.tp_enviar_reporte_comprobantes()</field>
+            <field name="active" eval="True" />
+        </record>
+    </data>
+
+    <data noupdate="0">
+        <record id="tp_envio_cpe_reportes_error" model="ir.cron">
+            <field name="name">Envió de reporte cpe's (Con Error)</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="state">code</field>
+            <field name="model_id" ref="solse_pe_cpe_report.model_solse_pe_cpe_report" />
+            <field name="code">model.tp_enviar_reporte_comprobantes_con_error()</field>
+            <field name="active" eval="True" />
+        </record>
+    </data>
+</odoo>

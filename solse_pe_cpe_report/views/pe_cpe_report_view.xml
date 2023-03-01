@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+	<record id="view_cpe_report_form" model="ir.ui.view">
+		<field name="name">solse.pe.cpe.report.form</field>
+		<field name="model">solse.pe.cpe.report</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+			<form string="Reporte">
+			<sheet>
+				<group>
+					<group>
+						<field name="company_id" />
+						<field name="name" />
+						<field name="fecha_inicio" />
+						<field name="fecha_fin" />
+						<field name="partner_id" widget="many2many_tags"/>
+					</group>
+					<group>
+						<button
+							name="generate_report"
+							type="object"
+							string="Generar reporte"
+						/>
+						<button
+							name="enviar_mensaje"
+							type="object"
+							string="Enviar por Correo"
+						/>
+					</group>
+				</group>
+				<group>
+					<field name="reporte_nombre" />
+					<field name="reporte_binary" />
+
+					<field name="reporte_sunat_nombre" />
+					<field name="reporte_sunat_binary" />
+				</group>
+			</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_cpe_report_tree" model="ir.ui.view">
+		<field name="name">solse.pe.cpe.report.tree</field>
+		<field name="model">solse.pe.cpe.report</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+			<tree string="Reporte">
+				<field name="name" />
+				<field name="fecha_inicio" />
+				<field name="fecha_fin" />
+			</tree>
+		</field>
+	</record>
+
+
+
+
+	<record id="action_cpe_reporte_form" model="ir.actions.act_window">
+		<field name="name">Reporte CPE</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">solse.pe.cpe.report</field>
+		<field name="view_mode">tree,form</field>
+		<field name="filter" eval="True"/>
+		<field name="help" type="html">
+		  <p class="o_view_nocontent_smiling_face">
+			
+		  </p><p>
+			
+		  </p>
+		</field>
+	</record>
+
+
+
+	<record model="ir.ui.view" id="view_pe_server_from">
+		<field name="name">cpe.server.form.inherit</field>
+		<field name="model">cpe.server</field>
+		<field name="inherit_id" ref="solse_pe_cpe.view_pe_server_from" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='active']" position="after">
+				<field name="partner_ids" widget="many2many_tags"/>
+				<field name="partner_errror_ids" widget="many2many_tags"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="view_move_form">
+		<field name="name">account.move.form.inherit.report</field>
+		<field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='to_check']" position="before">
+				<field name="no_enviar_rnoaceptados" />
+			</xpath>
+		</field>
+	</record>
+
+	<!-- Inicio 
+	<menuitem name="Reportes CPE" id="cpe_reporte_menu_g"/> -->
+	<menuitem name="Reporte CPE" id="cpe_reporte_facturas" parent="account.menu_finance_receivables" sequence="100" action="action_cpe_reporte_form"/>
+</data>
+</odoo>
