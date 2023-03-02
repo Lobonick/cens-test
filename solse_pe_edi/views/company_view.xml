@@ -13,7 +13,7 @@
               <field name="cuenta_detraccion" />
               <field name="monto_detraccion" />
               <field name="agente_retencion" />
-              <field name="por_retencion" attrs="{'invisible': [('agente_retencion', '=', False)]}" />
+              <field name="por_retencion"/>
             </group>
           </group>
         </xpath>

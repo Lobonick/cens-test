@@ -36,6 +36,7 @@
 		'views/accoun_move_view.xml',
 		'views/product_view.xml',
 		'views/res_country_data.xml',
+		'views/res_partner_view.xml',
 	],
 	'qweb': [],
 	'installable': True,

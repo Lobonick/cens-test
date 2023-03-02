@@ -223,12 +223,14 @@ class AccountMove(models.Model):
 			}
 			return datos_rpt
 
-		if self.partner_id.buen_contribuyente:
+		if self.partner_id.buen_contribuyente and self.move_type in ['in_invoice', 'in_refund']:
 			return datos_rpt
 
-		monto_retencion = abs(self.amount_total_signed) * (self.porc_retencion / 100.0)
+		
+		porc_retencion = self.porc_retencion		
+		monto_retencion = abs(self.amount_total_signed) * (porc_retencion / 100.0)
 		monto_retencion = self.redondear_decimales_retencion(monto_retencion)
-		monto_retencion_base = abs(self.amount_total) * (self.porc_retencion / 100.0)
+		monto_retencion_base = abs(self.amount_total) * (porc_retencion / 100.0)
 		#monto_retencion_base = round(monto_retencion_base)
 		if self.currency_id.id == self.company_id.currency_id.id:
 			monto_retencion_base = self.redondear_decimales_retencion(monto_retencion_base)
@@ -243,7 +245,7 @@ class AccountMove(models.Model):
 				"monto_retencion": monto_retencion,
 				"monto_retencion_base": monto_retencion_base,
 			}
-		elif self.move_type in ['out_invoice', 'out_refund'] and (self.tiene_retencion or forzar_retencion):
+		elif self.move_type in ['out_invoice', 'out_refund'] and (self.tiene_retencion or forzar_retencion or self.partner_id.es_agente_retencion):
 			datos_rpt = {
 				"tiene_detraccion": False,
 				"detraccion_id": False,

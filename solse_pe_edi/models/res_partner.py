@@ -57,6 +57,8 @@ class Pertner(models.Model):
 	numero_temp = fields.Char("Número doc relacionado", related="parent_id.doc_number", store=True)
 	nombre_temp = fields.Char("Nombre relacionado", related="parent_id.name", store=True)
 
+	es_agente_retencion = fields.Boolean('Es agente de retención')
+
 	"""@api.depends('name')
 	def name_get(self):
 		result = []
