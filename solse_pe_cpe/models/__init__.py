@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import client_soap
 from . import account_tax
 from . import constantes
 from . import cpe_certificate

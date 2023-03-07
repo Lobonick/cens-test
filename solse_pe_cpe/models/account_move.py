@@ -741,7 +741,9 @@ class AccountMove(models.Model):
 			if line.display_type not in ['product']:
 				continue
 			if line.display_type in ['product'] and (line.quantity == 0.0 or line.price_unit == 0.0):
-				if line.move_type != 'out_refund' and line.move_id.pe_credit_note_code != '13':
+				es_icbper = True if len(line.tax_ids) == 1 and line.tax_ids[0].l10n_pe_edi_tax_code in ['7152'] else False
+				nota_credito_especial = True if line.move_type != 'out_refund' and line.move_id.pe_credit_note_code != '13' else False
+				if not es_icbper or not nota_credito_especial:
 					raise UserError('La cantidad o precio del producto %s debe ser mayor a 0.0' % line.name)
 			if not line.tax_ids:
 				if line.quantity > 0:
@@ -775,7 +777,8 @@ class AccountMove(models.Model):
 			if not doc_number or doc_number == '-':
 				doc_number = self.partner_id.vat or self.partner_id.parent_id.vat or '-'
 			if doc_type not in ['6', '0'] or not doc_number:
-				raise UserError(' El numero de documento de identidad del receptor debe ser RUC \nTipo: %s \nNumero de documento: %s' % (
+				if not (self.pe_sunat_transaction51 and self.pe_sunat_transaction51[:2] == '02' and doc_type in ['7', '4']):
+					raise UserError(' El numero de documento de identidad del receptor debe ser RUC \nTipo: %s \nNumero de documento: %s' % (
 				 doc_type, doc_number))
 			if doc_type == '6':
 				partner_id = self.partner_id or self.partner_id.parent_id
@@ -874,6 +877,14 @@ class AccountMove(models.Model):
 	def _get_pe_error_code(self):
 		return self.env['pe.datas'].get_selection('PE.CPE.ERROR')
 
+	def tiene_codigo(self, linea, codigo):
+		for impuesto in linea.tax_ids:
+			if impuesto.l10n_pe_edi_tax_code == codigo:
+				return True
+
+		return False
+
+
 	@api.depends('currency_id', 'partner_id', 'invoice_line_ids', 'invoice_line_ids.tax_ids', 'invoice_line_ids.quantity', 'invoice_line_ids.product_id', 'invoice_line_ids.discount')
 	def _pe_compute_operations(self):
 		for invoice_id in self:
@@ -907,8 +918,8 @@ class AccountMove(models.Model):
 			invoice_id.pe_free_amount = total_1004
 			invoice_id.pe_export_amount = invoice_id.currency_id.round(pe_export_amount)
 			pe_amount_tax = sum(round_curr(line.price_total) for line in invoice_id.line_ids.filtered(lambda tax: tax.tax_line_id.l10n_pe_edi_tax_code in ('1000', '1016', '2000', '9999')))
-			sub_total = sum(round_curr(line.price_subtotal) for line in invoice_id.invoice_line_ids.filtered(lambda linea: linea.tax_ids.l10n_pe_edi_tax_code == '1000'))
-			price_total = sum(round_curr(line.price_total) for line in invoice_id.invoice_line_ids.filtered(lambda linea: linea.tax_ids.l10n_pe_edi_tax_code == '1000'))
+			sub_total = sum(round_curr(line.price_subtotal) for line in invoice_id.invoice_line_ids.filtered(lambda linea: invoice_id.tiene_codigo(linea, '1000')))
+			price_total = sum(round_curr(line.price_total) for line in invoice_id.invoice_line_ids.filtered(lambda linea: invoice_id.tiene_codigo(linea, '1000')))
 			igv = price_total - sub_total
 			invoice_id.pe_amount_tax = igv - invoice_id.pe_charge_total
 

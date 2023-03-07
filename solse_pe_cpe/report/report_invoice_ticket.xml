@@ -316,7 +316,7 @@
 		</t>
 	</template>
 
-	<report 
+	<!--<report 
 		id="report_invoice_ticket"
 		string="Ticket"
 		model="account.move"
@@ -340,7 +340,7 @@
 	</record>
 	<record id="report_invoice_ticket" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe.paperformat_ticket"/>
-	</record>
+	</record>-->
 
 </data>
 </odoo>

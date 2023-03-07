@@ -822,7 +822,7 @@ class CPE:
 		"""
 		# Este debe ser el ultimo campo si o si
 		tag = etree.QName(self._cbc, 'PayableAmount')
-		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, digits))
+		etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 
 
 
@@ -996,6 +996,7 @@ class CPE:
 				tax_total_values = False
 				etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_total_amount, 2))
 			
+			digits_rounding_precision = invoice_id.currency_id.rounding
 			for tax in line.tax_ids.filtered(lambda tax: tax.pe_is_charge == False):
 				if tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['gratuito']:
 					tag = etree.QName(self._cac, 'TaxSubtotal')
@@ -1070,7 +1071,8 @@ class CPE:
 						tag = etree.QName(self._cac, 'TaxSubtotal')
 						subtotal = etree.SubElement(total, (tag.text), nsmap={'cac': tag.namespace})
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
+						#etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits_rounding_precision), 2))
 						tag = etree.QName(self._cbc, 'BaseUnitMeasure')
 						etree.SubElement(subtotal, (tag.text), unitCode='NIU', nsmap={'cbc': tag.namespace}).text = str(int(line.quantity))
 						tag = etree.QName(self._cac, 'TaxCategory')

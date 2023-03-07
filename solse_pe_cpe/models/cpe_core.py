@@ -4,7 +4,7 @@ from lxml import etree
 from io import StringIO, BytesIO
 import xmlsec
 from collections import OrderedDict
-from pysimplesoap.client import SoapClient, SoapFault, fetch
+from pysimplesoap.client import SoapFault, fetch
 import base64, zipfile
 from datetime import date, datetime, timedelta
 from pysimplesoap.simplexml import SimpleXMLElement
@@ -15,6 +15,8 @@ from binascii import hexlify
 import dateutil.parser
 import pytz
 from dateutil.tz import gettz
+from .client_soap import SoapClientLocal as SoapClient
+#from pysimplesoap.client import SoapClient
 
 _logging = logging.getLogger(__name__)
 
@@ -135,11 +137,11 @@ class Client(object):
 	def _connect(self):
 		if not self._type:
 			cache = '%s/sunat' % gettempdir()
-			self._client = SoapClient(wsdl=(self._url), cache=None, ns='tzmed', soap_ns='soapenv', soap_server='jbossas6', trace=True)
+			self._client = SoapClient(cacert=None, wsdl=(self._url), cache=None, ns='tzmed', soap_ns='soapenv', soap_server='jbossas6', trace=True)
 			self._client['wsse:Security'] = {'wsse:UsernameToken': {'wsse:Username':self._username,  'wsse:Password':self._password}}
 		else:
 			#self._client = SoapClient(location=(self._location), action=(self._soapaction), namespace=(self._namespace))
-			self._client = SoapClient(location=(self._location), namespace=(self._namespace))
+			self._client = SoapClient(cacert=None, location=(self._location), namespace=(self._namespace))
 
 	def _call_ws(self, xml):
 		xml_response = self._client.send(self._method, xml.encode('utf-8'))
@@ -184,6 +186,8 @@ class Client(object):
 			xml = self._soapenv % (self._username, self._password, self._xml_method)
 			return self._call_ws(xml)
 		except Exception as e:
+			_logging.info("horrrorrrrrrrrrrrrrrrrrrrrrrr ")
+			_logging.info(e)
 			return (False, {})
 
 	def send_bill(self, filename, content_file):

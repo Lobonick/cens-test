@@ -49,3 +49,12 @@
 
 # 18/02/2023
 * Se mejora el uso de mas decimales dentro del sistema
+
+# 22/02/2023
+* Se soluciona bug que se tenia para algunos casos con el uso de impuesto a la bolsa
+
+# 28/02/2023
+* Se mejora validacion para facturas de exportacion
+
+# 07/03/2023
+* Se soluciona bug con el campo PayableAmount del xml cuando se usa mas de dos decimales (actualizacion reciente)
