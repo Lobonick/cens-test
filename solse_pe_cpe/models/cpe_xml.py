@@ -774,13 +774,13 @@ class CPE:
 		"""
 		tag = etree.QName(self._cbc, 'TaxInclusiveAmount')
 		if tiene_anticipos:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, digits))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, 2))
 		else:
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, digits))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
 		
 		if tiene_anticipos:
 			tag = etree.QName(self._cbc, 'PrepaidAmount')
-			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, digits))
+			etree.SubElement(total, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(prepaid_amount, 2))
 
 		# 32 Total de Descuentos.
 		"""
