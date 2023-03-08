@@ -1277,7 +1277,7 @@ class CPE:
 				tag = etree.QName(self._cbc, 'PaymentMeansID')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = 'Cuota'+ ("{0:03d}".format(contador))
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(cuota['amount'], 2))
+				etree.SubElement(payment_terms_cuota, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = "%.2f" % cuota['amount'] #str(round_up(cuota['amount'], 2)) #%.2f'%(cuota['amount'])
 				tag = etree.QName(self._cbc, 'PaymentDueDate')
 				etree.SubElement(payment_terms_cuota, (tag.text), nsmap={'cbc': tag.namespace}).text = str(cuota['date_maturity'])
 		else:
