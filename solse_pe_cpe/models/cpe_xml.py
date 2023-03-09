@@ -1264,7 +1264,7 @@ class CPE:
 			else:
 				amount_total = invoice_id.monto_neto_pagar_base
 
-			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(amount_total, 2))
+			etree.SubElement(payment_terms, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text =  "%.2f" % amount_total # str(round_up(amount_total, 2))
 
 			cuotas_pago = invoice_id.obtener_cuotas_pago()
 			contador = 0
