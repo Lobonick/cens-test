@@ -66,7 +66,7 @@ class ReportesFinancieros(models.TransientModel):
 		if self.fecha_fin:
 			context['date_to'] = self.fecha_fin
 			
-		
+		context['state'] = 'posted'
 		
 		if accounts:
 			tables, where_clause, where_params = (
@@ -551,6 +551,10 @@ class ReportesFinancieros(models.TransientModel):
 		CAPITAL = capital[0]
 		capital_detalles_array = capital[1]
 
+		# ganancias
+		datos_ganancias = self.obtener_reporte_perdidas_ganancias()
+		resultado_ejercicio = datos_ganancias['utilidad_antes_impuestos']
+
 		caja_y_bancos = abs(CUECORR['balance']) + abs(FFTRAN['balance'])
 		total_activo_corriente = caja_y_bancos
 
@@ -588,10 +592,13 @@ class ReportesFinancieros(models.TransientModel):
 
 		total_pasivo_corriente = abs(total_pasivo_corriente)
 		total_pasivo_no_corriente = abs(total_pasivo_no_corriente)
-		total_pasivo = total_pasivo_corriente + total_pasivo_no_corriente
-		diferencia_activo_pasivo = total_activo - total_pasivo
+		
+		total_patrimonio = resultado_ejercicio
 		if 'balance' in CAPITAL:
-			total_pasivo += CAPITAL['balance']
+			total_patrimonio += CAPITAL['balance']
+
+		total_pasivo = total_pasivo_corriente + total_pasivo_no_corriente + total_patrimonio
+		diferencia_activo_pasivo = total_activo - total_pasivo
 
 		titulo = "ESTADO DE SITUACION FINANCIERA"
 
@@ -630,6 +637,8 @@ class ReportesFinancieros(models.TransientModel):
 			"capital": CAPITAL,
 			"capital_detalles": capital_detalles_array,
 			"total_pasivo": total_pasivo,
+			"resultado_ejercicio": resultado_ejercicio,
+			"total_patrimonio": total_patrimonio,
 			"diferencia_activo_pasivo": diferencia_activo_pasivo,
 		}
 	

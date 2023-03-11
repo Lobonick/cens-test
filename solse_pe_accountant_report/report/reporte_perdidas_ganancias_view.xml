@@ -78,7 +78,7 @@
 	                                	
 	                                </th>
 	                                <th></th>
-	                                <th><t t-esc="abs(ingresos['balance'])" /></th>
+	                                <th><t t-esc="'%.2f'%(abs(ingresos['balance']))" /></th>
 	                            </tr>
 
 		                        <t t-foreach="lineas_ingresos" t-as="linea">

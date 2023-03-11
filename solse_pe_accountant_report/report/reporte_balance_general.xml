@@ -766,7 +766,7 @@
 										<th>
 											<div class="numero">
 												<t t-if="'balance' in capital">
-													<t t-esc="'%.2f'%(abs(capital['balance']))"/>
+													<t t-esc="'%.2f'%(total_patrimonio)"/>
 												</t>
 												<t t-else="">
 													00.00
@@ -793,7 +793,7 @@
 											</td>
 										</tr>
 									</t>
-									<!--<tr>
+									<tr>
 										<td>
 											<div style="margin-left: 15px;">
 												RESULTADO DEL EJERCICIO
@@ -801,13 +801,13 @@
 										</td>
 										<th>
 											<div class="numero">
-												211.00
+												<t t-esc="'%.2f'%(resultado_ejercicio)"/>
 											</div>
 										</th>
 										<td>
 											
 										</td>
-									</tr>-->
+									</tr>
 									<tr>
 										<td colspan="3" class="espacio-cuenta"> 
 										</td>
