@@ -17,7 +17,7 @@
 	'website': "https://www.solse.pe",
 
 	'category': 'Financial',
-	'version': '16.0.0.1',
+	'version': '16.0.0.2',
 	'license': 'Other proprietary',
 	'depends': [
 		'account',

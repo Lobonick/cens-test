@@ -401,9 +401,9 @@ class ReportesFinancieros(models.TransientModel):
 		if "balance" in COS:
 			utilidad_bruta = utilidad_bruta - abs(COS["balance"])
 
-		margen_operativo = 0
+		margen_operativo = utilidad_bruta
 		if "balance" in EXP_OP:
-			margen_operativo = utilidad_bruta - (EXP_OP["balance"] if "balance" in EXP_OP else 0)
+			margen_operativo = margen_operativo - (EXP_OP["balance"] if "balance" in EXP_OP else 0)
 
 		otros_ingresos_egresos = 0
 		if "balance" in OIN_FIN:
