@@ -1,0 +1,85 @@
+
+
+.tabla_simple {
+  display: table;
+}
+.tabla_simple thead {
+  display: table-header-group;
+}
+.tabla_simple tbody {
+  display: table-row-group;
+}
+.tabla_simple tfoot {
+  display: table-footer-group;
+}
+.tabla_simple tbody>tr:hover,
+.tabla_simple tbody>tr {
+  display: table-row;
+}
+.tabla_simple tbody>tr:hover>td,
+.tabla_simple tbody>tr>td {
+  display: table-cell;
+}
+.tabla_simple,
+.tabla_simple tbody,
+.tabla_simple tbody>tr:hover,
+.tabla_simple tbody>tr,
+.tabla_simple tbody>tr:hover>td,
+.tabla_simple tbody>tr>td,
+.tabla_simple tbody>tr:hover>th,
+.tabla_simple tbody>tr>th,
+.tabla_simple thead>tr:hover>td,
+.tabla_simple thead>tr>td,
+.tabla_simple thead>tr:hover>th,
+.tabla_simple thead>tr>th,
+.tabla_simple tfoot>tr:hover>td,
+.tabla_simple tfoot>tr>td,
+.tabla_simple tfoot>tr:hover>th,
+.tabla_simple tfoot>tr>th {
+  background: transparent;
+  border: 0px solid #000;
+  border-spacing: 0px;
+  border-collapse: separate;
+  empty-cells: show;
+  padding: 0px;
+  margin: 0px;
+  outline: 0px;
+  font-size: 100%;
+  color: #000;
+  vertical-align: top;
+  text-align: left;
+  font-family: sans-serif;
+  table-layout: auto;
+  caption-side: top;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.tabla_simple tbody>tr {
+  background: transparent;
+  border: 0px solid #000;
+}
+
+.tabla_simple tbody>tr>td {
+  background: transparent;
+  border: 0px solid #000;
+}
+
+.tabla_simple tbody>tr>th {
+  background: transparent;
+  border: 0px solid #000;
+}
+
+
+.numero {
+  text-align: right;
+  width: 100%;
+}
+
+.espacio-cuenta {
+  height: 15px;
+}
