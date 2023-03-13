@@ -1,2 +1,2 @@
 # cens-test
-# ---------------------------- REPOSITORIO PRINCIPAL - NO BORRAR ------------------------------
+# ----------- REPOSITORIO PRINCIPAL - NO BORRAR -------------
