@@ -1,0 +1,35 @@
+.factura {
+  color: #000;
+}
+.datos_izquierda {
+  border: 0px;
+  color: red;
+  background-color: red;
+}
+.cpe-tabla {
+  padding: 0px 20px 0px 20px; 
+  margin:0; 
+  font-family: Arial,Helvetica, sans-serif; 
+  background:#fff; 
+  line-height:20px; 
+  border: 0px;
+  border-width: 0px;
+  font-size: 13px;
+  color: #000;
+}
+.cpe-tabla table, .cpe-tabla caption, .cpe-tabla tbody, .cpe-tabla tfoot, 
+.cpe-tabla thead, .cpe-tabla tr, .cpe-tabla th, .cpe-tabla td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    color: #000;
+}
+
+.nro-cpe span {
+  font-size: 14px;
+  font-weight: normal;
+}
