@@ -17,7 +17,7 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "https://www.solse.pe",
 	'category': 'Financial',
-	'version': '16.0.1.4',
+	'version': '16.0.1.19',
 	'license': 'Other proprietary',
 	'depends': [
 		'solse_pe_edi',
@@ -44,6 +44,9 @@
 	'assets': {
 		'web.report_assets_common': [
 			'/solse_pe_cpe/static/src/css/reportes.css',
+		],
+		'web.assets_backend': [
+			'/solse_pe_cpe/static/src/js/tax_totals_pe.js',
 		],
 	},
 	'installable': True,
