@@ -71,8 +71,7 @@ class Document(object):
 			else:
 				res = self._response
 				self._response_status = False
-				if res and 'status' in res:
-					self._response = {'faultcode':res['status'].get('statusCode', False),  'faultstring':''}
+				self._response = {'faultcode':res['status'].get('statusCode', False),  'faultstring':''}
 		elif self._type == 'status':
 			self._response_data = self._response.get('statusCdr', {}).get('content', None)
 			if not self._response_data:

@@ -158,220 +158,6 @@ class AccountMove(models.Model):
 	fecha_nota_credito_proveedor = fields.Date("Fecha emisión del Proveedor")
 	fue_offline = fields.Boolean("Fue offiline")
 
-	tax_totals_pe = fields.Binary(
-		string="Totales Impuestos (PE)",
-		compute='_compute_tax_totals_pe',
-		inverse='_inverse_tax_totals_pe',
-		exportable=False,
-	)
-
-	def _inverse_tax_totals_pe(self):
-		if self.env.context.get('skip_invoice_sync'):
-			return
-		with self._sync_dynamic_line(
-			existing_key_fname='term_key',
-			needed_vals_fname='needed_terms',
-			needed_dirty_fname='needed_terms_dirty',
-			line_type='payment_term',
-			container={'records': self},
-		):
-			for move in self:
-				if not move.is_invoice(include_receipts=True):
-					continue
-				invoice_totals = move.tax_totals_pe
-
-				for amount_by_group_list in invoice_totals['groups_by_subtotal'].values():
-					for amount_by_group in amount_by_group_list:
-						tax_lines = move.line_ids.filtered(lambda line: line.tax_group_id.id == amount_by_group['tax_group_id'])
-
-						if tax_lines:
-							first_tax_line = tax_lines[0]
-							tax_group_old_amount = sum(tax_lines.mapped('amount_currency'))
-							sign = -1 if move.is_inbound() else 1
-							delta_amount = tax_group_old_amount * sign - amount_by_group['tax_group_amount']
-
-							if not move.currency_id.is_zero(delta_amount):
-								first_tax_line.amount_currency -= delta_amount * sign
-			self._compute_amount()
-
-	@api.depends(
-		'invoice_line_ids.currency_rate',
-		'invoice_line_ids.tax_base_amount',
-		'invoice_line_ids.tax_line_id',
-		'invoice_line_ids.price_total',
-		'invoice_line_ids.price_subtotal',
-		'invoice_payment_term_id',
-		'partner_id',
-		'currency_id',
-	)
-	def _compute_tax_totals_pe(self):
-		""" Computed field used for custom widget's rendering.
-			Only set on invoices.
-		"""
-		for move in self:
-			if move.is_invoice(include_receipts=True):
-				base_lines = move.invoice_line_ids.filtered(lambda line: line.display_type == 'product')
-				base_line_values_list = [line._convert_to_tax_base_line_dict() for line in base_lines]
-
-				if move.id:
-					# The invoice is stored so we can add the early payment discount lines directly to reduce the
-					# tax amount without touching the untaxed amount.
-					sign = -1 if move.is_inbound(include_receipts=True) else 1
-					base_line_values_list += [
-						{
-							**line._convert_to_tax_base_line_dict(),
-							'handle_price_include': False,
-							'quantity': 1.0,
-							'price_unit': sign * line.amount_currency,
-						}
-						for line in move.line_ids.filtered(lambda line: line.display_type == 'epd')
-					]
-
-				kwargs = {
-					'base_lines': base_line_values_list,
-					'currency': move.currency_id or move.journal_id.currency_id or move.company_id.currency_id,
-				}
-
-				if move.id:
-					kwargs['tax_lines'] = [
-						line._convert_to_tax_line_dict()
-						for line in move.line_ids.filtered(lambda line: line.display_type == 'tax')
-					]
-				else:
-					# In case the invoice isn't yet stored, the early payment discount lines are not there. Then,
-					# we need to simulate them.
-					epd_aggregated_values = {}
-					for base_line in base_lines:
-						if not base_line.epd_needed:
-							continue
-						for grouping_dict, values in base_line.epd_needed.items():
-							epd_values = epd_aggregated_values.setdefault(grouping_dict, {'price_subtotal': 0.0})
-							epd_values['price_subtotal'] += values['price_subtotal']
-
-					for grouping_dict, values in epd_aggregated_values.items():
-						taxes = None
-						if grouping_dict.get('tax_ids'):
-							taxes = self.env['account.tax'].browse(grouping_dict['tax_ids'][0][2])
-
-						kwargs['base_lines'].append(self.env['account.tax']._convert_to_tax_base_line_dict(
-							None,
-							partner=move.partner_id,
-							currency=move.currency_id,
-							taxes=taxes,
-							price_unit=values['price_subtotal'],
-							quantity=1.0,
-							account=self.env['account.account'].browse(grouping_dict['account_id']),
-							analytic_distribution=values.get('analytic_distribution'),
-							price_subtotal=values['price_subtotal'],
-							is_refund=move.move_type in ('out_refund', 'in_refund'),
-							handle_price_include=False,
-						))
-				
-				respuesta = self.env['account.tax']._prepare_tax_totals_pe(**kwargs)
-				respuesta = move.procesar_respuesta_impuestos(datos=respuesta)
-				move.tax_totals_pe = respuesta
-				rounding_line = move.line_ids.filtered(lambda l: l.display_type == 'rounding')
-				if rounding_line:
-					amount_total_rounded = move.tax_totals_pe['amount_total'] - rounding_line.balance
-					move.tax_totals_pe['formatted_amount_total_rounded'] = formatLang(self.env, amount_total_rounded, currency_obj=move.currency_id) or ''
-			else:
-				# Non-invoice moves don't support that field (because of multicurrency: all lines of the invoice share the same currency)
-				move.tax_totals_pe = None
-
-	def procesar_respuesta_impuestos(self, datos):
-		"""
-		{'amount_untaxed': 122.4, 'amount_total': 133.63, 'formatted_amount_total': 'S/\xa0133.63', 'formatted_amount_untaxed': 'S/\xa0122.40', 'groups_by_subtotal': defaultdict(<class 'list'>, {'Op. Gravadas': [{'group_key': 2, 'tax_group_id': 2, 'tax_group_name': 'IGV', 'tax_group_amount': 11.23, 'tax_group_base_amount': 62.4, 'formatted_tax_group_amount': 'S/\xa011.23', 'formatted_tax_group_base_amount': 'S/\xa062.40'}, {'group_key': 8, 'tax_group_id': 8, 'tax_group_name': 'INA', 'tax_group_amount': 60.0, 'tax_group_base_amount': 60.0, 'formatted_tax_group_amount': 'S/\xa060.00', 'formatted_tax_group_base_amount': 'S/\xa060.00'}]}), 'subtotals': [{'name': 'Op. Gravadas', 'amount': 62.400000000000006, 'formatted_amount': 'S/\xa062.40'}], 'subtotals_order': ['Op. Gravadas'], 'display_tax_base': True}
-		"""
-
-		json_valores = {
-			"INA": False,
-			"EXO": False,
-			"GRA": False,
-			"OTR": False,
-			"DES": False,
-			"IGV": False,
-		}
-		json_nombres = {
-			"INA": "Op. Inafectas",
-			"EXO": "Op. Exoneradas",
-			"GRA": "Op. Gratuitas",
-			"OTR": "Otros Cargos",
-			"DES": "Descuentos",
-			"IGV": "IGV",
-		}
-		monto_gratuito = 0
-		monto_descuento = 0
-		grupos = datos['groups_by_subtotal']
-		for item in grupos:
-			datos_grupo = grupos[item]
-			for reg in datos_grupo:
-				if reg['tax_group_name'] == 'INA':
-					reg['tax_group_name'] = "Op. Inafectas"
-					json_valores["INA"] = True
-
-				if reg['tax_group_name'] == 'EXO':
-					reg['tax_group_name'] = "Op. Exoneradas"
-					json_valores["EXO"] = True
-
-				if reg['tax_group_name'] == 'GRA':
-					json_valores["GRA"] = True
-					monto_gratuito = abs(sum(line.price_unit * line.quantity for line in self.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9996'))
-					#reg['tax_group_base_amount'] = monto_gratuito * -1
-					reg['tax_group_name'] = "Op. Gratuitas"
-					reg['tax_group_amount'] = monto_gratuito
-					reg['formatted_tax_group_amount'] = formatLang(self.env, monto_gratuito, currency_obj=self.currency_id) or ''
-					reg['formatted_tax_group_base_amount'] = formatLang(self.env, monto_gratuito, currency_obj=self.currency_id) or ''
-
-				if reg['tax_group_name'] == 'OTR':
-					reg['tax_group_name'] = "Otros Cargos"
-					json_valores["OTR"] = True
-
-				if reg['tax_group_name'] == 'DES':
-					reg['tax_group_name'] = "Descuentos"
-					json_valores["DES"] = True
-
-				if reg['tax_group_name'] == 'IGV':
-					json_valores["IGV"] = True
-
-
-		contador = 100
-		for value in json_valores:
-			contador = contador + 1
-			if json_valores[value]:
-				continue
-
-			monto_grupo = 0
-			if value == "DES":
-				monto_grupo = total_operaciones_gratuitas = abs(sum((line.price_unit * line.quantity) - line.price_subtotal for line in self.invoice_line_ids if line.discount and line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code != '9996'))
-				monto_descuento = monto_grupo
-				
-			for item in grupos:
-				datos_grupo = grupos[item]
-				clave_grupo = self.env['account.tax.group'].search([("name", "=", value)], limit=1)
-				if not clave_grupo:
-					clave_grupo = contador
-				else:
-					clave_grupo = clave_grupo.id
-
-				monto_texto = formatLang(self.env, monto_grupo, currency_obj=self.currency_id) or ''
-				datos_nuevos = {
-					'group_key': clave_grupo, 
-					'tax_group_id': clave_grupo, 
-					'tax_group_name': json_nombres[value], 
-					'tax_group_amount': monto_grupo, 
-					'tax_group_base_amount': 0, 
-					'formatted_tax_group_amount': monto_texto, 
-					'formatted_tax_group_base_amount': monto_texto
-				}
-				datos_grupo.append(datos_nuevos)
-
-		amount_total = datos['amount_total'] #- monto_gratuito
-		datos['monto_gratuito'] = monto_gratuito
-		datos['monto_descuento'] = monto_descuento
-
-
-		return datos
-
 	@api.onchange('pe_credit_note_code')
 	def _onchange_pe_credit_note_code(self):
 		if self.pe_credit_note_code == '13':
@@ -446,19 +232,19 @@ class AccountMove(models.Model):
 			3001 FISE (Ley 29852) Fondo Inclusión Social Energético
 		"""
 		for reg in self:
-			total_operaciones_gravadas = abs(sum(line.debit or line.credit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '1000'))
+			total_operaciones_gravadas = abs(sum(line.credit or line.debit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '1000'))
 			total_operaciones_gravadas_dolar = abs(sum(line.amount_currency for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '1000'))
 
-			total_operaciones_exoneradas = abs(sum(line.debit or line.credit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9997'))
+			total_operaciones_exoneradas = abs(sum(line.credit or line.debit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9997'))
 			total_operaciones_exoneradas_dolar = abs(sum(line.amount_currency for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9997'))
 
-			total_operaciones_gratuitas = abs(sum(line.price_unit * line.quantity for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9996'))
+			total_operaciones_gratuitas = abs(sum(line.credit or line.debit * line.quantity for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9996'))
 			total_operaciones_gratuitas_dolar = abs(sum(line.amount_currency * line.quantity for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9996'))
 
-			total_operaciones_inafectas = abs(sum(line.debit or line.credit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9998'))
+			total_operaciones_inafectas = abs(sum(line.credit or line.debit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9998'))
 			total_operaciones_inafectas_dolar = abs(sum(line.amount_currency for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9998'))
 
-			total_operaciones_exportadas = abs(sum(line.debit or line.credit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9995'))
+			total_operaciones_exportadas = abs(sum(line.credit or line.debit for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9995'))
 			total_operaciones_exportadas_dolar = abs(sum(line.amount_currency for line in reg.invoice_line_ids if line.tax_ids and line.tax_ids[0].l10n_pe_edi_tax_code == '9995'))
 
 			if reg.move_type in ['in_refund', 'out_refund']:
@@ -956,10 +742,8 @@ class AccountMove(models.Model):
 				continue
 			if line.display_type in ['product'] and (line.quantity == 0.0 or line.price_unit == 0.0):
 				es_icbper = True if len(line.tax_ids) == 1 and line.tax_ids[0].l10n_pe_edi_tax_code in ['7152'] else False
-				nota_credito_especial = True if line.move_type == 'out_refund' and line.move_id.pe_credit_note_code == '13' else False
-				_logging.info("nota_credito_especial lllllllllllllllllllllllllllllllllllll")
-				_logging.info(nota_credito_especial)
-				if not es_icbper and not nota_credito_especial:
+				nota_credito_especial = True if line.move_type != 'out_refund' and line.move_id.pe_credit_note_code != '13' else False
+				if not es_icbper or not nota_credito_especial:
 					raise UserError('La cantidad o precio del producto %s debe ser mayor a 0.0' % line.name)
 			if not line.tax_ids:
 				if line.quantity > 0:
@@ -1246,20 +1030,14 @@ class AccountMove(models.Model):
 				if invoice_id.l10n_latam_document_type_id.is_synchronous_anull:
 					voided_id.action_generate()
 					voided_id.action_send()
-					time.sleep(3)
-					try:
-						voided_id.action_done()
-					except Exception as e:
-						pass
+					time.sleep(1)
+					voided_id.action_done()
 				
 			if pe_summary_id and invoice_id.l10n_latam_document_type_id.is_synchronous_anull:
 				pe_summary_id.action_generate()
 				pe_summary_id.action_send()
-				time.sleep(3)
-				try:
-					pe_summary_id.action_done()
-				except Exception as e:
-					pass
+				time.sleep(1)
+				pe_summary_id.action_done()
 		return res
 
 	# pasar a borrador
@@ -1310,7 +1088,7 @@ class AccountMove(models.Model):
 			arc_n2 = Attachment.search([('res_id', '=', self.id), ('name', 'like', nombre + '%')], limit=1)
 			if not arc_n2:
 				attach = {}
-				result_pdf, type = self.env['ir.actions.report']._get_report_from_name('account.report_invoice')._render_qweb_pdf('account.report_invoice', res_ids=self.ids)
+				result_pdf, type = self.env['ir.actions.report']._get_report_from_name('solse_pe_cpe_e.report_cpe_copy_1')._render_qweb_pdf('solse_pe_cpe_e.report_cpe_copy_1', res_ids=self.ids)
 				attach['name'] = '%s.pdf' % self.pe_cpe_id.get_document_name()
 				attach['type'] = 'binary'
 				attach['datas'] = encodestring(result_pdf)
@@ -1357,22 +1135,13 @@ class AccountMove(models.Model):
 		res = {}
 		if self.l10n_latam_document_type_id.is_cpe:
 			if self.pe_cpe_id:
-				#temporal = self.env['ir.actions.report']._get_report_from_name('account.report_invoice')
-				#result_pdf, type = temporal._render_qweb_pdf('account.report_invoice', res_ids=self.ids)
-				reporte = self.env['ir.actions.report']#._get_report_from_name('account.report_invoice')
-				result_pdf, type = reporte._render_qweb_pdf('account.report_invoice', self.ids)
-				res['datas_sign'] = str(encodestring(self.pe_cpe_id.datas_sign), 'utf-8')
+				temporal = self.env['ir.actions.report']._get_report_from_name('solse_pe_cpe_e.report_cpe_copy_1')
+				result_pdf, type = temporal._render_qweb_pdf('solse_pe_cpe_e.report_cpe_copy_1', res_ids=self.ids)
+				res['datas_sign'] = str(self.pe_cpe_id.datas_sign, 'utf-8')
 				res['datas_invoice'] = str(encodestring(result_pdf), 'utf-8')
 				res['name'] = self.pe_cpe_id.get_document_name()
-			else:
-				reporte = self.env['ir.actions.report']#._get_report_from_name('account.report_invoice')
-				result_pdf, type = reporte._render_qweb_pdf('account.report_invoice', self.ids)
-				res['datas_sign'] = ""
-				res['datas_invoice'] = str(encodestring(result_pdf), 'utf-8')
-				res['name'] = self.name
 
 		return res
-
 
 	# Tarea programada para "Envio Automatico Facturas/Boletas/Notas" por correo electronico
 	def action_send_mass_mail(self):
@@ -1421,32 +1190,26 @@ class AccountMove(models.Model):
 		if doc_type in '6':
 			if not self.env.context.get('is_pos_invoice'):
 				if self.l10n_latam_document_type_id.code != '01':
-					tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '01'), ('sub_type', '=', journal_type)], limit=1)
+					tipo_doc_id = tipo_documento.search([('code', '=', '01'), ('sub_type', '=', journal_type)], limit=1)
 					if tipo_doc_id:
 						self.l10n_latam_document_type_id = tipo_doc_id.id
 						
 		if doc_type in ('6', ):
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '01'), ('sub_type', '=', journal_type)], limit=1)
+			tipo_doc_id = tipo_documento.search([('code', '=', '01'), ('sub_type', '=', journal_type)], limit=1)
 			if tipo_doc_id:
 				self.l10n_latam_document_type_id = tipo_doc_id.id
 		else:
 			if self.l10n_latam_document_type_id.code != '03':
-				tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '03'), ('sub_type', '=', journal_type)], limit=1)
+				tipo_doc_id = tipo_documento.search([('code', '=', '03'), ('sub_type', '=', journal_type)], limit=1)
 				if tipo_doc_id:
 					self.l10n_latam_document_type_id = tipo_doc_id.id
 
 		if not tipo_doc_id:
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '00'), ('sub_type', '=', journal_type)], limit=1)
+			tipo_doc_id = tipo_documento.search([('code', '=', '00'), ('sub_type', '=', journal_type)], limit=1)
 			if tipo_doc_id:
 				self.l10n_latam_document_type_id = tipo_doc_id.id
-
-		if not tipo_doc_id:
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('sub_type', '=', journal_type)], limit=1)
-			if tipo_doc_id:
-				self.l10n_latam_document_type_id = tipo_doc_id.id
-
-		if not tipo_doc_id:
-			return res
+			else:
+				return res
 
 			
 

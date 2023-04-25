@@ -434,11 +434,9 @@ class PeruSunatCpe(models.Model):
 		self.ensure_one()
 		client = self.prepare_sunat_auth()
 		response_status, response, response_file = get_ticket_status(self.ticket, client)
-		state = None
-		if not self.ticket:
-			raise UserError("No se tiene un ticket para consultar")			
+		state = None			
 		if not response:
-			raise Warning('No se pudo obtener respuesta del ticket '+ str(self.ticket))
+			raise Warning('No se pudo obtener respuesta del ticket '+ self.ticket)
 		if response_status:
 			file_name = self.get_document_name()
 			self.datas_response = response_file
