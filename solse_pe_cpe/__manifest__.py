@@ -17,8 +17,8 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "https://www.solse.pe",
 	'category': 'Financial',
-	'version': '16.0.1.19',
-	'license': 'Other proprietary',
+	'version': '16.0.1.20',
+	#'license': 'Other proprietary',
 	'depends': [
 		'solse_pe_edi',
 		'account_debit_note',
