@@ -58,3 +58,18 @@
 
 # 07/03/2023
 * Se soluciona bug con el campo PayableAmount del xml cuando se usa mas de dos decimales (actualizacion reciente)
+
+# 09/03/2023
+* Se mejora envio para casos de facturas de exportación
+
+# 13/03/2032
+* Se mejora validacion para facturas de exportacion en el xml
+
+# 15/03/2032
+* Se soluciona bug de redondeo para algunos casos(actualizacion de mas de dos decimales)
+
+# 24/03/2032
+* Se soluciona bug al emitir notas de credito de facturas con descuento
+
+# 18/04/2023
+* La visualizacion de impuestos, se muestra incluso si estan con monto cero para los impuestos mas usados
