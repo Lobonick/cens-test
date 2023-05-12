@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="template_reporte_planilla_basico">
+		<t t-call="web.html_container">
+			<t t-if="not company">
+				<!-- Multicompany -->
+				<t t-if="res_company">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+				<t t-else="else">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+			</t>
+			
+
+			<!-- Header -->
+			<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">
+				<div class="row">
+					<div class="col-5 col-xs-4 mt32">
+						<div style="text-align:center;">
+							<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 90px; height: 90px; max-width: 250px; display:block; margin-left: auto; margin-right: auto; top: 30%;" alt="Logo"/>
+						</div>
+					</div>
+					<div class="col-2 text-right" >
+												
+					</div>
+					<div class="col-5 empresa" name="company_address">
+						<strong><t t-esc="company.name"/></strong>
+						<br/>
+						<t t-esc="company.street"/>
+						-
+						<t t-esc="company.partner_id.l10n_pe_district.name"/>-
+						<t t-esc="company.state_id.name"/>-
+						<t t-esc="company.city"/>
+						
+						<span t-if="company.phone">
+							Telf.:<t t-esc="company.phone"/>
+						</span>
+					</div>
+					
+				</div>
+			</div>
+			<br/>
+
+			<div class="article o_report_layout_clean factura" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
+				<div class="page factura">
+					<div class="text-center" style="width: 100%;">
+						<h4><t t-esc="nombre_mes" /></h4>
+					</div>
+					<br/>
+
+					<div style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0;" class="table table-sm o_main_table">
+
+
+						<table style="width: 100%; margin: 0; font-size: 11px; border: 1px solid #ddd !important;">
+							<thead>
+								<th>
+									Trabajador
+								</th>
+								<th>
+									Producción
+								</th>
+								<th>
+									Porcentaje
+								</th>
+								<th>
+									Sueldo
+								</th>
+								<th>
+									Ventas Prod.
+								</th>
+								<th>
+									Otros pagos.
+								</th>
+								<th>
+									SubTotal
+								</th>
+								<th>
+									AFP/ONP
+								</th>
+								<th>
+									ESSASUD
+								</th>
+								<th>
+									Dsctos
+								</th>
+								<th>
+									Total
+								</th>
+							</thead>
+
+							<tbody style="width: 100%; margin: 0; border: 1px solid #ddd !important;">
+								
+								<t t-foreach="datos" t-as="linea">
+									<tr class="pims_report_line_main_tr" >
+		                        		<td>
+		                        			<t t-esc="linea['trabajador']"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['produccion'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['porcentaje'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['sueldo'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['ventas_prod'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['otros_pagos'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['sub_total'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['afp'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['essalud'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['descuentos'])"/>
+		                        		</td>
+		                        		<td style="text-align: right;">
+		                        			<t t-esc="'%.2f'%(linea['total'])"/>
+		                        		</td>
+		                        	</tr>
+								</t>
+								<tr class="pims_report_line_main_tr" >
+	                        		<th>
+	                        			
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_produccion)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_porcentaje)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_sueldo)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_ventas_prod)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_otros_pagos)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_sub_total)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_afp)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_essalud)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_descuentos)"/>
+	                        		</th>
+	                        		<th style="text-align: right;">
+	                        			<t t-esc="'%.2f'%(total_total)"/>
+	                        		</th>
+	                        	</tr>
+
+	                        </tbody>
+	                    </table>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="footer" >
+				<br/>
+				<div class="text-center" style="border-top: 1px solid black;">
+					<ul class="list-inline mb4">
+						<li t-if="company.phone">Telefono: 
+							<span t-field="company.phone"/></li>
+						<li t-if="company.email">Email: 
+							<span t-field="company.email"/></li>
+						<li t-if="company.website">Web: <span t-field="company.website"/></li>
+
+						<!--<li t-if="company.website">
+							Representación impresa de factura electrónica, consulta en <span t-field="company.website"/></li>-->
+					</ul>
+					<div name="financial_infos">
+						<span t-field="company.report_footer"/>
+					</div>
+					<div class="text-muted">
+						<span class="page"/>
+						de  
+						<span class="topage"/></div>
+				</div>
+				
+				<br/>
+			</div>
+		</t>
+	</template>
+
+	<report
+		id="pdf_reporte_planilla_basico"
+		model="product.product"
+		string="Reporte planilla basico"
+		report_type="qweb-pdf"
+		name="solse_salon_belleza.template_reporte_planilla_basico"
+		file="solse_salon_belleza.template_reporte_planilla_basico"
+	/>
+
+	
+	<record id="solse_salon_belleza.paperformat_reporte_planilla_basico" model="report.paperformat">
+		<field name="name">Formato Papel (Reporte planilla_basico)</field>
+		<field name="default" eval="True" />
+		<field name="format">custom</field>
+		<field name="page_height">297</field>
+		<field name="page_width">210</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">25</field> <!-- la diferencia (margin_top - header_spacing) es el espacio que queda en la parte superior de la hoja-->
+		<field name="header_spacing">20</field>
+		<field name="margin_bottom">30</field>
+		<field name="margin_left">7</field>
+		<field name="margin_right">7</field>
+		<field name="header_line" eval="False" /><!-- mostrar una linea en cabecera-->
+		<field name="dpi">90</field>
+	</record>
+
+
+	<record id="solse_salon_belleza.pdf_reporte_planilla_basico" model="ir.actions.report">
+		<field name="paperformat_id" ref="solse_salon_belleza.paperformat_reporte_planilla_basico"/>
+	</record>
+
+</odoo>
