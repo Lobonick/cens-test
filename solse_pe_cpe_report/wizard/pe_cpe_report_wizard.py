@@ -38,17 +38,29 @@ class ValidateAccountMove(models.TransientModel):
 				filecontent = base64.b64decode(reg.datas_response)
 				in_memory_zip.writestr(_document_name, filecontent)
 
+			pdf = False
 			if reg.type == 'sync':
 				nombre = '%s.pdf' % reg.get_document_name()
 				pdf = Attachment.search([('res_id', '=', factura.id), ('name', 'like', nombre + '%')], limit=1)
+				_logging.info(pdf)
 				if pdf:
 					filecontent = base64.b64decode(pdf.datas)
 					in_memory_zip.writestr(nombre, filecontent)
-				"""else:
-					result_pdf, type = self.env['ir.actions.report']._get_report_from_name('account.report_invoice')._render_qweb_pdf(factura.ids)
+			
+			if not pdf:
+				nombre = '%s.pdf' % factura.name
+				pdf = Attachment.search([('res_id', '=', factura.id), ('name', 'like', factura.name + '%')], limit=1)
+				if pdf:
+					filecontent = base64.b64decode(pdf.datas)
+					in_memory_zip.writestr(nombre, filecontent)
+				else:
+					reporte = self.env['ir.actions.report']
+					result_pdf, type = reporte._render_qweb_pdf('account.report_invoice', factura.ids)
+
+					#result_pdf, type = self.env['ir.actions.report']._get_report_from_name('account.report_invoice')._render_qweb_pdf(factura.ids)
 					result_pdf = base64.encodestring(result_pdf)
 					filecontent = base64.b64decode(result_pdf)
-					in_memory_zip.writestr(nombre, filecontent)"""
+					in_memory_zip.writestr(nombre, filecontent)
 
 		for zfile in in_memory_zip.filelist:
 			zfile.create_system = 0
