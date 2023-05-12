@@ -99,6 +99,10 @@ class PLEReport14(models.Model) :
 				continue
 			m_1 = []
 			try :
+				estado_comprobante = '1'
+				if move.state in ["annul", "cancel"]:
+					estado_comprobante = '2'
+
 				sunat_number = move.l10n_latam_document_number
 				sunat_number = sunat_number and ('-' in sunat_number) and sunat_number.split('-') or ['','']
 				sunat_code = move.pe_invoice_code
@@ -131,28 +135,33 @@ class PLEReport14(models.Model) :
 					sunat_number[1],
 					'',
 				])
-				#10-13
+				#10-12
 				if sunat_partner_code and sunat_partner_vat and sunat_partner_name :
 					m_1.extend([
 						sunat_partner_code,
 						sunat_partner_vat,
 						sunat_partner_name,
-						'',
 					])
 				else :
-					m_1.extend(['', '', '', ''])
-				#14-18
-				#total_sin_impuestos = abs(move.amount_untaxed_signed)
-				total_sin_impuestos = move.amount_untaxed_signed
-				#total_impuestos = abs(move.amount_tax_signed)
-				total_impuestos = move.amount_tax_signed
-				m_1.extend([format(total_sin_impuestos, '.2f'), '', format(total_impuestos, '.2f'), '', ''])
-				#19-24
-				m_1.extend(['', '', '', '', '0.00', '']) #ICBP
-				#25-27
-				#monto_total = abs(move.amount_total_signed)
-				monto_total = move.amount_total_signed
-				#m_1.extend([format(move.amount_total, '.2f'), '', ''])
+					m_1.extend(['', '', '',])
+				
+				datos_montos = move.obtener_montos_libro_ventas()
+				# 13 - 25
+				m_1.append(format(datos_montos['nro_13'], '.2f'))
+				m_1.append(format(datos_montos['nro_14'], '.2f'))
+				m_1.append(format(datos_montos['nro_15'], '.2f'))
+				m_1.append(format(datos_montos['nro_16'], '.2f'))
+				m_1.append(format(datos_montos['nro_17'], '.2f'))
+				m_1.append(format(datos_montos['nro_18'], '.2f'))
+				m_1.append(format(datos_montos['nro_19'], '.2f'))
+				m_1.append(format(datos_montos['nro_20'], '.2f'))
+				m_1.append(format(datos_montos['nro_21'], '.2f'))
+				m_1.append(format(datos_montos['nro_22'], '.2f'))
+				m_1.append(format(datos_montos['nro_23'], '.2f'))
+				m_1.append(format(datos_montos['nro_24'], '.2f'))
+				m_1.append(format(datos_montos['nro_25'], '.2f'))
+				
+				#26-27
 				fecha_busqueda = str(invoice_date)
 				currency_rate_id = [
 					('name', '=', fecha_busqueda),
@@ -166,7 +175,7 @@ class PLEReport14(models.Model) :
 
 				tipo_cambio = format(tipo_cambio, '.3f')
 				
-				m_1.extend([format(monto_total, '.2f'), move.currency_id.name, tipo_cambio])
+				m_1.extend([move.currency_id.name, tipo_cambio])
 				#28-31
 				# notas credito
 				if sunat_code in ['07'] :
@@ -185,9 +194,6 @@ class PLEReport14(models.Model) :
 				else :
 					m_1.extend(['', '', '', ''])
 				#32-36
-				estado_comprobante = '1'
-				if move.state in ["annul", "cancel"]:
-					estado_comprobante = '2'
 				m_1.extend(['', '', '', estado_comprobante, ''])
 			except Exception as e:
 				raise UserError(e)

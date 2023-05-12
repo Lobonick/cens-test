@@ -11,8 +11,9 @@
                     <field name="month" invisible="1"/>
                     <field name="day" options="{'type':'number', 'step':1}" invisible="1"/>
                     <field name="date" invisible="1"/>
+                    <field name="state" invisible="1"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                    <button name="update_report" string="Actualizar Datos" type="object" class="oe_highlight"/>
+                    <button name="update_report" string="Actualizar Datos" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'declarado')]}"/>
                 </tree>
             </field>
         </record>

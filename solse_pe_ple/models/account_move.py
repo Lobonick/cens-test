@@ -44,6 +44,78 @@ class AccountMove(models.Model) :
 				suma = suma + abs(linea.balance)
 		return suma"""
 
+	def obtener_montos_libro_ventas(self):
+		move = self
+		valor_nro_13 = 0 # Valor facturado de la exportación
+		valor_nro_14 = 0 # Base imponible de la operación gravada (4)
+		valor_nro_15 = 0 # Descuento de la Base Imponible
+		valor_nro_16 = 0 # Impuesto General a las Ventas y/o Impuesto de Promoción Municipal
+		valor_nro_17 = 0 # Descuento del Impuesto General a las Ventas y/o Impuesto de Promoción Municipal
+		valor_nro_18 = 0 # Importe total de la operación exonerada
+		valor_nro_19 = 0 # Importe total de la operación inafecta 
+		valor_nro_20 = 0 # Impuesto Selectivo al Consumo, de ser el caso.
+		valor_nro_21 = 0 # Base imponible de la operación gravada con el Impuesto a las Ventas del Arroz Pilado
+		valor_nro_22 = 0 # Impuesto a las Ventas del Arroz Pilado 
+		valor_nro_23 = 0 # Impuesto al Consumo de las Bolsas de Plástico.
+		valor_nro_24 = 0 # Otros conceptos, tributos y cargos que no forman parte de la base imponible
+		valor_nro_25 = 0 # Importe total del comprobante de pago
+
+		total_exonerado = 0
+		total_inafecto = 0
+		total_icbper = 0
+
+		estado_comprobante = '1'
+		if move.state in ["annul", "cancel"]:
+			estado_comprobante = '2'
+
+		for line in self.invoice_line_ids:
+			for impuesto in line.tax_ids:
+				if impuesto.l10n_pe_edi_tax_code in ['9997'] and len(line.tax_ids) == 1:
+					total_exonerado += line.credit
+
+				if impuesto.l10n_pe_edi_tax_code in ['9998'] and len(line.tax_ids) == 1:
+					total_inafecto += line.credit
+
+				if impuesto.l10n_pe_edi_tax_code in ['7152']:
+					total_icbper += impuesto.amount
+
+		base_imponible = abs(move.amount_untaxed_signed) - total_exonerado - total_inafecto
+		impuesto_general = abs(move.amount_tax_signed) - total_icbper
+		importe_total = abs(move.amount_total_signed)
+
+
+		valor_nro_14 = base_imponible
+		valor_nro_16 = impuesto_general
+		valor_nro_18 = total_exonerado
+		valor_nro_19 = total_inafecto
+		valor_nro_23 = total_icbper
+		valor_nro_25 = importe_total
+
+		if estado_comprobante == '2':
+			valor_nro_14 = 0
+			valor_nro_16 = 0
+			valor_nro_18 = 0
+			valor_nro_19 = 0
+			valor_nro_23 = 0
+			valor_nro_25 = 0
+
+		json = {
+			"nro_13": valor_nro_13,
+			"nro_14": valor_nro_14,
+			"nro_15": valor_nro_15,
+			"nro_16": valor_nro_16,
+			"nro_17": valor_nro_17,
+			"nro_18": valor_nro_18,
+			"nro_19": valor_nro_19,
+			"nro_20": valor_nro_20,
+			"nro_21": valor_nro_21,
+			"nro_22": valor_nro_22,
+			"nro_23": valor_nro_23,
+			"nro_24": valor_nro_24,
+			"nro_25": valor_nro_25,
+		}
+		return json
+
 	
 	def obtener_valor_campo_14(self, tipo_cambio):
 		suma = 0
@@ -121,7 +193,7 @@ class AccountMove(models.Model) :
 			if linea.tipo_afectacion_compra.nro_col_importe_afectacion == 18:
 				monto = abs(linea.price_subtotal)
 				monto = monto * tipo_cambio
-				suma = suma + linea
+				suma = suma + monto
 
 		respuesta = ""
 		if suma > 0:

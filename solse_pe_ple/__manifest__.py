@@ -5,7 +5,7 @@
 
 {
 	'name': 'PLE SUNAT - Base',
-	'version': '16.0.0.6',
+	'version': '16.0.0.10',
 	'license': 'Other proprietary',
 	'summary': 'Base para la declaración de PLE a SUNAT',
 	'author': "F & M Solutions Service S.A.C",
