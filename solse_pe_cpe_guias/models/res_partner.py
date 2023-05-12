@@ -9,4 +9,4 @@ class Partner(models.Model):
 	_inherit = 'res.partner'
 
 	pe_driver_license = fields.Char("Licencia de conducir")
-	doc_name = fields.Char(related="l10n_latam_identification_type_id.name")
+	doc_name = fields.Char(string="Tipo doc.",related="l10n_latam_identification_type_id.name")

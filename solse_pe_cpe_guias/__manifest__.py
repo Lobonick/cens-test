@@ -17,7 +17,7 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "http://www.solse.pe",
 	'category': 'Financial',
-	'version': '16.0.1.3',
+	'version': '16.0.1.7',
 	'license': 'Other proprietary',
 	'depends': [
 		'stock',
@@ -37,7 +37,6 @@
 		'views/cpe_server_view.xml',
 		'data/sunat_eguide_data.xml',
 		'report/report_guia.xml',
-		'report/report_invoice.xml',
 	],
 	'installable': True,
 	'price': 210,

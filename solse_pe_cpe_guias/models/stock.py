@@ -9,6 +9,7 @@ from pdf417gen.util import chunks
 from pdf417gen.compaction import compact_bytes
 from pdf417gen import render_image
 import tempfile
+import time
 #from base64 import encodestring
 import base64
 from odoo.exceptions import UserError
@@ -59,16 +60,9 @@ class Picking(models.Model):
 	pe_signature = fields.Text("Firma", related="pe_guide_id.signature")
 	pe_response = fields.Char("Respuesta", related="pe_guide_id.response")
 	pe_note = fields.Text("Sunat nota", related="pe_guide_id.note")
-	pe_error_code = fields.Selection("_get_pe_error_code", string="Codigo de error", related="pe_guide_id.error_code", readonly=True)
+	pe_error_code = fields.Selection(string="Codigo de error", related="pe_guide_id.error_code", readonly=True)
 	sunat_pdf417_code = fields.Binary("Pdf 417 Code", compute="_get_pdf417_code")
-	pe_guide_state = fields.Selection([
-		('draft', 'Draft'),
-		('generate', 'Generated'),
-		('send', 'Send'),
-		('verify', 'Waiting'),
-		('done', 'Done'),
-		('cancel', 'Cancelled'),
-	], string='Estado de Guía', related="pe_guide_id.state")
+	pe_guide_state = fields.Selection(string='Estado de Guía', related="pe_guide_id.state")
 
 	pe_invoice_ids = fields.Many2many(comodel_name="account.move", string="Pickings", compute ="_compute_pe_invoice_ids", readonly=True)
 	pe_invoice_name = fields.Char("Número interno", compute ="_compute_pe_invoice_ids")
@@ -112,7 +106,7 @@ class Picking(models.Model):
 		pe_invoice_name=[]
 		for stock_id in self:
 			stock_id.sale_id
-			pe_invoice_ids = stock_id.sale_id.order_line.invoice_lines.move_id.filtered(lambda r: r.move_type in ('out_invoice', 'out_refund'))
+			pe_invoice_ids = stock_id.sale_id.order_line.invoice_lines.move_id.filtered(lambda r: r.move_type in ('out_invoice', 'out_refund') and r.state in ['posted'])
 			if pe_invoice_ids:
 				pe_invoice_name = pe_invoice_ids.mapped('l10n_latam_document_number')
 			stock_id.pe_invoice_ids=pe_invoice_ids and pe_invoice_ids.ids or []
@@ -281,6 +275,16 @@ class Picking(models.Model):
 				if not line.driver_id.doc_number:
 					raise UserError(_("Carrier number document is required for %s") % (
 						line.driver_id.name or ""))
+
+		if not self.pe_gross_weight:
+			raise UserError("Peso bruto es obligatorio para guias electronicas")
+
+		if not self.pe_gross_weight:
+			raise UserError("Peso bruto es obligatorio para guias electronicas")
+
+		if not self.pe_unit_quantity:
+			raise UserError("Cantidad Bultos es obligatorio para guias electronicas")
+
 		elif self.pe_transport_mode == "02" and len(self.pe_fleet_ids) == 0:
 			raise UserError(_("It is necessary to add a vehicle and driver"))
 
@@ -307,7 +311,11 @@ class Picking(models.Model):
 				if stock.company_id.pe_is_sync:
 					pe_guide_id.generate_eguide()
 					pe_guide_id.action_send()
-					pe_guide_id.action_done()
+					time.sleep(3)
+					try:
+						pe_guide_id.action_done()
+					except Exception as e:
+						pass
 				else:
 					pe_guide_id.generate_eguide()
 				self.pe_number = stock.pe_guide_number

@@ -16,6 +16,7 @@ _logging = logging.getLogger(__name__)
 
 class CPESunatEguide(models.Model):
 	_name = 'solse.cpe.eguide'
+	_inherit = ['mail.thread']
 	_description = 'Guia Electronica'
 
 	name = fields.Char("Numero", readonly=True, default="/")
@@ -27,7 +28,7 @@ class CPESunatEguide(models.Model):
 		('done', 'Hecho'),
 		('cancel', 'Cancelado'),
 	], string='Status', index=True, readonly=False, default='draft',
-		track_visibility='always', copy=False)
+		tracking=True, copy=False)
 	type = fields.Selection([
 		('sync', 'Envio online'),
 		('low', 'Comunicación de baja'),

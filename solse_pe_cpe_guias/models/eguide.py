@@ -103,8 +103,8 @@ class EGuide():
 		etree.SubElement(party_identification, tag.text, schemeID=stock_id.company_id.partner_id.doc_type, schemeName="Documento de Identidad", schemeAgencyName="PE:SUNAT", schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06", nsmap={'cbc':tag.namespace}).text= stock_id.company_id.partner_id.doc_number
 
 		"""<cac:PartyIdentification>
-        <cbc:ID schemeID="6" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">20000000001</cbc:ID>
-      </cac:PartyIdentification>"""
+		<cbc:ID schemeID="6" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">20000000001</cbc:ID>
+	  </cac:PartyIdentification>"""
 
 		tag = etree.QName(self._cac, 'PartyLegalEntity')   
 		party_name=etree.SubElement(party, tag.text, nsmap={'cac':tag.namespace})
@@ -487,6 +487,9 @@ class Document(object):
 		if self._type == 'sync':
 			self._response_data = self._response['numTicket']
 		elif self._type == 'ticket':
+			if 'arcCdr' not in self._response:
+				texto = "No se pudo parsear: %s" % str(self._response)
+				raise UserError(texto)
 			self._response_data = self._response['arcCdr']
 		elif self._type == 'status':
 			self._response_data = self._response['arcCdr']

@@ -52,19 +52,23 @@ class AccountMove(models.Model):
 				invoice.pe_stock_ids = False
 				invoice.pe_stock_name = ""
 				continue
+				
 			picking_ids =  invoice.invoice_line_ids.mapped('sale_line_ids').mapped('order_id').mapped('picking_ids') #self._cr.fetchall()
 			pe_stock_ids = []
 			pe_stock_name = ""
 			numbers=[]
+
 			for picking_id in picking_ids:
 				if picking_id.state not in ['draft', 'cancel']: 
 					numbers.append(picking_id.name)
 					pe_stock_ids.append(picking_id.id)
+			
 			if numbers:
 				if len(numbers)==1:
 					pe_stock_name=numbers[0]
 				else:
 					pe_stock_name = " - ".join(numbers)
+
 			invoice.pe_stock_ids = False if len(pe_stock_ids) == 0  else pe_stock_ids
 			invoice.pe_stock_name = pe_stock_name
 

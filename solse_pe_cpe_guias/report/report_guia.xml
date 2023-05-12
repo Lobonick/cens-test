@@ -306,32 +306,35 @@
                             <div style="height: 3px; width: 100%" />
                             <t t-set="lineas" t-value="o.pe_invoice_ids"/>
                             <t t-foreach="lineas" t-as="move">
-                                <div class="row" style="border-spacing: 0px;">
-                                    <div class="col-7">
-                                        Tipo de Comprobante
+                                <t t-if="move.state in ['posted']">
+                                    <div class="row" style="border-spacing: 0px;">
+                                        <div class="col-7">
+                                            Tipo de Comprobante
+                                        </div>
+                                        <div class="col-5">
+                                            <span t-esc="move.l10n_latam_document_type_id.report_name"/>
+                                        </div>
                                     </div>
-                                    <div class="col-5">
-                                        <span t-esc="move.l10n_latam_document_type_id.report_name"/>
+                                    <div style="height: 3px; width: 100%" />
+                                    <div class="row" style="border-spacing: 0px;">
+                                        <div class="col-7">
+                                            Número de Comprobante
+                                        </div>
+                                        <div class="col-5">
+                                            <span t-esc="move.l10n_latam_document_number"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="height: 3px; width: 100%" />
-                                <div class="row" style="border-spacing: 0px;">
-                                    <div class="col-7">
-                                        Número de Comprobante
+                                    <div style="height: 3px; width: 100%" />
+                                    <div class="row" style="border-spacing: 0px;">
+                                        <div class="col-7">
+                                            Fecha de Comprobante
+                                        </div>
+                                        <div class="col-5">
+                                            <span t-esc="move.invoice_date"/>
+                                        </div>
                                     </div>
-                                    <div class="col-5">
-                                        <span t-esc="move.l10n_latam_document_number"/>
-                                    </div>
-                                </div>
-                                <div style="height: 3px; width: 100%" />
-                                <div class="row" style="border-spacing: 0px;">
-                                    <div class="col-7">
-                                        Fecha de Comprobante
-                                    </div>
-                                    <div class="col-5">
-                                        <span t-esc="move.invoice_date"/>
-                                    </div>
-                                </div>
+                                </t>
+                                
                             </t>
                         </div>
                         <div style="height: 6px; width: 100%" />
