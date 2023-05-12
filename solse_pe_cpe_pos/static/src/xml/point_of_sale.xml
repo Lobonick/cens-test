@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template_client" xml:space="preserve">
+    <t t-extend="PartnerDetailsEdit" t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension">
+    	<xpath expr="//div[hasclass('partner-details-box')]" position="replace">
+            <div class='partner-details-box clearfix'>
+                <div class='partner-details-left'>
+                    
+                    <div class='partner-detail contact' t-att-style="props.partner.type == 'contact' || !props.partner.type ? 'display: block;' : 'display: none;'">
+                        <span class='label'>Tipo de Documento</span>
+                        <select class='detail l10n_latam_identification_type_id needsclick' style="background: gold;" name='l10n_latam_identification_type_id' t-on-change="captureChange">
+                            <option value=''>None</option>
+                            <t t-foreach='env.pos.doc_types' t-as='doc_type' t-key="doc_type.id">
+                                <option t-att-value='doc_type.id' t-att-selected="props.partner.l10n_latam_identification_type_id ? ((doc_type.id === props.partner.l10n_latam_identification_type_id[0]) ? true : undefined) : undefined">
+                                    <t t-esc='doc_type.name'/>
+                                </option>
+                            </t>
+                        </select>
+
+                        
+                    </div>
+
+                    <div class='partner-detail contact' t-att-style="props.partner.type == 'contact' || !props.partner.type ? 'display: block;' : 'display: none;'">
+                        <span class='label'># Documento</span>
+                        <input class='detail doc_number' style="background: gold;" name='doc_number' t-att-value='props.partner.doc_number || ""' t-on-change="captureChange"></input>
+                    </div>
+
+                    <div class='partner-detail invoice' t-att-style="props.partner.type == 'contact' || !props.partner.type ? 'display: none;' : 'display: block;'">
+                        <span class='label'>Contacto de:</span>
+                        <select class='detail client-address-country needsclick' name='parent_id' t-on-change="captureChange">
+                            <option value=''>None</option>
+                            <t t-foreach='env.pos.partners' t-as='parent' t-key="parent.id">
+                                <option t-att-value='parent.id' t-att-selected="props.partner.parent_id ? ((parent.id === props.partner.parent_id[0]) ? true : undefined) : undefined">
+                                    <t t-esc='parent.name'/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class='partner-detail'>
+                        <input type="hidden" class='detail commercial_name' name='commercial_name' t-att-value='props.partner.commercial_name || ""' t-on-change="captureChange"></input>
+                        <input type="hidden" class='detail legal_name' name='legal_name' t-att-value='props.partner.legal_name || ""' t-on-change="captureChange"></input>
+                        <input type="hidden" class='detail last_update' name='last_update' t-att-value='props.partner.last_update || ""' t-on-change="captureChange"></input>
+                        <input type="hidden" class='detail is_validate' name='is_validate' t-att-value='props.partner.is_validate || ""' t-on-change="captureChange"></input>
+                        <input type="hidden" class='detail doc_type' name='doc_type' t-att-value='props.partner.doc_type || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>País</span>
+                        <select class='detail client-address-country needsclick' name='country_id' t-on-change="captureChange">
+                            <option value=''>None</option>
+                            <t t-foreach='env.pos.countries' t-as='country' t-key="country.id">
+                                <option t-att-value='country.id' t-att-selected="props.partner.country_id ? ((country.id === props.partner.country_id[0]) ? true : undefined) : undefined">
+                                    <t t-esc='country.name'/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Departamento</span>
+                        <select class='detail client-address-states needsclick' name='state_id' t-on-change="captureChange">
+                            <option value=''>None</option>
+                            <t t-foreach='env.pos.states' t-as='state' t-key="state.id">
+                                <option t-if="props.partner.country_id[0] == state.country_id[0]" t-att-value='state.id'
+                                    t-att-selected="props.partner.state_id ? ((state.id === props.partner.state_id[0]) ? true : undefined) : undefined">
+                                    <t t-esc='state.name'/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    
+                    <div class='partner-detail'>
+                        <span class='label'>Provincia</span>
+                        <select id="city_id" name="city_id" t-attf-class="detail form-control" t-on-change="captureChange">
+                            <option value="">Provincia...</option>
+                        </select>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Distrito</span>
+                        <select id="l10n_pe_district" name="l10n_pe_district" t-attf-class="detail form-control" t-on-change="captureChange">
+                            <option value="">Distrito...</option>
+                        </select>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Dirección</span>
+                        <input class='detail client-address-street' name='street'       t-att-value='props.partner.street || ""' placeholder='Street' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail oe_hidden'>
+                        <span class='label'>Postcode</span>
+                        <input class='detail client-address-zip'    name='zip'          t-att-value='props.partner.zip || ""' placeholder='ZIP' t-on-change="captureChange"></input>
+                    </div>
+                </div>
+                <div class='partner-details-right'>
+                    <div class='partner-detail'>
+                        <span class='label'>Email</span>
+                        <input class='detail client-email'  name='email'    type='email'    t-att-value='props.partner.email || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Teléfono</span>
+                        <input class='detail client-phone'  name='phone'    type='tel'      t-att-value='props.partner.phone || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Celular</span>
+                        <input class='detail client-phone'  name='mobile'    type='tel'      t-att-value='props.partner.mobile || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail'>
+                        <span class='label'>Barcode</span>
+                        <input class='detail barcode'       name='barcode'    t-att-value='props.partner.barcode || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div class='partner-detail oe_hidden'>
+                        <span class='label'>Tax ID</span>
+                        <input class='detail vat' name='vat'     t-att-value='props.partner.vat || ""' t-on-change="captureChange"></input>
+                    </div>
+                    <div t-attf-class='partner-detail #{env.pos.pricelists.length &lt;= 1 ? "oe_hidden" : ""}'>
+                        <span class='label'>Pricelist</span>
+                        <select class='detail needsclick' name='property_product_pricelist' t-on-change="captureChange">
+                            <t t-foreach='env.pos.pricelists' t-as='pricelist' t-key="pricelist.id">
+                                <option t-att-value='pricelist.id'
+                                        t-att-selected="props.partner.property_product_pricelist ? (pricelist.id === props.partner.property_product_pricelist[0] ? true : undefined) : undefined">
+                                    <t t-esc='pricelist.display_name'/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//input[hasclass('partner-name')]" position="after">
+            <strong class='label'>Tipo: </strong>
+            <select id="type" name="type" t-attf-class="form-control" data-init="1" t-on-change="captureChange">
+                <option value="contact" t-att-selected="props.partner.type =='contact' ? true : undefined">Contacto</option>
+                <option value="invoice" t-att-selected="props.partner.type =='invoice' ? true : undefined">Dirección de factura</option>
+            </select>
+        </xpath>
+    </t>
+</templates>

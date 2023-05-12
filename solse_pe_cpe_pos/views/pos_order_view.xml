@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_pos_pos_form">
+            <field name="name">pos.order.scpe.form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+            <field name="arch" type="xml">
+            	<field name="fiscal_position_id" position="attributes">
+	                <attribute name="invisible">True</attribute>
+	            </field>
+                <xpath expr="//button[@name=%(point_of_sale.action_pos_payment)d]" position="attributes">
+	              <attribute name="context">{'pos_session_id' : session_id, 'paid_on_line':True}</attribute>
+	              <attribute name="groups">point_of_sale.group_pos_user</attribute>
+	            </xpath>
+	            <xpath expr="//button[@name='action_pos_order_invoice']" position="attributes">
+	            	<attribute name="groups">point_of_sale.group_pos_user</attribute>
+	            </xpath>
+
+	            <xpath expr="//group[@name='order_fields']" position="before">
+			        <widget name="web_ribbon" title="Anulado" bg_color="bg-danger" attrs="{'invisible' : ['|',('pe_invoice_type', 'not in', ('annul')),('state','in','draft')]}" />
+			      </xpath>
+			    <xpath expr="//field[@name='partner_id']" position="attributes">
+			        <attribute name="required">True</attribute>
+			        <attribute name="context">{'search_default_customer':1,'force_pe_journal':True}</attribute>
+			    </xpath>
+			    <xpath expr="//field[@name='fiscal_position_id']" position="after">
+			        <field name="pe_credit_note_code" attrs="{'required':[('pe_invoice_type','in',['refund'])],'invisible':[('pe_invoice_type','not in',['refund'])]}" />
+			        <field name="pe_invoice_type" invisible="True" />
+			        <field name="pe_motive" attrs="{'invisible':[('pe_invoice_type','not in',['refund'])],'required':[('pe_invoice_type','in',['refund'])],'readonly':[('state','not in',['draft'])]}" />
+			    </xpath>
+			    <xpath expr="//button[@name='refund']" position="attributes">
+			    	<attribute name="groups">point_of_sale.group_pos_user</attribute>
+			        <attribute name="string">Nota de Credito</attribute>
+			        <attribute name="attrs">{'invisible':['|',('state','in',['draft','paid','done']),('pe_invoice_type','in',['refund'])]}</attribute>
+			        <attribute name="context">{'default_pe_invoice_type':'refund'}</attribute>
+			    </xpath>
+			    <!--<xpath expr="//field[@name='picking_id']" position="attributes">
+			        <attribute name="readonly">False</attribute>
+			        <attribute name="attrs">{'readonly':[('state','not in',['draft'])]}</attribute>
+			    </xpath>-->
+			    <xpath expr="//button[@name='refund']" position="after">
+			    	<button name="action_invoice_sent" type="object" string="Send by Email" attrs="{'invisible':[('state', 'not in', ('invoiced'))]}" groups="base.group_user"/>
+                	<button name="invoice_print" string="Print Invoice" type="object" attrs="{'invisible':[('state', 'not in', ('invoiced'))]}" groups="base.group_user"/>
+			        <button name="refund" string="Anular" type="object" confirm="Are you sure you want to anull this invoice in the Sunat?" attrs="{'invisible':['|',('state','in',['draft','done']),('pe_invoice_type','in',['annul'])]}" context="{'default_pe_invoice_type':'annul'}" />
+			    </xpath>                                 
+            </field>
+        </record>
+
+        <record id="view_pos_order_tree" model="ir.ui.view">
+	        <field name="name">pos.order.tree.scpe.inherit_id</field>
+	        <field name="model">pos.order</field>
+	        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree" />
+	        <field name="arch" type="xml">
+	            <field name="name" position="after">
+	                <field name="number" />
+	            </field>
+	        </field>
+	    </record>
+    </data>
+</odoo>

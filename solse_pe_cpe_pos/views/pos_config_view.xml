@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+		<field name="name">res.config.settings.view.form.inherit.solse_cpe</field>
+        <field name="model">res.config.settings</field>
+		<field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+		<field name="arch" type="xml">
+
+			<xpath expr="//div[@id='pos_accounting_section']/div[4]//div[hasclass('content-group')]" position="inside">
+				<div class="row mt16">
+					<label string="Documentos de venta" for="documento_venta_ids" class="col-lg-3 o_light_label"/>
+					<field name="documento_venta_ids" colspan="4" nolabel="1" context="{'default_sub_type': 'sale', 'default_company_id': company_id}" widget="many2many_tags" domain="[('company_id', '=', company_id), ('sub_type', '=', 'sale')]"/>
+				</div>
+				<div class="row mt16">
+					<label string="Documentos por Defecto" for="doc_venta_defecto" class="col-lg-3 o_light_label"/>
+					<field name="doc_venta_defecto" colspan="4" nolabel="1" context="{'default_type': 'sale'}"  options="{'no_create': True}"/>
+				</div>
+			</xpath>
+
+			<xpath expr="//div[@id='pos_interface_section']" position="inside">
+				<div class="col-12 col-lg-6 o_setting_box" title="Clientes Varios en POS.">
+					<div class="o_setting_right_pane">
+						<label for="cliente_varios"/>
+						<div class="text-muted">
+							Clientes Varios.
+						</div>
+						<div class="content-group mt16">
+							<field name="cliente_varios" colspan="4" nolabel="1" />
+						</div>
+					</div>
+				</div>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>

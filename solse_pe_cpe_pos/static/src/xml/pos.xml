@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="Chrome" t-inherit="point_of_sale.Chrome" t-inherit-mode="extension" owl="1">
+        <xpath expr="//img[hasclass('pos-logo')]" position="replace">
+            <img src="/web/binary/company_logo" class="pos-logo" style="position: relative; top: 25%; transform: translateY(-50%);" />
+        </xpath>
+        
+    </t>
+    
+    <t t-extend="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-if='receipt.company.logo']" position="after">
+            <div t-if="order.get_cpe_type()" class="pos-receipt-center-align" style="text-align:center">
+                <strong>
+                    <t t-if="order.get_cpe_type()=='01'">Factura </t>
+                    <t t-if="order.get_cpe_type()=='03'">Boleta Electronica</t>
+                </strong>
+                <br/>
+            </div>
+            <div t-if="order.get_number()" class="pos-receipt-center-align" style="text-align:center">
+                <strong>
+                    <t t-esc="order.get_number()" />
+                </strong>
+            </div>
+        </xpath>
+        
+        <xpath expr="//t[@t-if='receipt.company.vat']" position="replace">
+            <t t-if='receipt.company.vat'>
+                <div>RUC:<t t-esc='receipt.company.vat' /></div>
+            </t>
+            <t t-if='receipt.company.street'>
+                <div>Dirección: <t t-esc="receipt.company.street"/></div>
+            </t>
+        </xpath>
+        
+        <xpath expr="//t[@t-if='receipt.header_html']" position="before">
+            <div class="receipt-partner" t-if="order.partner">
+                <br />
+                <t t-esc="order.partner.name"/><br />
+                <t t-if="order.get_doc_number()">
+                    <t t-if="order.get_doc_type() == 6">
+                        RUC
+                    </t>
+                    <t t-elif="order.get_doc_type() == 1">
+                        DNI
+                    </t>
+                    <t t-else="">
+                        OTRO:
+                    </t>
+                    <t t-esc="order.get_doc_number()"/><br />
+
+                </t>
+                <t t-if="order.partner.street">
+                    Dirección: <t t-esc="order.partner.street"/><br />
+                </t>
+                
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-if='receipt.total_rounded != receipt.total_with_tax']" position="after">
+            <div>
+                SON <t t-esc="order.get_amount_text()" />
+            </div>
+            <br/>
+        </xpath>
+ 
+
+        <xpath expr="//div[@t-if='receipt.pos_qr_code']" position="replace">
+            <div style="text-align:center">
+                <t t-if="order.get_cpe_type()">
+                    <br />
+                    <div>
+                        <strong>Tipo de pago: </strong>
+                        <t t-if="order.get_invoice_payment_term()">
+                            Crédito - <t t-esc="order.get_payment_term()" />
+                        </t>
+                        <t t-else="">
+                            Contado
+                        </t>
+                        
+                    </div>
+                    <br />
+                    <t t-if="receipt.sunat_qr_code">
+                        <div class="qr-code" id="qr-code" style="display: flex; justify-content: center;">
+                            <canvas width="128" height="128" style="display: none;"></canvas>
+                            <img alt="Scan me!" style="display: block;" t-att-src='receipt.sunat_qr_code' />
+                        </div>
+                    </t>
+                    <t t-elif="receipt.pos_qr_code">
+                        <br />
+                        <div class="pos-receipt-order-data">
+                            Escanéame para solicitar una factura por tu compra.
+                        </div>
+                        <img id="posqrcode" t-att-src="receipt.pos_qr_code" class="pos-receipt-logo"/>
+                    </t>
+                    
+                    <br />
+                    <b class="doc-sunat">Representación impresa de 
+                    <t t-if="order.get_cpe_type()=='01'">Factura </t>
+                    <t t-if="order.get_cpe_type()=='03'">Boleta de Venta </t>
+                    Electrónica consulte en <t t-esc="order.pos.company.website || ''"/> </b>
+                </t>
+                <t t-else="">
+                    <div t-if="receipt.pos_qr_code">
+                        <br /><br />
+                        <div class="pos-receipt-order-data">
+                            Escanéame para solicitar una factura por tu compra.
+                        </div>
+                        <img id="posqrcode" t-att-src="receipt.pos_qr_code" class="pos-receipt-logo"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </t>
+
+    <t t-name="SaleInvoiceJournal">
+        <t t-if="widget.pos.l10n_latam_document_type_ids">
+            <t t-set="m_total" t-value="widget.pos.get_order().get_total_with_tax()" /> 
+            <t t-if="m_total >= 0">
+                <t  t-foreach="widget.pos.l10n_latam_document_type_ids" t-as="doc_venta_id" t-key="doc_venta_id.id" >
+                    <div class="button js_sale_journal" t-att-data-id="doc_venta_id.id" t-if="doc_venta_id.code != '07' ">
+                        <i class="fa fa-file-text-o" />
+                        <t t-esc="doc_venta_id.name" />
+                    </div>
+                </t>
+            </t>
+            <t t-else="">
+                <t  t-foreach="widget.pos.l10n_latam_document_type_ids" t-as="doc_venta_id" t-key="doc_venta_id.id" >
+                    
+                    <div class="button js_sale_journal" t-att-data-id="doc_venta_id.id" t-if="doc_venta_id.code == '07' ">
+                        <i class="fa fa-file-text-o" />
+                        <t t-esc="doc_venta_id.name" /> 
+                    </div>
+                </t>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreenStatus" t-inherit="point_of_sale.PaymentScreenStatus" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='payment-status-total-due']" position="after">
+            <div class="div_cuotas_credito" style="display: none;">
+                <select class="plazo_pago" >
+                    <option value="0">Seleccionar</option>
+                    <t  t-foreach="env.pos.invoice_payment_term_ids" t-as="plazo_pago" t-key="plazo_pago.id" >
+                        <option t-att-value="plazo_pago.id"><t t-esc="plazo_pago.name" />  </option>
+                    </t>
+                </select>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
