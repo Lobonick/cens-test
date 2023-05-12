@@ -87,30 +87,13 @@ class AccountMove(models.Model):
 	pe_signature = fields.Text('Firma', related='pe_cpe_id.signature')
 	pe_response = fields.Char('Respuesta', related='pe_cpe_id.response')
 	pe_note = fields.Text('Notas SUNAT', related='pe_cpe_id.note')
-	pe_error_code = fields.Selection('_get_pe_error_code', string='Error Code', related='pe_cpe_id.error_code', readonly=True)
+	pe_error_code = fields.Selection(string='Error Code', related='pe_cpe_id.error_code', readonly=True)
 	
 	pe_invoice_code = fields.Char("Codigo comprobante", related="l10n_latam_document_type_id.code", store=True)
 	pe_doc_name = fields.Char('Nombre del documento', compute='_get_peruvian_doc_name')
 	sunat_pdf417_code = fields.Binary('Pdf 417 Code', compute='_get_pdf417_code')
-	pe_invoice_state = fields.Selection([
-	 ('draft', 'Draft'),
-	 ('generate', 'Generated'),
-	 ('send', 'Send'),
-	 ('verify', 'Waiting'),
-	 ('done', 'Done'),
-	 ('cancel', 'Cancelled')],
-	  string='Estado cpe',
-	  related='pe_cpe_id.state',
-	  copy=False)
-	estado_sunat = fields.Selection([
-		('01', 'Registrado'),
-		('03', 'Enviado'),
-		('05', 'Aceptado'),
-		('07', 'Observado'),
-		('09', 'Rechazado'),
-		('11', 'Anulado'),
-		('13', 'Por anular'),
-	], string='Estado Sunat', related='pe_cpe_id.estado_sunat')
+	pe_invoice_state = fields.Selection(string='Estado cpe', related='pe_cpe_id.state', copy=False)
+	estado_sunat = fields.Selection(string='Estado Sunat', related='pe_cpe_id.estado_sunat')
 	pe_debit_note_code = fields.Selection(selection='_get_pe_debit_note_type', string='Código de nota de debito', states={'draft': [('readonly', False)]})
 	pe_credit_note_code = fields.Selection(selection='_get_pe_credit_note_type', string='Código de nota de crédito', states={'draft': [('readonly', False)]})
 	
@@ -131,21 +114,21 @@ class AccountMove(models.Model):
 	pe_license_plate = fields.Char('Placa', size=10, readonly=True, states={'draft': [('readonly', False)]}, copy=False)
 	pe_condition_code = fields.Selection('_get_pe_condition_code', 'Código de condición', copy=False)
 	pe_total_discount = fields.Float('Descuento total', compute='_compute_discount')
-	pe_amount_discount = fields.Monetary(string='Descuento', compute='_compute_discount', track_visibility='always')
-	pe_total_discount_tax = fields.Monetary(string='Impuesto de descuento', compute='_compute_discount', track_visibility='always')
+	pe_amount_discount = fields.Monetary(string='Descuento (PE)', compute='_compute_discount')
+	pe_total_discount_tax = fields.Monetary(string='Impuesto de descuento', compute='_compute_discount')
 	pe_charge_total = fields.Monetary('Cargo total', compute='get_pe_charge_amount', currency_field='company_currency_id') 
 	pe_icbper_amount = fields.Float('ICBPER', compute='_compute_pe_icbper_amount', digits=(16, 2))
 
-	total_operaciones_gravadas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_gravadas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_exoneradas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_exoneradas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_gratuitas = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_gratuitas_dolar = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_inafectas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_inafectas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_exportadas = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte', track_visibility='onchange')
-	total_operaciones_exportadas_dolar = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte', track_visibility='onchange')
+	total_operaciones_gravadas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_gravadas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_exoneradas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_exoneradas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_gratuitas = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte')
+	total_operaciones_gratuitas_dolar = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte')
+	total_operaciones_inafectas = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_inafectas_dolar = fields.Monetary(store=False, readonly=True,compute='_compute_amount_reporte')
+	total_operaciones_exportadas = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte')
+	total_operaciones_exportadas_dolar = fields.Monetary(store=False, readonly=True, compute='_compute_amount_reporte')
 
 	sunat_estado_manual = fields.Char('Estado SUNAT')
 
@@ -164,6 +147,20 @@ class AccountMove(models.Model):
 		inverse='_inverse_tax_totals_pe',
 		exportable=False,
 	)
+
+	def _get_l10n_latam_documents_domain(self):
+		self.ensure_one()
+		if self.move_type in ['out_refund', 'in_refund']:
+			internal_types = ['credit_note']
+		else:
+			internal_types = ['invoice', 'debit_note']
+
+		dominio = [('internal_type', 'in', internal_types), ('country_id', '=', self.company_id.account_fiscal_country_id.id)]
+
+		if self.journal_id.tipo_doc_permitidos:
+			dominio.append(("id", "in", self.journal_id.tipo_doc_permitidos.ids))
+		return dominio
+
 
 	def _inverse_tax_totals_pe(self):
 		if self.env.context.get('skip_invoice_sync'):
@@ -951,14 +948,17 @@ class AccountMove(models.Model):
 				if line.pe_affectation_code == '40' and line.move_id.pe_sunat_transaction51[:2] != '02':
 					raise UserError('Para la linea con el producto %s debe ser Exportacion' % line.name)
 
+		for linea in self.invoice_line_ids:
+			if linea.pe_affectation_code in ['11', '12', '13', '14', '15', '16', '17']:
+				if not 'discount' in linea or int(linea.discount) != 100:
+					raise UserError("El descuento no es valido, para este tipo de operaciones verifique que tiene activo la opción de descuentos")
+
 		for line in self.invoice_line_ids.filtered(lambda ln: ln.display_type not in ['rounding']):
 			if line.display_type not in ['product']:
 				continue
 			if line.display_type in ['product'] and (line.quantity == 0.0 or line.price_unit == 0.0):
 				es_icbper = True if len(line.tax_ids) == 1 and line.tax_ids[0].l10n_pe_edi_tax_code in ['7152'] else False
 				nota_credito_especial = True if line.move_type == 'out_refund' and line.move_id.pe_credit_note_code == '13' else False
-				_logging.info("nota_credito_especial lllllllllllllllllllllllllllllllllllll")
-				_logging.info(nota_credito_especial)
 				if not es_icbper and not nota_credito_especial:
 					raise UserError('La cantidad o precio del producto %s debe ser mayor a 0.0' % line.name)
 			if not line.tax_ids:
@@ -984,7 +984,7 @@ class AccountMove(models.Model):
 					 doc_type, doc_number))
 			amount = self.company_id.sunat_amount or 0
 			if self.amount_total >= amount:
-				if doc_type in ['0', '-'] and doc_number in ['0', '-']:
+				if doc_type in ['0', '-']:
 					raise UserError('El dato ingresado no cumple con el estandar \nTipo: %s \nNumero de documento: %s\nSon obligatorios el Tipo de Doc. y Numero para montos iguales o mayores a %s' % (
 					 doc_type, doc_number, str(amount)))
 		if self.pe_invoice_code in ('01', ) or self.reversed_entry_id.pe_invoice_code in ('01', ):

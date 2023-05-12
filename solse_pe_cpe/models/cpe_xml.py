@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 from datetime import date, datetime, timedelta
 from pysimplesoap.simplexml import SimpleXMLElement
 import logging
-from odoo.tools import float_is_zero, float_round, DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import float_is_zero, DEFAULT_SERVER_DATETIME_FORMAT
 from odoo import fields
 import dateutil.parser
 import pytz
@@ -25,6 +25,10 @@ def round_up(n, decimals=0):
 	return float(("%."+str(decimals)+"f") % n)
 	#multiplier = 10 ** decimals
 	#return math.ceil(n * multiplier) / multiplier
+
+def float_round(n, precision_rounding=0):
+	#return ("{0:0%sd}" % str(decimals)).format(n)
+	return float(("%."+str(precision_rounding)+"f") % n)
 
 
 def round_down(n, decimals=0):
@@ -636,7 +640,7 @@ class CPE:
 			for line in line_ids:
 				#price_unit = line.price_unit
 				price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-				if line.discount >= 100:
+				if int(line.discount) == 100:
 					price_unit = line.price_unit
 				if tax.id in line.tax_ids.ids:
 					tax_values = tax.with_context(round=False).compute_all(price_unit, currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
@@ -704,7 +708,7 @@ class CPE:
 			for line in line_ids:
 				#price_unit = line.price_unit
 				price_unit = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-				if line.discount >= 100:
+				if int(line.discount) == 100:
 					price_unit = line.price_unit
 				if tax.id in line.tax_ids.ids:
 					tax_values = tax.with_context(round=False).compute_all(price_unit, currency=(invoice_id.currency_id), quantity=(line.quantity), product=(line.product_id), partner=(invoice_id.partner_id))
@@ -945,7 +949,7 @@ class CPE:
 				etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round_up(line.discount / 100, 5))
 				# Monto del descuento del ítem
 				tag = etree.QName(self._cbc, 'Amount')
-				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.discount == 100 and 0.0 or line.amount_discount, digits), 2))
+				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(int(line.discount) == 100 and 0.0 or line.amount_discount, digits), 2))
 				# Monto sobre el cual se le debe aplicar el descuento del ítem
 				tag = etree.QName(self._cbc, 'BaseAmount')
 				etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round(line.price_subtotal + line.amount_discount, digits), 2))
@@ -1017,18 +1021,26 @@ class CPE:
 					tag = etree.QName(self._cbc, 'TaxableAmount')
 					
 					if line.pe_affectation_code in ['21', '31', '32', '33', '34', '35', '36']:
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_total_values.get('total_excluded', 0.0)), precision_rounding=digits), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_total_values.get('total_excluded', 0.0), 2))
 						tag = etree.QName(self._cbc, 'TaxAmount')
 						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = "0.00"
-					elif line.pe_affectation_code in ['11', '12', '13', '14', '15', '16', '17']:
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('base', 0.0)), precision_rounding=digits), 2))
+					elif line.pe_affectation_code in ['11', '12', '13', '14', '16', '17']:
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_vals.get(tax.id, {}).get('base', 0.0), 2))
 						tag = etree.QName(self._cbc, 'TaxAmount')
-						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(float_round((tax_vals.get(tax.id, {}).get('amount', 0.0)), precision_rounding=digits), 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round_up(tax_vals.get(tax.id, {}).get('amount', 0.0), 2))
+					elif line.pe_affectation_code in ['15']:
+						monto_base = tax_total_values.get('total_excluded', 0.0)
+						monto_base_texto = str(round_up(monto_base, 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = monto_base_texto
+						tag = etree.QName(self._cbc, 'TaxAmount')
+						monto = tax_vals.get(tax.id, {}).get('amount', 0.0)
+						monto_texto = str(round_up(monto, 2))
+						etree.SubElement(subtotal, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = monto_texto
 
 					tag = etree.QName(self._cac, 'TaxCategory')
 					category = etree.SubElement(subtotal, (tag.text), nsmap={'cac': tag.namespace})
 						
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						tag = etree.QName(self._cbc, 'Percent')
 						taxes_ids = line.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code != constantes.IMPUESTO['gratuito'])
 						amount = tax.pe_tax_type.code == constantes.IMPUESTO['gratuito'] and (len(taxes_ids) > 1 and taxes_ids[0].amount or taxes_ids.amount) or tax.amount
@@ -1078,7 +1090,7 @@ class CPE:
 					tag = etree.QName(self._cbc, 'TaxTypeCode')
 					etree.SubElement(scheme, (tag.text), nsmap={'cbc': tag.namespace}).text = tax.pe_tax_type.un_ece_code
 				elif tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['ICBPER']:
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						pass
 					else:
 						tag = etree.QName(self._cac, 'TaxSubtotal')
@@ -1103,7 +1115,7 @@ class CPE:
 						tag = etree.QName(self._cbc, 'TaxTypeCode')
 						etree.SubElement(scheme, (tag.text), nsmap={'cbc': tag.namespace}).text = tax.pe_tax_type.un_ece_code
 				else:
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						pass
 					else:
 						"""

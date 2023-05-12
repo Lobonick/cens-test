@@ -138,7 +138,8 @@ try:
 	http.client.HTTPSConnection._create_connection = _create_connection"""
 #except ImportError:
 except Exception as e:
-	log.info("horror locallllllllllll")
+	log.info("Ocurrio un error en la carga de las librerias")
+	_logging.info(e)
 
 
 class TransportBase:

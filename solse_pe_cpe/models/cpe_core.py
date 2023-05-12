@@ -236,7 +236,7 @@ def get_ticket_status(ticket, client):
 	return Document().get_status(ticket, client)
 
 def get_status_cdr(send_number, client):
-	client['url'] = 'https://e-factura.sunat.gob.pe/ol-it-wsconscpegem/billConsultService'
+	#client['url'] = 'https://e-factura.sunat.gob.pe/ol-it-wsconscpegem/billConsultService'
 	client['type'] = 'statusCdr'
 	client = Client(**client)
 	return Document().get_status_cdr(send_number, client)

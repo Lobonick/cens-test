@@ -73,3 +73,6 @@
 
 # 18/04/2023
 * La visualizacion de impuestos, se muestra incluso si estan con monto cero para los impuestos mas usados
+
+# 11/05/223
+* Se agrega configuracion de url de consulta para tomar en cuenta paso con conexion a OSE para consulta de cdr

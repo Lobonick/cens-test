@@ -14,8 +14,7 @@ class PeCertificate(models.Model):
 		('draft', 'Borrador'),
 		('done', 'Listo'),
 		('cancel', 'Cancelado'),
-	], string='Status', index=True, readonly=True, default='draft',
-		track_visibility='onchange', copy=False)
+	], string='Status', index=True, readonly=True, default='draft', copy=False)
 	key = fields.Text(".key", required=True)
 	crt = fields.Text(".crt", required=True)
 

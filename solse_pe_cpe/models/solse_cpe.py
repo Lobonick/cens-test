@@ -32,6 +32,7 @@ def get_document(self):
 
 class PeruSunatCpe(models.Model):
 	_name = 'solse.cpe'
+	_inherit = ['mail.thread']
 	_description = 'Sunat Perú'
 
 	name = fields.Char("Name", default="/")
@@ -42,7 +43,7 @@ class PeruSunatCpe(models.Model):
 		('verify', 'Esperando'),
 		('done', 'Hecho'),
 		('cancel', 'Cancelado'),
-	], string='Estado', index=True, readonly=True, default='draft', track_visibility='onchange', copy=False)
+	], string='Estado', index=True, readonly=True, default='draft', tracking=True, copy=False)
 	type = fields.Selection([
 		('sync', 'Envio online'),
 		('rc', 'Resumen diario'),
@@ -475,6 +476,7 @@ class PeruSunatCpe(models.Model):
 	def action_document_status(self):
 		client = self.prepare_sunat_auth()
 		name = self.get_document_name()
+		client['url'] = self.company_id.pe_cpe_server_id.url_consulta
 		response_status, response, response_file = get_status_cdr(name, client)
 		state = None
 		if response_status:

@@ -34,6 +34,7 @@
             </group>
             <group>
               <field name="url" />
+              <field name="url_consulta" />
               <field name="extension_xml" />
               <field name="active" />
             </group>

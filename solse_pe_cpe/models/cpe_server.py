@@ -9,6 +9,7 @@ class pe_sunat_server(models.Model):
 	company_id = fields.Many2one(comodel_name='res.company', string='Compañía', required=True, default=lambda self:self.env.user.company_id)
 	name = fields.Char("Nombre", required=True)
 	url = fields.Char("Url", required=True)
+	url_consulta = fields.Char("Url Consulta", required=True, default='https://e-factura.sunat.gob.pe/ol-it-wsconscpegem/billConsultService')
 	user = fields.Char("Usuario")
 	password = fields.Char("Clave")
 	description = fields.Text("Descripcion")

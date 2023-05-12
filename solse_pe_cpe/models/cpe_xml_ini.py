@@ -558,7 +558,7 @@ class CPE:
 						tag = etree.QName(self._cbc, 'MultiplierFactorNumeric')
 						etree.SubElement(charge, (tag.text), nsmap={'cbc': tag.namespace}).text = str(round(line.discount / 100, 5))
 						tag = etree.QName(self._cbc, 'Amount')
-						etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.discount == 100 and 0.0 or line.amount_discount, digits), 2))
+						etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(int(line.discount) == 100 and 0.0 or line.amount_discount, digits), 2))
 						tag = etree.QName(self._cbc, 'BaseAmount')
 						etree.SubElement(charge, (tag.text), currencyID=(invoice_id.currency_id.name), nsmap={'cbc': tag.namespace}).text = str(round(float_round(line.price_subtotal + line.amount_discount, digits), 2))
 			if line.pe_charge_amount > 0:
@@ -613,7 +613,7 @@ class CPE:
 					tag = etree.QName(self._cac, 'TaxCategory')
 					category = etree.SubElement(subtotal, (tag.text), nsmap={'cac': tag.namespace})
 						
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						tag = etree.QName(self._cbc, 'Percent')
 						taxes_ids = line.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code != '9996')
 						amount = tax.pe_tax_type.code == '9996' and (len(taxes_ids) > 1 and taxes_ids[0].amount or taxes_ids.amount) or tax.amount
@@ -633,7 +633,7 @@ class CPE:
 					tag = etree.QName(self._cbc, 'TaxTypeCode')
 					etree.SubElement(scheme, (tag.text), nsmap={'cbc': tag.namespace}).text = tax.pe_tax_type.un_ece_code
 				elif tax.l10n_pe_edi_tax_code == '7152':
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						pass
 					else:
 						tag = etree.QName(self._cac, 'TaxSubtotal')
@@ -657,7 +657,7 @@ class CPE:
 						tag = etree.QName(self._cbc, 'TaxTypeCode')
 						etree.SubElement(scheme, (tag.text), nsmap={'cbc': tag.namespace}).text = tax.pe_tax_type.un_ece_code
 				else:
-					if line.discount == 100:
+					if int(line.discount) == 100:
 						pass
 					else:
 						"""

@@ -103,7 +103,7 @@ class AccountInvoiceLine(models.Model):
 				res = self.env['account.tax'].search([('l10n_pe_edi_tax_code', '=', constantes.IMPUESTO['gratuito'])], limit=1)
 				self.tax_ids = [(6, 0, ids + res.ids)]
 		else:
-			if self.discount == 100:
+			if int(self.discount) == 100:
 				self.discount = 0
 			ids = self.tax_ids.ids
 			vat = self.env['account.tax'].search([('l10n_pe_edi_tax_code', '=', constantes.IMPUESTO['gratuito']), ('id', 'in', ids)])
@@ -180,7 +180,7 @@ class AccountInvoiceLine(models.Model):
 		igv = self.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['igv'])
 		if self.tax_ids:
 			if igv:
-				if self.discount == 100:
+				if int(self.discount) == 100:
 					self.pe_affectation_code = '11'
 					self._set_free_tax()
 				else:
@@ -188,7 +188,7 @@ class AccountInvoiceLine(models.Model):
 		vat = self.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['exonerado'])
 		if self.tax_ids:
 			if vat:
-				if self.discount == 100:
+				if int(self.discount) == 100:
 					self.pe_affectation_code = '21'
 					self._set_free_tax()
 				else:
@@ -196,7 +196,7 @@ class AccountInvoiceLine(models.Model):
 		vat = self.tax_ids.filtered(lambda tax: tax.l10n_pe_edi_tax_code == constantes.IMPUESTO['inafecto'])
 		if self.tax_ids:
 			if vat:
-				if self.discount == 100:
+				if int(self.discount) == 100:
 					self.pe_affectation_code = '31'
 					self._set_free_tax()
 				else:

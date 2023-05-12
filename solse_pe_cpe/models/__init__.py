@@ -14,3 +14,4 @@ from . import res_company
 from . import solse_cpe
 from . import cpe_servicios_extras
 from . import account_payment_term
+from . import account_journal
