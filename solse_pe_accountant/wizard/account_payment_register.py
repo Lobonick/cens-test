@@ -268,6 +268,8 @@ class AccountPaymentRegister(models.TransientModel):
 					'batch': batch_result,
 				})
 
+		_logging.info("******************************")
+		_logging.info(to_process)
 		payments = self._init_payments(to_process, edit_mode=edit_mode)
 		self._post_payments(to_process, edit_mode=edit_mode)
 		self._reconcile_payments(to_process, edit_mode=edit_mode)
