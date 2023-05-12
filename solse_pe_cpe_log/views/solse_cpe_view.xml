@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+	<record model="ir.ui.view" id="view_pe_sunat_cpe_from">
+		<field name="name">solse.cpe.form.inherit</field>
+		<field name="model">solse.cpe</field>
+        <field name="inherit_id" ref="solse_pe_cpe.view_pe_sunat_cpe_from" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='invoice_ids']" position="before">
+				<div class="oe_inline o_td_label" attrs="{'invisible': [('state', '=', 'done')]}">
+					<label for="no_enviar_rnoaceptados"/>
+					<field name="no_enviar_rnoaceptados" nolabel="1"/>
+				</div>
+				
+			</xpath>
+		</field>
+	</record>
+
+
+</data>
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+    <record id="ir_cron_procesar_cpe" model="ir.cron">
+        <field name="name">Procesar cpe's (Con error de envio)</field>
+        <field name="model_id" ref="solse_pe_cpe.model_solse_cpe"/>
+        <field name="state">code</field>
+        <field name="code">model.procesar_cpes_reenviar(20)</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="ir_cron_consultar_estado_cpe" model="ir.cron">
+        <field name="name">Procesar cpe's (Consular estado)</field>
+        <field name="model_id" ref="solse_pe_cpe.model_solse_cpe"/>
+        <field name="state">code</field>
+        <field name="code">model.procesar_cpes_consultar_estado(20)</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
