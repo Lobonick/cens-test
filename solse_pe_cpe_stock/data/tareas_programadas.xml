@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="limpiar_stock_almacen" model="ir.cron">
+            <field name="name">Limpiar Stock en Almacen</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">0</field>
+            <field name="doall" eval="False" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="state">code</field>
+            <field name="model_id" ref="stock.model_stock_picking" />
+            <field name="code">model.limpiar_stock_almacen_nombre(almacen="Nombre")</field>
+            <field name="active" eval="True" />
+        </record>
+        
+    </data>
+</odoo>
