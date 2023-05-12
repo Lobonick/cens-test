@@ -21,7 +21,7 @@ class AccountMove(models.Model):
 	usar_prefijo_personalizado = fields.Boolean('Personalizar prefijo', related='l10n_latam_document_type_id.usar_prefijo_personalizado', store=True)
 	pe_sunat_transaction51 = fields.Selection('_get_pe_sunat_transaction51', string='Tipo de transacción de Sunat', default='0101', readonly=True, states={'draft': [('readonly', False)]})
 
-	moneda_base = fields.Many2one('res.currency', related="company_id.currency_id", store=True)
+	moneda_base = fields.Many2one('res.currency', string="Moneda base", related="company_id.currency_id", store=True)
 	monto_base_detraccion = fields.Float(string='Monto base detracción', related="company_id.monto_detraccion", store=True)
 	
 	cuenta_detraccion = fields.Many2one('account.journal', related='company_id.cuenta_detraccion')

@@ -4,7 +4,7 @@ from odoo import api, fields, models, _
 class AccountTax(models.Model):
 	_inherit = 'account.tax'
 
-	l10n_pe_edi_tax_code = fields.Selection("_get_pe_tax_code", string="Codigo SUNAT")
+	l10n_pe_edi_tax_code = fields.Selection("_get_pe_tax_code", string="Cod. SUNAT")
 	pe_tax_type = fields.Many2one(
 		comodel_name="pe.datas", string="Tipo de impuesto",
 		compute="_compute_pe_tax_type")

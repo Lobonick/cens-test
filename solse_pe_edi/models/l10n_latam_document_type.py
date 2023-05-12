@@ -42,13 +42,21 @@ class L10nLatamDocumentType(models.Model):
 				sequence = reg.secuencia_id._get_current_sequence()
 				sequence.sudo().number_next = reg.sequence_number_next
 
-	@api.model
+	"""@api.model
 	def create(self, vals):
 		if not vals.get('secuencia_id') and vals.get('usar_prefijo_personalizado') and vals.get('prefijo'):
 			vals.update({'secuencia_id': self.sudo()._create_sequence(vals).id})
 
 		rpt = super(L10nLatamDocumentType, self).create(vals)
-		return rpt
+		return rpt"""
+
+	@api.model_create_multi
+	def create(self, vals_list):
+		for vals in vals_list:
+			if not vals.get('secuencia_id') and vals.get('usar_prefijo_personalizado') and vals.get('prefijo'):
+				vals.update({'secuencia_id': self.sudo()._create_sequence(vals).id})
+
+		return super(L10nLatamDocumentType, self).create(vals_list)
 
 	def crear_secuencia(self):
 		if not self.prefijo:

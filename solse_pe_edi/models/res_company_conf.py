@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError, Warning
 
 class CompanyConf(models.Model) :
 	_name = 'res.company.conf'
+	_description = "Datos Configuracion empresa"
 
 	name = fields.Char('Nombre', default='Configuración empresa')
 	company_id = fields.Many2one('res.company', 'Empresa')

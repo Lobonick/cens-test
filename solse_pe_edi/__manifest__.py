@@ -16,7 +16,7 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "https://www.solse.pe",
 	'category': 'account',
-	'version': '16.0.1.1',
+	'version': '16.0.1.3',
 	'license': 'Other proprietary',
 	'depends': [
 		'base',
