@@ -68,12 +68,24 @@
 		</field>
 	</record>
 
+	
+	<!--<record model="ir.ui.view" id="pe_partner_address_form">
+		<field name="name">res.partner.view.form.inherit.direccion</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="l10n_pe.pe_partner_address_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='category_id']" position="after">
+
+			</xpath>
+		</field>
+	</record>
+
 	<record model="ir.ui.view" id="view_partner_form_sbase">
 		<field name="name">res.partner.view.form.inherit.base</field>
 		<field name="model">res.partner</field>
 		<field name="inherit_id" ref="base.view_partner_form" />
 		<field name="arch" type="xml">
-			<xpath expr="//div[@class='o_address_format']" position="replace">
+			<xpath expr="//div[hasclass('o_address_format')]" position="replace">
 				<div attrs="{'invisible': [('country_code', '!=', 'PE')]}" class="o_address_format">
                     <field name="country_enforce_cities" invisible="1"/>
                     <field name="parent_id" invisible="1"/>
@@ -115,6 +127,6 @@
 				
 			</xpath>
 		</field>
-	</record>
+	</record>-->
 
 </odoo>
