@@ -30,9 +30,8 @@ class AccountInvoice(models.Model):
 									 readonly=True,
 									 states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
 									 default='percent')
-	discount_rate = fields.Float('Discount Rate', digits=(16, 2),
-								 readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
-	amount_discount = fields.Monetary(string='Discount', store=True, readonly=True, track_visibility='always')
+	discount_rate = fields.Float('Discount Rate', readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
+	amount_discount = fields.Monetary(string='Discount', store=True, readonly=True, tracking=True)
 
 	@api.onchange('discount_type', 'discount_rate', 'invoice_line_ids')
 	def supply_rate(self):
@@ -70,4 +69,5 @@ class AccountInvoiceLine(models.Model):
 	_inherit = "account.move.line"
 
 	discount = fields.Float(string='Discount (%)', digits=(16, 20), default=0.0)
+	#discount = fields.Float(string='Discount (%)', default=0.0)
 

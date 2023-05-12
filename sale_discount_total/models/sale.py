@@ -51,16 +51,15 @@ class SaleOrder(models.Model):
 									 readonly=True,
 									 states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
 									 default='percent')
-	discount_rate = fields.Float('Discount Rate', digits=dp.get_precision('Account'),
+	discount_rate = fields.Float('Discount Rate', digits='Account',
 								 readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
 	amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all',
-									 track_visibility='always')
+									 tracking=True)
 	amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all',
-								 track_visibility='always')
+								 tracking=True)
 	amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all',
-								   track_visibility='always')
-	amount_discount = fields.Monetary(string='Discount', store=True, readonly=True, compute='_amount_all',
-									  digits=dp.get_precision('Account'), track_visibility='always')
+								   tracking=True)
+	amount_discount = fields.Monetary(string='Discount', store=True, readonly=True, compute='_amount_all', tracking=True)
 
 	@api.onchange('discount_type', 'discount_rate', 'order_line')
 	def supply_rate(self):
