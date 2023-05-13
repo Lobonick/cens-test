@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!--<record id="view_company_form" model="ir.ui.view">
+        <field name="name">stock.picking.solse.ple.view.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="solse_pe_cpe_guias.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_type']" position="after">
+                <field name="pe_type_operation"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="after" groups="base.group_no_one">
+                <page string="PLE 13" name="ple13">
+                    <group>
+                        <field name="sale_id"/>
+                        <field name="purchase_id"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>-->
+
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.ple13.view.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_type']" position="after">
+                <field name="pe_type_operation"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="after" groups="base.group_no_one">
+                <page string="PLE 13" name="ple13">
+                    <group>
+                        <field name="sale_id"/>
+                        <field name="purchase_id"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

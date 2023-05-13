@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_account_form" model="ir.ui.view">
+        <field name="name">account.account.ple13.form</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="deprecated" position="after">
+                <field name="is_inventory_account"/>
+            </field>
+        </field>
+    </record>
+    <record id="account_account_tree" model="ir.ui.view">
+        <field name="name">account.account.ple13.view.tree</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="action_compute_is_inventory_account" type="object" string="Cuenta inventario" groups="base.group_no_one"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

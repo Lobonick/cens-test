@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_id" model="ir.ui.view">
+		<field name="name">account.move.ple13.view.form</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//page[@name='other_info']" position="before">
+				<page string="PLE 13" name="ple13" groups="base.group_no_one">
+					<group>
+						<field name="stock_move_id"/>
+					</group>
+					<group>
+						<field name="solse_pe_serie"/>
+						<field name="solse_pe_numero"/>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+</odoo>

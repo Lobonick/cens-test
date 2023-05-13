@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_ple_report_13_tree" model="ir.ui.view">
+		<field name="name">ple.report.13.tree</field>
+		<field name="model">ple.report.13</field>
+		<field name="inherit_id" ref="solse_pe_ple.view_ple_report_templ_tree"/>
+		<field name="mode">primary</field>
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//field[@name='month']" position="attributes">
+					<attribute name="invisible"/>
+				</xpath>
+			</data>
+		</field>
+	</record>
+	<record id="view_ple_report_13_form" model="ir.ui.view">
+		<field name="name">ple.report.13.form</field>
+		<field name="model">ple.report.13</field>
+		<field name="inherit_id" ref="solse_pe_ple.view_ple_report_templ_form"/>
+		<field name="mode">primary</field>
+		<field name="arch" type="xml">
+			<data>
+				<xpath expr="//field[@name='month']" position="attributes">
+					<attribute name="invisible"/>
+				</xpath>
+				<xpath expr="//notebook" position="inside">
+					<page name="report_13_lines" string="Entregas">
+						<field name="line_ids" nolabel="1"/>
+					</page>
+					<page name="products" string="Productos">
+						<field name="product_ids" nolabel="1"/>
+					</page>
+				</xpath>
+				<xpath expr="//button[@name='generate_report']" position="after">
+					<button name="generate_physical_xls" string="Generar XLS Físico" type="object"/>
+				</xpath>
+				<xpath expr="//group[@name='file_group']" position="inside">
+					<field name="ple_xls_01_physical_filename" invisible="1"/>
+					<field name="ple_xls_01_physical_binary" filename="ple_xls_01_physical_filename" attrs="{'invisible': [('ple_xls_01_physical_binary','=',False)]}"/>
+				</xpath>
+			</data>
+		</field>
+	</record>
+	<record id="action_ple_report_13" model="ir.actions.act_window">
+		<field name="name">Registro de Inventario Permanente Valorizado</field>
+		<field name="res_model">ple.report.13</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[]</field>
+	</record>
+
+	<menuitem name="Estructura 13 - Registro de Inventario Permanente Valorizado"
+			id="menu_action_ple_report_13"
+			parent="solse_pe_ple.menu_ple_report"
+			action="action_ple_report_13"
+			sequence="13"/>
+</odoo>
