@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="stock_picking_to_batch_form" model="ir.ui.view">
+			<field name="name">stock.picking.to.batch.cpe.form</field>
+        	<field name="model">stock.picking.to.batch</field>
+	      	<field name="inherit_id" ref="stock_picking_batch.stock_picking_to_batch_form"/>
+	      	<field name="arch" type="xml">
+	      		<xpath expr="//field[@name='user_id']" position="after">
+	      			<field name="pe_is_eguide" attrs="{'invisible': [('mode', '=', 'existing')]}"/>
+	      			<field name="pe_transport_mode" options="{'no_create_edit': True}" attrs="{'invisible': ['|',('mode', '=', 'existing'), ('pe_is_eguide', '=', False)]}"/>
+	      			<field name="pe_carrier_id" options="{'no_create_edit': True}" attrs="{'invisible': ['|', ('mode', '=', 'existing'), ('pe_transport_mode', '!=', '01')]}"/>
+	      			<field name="fleet_id" options="{'no_create_edit': True}" attrs="{'invisible': ['|', ('mode', '=', 'existing'), ('pe_transport_mode', '!=', '02')]}"/>
+	      		</xpath>
+
+	      		
+
+			</field>
+		</record>
+
+	</data>
+</odoo>

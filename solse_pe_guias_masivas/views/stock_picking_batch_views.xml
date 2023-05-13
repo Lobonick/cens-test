@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="stock_picking_batch_form" model="ir.ui.view">
+			<field name="name">stock.picking.batch.form.cpe</field>
+        	<field name="model">stock.picking.batch</field>
+	      	<field name="inherit_id" ref="stock_picking_batch.stock_picking_batch_form"/>
+	      	<field name="arch" type="xml">
+	      		<xpath expr="//field[@name='scheduled_date']" position="after">
+	      			<field name="pe_is_eguide" />
+	      			<field name="pe_transport_mode" options="{'no_create_edit': True}" attrs="{'invisible': [('pe_is_eguide', '=', False)]}"/>
+	      			<field name="pe_carrier_id" options="{'no_create_edit': True}" attrs="{'invisible': [('pe_transport_mode', '!=', '01')]}"/>
+	      			<field name="fleet_id" options="{'no_create_edit': True}" attrs="{'invisible': [('pe_transport_mode', '!=', '02')]}"/>
+	      		</xpath>
+
+	      		<xpath expr="//button[@name='action_cancel']" position="after">
+	      			<!--<button name="crear_guias_electronicas" type="object" string="Crear Guía Electronica" attrs="{'invisible': [('state', '!=', 'draft')]}"/>-->
+	      			<button name="generar_guias" type="object" string="Generar Guía Electronica" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+	      			<button name="do_imprimir_guia" type="object" string="Imprimir Guias Electronicas" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+	      		</xpath>
+			</field>
+		</record>
+
+	</data>
+</odoo>
