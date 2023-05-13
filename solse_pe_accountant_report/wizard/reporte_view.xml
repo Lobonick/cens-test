@@ -1,8 +1,30 @@
 <odoo>
 	<data>
+		<record id="action_ventas_reporte_xlsx_n3" model="ir.actions.report">
+	        <field name="name">solse.peru.reporte</field>
+	        <field name="model">report.solse.peru.reporte</field>
+	        <field name="report_type">xlsx</field>
+	        <field name="report_name">solse.peru.reporte</field>
+	        <field name="attachment">(object._get_document_name()+'.xlsx')</field>
+	        <field name="binding_model_id" ref="solse_pe_accountant_report.model_report_solse_peru_reporte"/>
+	        <field name="binding_type">report</field>
+	    </record>
+
+
+	    <!--<record id="action_busqueda_report_xls" model="ir.actions.report">
+        <field name="name">sbusqueda.optica</field>
+        <field name="model">report.sbusqueda.optica</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">Búsqueda</field>
+        <field name="print_report_name">Búsqueda</field>
+        <field name="attachment">(object._get_document_name()+'.pdf')</field>
+        <field name="binding_model_id" ref="solse_cuadre_caja.model_report_sbusqueda_optica"/>
+        <field name="binding_type">report</field>
+    </record>-->
+
 		<record id="wizard_registro_ventas" model="ir.ui.view">
 			<field name="name">Registro Ventas</field>
-			<field name="model">solse.peru.reporte</field>
+			<field name="model">report.solse.peru.reporte</field>
 			<field name="arch" type="xml">
 				<form string="Obtener Lista Precios">
 					<p class="oe_grey">
@@ -25,6 +47,7 @@
 					</sheet>
 					<footer>
 						<button string="Imprimir" name="action_pdf" type="object" default_focus="1" class="btn-primary"/>
+						<button name="%(action_ventas_reporte_xlsx_n3)d" string="Archivo Excel" type="action" />
 						<button string="Cancelar" class="btn-default" special="cancel"/>
 					</footer>
 				</form>
@@ -32,7 +55,7 @@
 		</record>
 		<record id="action_registro_ventas" model="ir.actions.act_window"> 
 			<field name="name">Registro Ventas</field>
-			<field name="res_model">solse.peru.reporte</field>
+			<field name="res_model">report.solse.peru.reporte</field>
 			<field name="view_mode">form</field>
 			<field name="view_id" ref="wizard_registro_ventas"/>
 			<field name="context">{'default_seleccion_fecha': 'rango', 'default_tipo_reporte': 'ventas'}</field>
@@ -41,7 +64,7 @@
 
 		<record id="wizard_registro_compras" model="ir.ui.view">
 			<field name="name">Registro Compras</field>
-			<field name="model">solse.peru.reporte</field>
+			<field name="model">report.solse.peru.reporte</field>
 			<field name="arch" type="xml">
 				<form string="Obtener Lista Precios">
 					<p class="oe_grey">
@@ -71,7 +94,7 @@
 		</record>
 		<record id="action_registro_compras" model="ir.actions.act_window"> 
 			<field name="name">Registro Compras</field>
-			<field name="res_model">solse.peru.reporte</field>
+			<field name="res_model">report.solse.peru.reporte</field>
 			<field name="view_mode">form</field>
 			<field name="view_id" ref="wizard_registro_compras"/>
 			<field name="context">{'default_seleccion_fecha': 'rango', 'default_tipo_reporte': 'compras'}</field>
@@ -80,7 +103,7 @@
 
 		<record id="wizard_flujo_efectivo" model="ir.ui.view">
 			<field name="name">Flujo de Efectivo</field>
-			<field name="model">solse.peru.reporte</field>
+			<field name="model">report.solse.peru.reporte</field>
 			<field name="arch" type="xml">
 				<form string="Obtener Flujo de Efectiv">
 
@@ -115,7 +138,7 @@
 
 		<record id="wizard_perdidas_ganancias" model="ir.ui.view">
 			<field name="name">Estado Perdidas Ganancias</field>
-			<field name="model">solse.peru.reporte</field>
+			<field name="model">report.solse.peru.reporte</field>
 			<field name="arch" type="xml">
 				<form string="Obtener Lista Precios">
 
@@ -136,6 +159,7 @@
 								<field name="periodo_id" attrs="{'required': [('por_periodo', '=', True)], 'invisible': [('por_periodo', '=', False)]}"/>
 								<field name="fecha_inicio" attrs="{'required': [('por_periodo', '=', False)], 'invisible': [('por_periodo', '=', True)]}" />
 								<field name="fecha_fin" attrs="{'required': [('por_periodo', '=', False)], 'invisible': [('por_periodo', '=', True)]}"/>
+								<field name="hasta_fecha_actual"/>
 							</group>
 						</group>
 					</sheet>
@@ -149,7 +173,7 @@
 
 		<record id="action_flujo_efectivo" model="ir.actions.act_window"> 
 			<field name="name">Estado Flujo de Efectivo</field>
-			<field name="res_model">solse.peru.reporte</field>
+			<field name="res_model">report.solse.peru.reporte</field>
 			<field name="view_mode">form</field>
 			<field name="view_id" ref="wizard_perdidas_ganancias"/>
 			<field name="context">{'default_seleccion_fecha': 'rango', 'default_tipo_reporte': 'flujo'}</field>
@@ -158,7 +182,7 @@
 
 		<record id="action_perdidas_ganancias" model="ir.actions.act_window"> 
 			<field name="name">Estado Perdidas Ganancias</field>
-			<field name="res_model">solse.peru.reporte</field>
+			<field name="res_model">report.solse.peru.reporte</field>
 			<field name="view_mode">form</field>
 			<field name="view_id" ref="wizard_perdidas_ganancias"/>
 			<field name="context">{'default_seleccion_fecha': 'rango', 'default_tipo_reporte': 'perdidasganancias', 'default_excluir_cierre': True}</field>
@@ -167,7 +191,7 @@
 
 		<record id="wizard_balance_general" model="ir.ui.view">
 			<field name="name">Balance General</field>
-			<field name="model">solse.peru.reporte</field>
+			<field name="model">report.solse.peru.reporte</field>
 			<field name="arch" type="xml">
 				<form string="Obtener Lista Precios">
 
@@ -186,6 +210,7 @@
 								<field name="seleccion_fecha" invisible="1"/>
 								<field name="periodo_id" required="1"/>
 								<field name="fecha_fin" required="0" invisible="1"/>
+								<field name="hasta_fecha_actual"/>
 							</group>
 						</group>
 					</sheet>
@@ -198,7 +223,7 @@
 		</record>
 		<record id="action_balance_general" model="ir.actions.act_window"> 
 			<field name="name">Balance General</field>
-			<field name="res_model">solse.peru.reporte</field>
+			<field name="res_model">report.solse.peru.reporte</field>
 			<field name="view_mode">form</field>
 			<field name="view_id" ref="wizard_balance_general"/>
 			<field name="context">{'default_seleccion_fecha': 'rango', 'default_tipo_reporte': 'general'}</field>

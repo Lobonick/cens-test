@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_solse_peru_reporte,solse.peru.reporte.user,model_solse_peru_reporte,,1,1,1,1
+access_report_solse_peru_reporte,report.solse.peru.reporte.user,model_report_solse_peru_reporte,,1,1,1,1
 access_solse_pe_cierre,solse.pe.cierre.user,model_solse_pe_cierre,,1,1,1,1

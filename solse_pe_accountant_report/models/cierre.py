@@ -54,7 +54,7 @@ class SolsePeCierre(models.Model):
 
 		glosa = 'Asiento de cierre transito'
 
-		dato = self.env['solse.peru.reporte'].new()
+		dato = self.env['report.solse.peru.reporte'].new()
 		dato.fecha_inicio = self.fecha_inicio
 		dato.fecha_fin = self.fecha_fin
 		datos_json = dato.obtener_reporte_perdidas_ganancias()

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+	<record id="action_s_account_moves_ledger_general" model="ir.actions.act_window">
+        <field name="context">{'journal_type':'general', 'search_default_group_by_account': 1, 'search_default_posted':1}</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Libro mayor</field>
+        <field name="res_model">account.move.line</field>
+        <field name="domain">[('display_type', 'not in', ('line_section', 'line_note'))]</field>
+        <field name="view_id" ref="account.view_move_line_tree_grouped_general"/>
+        <field name="search_view_id" ref="account.view_account_move_line_filter"/>
+        <field name="view_mode">tree,pivot,graph</field>
+    </record>
+
+    <record id="action_s_account_moves_ledger_partner" model="ir.actions.act_window">
+        <field name="context">{'journal_type':'general', 'search_default_group_by_partner': 1, 'search_default_posted':1, 'search_default_payable':1, 'search_default_receivable':1, 'search_default_unreconciled':1}</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Libro mayor de socios</field>
+        <field name="res_model">account.move.line</field>
+        <field name="domain">[('display_type', 'not in', ('line_section', 'line_note'))]</field>
+        <field name="view_id" ref="account.view_move_line_tree_grouped_partner"/>
+        <field name="search_view_id" ref="account.view_account_move_line_filter"/>
+        <field name="view_mode">tree,pivot,graph</field>
+    </record>
+
+
+    <menuitem id="menu_finance_entries_accounting_journals" name="Diarios" parent="account.menu_finance_entries" sequence="2"/>
+    <menuitem id="menu_action_account_moves_journal_sales" action="account.action_account_moves_journal_sales" groups="account.group_account_readonly" sequence="1" name="Ventas" parent="menu_finance_entries_accounting_journals"/>
+    <menuitem id="menu_action_account_moves_journal_purchase" action="account.action_account_moves_journal_purchase" groups="account.group_account_readonly" sequence="2" name="Compras" parent="menu_finance_entries_accounting_journals"/>
+    <menuitem id="menu_action_account_moves_journal_bank_cash" action="account.action_account_moves_journal_bank_cash" groups="account.group_account_readonly" sequence="3" name="Caja y Bancos" parent="menu_finance_entries_accounting_journals"/>
+    <menuitem id="menu_action_account_moves_journal_misc" action="account.action_account_moves_journal_misc" groups="account.group_account_readonly" sequence="4" name="Otros" parent="menu_finance_entries_accounting_journals"/>
+
+    
+
+    <!--<menuitem id="menu_finance_entries_accounting_ledgers" name="Libro Mayor" parent="account.menu_finance_entries" sequence="3"/>
+    <menuitem id="menu_action_account_moves_ledger_general" action="action_s_account_moves_ledger_general" groups="account.group_account_readonly" sequence="1" name="Libro mayor" parent="menu_finance_entries_accounting_ledgers"/>
+    <menuitem id="menu_action_s_account_moves_ledger_partner" action="action_s_account_moves_ledger_partner" groups="account.group_account_readonly" sequence="2" name="Libro mayor de socios" parent="menu_finance_entries_accounting_ledgers"/>-->
+
+</data>
+</odoo>

@@ -46,9 +46,9 @@
 			<div class="article o_report_layout_clean" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
 				<div class="page">
 					<div class="text-center" style="width: 100%;">
-						<h4><t t-esc="titulo" /></h4>
+						<strong><t t-esc="titulo" /></strong>
 						<br/>
-						<h4><t t-esc="nombre_mes" /></h4>
+						<strong><t t-esc="nombre_mes" /></strong>
 						<!--<br/>
 						<h4><t t-esc="nombre_agente" /></h4>-->
 					</div>
@@ -305,7 +305,14 @@
 	                                	
 	                                </th>
 	                                <th>
-	                                	<t t-if="'balance' in otros_ingresos" t-esc="abs(otros_ingresos['balance'])" />
+	                                	<t t-if="'balance' in otros_ingresos" >
+	                                		<t t-if="otros_ingresos['balance'] >= 0">
+	                                			(<t t-esc="otros_ingresos['balance']" />)
+	                                		</t>
+	                                		<t t-else="">
+	                                			<t t-esc="abs(otros_ingresos['balance'])" />
+	                                		</t>
+	                                	</t>
 	                                </th>
 	                                <th></th>
 	                            </tr>
@@ -437,8 +444,8 @@
 		<field name="page_height">297</field>
 		<field name="page_width">210</field>
 		<field name="orientation">Portrait</field>
-		<field name="margin_top">25</field> <!-- la diferencia (margin_top - header_spacing) es el espacio que queda en la parte superior de la hoja-->
-		<field name="header_spacing">20</field>
+		<field name="margin_top">35</field> <!-- la diferencia (margin_top - header_spacing) es el espacio que queda en la parte superior de la hoja-->
+		<field name="header_spacing">30</field>
 		<field name="margin_bottom">30</field>
 		<field name="margin_left">7</field>
 		<field name="margin_right">7</field>

@@ -21,6 +21,7 @@
 	'license': 'Other proprietary',
 	'depends': [
 		'account',
+		'report_xlsx',
 	],
 	'data': [
 		'security/ir.model.access.csv',
@@ -30,9 +31,10 @@
 		'report/reporte_ventas_view.xml',
 		'report/reporte_perdidas_ganancias_view.xml',
 		'report/reporte_balance_general.xml',
-		'report/reporte_flujo_caja_view.xml',
+		#'report/reporte_flujo_caja_view.xml',
 		'views/res_config_settings_view.xml',
 		'views/cierre_view.xml',
+		'views/menu_view.xml',
 	],
 	'assets': {
 		'web.report_assets_common': [

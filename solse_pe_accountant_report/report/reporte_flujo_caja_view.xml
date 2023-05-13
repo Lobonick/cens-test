@@ -45,9 +45,9 @@
 			<div class="article o_report_layout_clean" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
 				<div class="page">
 					<div class="text-center" style="width: 100%;">
-						<h4><t t-esc="titulo" /></h4>
+						<strong><t t-esc="titulo" /></strong>
 						<br/>
-						<h4><t t-esc="nombre_mes" /></h4>
+						<strong><t t-esc="nombre_mes" /></strong>
 						<!--<br/>
 						<h4><t t-esc="nombre_agente" /></h4>-->
 					</div>

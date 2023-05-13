@@ -46,9 +46,9 @@
 			<div class="article o_report_layout_clean" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
 				<div class="page">
 					<div class="text-center" style="width: 100%;">
-						<h4><t t-esc="titulo" /></h4>
+						<strong><t t-esc="titulo" /></strong>
 						<br/>
-						<h4><t t-esc="nombre_mes" /></h4>
+						<strong><t t-esc="nombre_mes" /></strong>
 						<!--<br/>
 						<h4><t t-esc="nombre_agente" /></h4>-->
 					</div>
@@ -87,9 +87,9 @@
 										</td>
 									</tr>
 									<tr>
-										<th>
-											CAJA Y BANCOS
-										</th>
+										<td>
+											<strong>CAJA Y BANCOS</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -100,6 +100,13 @@
 											
 											<div class="numero">
 												<t t-esc="'%.2f'%(caja_y_bancos)" />
+												
+												<t t-if="caja_y_bancos >= 0">
+													<t t-esc="'%.2f'%(caja_y_bancos)" />
+												</t>
+												<t t-else="">
+													(<t t-esc="'%.2f'%(abs(caja_y_bancos))" />)
+												</t>
 											</div>
 										</td>
 									</tr>
@@ -119,7 +126,13 @@
 										</td>
 										<td>
 											<div class="numero">
-												<t t-esc="'%.2f'%(cuenta_corriente['balance'])" />
+
+												<t t-if="cuenta_corriente['balance'] >= 0">
+													<t t-esc="'%.2f'%(cuenta_corriente['balance'])" />
+												</t>
+												<t t-else="">
+													(<t t-esc="'%.2f'%(abs(cuenta_corriente['balance']))" />)
+												</t>
 											</div>
 										</td>
 										<td>
@@ -161,7 +174,13 @@
 										</td>
 										<td>
 											<div class="numero">
-												<t t-esc="'%.2f'%(fondos_fijos_transito['balance'])" />
+												<t t-if="fondos_fijos_transito['balance'] >= 0">
+													<t t-esc="'%.2f'%(fondos_fijos_transito['balance'])" />
+												</t>
+												<t t-else="">
+													(<t t-esc="'%.2f'%(abs(fondos_fijos_transito['balance']))" />)
+												</t>
+												
 											</div>
 										</td>
 										<td>
@@ -189,11 +208,14 @@
 											</td>
 										</tr>
 									</t>-->
+									<tr>
+										<td colspan="4" style="height: 6px;"></td>
+									</tr>
 
 									<tr>
-										<th>
-											CUENTAS POR COBRAR COMERCIALES
-										</th>
+										<td>
+											<strong>CUENTAS POR COBRAR COMERCIALES</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -228,11 +250,14 @@
 											</td>
 										</tr>
 									</t>
-									
 									<tr>
-										<th>
-											OTRAS CUENTAS POR COBRAR
-										</th>
+										<td colspan="4" style="height: 6px;"></td>
+									</tr>
+									<tr>
+										<td>
+											<strong>
+											OTRAS CUENTAS POR COBRAR</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -251,9 +276,13 @@
 										</td>
 									</tr>
 									<tr>
-										<th>
-											OTROS
-										</th>
+										<td colspan="4" style="height: 6px;"></td>
+									</tr>
+									<tr>
+										<td>
+											<strong>
+											OTROS</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -509,9 +538,9 @@
 										</td>
 									</tr>
 									<tr>
-										<th>
-											TRIBUTOS POR PAGAR
-										</th>
+										<td>
+											<strong>TRIBUTOS POR PAGAR</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -547,13 +576,12 @@
 										</tr>
 									</t>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<th>
-											REMUNERACIONES POR PAGAR
-										</th>
+										<td>
+											<strong>REMUNERACIONES POR PAGAR</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -588,13 +616,12 @@
 										</tr>
 									</t>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<th>
-											CUENTAS POR PAGAR COMERCIALES-TERCEROS
-										</th>
+										<td>
+											<strong>CUENTAS POR PAGAR COMERCIALES-TERCEROS</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -629,13 +656,12 @@
 										</tr>
 									</t>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<th>
-											OTRAS CUENTAS POR PAGAR
-										</th>
+										<td>
+											<strong>OTRAS CUENTAS POR PAGAR</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -670,8 +696,7 @@
 										</tr>
 									</t>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
 										<th colspan="2" style="text-align: center;">
@@ -685,17 +710,12 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
+										<td>
+											<strong>PASIVO NO CORRIENTE</strong>
 										</td>
-									</tr>
-									<tr>
-										<th>
-											PASIVO NO CORRIENTE
-										</th>
 										<td>
 											
 										</td>
@@ -704,9 +724,9 @@
 										</td>
 									</tr>
 									<tr>
-										<th>
-											OTRAS CUENTAS POR PAGAR
-										</th>
+										<td>
+											<strong>OTRAS CUENTAS POR PAGAR</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -741,8 +761,7 @@
 										</tr>
 									</t>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
 										<th colspan="2" style="text-align: center;">
@@ -759,13 +778,12 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<th>
-											PATRIMONIO
-										</th>
+										<td>
+											<strong>PATRIMONIO</strong>
+										</td>
 										<td>
 											
 										</td>
@@ -826,18 +844,16 @@
 										</td>
 									</tr>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
-										<td colspan="3" class="espacio-cuenta"> 
-										</td>
+										<td colspan="3" style="height: 6px;"></td>
 									</tr>
 									<tr>
 
-										<th >
-											TOTAL PASIVO Y PATRIMONIO
-										</th>
+										<td >
+											<strong>TOTAL PASIVO Y PATRIMONIO</strong>
+										</td>
 										<th >
 											
 										</th>

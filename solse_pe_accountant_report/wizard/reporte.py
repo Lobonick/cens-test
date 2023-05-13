@@ -19,9 +19,10 @@ _logger = logging.getLogger(__name__)
 
 tz = pytz.timezone('America/Lima')
 
-class ReportesFinancieros(models.TransientModel):
-	_name = "solse.peru.reporte"
+class ReportesFinanciero(models.TransientModel):
+	_name = "report.solse.peru.reporte"
 	_description = "Reporte"
+	_inherit = ['report.report_xlsx.abstract']
 
 	company_id = fields.Many2one('res.company', string='Company', required=True, readonly=False, default=lambda self: self.env.company)
 	partner_id = fields.Many2one('res.partner', related="company_id.partner_id", store=True)
@@ -39,11 +40,14 @@ class ReportesFinancieros(models.TransientModel):
 
 	fecha_inicio = fields.Date("Fecha inicio")
 	fecha_fin = fields.Date("Fecha fin")
+	hasta_fecha_actual = fields.Boolean("Hasta Fecha actual")
 	excluir_cierre = fields.Boolean("Excluir asientos cierre")
 
 
 	agente = fields.Many2one("res.partner", string="Agente")
 	todos_los_agentes = fields.Boolean("Todos los agentes")
+
+
 
 	def _compute_account_balance(self, accounts):
 		""" compute the balance, debit
@@ -352,9 +356,18 @@ class ReportesFinancieros(models.TransientModel):
 		fecha_inicio = fechas[0]
 		fecha_fin = fechas[1]
 
-		if self.por_periodo:
+		if self.hasta_fecha_actual:
+			if not self.periodo_id:
+				raise UserError("Debe seleccionar un periodo")
+			self.fecha_inicio = self.periodo_id.fecha_inicio
+			self.fecha_fin = datetime.date.today()
+		elif self.por_periodo:
 			self.fecha_inicio = self.periodo_id.fecha_inicio
 			self.fecha_fin = self.periodo_id.fecha_fin
+		else:
+			self.fecha_inicio = fecha_inicio
+			self.fecha_fin = fecha_fin
+
 
 		cantidad_total = 0
 		monto_total = 0
@@ -432,7 +445,7 @@ class ReportesFinancieros(models.TransientModel):
 			otros_ingresos_egresos = otros_ingresos_egresos - abs(EXP_FIN["balance"])
 
 		if "balance" in OIN:
-			otros_ingresos_egresos = otros_ingresos_egresos + abs(OIN["balance"])
+			otros_ingresos_egresos = otros_ingresos_egresos + (OIN["balance"] * -1)
 
 		if "balance" in EXP:
 			otros_ingresos_egresos = otros_ingresos_egresos - abs(EXP["balance"])
@@ -484,6 +497,15 @@ class ReportesFinancieros(models.TransientModel):
 
 		self.fecha_inicio = self.periodo_id.fecha_inicio
 		self.fecha_fin = self.periodo_id.fecha_fin
+
+		if self.hasta_fecha_actual:
+			if not self.periodo_id:
+				raise UserError("Debe seleccionar un periodo")
+			self.fecha_inicio = self.periodo_id.fecha_inicio
+			self.fecha_fin = datetime.date.today()
+
+
+
 		### Dominios
 		# OPINC = [('account_id.account_type', '=', 'income')]
 		# OIN = [('account_id.account_type', '=', 'income_other')]
@@ -579,14 +601,14 @@ class ReportesFinancieros(models.TransientModel):
 		capital_detalles_array = capital[1]
 
 		# ganancias
-		datos_ganancias = self.env['solse.peru.reporte'].new()
+		datos_ganancias = self.env['report.solse.peru.reporte'].new()
 		datos_ganancias.fecha_inicio = self.fecha_inicio
 		datos_ganancias.fecha_fin = self.fecha_fin
 		datos_ganancias.tipo_reporte = 'perdidasganancias'
 		datos_json = datos_ganancias.obtener_reporte_perdidas_ganancias()
 		resultado_ejercicio = datos_json['utilidad_antes_impuestos']
 
-		caja_y_bancos = abs(CUECORR['balance']) + abs(FFTRAN['balance'])
+		caja_y_bancos = CUECORR['balance'] + FFTRAN['balance']
 		total_activo_corriente = caja_y_bancos
 
 		if 'balance' in A_CXCOBRARC:
@@ -731,7 +753,93 @@ class ReportesFinancieros(models.TransientModel):
 		
 		return reporte
 
+	def _get_document_name(self):
+		return '{}_{}'.format(self.fecha_inicio, self.fecha_fin)
+
 	def action_pdf(self):
 		data = self.get_report_values()
 		return self.solicitar_reporte(data)
+
+	def generate_xlsx_report(self, workbook, data, obj):
+		sheet = workbook.add_worksheet('{}'.format(obj._get_document_name()))
+		bold_right = workbook.add_format({'bold': True, 'font_color': 'black'})
+		bold = workbook.add_format({'bold': True, 'font_color': 'black'})
+		normal = workbook.add_format({'font_color': 'black'})
+		right = workbook.add_format({'font_color': 'black'})
+		left = workbook.add_format({'font_color': 'black'})
+
+		bold.set_align('center')
+		normal.set_align('center')
+		left.set_align('left')
+		right.set_align('right')
+		merge_format = workbook.add_format({
+			'bold': 1,
+			'border': 1,
+			'align': 'center',
+			'valign': 'vcenter',
+			'fg_color': 'gray',
+			'font_color': 'white',
+		})
+		merge_format_n2 = workbook.add_format({
+			'bold': 1,
+			'border': 1,
+			'align': 'left',
+			'valign': 'vcenter',
+			'fg_color': 'gray',
+			'font_color': 'white',
+		})
+
+		ancho = 15
+		sheet.set_column('A:A', ancho)
+		sheet.set_column('B:B', ancho)
+		sheet.set_column('C:C', 21)
+		sheet.set_column('D:D', 30)
+		sheet.set_column('E:E', 40)
+		sheet.set_column('F:F', ancho)
+		sheet.set_column('G:G', 20)
+		sheet.set_column('H:H', 60)
+		sheet.set_column('I:I', ancho)
+		sheet.set_column('J:J', ancho)
+		sheet.set_column('K:K', ancho)
+		sheet.set_column('L:L', ancho)
+		sheet.set_column('M:M', ancho)
+		sheet.set_column('N:N', ancho)
+		sheet.set_column('O:O', ancho)
+		sheet.set_column('P:P', 60)
+		sheet.set_column('Q:Q', ancho)
+
+		"""sheet.merge_range('A1:H1', u'%s' % obj.packinglist_id.name, merge_format)
+		sheet.write('A2', u'Presentación')
+		sheet.write('A3', u'Producto')
+		sheet.write('A4', u'Destino')
+
+		sheet.write('B2', u'%s' % obj.presentacion.name)
+		sheet.write('B3', u'%s' % obj.producto.name)
+		sheet.write('B4', u'%s' % obj.destino.name)
+
+		sheet.write('H3', u'%s' % obj.name, bold_right)"""
+
+		pos_y = 1
+		total_kg = 0
+		total_uom = 0
+		pos_y = pos_y + 1
+		union_n1 = "A%s:P%s" % (str(pos_y), str(pos_y))
+		sheet.merge_range(union_n1, u'   Movimientos de Ventas', merge_format_n2)
+		
+		sheet.write(pos_y, 0, u'Sucursal', merge_format)
+		sheet.write(pos_y, 1, u'Tipo', merge_format)
+		sheet.write(pos_y, 2, u'Fecha de Pedido', merge_format)
+		sheet.write(pos_y, 3, u'Fecha de Entrega', merge_format)
+		sheet.write(pos_y, 4, u'Referencia del Pedido', merge_format)
+		sheet.write(pos_y, 5, u'Nro Factura', merge_format)
+		sheet.write(pos_y, 6, u'Nro. Documento', merge_format)
+		sheet.write(pos_y, 7, u'Cliente', merge_format)
+		sheet.write(pos_y, 8, u'Vendedor', merge_format)
+		sheet.write(pos_y, 9, u'Total', merge_format)
+		sheet.write(pos_y, 10, u'Monto Pagado', merge_format)
+		sheet.write(pos_y, 11, u'Monto Adeudado', merge_format)
+		sheet.write(pos_y, 12, u'Forma de Pago', merge_format)
+		sheet.write(pos_y, 13, u'Estado', merge_format)
+		sheet.write(pos_y, 14, u'PO Ref.', merge_format)
+		sheet.write(pos_y, 15, u'Proveedor', merge_format)
 		
