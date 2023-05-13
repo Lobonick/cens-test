@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="ple_8_2_account_move" model="ir.ui.view">
+        <field name="name">account.move.ple8.2.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <field name="l10n_pe_is_non_domiciled" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
+            </xpath>
+            <!-- <ADDED -->
+            <xpath expr="//field[@name='ref']" position="after">
+                <!--<field name="l10n_latam_document_type_id"/>-->
+                <field name="pe_invoice_code" invisible="1"/>
+                <field name="l10n_pe_dua_emission_year" attrs="{'invisible': [('pe_invoice_code', 'not in', ['50','52'])]}"/>
+                <field name="l10n_pe_edi_table_11_id" attrs="{'invisible': [('pe_invoice_code', 'not in', ['50','52'])]}"/>
+    
+            </xpath>
+
+            <xpath expr="//page[@name='other_info']" position="before">
+                <page string="PLE Compras" name="ple" attrs="{'invisible': [('move_type', 'not in', ['in_invoice', 'in_refund', 'in_receipt'])]}">
+                    <group attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}">
+                        <field name="l10n_pe_operation_type"/>
+                        <field name="no_dom_convenio"/>
+                        <field name="no_dom_tipo_renta"/>
+                    </group>
+                    <group string="Proyecto" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}">
+                        <field name="l10n_pe_project_identification"/>
+                    </group>
+                    <group>
+                        <field name="l10n_pe_in_annotation_opportunity_status" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
