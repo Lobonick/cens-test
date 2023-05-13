@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_solse_account_balances_tree" model="ir.ui.view">
+			<field name="name">Movimientos de saldos</field>
+			<field name="model">solse.account.balances</field>
+			<field name="arch" type="xml">
+				<tree create="false" edit="false" default_order="operation_time desc, order_number desc">
+					<field name="id" invisible="1"/>
+					<field name="reg_previous" invisible="1"/>
+					<field name="operation_time_char"/>
+					<field name="partner_id" optional="show"/>
+					<field name="partner_type" optional="show"/>
+					<field name="movement_type" invisible="1"/>
+					<field name="currency_id" optional="show"/>
+					<field name="description" invisible="1"/>
+					<field name="journal_mov" optional="show"/>
+					<field name="amount" string="Haber" attrs="{'invisible': [('movement_type', '=', 'S')]}" class="ingreso"/>
+					<field name="amount" string="Debe" attrs="{'invisible': [('movement_type', '=', 'E')]}" class="egreso" />
+					<field name="operation_amount" sum="Operation Amount"/>
+					<field name="balance" class="balance" string="Saldo"/>
+					<field name="state" invisible="1"/>
+				</tree>
+			</field>
+		</record>
+		<record id="view_solse_account_balances_form" model="ir.ui.view">
+			<field name="name">Movimiento de cuenta</field>
+			<field name="model">solse.account.balances</field>
+			<field name="arch" type="xml">
+				<form string="Movimiento de cuenta">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button class="oe_stat_button" name="force_update" string="Forzar actualización" icon="fa-pencil-square-o" type="object"/>
+						</div>
+						<field name="id" invisible="1"/>
+						<div class="oe_title">
+							<h1>
+								<field name="payment_origin" attrs="{'invisible': [('payment_origin', '=', False)]}"/>
+								<field name="invoice_origin" attrs="{'invisible': [('invoice_origin', '=', False)]}"/>
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="payment_origin" attrs="{'invisible': [('payment_origin', '=', False)]}"/>
+								<field name="invoice_origin" attrs="{'invisible': [('invoice_origin', '=', False)]}"/>
+								<field name="journal_mov" string="Diario: "/>
+								<field name="currency_id"/>
+								<field name="operation_time_char"/>
+								<field name="description"/>
+								<field name="reg_previous"/>
+							</group>
+							<group>
+								<field name="movement_type"/>
+								<field name="amount"/>
+								<field name="operation_amount"/>
+								<field name="balance"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="view_solse_account_balances_graph" model="ir.ui.view">
+			<field name="name">Movimientos de saldos</field>
+			<field name="model">solse.account.balances</field>
+			<field name="arch" type="xml">
+				<graph string="Movimientos de saldo" stacked="False">
+					<field name="operation_time" interval="month"/>
+					<field name="movement_type"/>
+					<field name="amount" type="measure" />
+				</graph>
+			</field>
+		</record>
+		<record id="view_solse_account_balances_pivot" model="ir.ui.view">
+			<field name="name">Movimientos de saldo</field>
+			<field name="model">solse.account.balances</field>
+			<field name="arch" type="xml">
+				<pivot string="Movimientos de saldo">
+					<field name="partner_id" type="row" />
+					<field name="partner_type" type="row" />
+					<field name="operation_time" type="col" interval="month"/>
+					<field name="operation_amount" type="measure" />
+				</pivot>
+			</field>
+		</record>
+
+		<record id="view_solse_account_balances_search" model="ir.ui.view">
+			<field name="name">solse.account.balances.search</field>
+			<field name="model">solse.account.balances</field>
+			<field name="arch" type="xml">
+				<search string="Movimientos">
+					<field name="description" string="Description"/>
+					<separator/>
+					<field name="company_id" groups="base.group_multi_company" />
+					<filter string="Pagos" name="income_filter" domain="[('movement_type','=','E')]"/>
+					<filter string="Consumos" name="expenses_filter" domain="[('movement_type','=','S')]"/>
+					<separator/>
+					<filter string="Clientes" name="customer_filter" domain="[('partner_type','=','customer')]"/>
+					<filter string="Proveedores" name="supplier_filter" domain="[('partner_type','=','supplier')]"/>
+					<separator/>
+					<filter string="Entidad" name="filtro_x_entidad" domain="[]" context="{'group_by': 'partner_id'}"/>
+					<filter string="Tipo" name="filtro_x_tipo" domain="[]" context="{'group_by': 'partner_type'}"/>
+					<filter string="State" name="filtro_x_estado" domain="[]" context="{'group_by': 'state'}"/>
+					<filter string="Currency" name="filtro_x_moneda" domain="[]" context="{'group_by': 'currency_id'}" groups="base.group_multi_currency"/>
+					<filter string="Company" name="filtro_x_compañia" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+				</search>
+			</field>
+		</record>
+
+	</data>
+</odoo>

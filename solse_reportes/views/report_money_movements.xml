@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_solse_money_movements_tree" model="ir.ui.view">
+			<field name="name">Movimientos de dinero</field>
+			<field name="model">solse.money.movements</field>
+			<field name="arch" type="xml">
+				<tree create="false" edit="false" default_order="payment_time desc, order_number desc" class="lora">
+					<field name="id" invisible="1"/>
+					<field name="reg_previous" invisible="1"/>
+					<field name="movement_type" invisible="1"/>
+					<field name="payment_time_char"/>
+					<field name="journal_mov" optional="show"/>
+					<field name="currency_id" optional="show"/>
+					<field name="description" invisible="1"/>
+					<field name="amount" string="Ingreso" attrs="{'invisible': [('movement_type', '=', 'S')]}" class="ingreso"/>
+					<field name="amount" string="Egreso" attrs="{'invisible': [('movement_type', '=', 'E')]}" class="egreso" />
+					<field name="operation_amount" sum="Operation Amount" optional="show"/>
+					<field name="balance" class="Saldo" optional="show"/>
+					<field name="glosa" optional="show"/>
+				</tree>
+			</field>
+		</record>
+		<record id="view_solse_money_movements_form" model="ir.ui.view">
+			<field name="name">Movimiento de dinero</field>
+			<field name="model">solse.money.movements</field>
+			<field name="arch" type="xml">
+				<form string="Movimiento de dinero">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button class="oe_stat_button" name="force_update" string="Forzar actualización" icon="fa-pencil-square-o" type="object"/>
+						</div>
+						<field name="id" invisible="1"/>
+						<div class="oe_title">
+							<h1><field name="payment_origin"/></h1>
+						</div>
+						<group>
+							<group>
+								<field name="payment_origin"/>
+								<field name="journal_mov" string="Pagado con: "/>
+								<field name="currency_id"/>
+								<field name="payment_time_char"/>
+								<field name="description"/>
+								<field name="reg_previous"/>
+							</group>
+							<group>
+								<field name="movement_type"/>
+								<field name="amount"/>
+								<field name="operation_amount"/>
+								<field name="balance"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="view_solse_money_movements_graph" model="ir.ui.view">
+			<field name="name">Dinero disponible</field>
+			<field name="model">solse.money.movements</field>
+			<field name="arch" type="xml">
+				<graph string="Dinero disponible" stacked="False">
+					<field name="payment_time" interval="month"/>
+					<field name="movement_type"/>
+					<field name="amount" type="measure"/>
+				</graph>
+			</field>
+		</record>
+		<record id="view_solse_money_movements_pivot" model="ir.ui.view">
+			<field name="name">Movimientos de dinero</field>
+			<field name="model">solse.money.movements</field>
+			<field name="arch" type="xml">
+				<pivot string="Movimientos de dinero">
+					<field name="journal_mov" type="row"/>
+					<field interval="month" name="payment_time" type="col"/>
+					<field name="operation_amount" type="measure"/>
+				</pivot>
+			</field>
+		</record>
+
+		<record id="view_solse_money_movements_search" model="ir.ui.view">
+			<field name="name">solse.money.movements.search</field>
+			<field name="model">solse.money.movements</field>
+			<field name="arch" type="xml">
+				<search string="Movimientos">
+					<field name="description" string="Description"/>
+					<separator/>
+					<field name="company_id" groups="base.group_multi_company" />
+					<filter string="Entradas" name="income_filter" domain="[('movement_type','=','E')]"/>
+					<filter string="Salidas" name="expenses_filter" domain="[('movement_type','=','S')]"/>
+					<separator/>
+					<filter string="Cuenta" name="filtro_x_cuenta" domain="[]" context="{'group_by': 'journal_mov'}"/>
+					<filter string="State" name="filtro_x_estado" domain="[]" context="{'group_by': 'state'}"/>
+					<filter string="Currency" name="filtro_x_moneda" domain="[]" context="{'group_by': 'currency_id'}" groups="base.group_multi_currency"/>
+					<filter string="Company" name="filtro_x_compañia" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+				</search>
+			</field>
+		</record>
+
+	</data>
+</odoo>

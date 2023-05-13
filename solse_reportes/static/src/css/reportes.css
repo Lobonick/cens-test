@@ -1,0 +1,18 @@
+.ingreso {
+	color: green
+}
+.egreso {
+	color: red
+}
+.balance {
+	color: blue
+}
+.lora {
+	background-color: blue
+}
+.o_list_view tfoot {
+	color: #000;
+}
+tfoot {
+	color: #000;
+}

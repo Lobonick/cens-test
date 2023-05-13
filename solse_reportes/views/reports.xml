@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<data>
+			<!-- templates 
+			<template id="solse_assets_backend" name="solse_reportes_assets" inherit_id="web.assets_backend">
+				<xpath expr="." position="inside">
+					<link rel="stylesheet" href="/solse_reportes/static/src/css/reportes.css" />
+				</xpath>
+			</template>-->
+				<!-- actions -->
+				<act_window id="action_report_money_movements" name="Movimientos de dinero" res_model="solse.money.movements" view_mode="tree,form,graph,pivot" view_id="view_solse_money_movements_tree" domain="[('state', 'not in', ['cancelled', 'draft'])]" limit="60"/>
+				<act_window id="action_report_account_balances" name="Movimientos de saldos" res_model="solse.account.balances" view_mode="tree,form,graph,pivot" view_id="view_solse_account_balances_tree" domain="[('state', 'not in', ['cancelled', 'draft', 'cancel'])]" limit="60"/>
+
+				<!-- menus -->
+				<menuitem id="menu_report_solse" name="Reporte de movimientos" parent="account.menu_finance_reports" sequence="6"
+									groups="account.group_account_invoice"/>
+				<menuitem id="menu_report_solse_money_movements" name="Movimienos de dinero" parent="menu_report_solse" sequence="2"
+									groups="account.group_account_invoice" action="action_report_money_movements"/>
+				<menuitem id="menu_report_solse_account_balances" name="Movimienos de deuda" parent="menu_report_solse" sequence="2"
+									groups="account.group_account_invoice" action="action_report_account_balances"/>
+
+		</data>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="solse_view_account_journal_form">
+			<field name="name">account.journal.form</field>
+			<field name="model">account.journal</field>
+			<field name="inherit_id" ref="account.view_account_journal_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//widget[@name='web_ribbon']" position="before">
+				<button
+					type="object"
+					name="action_view_money_movement"
+					class="oe_stat_button"
+					attrs="{'invisible':[('type', 'not in', ['cash', 'bank'])]}"
+					icon="fa-arrows-v"
+					options="{}">
+					<field string="Saldo" name="balance" widget="statinfo"/>
+				</button>
+				</xpath>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="solse_view_account_journal_tree">
+			<field name="name">account.journal.tree</field>
+			<field name="model">account.journal</field>
+			<field name="inherit_id" ref="account.view_account_journal_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='type']" position="after">
+					<field name="balance" attrs="{'invisible': [('type', 'not in', ['cash', 'bank'])]}" sum="Total disponible" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

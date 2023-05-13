@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reportes_money_user,solse.money.movements.user,model_solse_money_movements,base.group_user,1,1,1,1
+access_reportes_balance_user,solse.account.balances.user,model_solse_account_balances,base.group_user,1,1,1,1
+access_reportes_user,solse.company.confirm.reports.user,model_solse_company_confirm_reports,base.group_user,1,1,1,1
+access_reportes_money_manager,solse.money.movements.user,model_solse_money_movements,base.group_erp_manager,1,1,1,1
+access_reportes_balance_manager,solse.account.balances.user,model_solse_account_balances,base.group_erp_manager,1,1,1,1
