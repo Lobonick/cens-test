@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_scpe_compras_importar,access_scpe_compras_importar,solse_pe_xml_invoice.model_scpe_pe_purchase_import,,1,1,1,1
+access_scpe_ventas_importar,access_scpe_ventas_importar,solse_pe_xml_invoice.model_scpe_pe_sale_import,,1,1,1,1

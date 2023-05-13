@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+  	
+  	<menuitem id="menu_cpe_compras_importar" name="Facturas XML" action="solse_pe_xml_invoice.action_scpe_purchase" parent="account.menu_finance_payables" sequence="900"/>
+
+  	<menuitem id="menu_cpe_ventas_importar" name="Facturas XML" action="solse_pe_xml_invoice.action_scpe_sale" parent="account.menu_finance_receivables" sequence="900"/>
+    
+  </data>
+</odoo>
