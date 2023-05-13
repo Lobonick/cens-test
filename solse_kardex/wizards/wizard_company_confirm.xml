@@ -1,0 +1,29 @@
+<odoo>
+	<data>
+		<record id="wizard_confirm_stock" model="ir.ui.view">
+			<field name="name">Confirmar recalcular stock</field>
+			<field name="model">solse.company.confirm.stock</field>
+			<field name="arch" type="xml">
+				<form string="Confirmar recalcular stock">
+					<p class="oe_grey">
+						Recalcular stock a partir de la fecha seleccionada
+					</p>
+					<sheet>
+						<field name="operation_time"/>
+					</sheet>
+					<footer>
+						<button string="Calcular" name="recalculate_stock" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		<record id="action_company_recalculate_stock" model="ir.actions.act_window"> 
+            <field name="name">Confirmar recalcular stock</field>
+            <field name="res_model">solse.company.confirm.stock</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="wizard_confirm_stock"/>
+            <field name="target">new</field>
+        </record>
+	</data>
+</odoo>

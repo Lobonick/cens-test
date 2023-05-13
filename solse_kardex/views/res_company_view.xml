@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="solse_kardex_res_company_form" model="ir.ui.view">
+      <field name="name">res.company.form.view.inherit</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[1]" position="after">
+          <page string="Kardex">
+            <group>
+              <group>
+                <field name="calculate_stock_balance"/>
+                <field name="stock_movement_type" invisible="1"/>
+              </group>
+            </group>
+            <group>
+                <button name="%(action_company_recalculate_stock)d" type="action" string="Recalcular stock"/>
+              </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

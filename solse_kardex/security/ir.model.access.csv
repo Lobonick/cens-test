@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solse_company_confirm_stock,solse.company.confirm.stock,model_solse_company_confirm_stock,,1,1,1,1
