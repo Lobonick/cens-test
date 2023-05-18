@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, Command, _
 import logging
 import json
 _logging = logging.getLogger(__name__)
