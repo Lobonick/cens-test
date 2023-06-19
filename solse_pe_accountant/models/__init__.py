@@ -7,3 +7,4 @@
 from . import res_config_settings
 from . import account_move
 from . import tipo_cambio_sunat
+from . import account_payment_term

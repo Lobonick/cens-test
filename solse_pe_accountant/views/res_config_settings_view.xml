@@ -13,7 +13,7 @@
                     <div class="col-12 col-lg-6 o_setting_box" id="default_detraccion">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
-                            <span class="o_form_label">Cuenta de detracción</span>
+                            <span class="o_form_label">Cuenta de detracción (Venta)</span>
                             <div class="text-muted">
                                 Cuenta de detracción por defecto
                             </div>
@@ -32,6 +32,16 @@
                                 <label for="cuenta_detrac_perdidas" class="col-lg-3 o_light_label"/>
                                 <field name="cuenta_detrac_perdidas"/>
                             </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Cuenta de detracción (Compra)</span>
+                            <div class="text-muted">
+                                Cuenta de detracción por defecto
+                            </div>
+                            <div class="text-muted">
+                                <field name="cuenta_detracciones_compra"/>
+                            </div>
+
                         </div>
                     </div>
 
