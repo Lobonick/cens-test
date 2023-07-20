@@ -207,6 +207,7 @@ class Client(object):
 		return self._call_service('getStatus', params)
 
 	def get_status_cdr(self, document_name):
+		#self._method = None
 		res = document_name.split('-')
 		params = {'rucComprobante':res[0],  'tipoComprobante':res[1], 'serieComprobante':res[2], 'numeroComprobante':res[3]}
 		self._xml_method = '<tzmed:getStatusCdr>\n            <rucComprobante>%s</rucComprobante>\n            <tipoComprobante>%s</tipoComprobante>\n            <serieComprobante>%s</serieComprobante>\n            <numeroComprobante>%s</numeroComprobante>\n        </tzmed:getStatusCdr>' % (params['rucComprobante'], params['tipoComprobante'], params['serieComprobante'], params['numeroComprobante'])

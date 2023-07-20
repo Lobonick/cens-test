@@ -122,7 +122,7 @@ class CPE:
 				tag = etree.QName(self._cac, 'OrderReference')
 				order = etree.SubElement((self._root), (tag.text), nsmap={'cac': tag.namespace})
 				tag = etree.QName(self._cbc, 'ID')
-				etree.SubElement(order, (tag.text), nsmap={'cbc': tag.namespace}).text = sale.client_order_ref or sale.name
+				etree.SubElement(order, (tag.text), nsmap={'cbc': tag.namespace}).text = sale.origin or sale.client_order_ref or sale.name
 				break
 		except Exception as e:
 			pass
@@ -440,7 +440,7 @@ class CPE:
 		tag = etree.QName(self._cbc, 'CitySubdivisionName')
 		etree.SubElement(address, (tag.text), nsmap={'cbc': tag.namespace}).text = partner_id.street2 and partner_id.street2[:25] or ''
 		tag = etree.QName(self._cbc, 'PostalZone')
-		etree.SubElement(address, (tag.text), nsmap={'cbc': tag.namespace}).text = partner_id.l10n_pe_district.code if partner_id.l10n_pe_district else '0000'
+		etree.SubElement(address, (tag.text), nsmap={'cbc': tag.namespace}).text = partner_id.l10n_pe_district.code if partner_id.l10n_pe_district and partner_id.l10n_pe_district.code else '0000'
 		tag = etree.QName(self._cbc, 'CountrySubentity')
 		etree.SubElement(address, (tag.text), nsmap={'cbc': tag.namespace}).text = partner_id.state_id.name or '-'
 		tag = etree.QName(self._cbc, 'District')
@@ -1558,11 +1558,13 @@ class CPE:
 					datos = invoice_id.tax_totals #.replace("false", "False")
 					#datos = json.loads(datos)
 
+
 					datos_sub = datos["groups_by_subtotal"]
 					importe_libre = datos_sub["Importe libre de impuestos"] if "Importe libre de impuestos" in datos_sub  else False
+
 					if not importe_libre:
 						for reg in datos_sub:
-							importe_libre = reg
+							importe_libre = datos_sub[reg]
 							break
 
 					amount_by_group = importe_libre

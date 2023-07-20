@@ -135,39 +135,21 @@
 				<div style="height: 1px; width: 100%; background: #FFF;border-top-style: dotted;border-width: 1px;" />
 				
 				<!-- Subtotal -->
-				<t t-set="tax_totals" t-value="o.tax_totals"/>
+				<t t-set="tax_totals" t-value="o.tax_totals_pe"/>
 				<table class="tabla" style="width: 100%; font-size: 85%; ">
 					<tr>
-						<td style="width: 20%;"></td>
-						<td style="width: 20%;"></td>
-						<td style="width: 35%;">
-							TOTAL A PAGAR
-						</td>
-						<td style="width: 25%; text-align: right;">
-							<span t-esc="tax_totals['formatted_amount_total']" class="pos-receipt-right-align"/>
-						</td>
-					</tr>
-					<t t-if="o.pe_total_discount">
-						<tr>
-							<td style="width: 20%;"></td>
-							<td style="width: 20%;"></td>
-							<td style="width: 35%;">
-								Total descuentos:
-							</td>
-							<td style="width: 25%; text-align: right;">
-								<span t-field="o.pe_total_discount" class="pos-receipt-right-align"/>
-							</td>
-						</tr>
-					</t>
-
-					<tr>
-						<td style="width: 20%;"></td>
-						<td style="width: 20%;"></td>
+						<td style="width: 20%; border: 0px;"></td>
+						<td style="width: 20%; border: 0px;"></td>
 						<td style="width: 35%;">
 							Op. Gravadas:
 						</td>
 						<td style="width: 25%; text-align: right;">
-							<span t-field="o.amount_untaxed" class="pos-receipt-right-align"/>
+							<t t-if="o.currency_id.name == 'USD'">
+								<span t-field="o.total_operaciones_gravadas_dolar"/> 
+							</t>
+							<t t-else="">
+								<span t-field="o.total_operaciones_gravadas"/> 
+							</t>
 						</td>
 					</tr>
 
@@ -190,21 +172,18 @@
                         <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
 			                <tr>
 			                    <t t-if="len(tax_totals['groups_by_subtotal'][subtotal_to_show]) > 1">
-			                    	<td style="width: 20%;"></td>
-									<td style="width: 20%;"></td>
+			                    	<td style="width: 20%; border: 0px;"></td>
+									<td style="width: 20%; border: 0px;"></td>
 			                        <td style="width: 35%;">
 			                            <span t-esc="amount_by_group['tax_group_name']"/>
-			                            <span class="text-nowrap"> on
-			                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
-			                            </span>
 			                        </td>
 			                        <td style="width: 25%; text-align: right;">
 			                            <span t-esc="amount_by_group['formatted_tax_group_amount']"/>
 			                        </td>
 			                    </t>
 			                    <t t-else="">
-			                    	<td style="width: 20%;"></td>
-									<td style="width: 20%;"></td>
+			                    	<td style="width: 20%; border: 0px;"></td>
+									<td style="width: 20%; border: 0px;"></td>
 			                        <td style="width: 35%;"><span class="text-nowrap" t-esc="amount_by_group['tax_group_name']"/></td>
 			                        <td style="width: 25%; text-align: right;">
 			                            <span t-esc="amount_by_group['formatted_tax_group_amount']" />
@@ -215,8 +194,8 @@
                     </t>
 
 					<tr id="tr_total">
-						<td style="width: 20%;"></td>
-						<td style="width: 20%;"></td>
+						<td style="width: 20%; border: 0px;"></td>
+						<td style="width: 20%; border: 0px;"></td>
 						<td style="width: 35%;">
 							Importe Total
 						</td>
@@ -316,7 +295,7 @@
 		</t>
 	</template>
 
-	<!--<report 
+	<report 
 		id="report_invoice_ticket"
 		string="Ticket"
 		model="account.move"
@@ -340,7 +319,7 @@
 	</record>
 	<record id="report_invoice_ticket" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe.paperformat_ticket"/>
-	</record>-->
+	</record>
 
 </data>
 </odoo>

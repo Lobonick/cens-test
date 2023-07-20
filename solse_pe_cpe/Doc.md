@@ -76,3 +76,9 @@
 
 # 11/05/223
 * Se agrega configuracion de url de consulta para tomar en cuenta paso con conexion a OSE para consulta de cdr
+
+# 21/05/223
+* Se soluiona bug que salio al momento de anular boletas
+
+# 14/07/2023
+* se mejora la impresion de plazos de pago al credito diferenciando de cuando se tiene instalado el modulo solse_pe_accountant

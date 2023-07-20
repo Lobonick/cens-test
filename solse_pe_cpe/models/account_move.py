@@ -150,12 +150,20 @@ class AccountMove(models.Model):
 
 	def _get_l10n_latam_documents_domain(self):
 		self.ensure_one()
+		sub_type = False
+		if self.move_type in ['in_invoice', 'in_refund']:
+			sub_type = "purchase"
+		elif self.move_type in ['out_invoice', 'out_refund']:
+			sub_type = "sale"
+
 		if self.move_type in ['out_refund', 'in_refund']:
 			internal_types = ['credit_note']
 		else:
 			internal_types = ['invoice', 'debit_note']
 
 		dominio = [('internal_type', 'in', internal_types), ('country_id', '=', self.company_id.account_fiscal_country_id.id)]
+		if sub_type:
+			dominio.append(("sub_type", "=", sub_type))
 
 		if self.journal_id.tipo_doc_permitidos:
 			dominio.append(("id", "in", self.journal_id.tipo_doc_permitidos.ids))
@@ -335,6 +343,9 @@ class AccountMove(models.Model):
 		for value in json_valores:
 			contador = contador + 1
 			if json_valores[value]:
+				continue
+
+			if not self.journal_id.mostrar_impuestos_en_cero:
 				continue
 
 			monto_grupo = 0
@@ -678,6 +689,9 @@ class AccountMove(models.Model):
 			}
 			invoice_date_due_vals_list.append(datos_json)
 
+		"""if invoice.monto_detraccion or invoice.monto_retencion:
+			invoice_date_due_vals_list.pop()"""
+
 		return invoice_date_due_vals_list
 
 	@api.depends('invoice_line_ids')
@@ -696,7 +710,9 @@ class AccountMove(models.Model):
 
 	@api.depends('l10n_latam_available_document_type_ids', 'debit_origin_id')
 	def _compute_l10n_latam_document_type(self):
+		_logging.info("_compute_l10n_latam_document_type:::::::::::::::.")
 		for rec in self.filtered(lambda x: x.state == 'draft'):
+
 			document_types = rec.l10n_latam_available_document_type_ids._origin
 			invoice_type = rec.move_type
 			if invoice_type in ['out_refund', 'in_refund']:
@@ -1021,10 +1037,28 @@ class AccountMove(models.Model):
 			raise UserError('La fecha de emision no puede ser menor a 6 dias de hoy ni mayor a la fecha de hoy.')"""
 		company_id = self.company_id.partner_id
 
+	def validar_impuestos(self):
+		if not self.tax_totals_pe or not 'amount_untaxed' and self.tax_totals_pe:
+			return True
+		monto_base = self.tax_totals_pe['amount_untaxed']
+		monto_igv_supuesto = monto_base * 0.18
+		monto_impuesto = 0
+		impuestos = self.tax_totals_pe['groups_by_subtotal']
+		for item in impuestos:
+			datos = self.tax_totals_pe['groups_by_subtotal'][item]
+			for item_in in datos:
+				if item_in['tax_group_name'] == 'IGV':
+					monto_impuesto = monto_impuesto + item_in['tax_group_amount']
+
+		if monto_impuesto > (monto_igv_supuesto + 10):
+			raise UserError("El calculo de impuestos no corresponde") 
+
+		
 	def _post(self, soft=True):
 		res = super(AccountMove, self)._post(soft=True)
 		for invoice_id in self:
 			invoice_id.action_date_assign()
+			invoice_id.validar_impuestos()
 			if invoice_id.is_cpe and invoice_id.l10n_latam_document_type_id.code in ('01', '03', '07', '08'): 
 				to_write = {}				
 				invoice_id.validate_sunat_invoice()
@@ -1426,22 +1460,30 @@ class AccountMove(models.Model):
 						self.l10n_latam_document_type_id = tipo_doc_id.id
 						
 		if doc_type in ('6', ):
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '01'), ('sub_type', '=', journal_type)], limit=1)
+			dominio = [('id', 'in', self.l10n_latam_available_document_type_ids.ids)]
+			dominio.extend([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '01'), ('sub_type', '=', journal_type)])
+			tipo_doc_id = tipo_documento.search(dominio, limit=1)
 			if tipo_doc_id:
 				self.l10n_latam_document_type_id = tipo_doc_id.id
 		else:
 			if self.l10n_latam_document_type_id.code != '03':
-				tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '03'), ('sub_type', '=', journal_type)], limit=1)
+				dominio = [('id', 'in', self.l10n_latam_available_document_type_ids.ids)]
+				dominio.extend([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '03'), ('sub_type', '=', journal_type)])
+				tipo_doc_id = tipo_documento.search(dominio, limit=1)
 				if tipo_doc_id:
 					self.l10n_latam_document_type_id = tipo_doc_id.id
 
 		if not tipo_doc_id:
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '00'), ('sub_type', '=', journal_type)], limit=1)
+			dominio = [('id', 'in', self.l10n_latam_available_document_type_ids.ids)]
+			dominio.extend([('company_id', 'in', [False, self.company_id.id]), ('code', '=', '00'), ('sub_type', '=', journal_type)])
+			tipo_doc_id = tipo_documento.search(dominio, limit=1)
 			if tipo_doc_id:
 				self.l10n_latam_document_type_id = tipo_doc_id.id
 
 		if not tipo_doc_id:
-			tipo_doc_id = tipo_documento.search([('company_id', 'in', [False, self.company_id.id]), ('sub_type', '=', journal_type)], limit=1)
+			dominio = [('id', 'in', self.l10n_latam_available_document_type_ids.ids)]
+			dominio.extend([('company_id', 'in', [False, self.company_id.id]), ('sub_type', '=', journal_type)])
+			tipo_doc_id = tipo_documento.search(dominio, limit=1)
 			if tipo_doc_id:
 				self.l10n_latam_document_type_id = tipo_doc_id.id
 
