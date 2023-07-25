@@ -278,7 +278,7 @@ class AccountMove(models.Model):
 		}
 		return respuesta
 
-	@api.depends('invoice_payment_term_id', 'journal_id', 'invoice_date', 'currency_id', 'amount_total_in_currency_signed', 'invoice_date_due', 'monto_detraccion')
+	@api.depends('invoice_payment_term_id', 'journal_id', 'invoice_date', 'currency_id', 'amount_total_in_currency_signed', 'amount_total_signed', 'invoice_date_due', 'monto_detraccion')
 	def _compute_needed_terms(self):
 		for invoice in self:
 			is_draft = invoice.id != invoice._origin.id
@@ -388,7 +388,7 @@ class AccountMove(models.Model):
 					untaxed_amount = invoice.amount_total_signed
 					if invoice.tiene_detraccion:
 						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion
-						untaxed_amount = untaxed_amount_currency - invoice.monto_detraccion_base
+						untaxed_amount = untaxed_amount - invoice.monto_detraccion_base
 
 						cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
 						cuenta_det_id = int(cuenta_det_id)
