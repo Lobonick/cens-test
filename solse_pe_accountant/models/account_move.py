@@ -280,6 +280,7 @@ class AccountMove(models.Model):
 
 	@api.depends('invoice_payment_term_id', 'journal_id', 'invoice_date', 'currency_id', 'amount_total_in_currency_signed', 'amount_total_signed', 'invoice_date_due', 'monto_detraccion')
 	def _compute_needed_terms(self):
+		_logging.info("============================ _compute_needed_terms")
 		for invoice in self:
 			is_draft = invoice.id != invoice._origin.id
 			invoice.needed_terms = {}
@@ -287,7 +288,9 @@ class AccountMove(models.Model):
 			account_id = False
 			sign = 1 if invoice.is_inbound(include_receipts=True) else -1
 			if invoice.is_invoice(True) and invoice.invoice_line_ids:
+				_logging.info("paso el primer if")
 				if invoice.invoice_payment_term_id:
+					_logging.info("tiene plazo de pago")
 					if is_draft:
 						tax_amount_currency = 0.0
 						untaxed_amount_currency = 0.0
@@ -384,11 +387,16 @@ class AccountMove(models.Model):
 							invoice.needed_terms[key_detraccion]['amount_currency'] = invoice.monto_detraccion
 
 				else:
+					_logging.info("es directoooooooooooooo")
+					_logging.info(invoice.monto_detraccion)
+					_logging.info(invoice.monto_detraccion_base)
 					untaxed_amount_currency = invoice.amount_total_in_currency_signed
 					untaxed_amount = invoice.amount_total_signed
+					_logging.info(untaxed_amount_currency)
+					_logging.info(untaxed_amount)
 					if invoice.tiene_detraccion:
-						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion
-						untaxed_amount = untaxed_amount - invoice.monto_detraccion_base
+						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
+						untaxed_amount = untaxed_amount - invoice.monto_detraccion
 
 						cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
 						cuenta_det_id = int(cuenta_det_id)
@@ -414,23 +422,29 @@ class AccountMove(models.Model):
 							'discount_percentage': 0
 						})
 						values = {
-							'balance': invoice.monto_detraccion_base,
-							'amount_currency': invoice.monto_detraccion,
+							'balance': invoice.monto_detraccion,
+							'amount_currency': invoice.monto_detraccion_base,
 						}
+						_logging.info("primera parte")
+						_logging.info(values)
 						invoice.needed_terms[key_detraccion] = values
 
-
+						values_n2 = {
+							'balance': untaxed_amount,
+							'amount_currency': untaxed_amount_currency,
+						}
+						_logging.info("parte 2")
+						_logging.info(values_n2)
 						invoice.needed_terms[frozendict({
 							'move_id': invoice.id,
 							'date_maturity': fields.Date.to_date(invoice.invoice_date_due),
 							'discount_date': False,
 							'discount_percentage': 0
-						})] = {
-							'balance': untaxed_amount,
-							'amount_currency': untaxed_amount_currency,
-						}
+						})] = values_n2
 
 					else:
+						_logging.info("pasa por el segudooooooooooooooooooo")
+						_logging.info(invoice.amount_total_signed)
 						invoice.needed_terms[frozendict({
 							'move_id': invoice.id,
 							'date_maturity': fields.Date.to_date(invoice.invoice_date_due),
