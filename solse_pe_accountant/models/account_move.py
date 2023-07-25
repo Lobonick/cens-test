@@ -280,17 +280,33 @@ class AccountMove(models.Model):
 
 	@api.depends('invoice_payment_term_id', 'journal_id', 'invoice_date', 'currency_id', 'amount_total_in_currency_signed', 'amount_total_signed', 'invoice_date_due', 'monto_detraccion')
 	def _compute_needed_terms(self):
-		_logging.info("============================ _compute_needed_terms")
 		for invoice in self:
+			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
+			cuenta_det_id = int(cuenta_det_id)
+			cuenta_det_compra_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
+			cuenta_det_compra_id = int(cuenta_det_compra_id or 0)
+
+			if invoice.move_type == 'in_invoice':
+				cuenta_det_id = cuenta_det_compra_id
+
+			existe_linea_detraccion = False
+			id_linea_detraccion = False
+			cuenta = invoice.line_ids.filtered(lambda r: r.account_id.id == cuenta_det_id and cuenta_det_id)
+			if cuenta:
+				existe_linea_detraccion = True
+				id_linea_detraccion = cuenta.id
+
+			if id_linea_detraccion:
+				cuenta.write({'debit': 0.0, 'credit': 0.0, 'amount_currency': 0.0})
+
+
 			is_draft = invoice.id != invoice._origin.id
 			invoice.needed_terms = {}
 			invoice.needed_terms_dirty = True
 			account_id = False
 			sign = 1 if invoice.is_inbound(include_receipts=True) else -1
 			if invoice.is_invoice(True) and invoice.invoice_line_ids:
-				_logging.info("paso el primer if")
 				if invoice.invoice_payment_term_id:
-					_logging.info("tiene plazo de pago")
 					if is_draft:
 						tax_amount_currency = 0.0
 						untaxed_amount_currency = 0.0
@@ -353,20 +369,11 @@ class AccountMove(models.Model):
 							invoice.needed_terms[key]['amount_currency'] += values['amount_currency']"""
 
 					if fecha_ini and invoice.tiene_detraccion:
-						cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
-						cuenta_det_id = int(cuenta_det_id)
-
-						cuenta_det_compra_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
-						cuenta_det_compra_id = int(cuenta_det_compra_id or 0)
-
 						if invoice.move_type == 'out_invoice' and not cuenta_det_id:
 							raise UserError("No se ha configurado una cuenta de detracción para ventas")
 
 						if invoice.move_type == 'in_invoice' and not cuenta_det_compra_id:
 							raise UserError("No se ha configurado una cuenta de detracción para compras")
-
-						if invoice.move_type == 'in_invoice':
-							cuenta_det_id = cuenta_det_compra_id
 
 						fecha_ini = invoice.invoice_date or invoice.date or fields.Date.today()
 						key_detraccion = frozendict({
@@ -387,19 +394,11 @@ class AccountMove(models.Model):
 							invoice.needed_terms[key_detraccion]['amount_currency'] = invoice.monto_detraccion
 
 				else:
-					_logging.info("es directoooooooooooooo")
-					_logging.info(invoice.monto_detraccion)
-					_logging.info(invoice.monto_detraccion_base)
 					untaxed_amount_currency = invoice.amount_total_in_currency_signed
 					untaxed_amount = invoice.amount_total_signed
-					_logging.info(untaxed_amount_currency)
-					_logging.info(untaxed_amount)
 					if invoice.tiene_detraccion:
 						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
 						untaxed_amount = untaxed_amount - invoice.monto_detraccion
-
-						cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
-						cuenta_det_id = int(cuenta_det_id)
 
 						cuenta_det_compra_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
 						cuenta_det_compra_id = int(cuenta_det_compra_id or 0)
@@ -409,9 +408,6 @@ class AccountMove(models.Model):
 
 						if invoice.move_type == 'in_invoice' and not cuenta_det_compra_id:
 							raise UserError("No se ha configurado una cuenta de detracción para compras")
-
-						if invoice.move_type == 'in_invoice':
-							cuenta_det_id = cuenta_det_compra_id
 
 						fecha_ini = invoice.invoice_date or invoice.date or fields.Date.today()
 						key_detraccion = frozendict({
@@ -425,16 +421,18 @@ class AccountMove(models.Model):
 							'balance': invoice.monto_detraccion,
 							'amount_currency': invoice.monto_detraccion_base,
 						}
-						_logging.info("primera parte")
-						_logging.info(values)
-						invoice.needed_terms[key_detraccion] = values
+						if id_linea_detraccion:
+							if invoice.move_type in ['out_invoice', 'out_refund']:
+								cuenta.write({'debit': invoice.monto_detraccion, 'credit': 0.0, 'amount_currency': invoice.monto_detraccion_base})
+							else:
+								cuenta.write({'debit': 0.00, 'credit': invoice.monto_detraccion, 'amount_currency': invoice.monto_detraccion_base})
+						else:
+							invoice.needed_terms[key_detraccion] = values
 
 						values_n2 = {
 							'balance': untaxed_amount,
 							'amount_currency': untaxed_amount_currency,
 						}
-						_logging.info("parte 2")
-						_logging.info(values_n2)
 						invoice.needed_terms[frozendict({
 							'move_id': invoice.id,
 							'date_maturity': fields.Date.to_date(invoice.invoice_date_due),
@@ -443,8 +441,6 @@ class AccountMove(models.Model):
 						})] = values_n2
 
 					else:
-						_logging.info("pasa por el segudooooooooooooooooooo")
-						_logging.info(invoice.amount_total_signed)
 						invoice.needed_terms[frozendict({
 							'move_id': invoice.id,
 							'date_maturity': fields.Date.to_date(invoice.invoice_date_due),
