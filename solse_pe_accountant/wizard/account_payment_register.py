@@ -20,16 +20,12 @@ class AccountPaymentRegister(models.TransientModel):
 	@api.depends('line_ids', 'line_ids.move_id')
 	def _compute_mostrar_check(self):
 		for reg in self:
-			facturas = reg.mapped("line_ids.move_id")
-			mostrar_check = False
-			pagadas_detrac = facturas.filtered(lambda r: r.pago_detraccion)
-			if len(facturas) == len(pagadas_detrac) and len(pagadas_detrac):
+			factura = reg.line_ids[0].move_id
+			mostrar_check = True
+			if factura.pago_detraccion:
 				mostrar_check = False
-			else:
-				for factura in facturas:
-					if factura.tiene_detraccion or factura.tiene_retencion:
-						mostrar_check = True
-			
+			if not factura.tiene_detraccion and not factura.tiene_retencion:
+				mostrar_check = False
 			reg.mostrar_check = mostrar_check
 
 	@api.depends('can_edit_wizard', 'line_ids')
