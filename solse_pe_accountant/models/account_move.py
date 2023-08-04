@@ -336,6 +336,7 @@ class AccountMove(models.Model):
 				if invoice.invoice_payment_term_id:
 
 					if is_draft:
+						_logging.info("borradorrrrrrr")
 						tax_amount_currency = 0.0
 						untaxed_amount_currency = 0.0
 						for line in invoice.invoice_line_ids:
@@ -345,6 +346,7 @@ class AccountMove(models.Model):
 						untaxed_amount = untaxed_amount_currency
 						tax_amount = tax_amount_currency
 					else:
+						_logging.info("no es borradddorrrrrrrr")
 						# Impuesto en moneda extranjera
 						tax_amount_currency = invoice.amount_tax * sign
 						# Impuesto en soles
@@ -361,9 +363,12 @@ class AccountMove(models.Model):
 							untaxed_amount_currency = invoice.amount_total_in_currency_signed
 							untaxed_amount = invoice.amount_total_signed"""
 						residuo = (invoice.amount_total_in_currency_signed - tax_amount_currency)
-						if residuo == untaxed_amount_currency:
-							untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
-							untaxed_amount = untaxed_amount - invoice.monto_detraccion
+						_logging.info("este es el residuoooooooooo")
+						_logging.info(residuo)
+						_logging.info(untaxed_amount_currency)
+						#if residuo == untaxed_amount_currency:
+						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
+						untaxed_amount = untaxed_amount - invoice.monto_detraccion
 					elif invoice.tiene_detraccion:
 						residuo = (invoice.amount_total_in_currency_signed - tax_amount_currency)
 
