@@ -4,6 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 
+from . import res_company
 from . import res_config_settings
 from . import account_move
 from . import tipo_cambio_sunat

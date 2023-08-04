@@ -124,10 +124,10 @@ class AccountPaymentRegister(models.TransientModel):
 		if self.payment_difference_handling == 'reconcile':
 			cuenta_diferencia = False
 			if self.payment_difference > 0:
-				cuenta_diferencia = self.company_id.cuenta_detrac_ganancias.id
+				cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_ganancias')
 				cuenta_diferencia = int(cuenta_diferencia)
 			else:
-				cuenta_diferencia = self.company_id.cuenta_detrac_perdidas.id
+				cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_perdidas')
 				cuenta_diferencia = int(cuenta_diferencia)
 			self.writeoff_account_id = cuenta_diferencia
 
@@ -148,7 +148,7 @@ class AccountPaymentRegister(models.TransientModel):
 			crear_diferencia = True
 
 		if self.tipo == 'detraccion' and factura.move_type == 'in_invoice':
-			cuenta_det_id = self.company_id.cuenta_detracciones_compra.id
+			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
 			cuenta_det_id = int(cuenta_det_id)
 			payment_vals['destination_account_id'] = cuenta_det_id
 			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
@@ -156,10 +156,10 @@ class AccountPaymentRegister(models.TransientModel):
 			
 			if diferencia and not crear_diferencia:
 				if diferencia > 0:
-					cuenta_diferencia = self.company_id.cuenta_detrac_ganancias.id
+					cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_ganancias')
 					cuenta_diferencia = int(cuenta_diferencia)
 				else:
-					cuenta_diferencia = self.company_id.cuenta_detrac_perdidas.id
+					cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_perdidas')
 					cuenta_diferencia = int(cuenta_diferencia)
 
 				if self.payment_type == 'inbound':
@@ -180,7 +180,7 @@ class AccountPaymentRegister(models.TransientModel):
 				payment_vals['write_off_line_vals'] = [dato_json]
 
 		if self.tipo == 'detraccion' and factura.move_type == 'out_invoice':
-			cuenta_det_id = self.company_id.cuenta_detracciones.id
+			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
 			cuenta_det_id = int(cuenta_det_id)
 			payment_vals['destination_account_id'] = cuenta_det_id
 			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
@@ -188,10 +188,10 @@ class AccountPaymentRegister(models.TransientModel):
 			
 			if diferencia and not crear_diferencia:
 				if diferencia > 0:
-					cuenta_diferencia = self.company_id.cuenta_detrac_ganancias.id
+					cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_ganancias')
 					cuenta_diferencia = int(cuenta_diferencia)
 				else:
-					cuenta_diferencia = self.company_id.cuenta_detrac_perdidas.id
+					cuenta_diferencia = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detrac_perdidas')
 					cuenta_diferencia = int(cuenta_diferencia)
 
 				if self.payment_type == 'inbound':
@@ -212,7 +212,7 @@ class AccountPaymentRegister(models.TransientModel):
 				payment_vals['write_off_line_vals'] = [dato_json]
 
 		if self.tipo == 'retencion' and factura.move_type == 'in_invoice':
-			cuenta_det_id = self.company_id.cuenta_retenciones.id
+			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_retenciones')
 			cuenta_det_id = int(cuenta_det_id)
 			payment_vals['destination_account_id'] = cuenta_det_id
 
@@ -263,19 +263,18 @@ class AccountPaymentRegister(models.TransientModel):
 
 	def _create_payments(self):
 		self.ensure_one()
+		cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
+		cuenta_det_id = int(cuenta_det_id)
+
+		cuenta_ret_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_retenciones')
+		cuenta_ret_id = int(cuenta_ret_id)
 
 		batches = self._get_batches()
 		batch_result = batches[0]
 		factura = self.line_ids[0].move_id
 
-		cuenta_det_id = factura.company_id.cuenta_detracciones_compra.id
-		cuenta_det_id = int(cuenta_det_id)
-
-		cuenta_ret_id = factura.company_id.cuenta_retenciones.id
-		cuenta_ret_id = int(cuenta_ret_id)
-
 		if factura.move_type == 'out_invoice':
-			cuenta_det_id = factura.company_id.cuenta_detracciones.id
+			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
 			cuenta_det_id = int(cuenta_det_id)
 
 		if self.tipo == 'detraccion':
@@ -344,17 +343,15 @@ class AccountPaymentRegister(models.TransientModel):
 	@api.depends('line_ids')
 	def _compute_from_lines(self):
 		''' Load initial values from the account.moves passed through the context. '''
-		
+		cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
+		cuenta_det_id = int(cuenta_det_id)
+
+		cuenta_ret_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_retenciones')
+		cuenta_ret_id = int(cuenta_ret_id)
 
 		for wizard in self:
 			batches = wizard._get_batches()
 			factura = self.line_ids[0].move_id
-			cuenta_det_id = factura.company_id.cuenta_detracciones_compra.id
-			cuenta_det_id = int(cuenta_det_id)
-
-			cuenta_ret_id = factura.company_id.cuenta_retenciones.id
-			cuenta_ret_id = int(cuenta_ret_id)
-
 			if factura.move_type == 'in_invoice':
 				batch_result = batches[0]
 				if self.tipo == 'detraccion':
@@ -391,7 +388,7 @@ class AccountPaymentRegister(models.TransientModel):
 				wizard.can_edit_wizard = True
 				wizard.can_group_payments = len(batch_result['lines']) != 1
 			elif factura.move_type == 'out_invoice':
-				cuenta_det_id = factura.company_id.cuenta_detracciones.id
+				cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
 				cuenta_det_id = int(cuenta_det_id)
 				batch_result = batches[0]
 				if self.tipo == 'detraccion':

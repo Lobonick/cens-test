@@ -11,9 +11,9 @@ _logging = logging.getLogger(__name__)
 class ResConfigSettings(models.TransientModel):
 	_inherit = 'res.config.settings'
 
-	cuenta_detracciones = fields.Many2one("account.account", string="Cuenta de detracciones [Venta]", config_parameter='solse_pe_accountant.default_cuenta_detracciones')
-	cuenta_detracciones_compra = fields.Many2one("account.account", string="Cuenta de detracciones [Compra]", config_parameter='solse_pe_accountant.default_cuenta_detracciones_compra')
-	cuenta_detrac_ganancias = fields.Many2one("account.account", string="Cuenta para ganancias", config_parameter='solse_pe_accountant.default_cuenta_detrac_ganancias')
-	cuenta_detrac_perdidas = fields.Many2one("account.account", string="Cuenta para perdidas", config_parameter='solse_pe_accountant.default_cuenta_detrac_perdidas')
+	cuenta_detracciones = fields.Many2one("account.account", string="Cuenta de detracciones [Venta]", related="company_id.cuenta_detracciones", store=True, readonly=False)
+	cuenta_detracciones_compra = fields.Many2one("account.account", string="Cuenta de detracciones [Compra]", related="company_id.cuenta_detracciones_compra", store=True, readonly=False)
+	cuenta_detrac_ganancias = fields.Many2one("account.account", string="Cuenta para ganancias", related="company_id.cuenta_detrac_ganancias", store=True, readonly=False)
+	cuenta_detrac_perdidas = fields.Many2one("account.account", string="Cuenta para perdidas", related="company_id.cuenta_detrac_perdidas", store=True, readonly=False)
 	
-	cuenta_retenciones = fields.Many2one("account.account", string="Cuenta de retenciones", config_parameter='solse_pe_accountant.default_cuenta_retenciones')
+	cuenta_retenciones = fields.Many2one("account.account", string="Cuenta de retenciones", related="company_id.cuenta_retenciones", store=True, readonly=False)
