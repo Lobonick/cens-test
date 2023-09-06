@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+	<!-- menu -->
+    <menuitem name="Informes PDF (Perú)" id="solse_pe_informes_menu" parent="account.menu_finance_reports" />
+
+    <menuitem
+        action="action_reporte_ventas"
+        id="reporte_venta_menu"
+        parent="solse_pe_informes_menu" sequence="190"/>
+
+    <menuitem
+        action="action_estados_cuenta"
+        id="estados_cuenta_menu"
+        parent="solse_pe_informes_menu" sequence="191"/> 
+
+    <menuitem
+        action="action_reporte_calidad_deuda"
+        id="reporte_calidad_deuda_menu"
+        parent="solse_pe_informes_menu" sequence="192"/> 
+
+    <menuitem
+        action="action_reporte_pronostico_cobranzas"
+        id="reporte_pronostico_cobranzas_menu"
+        parent="solse_pe_informes_menu" sequence="193"/> 
+
+    <menuitem
+        action="action_reporte_cobranzas"
+        id="reporte_cobranzas_menu"
+        parent="solse_pe_informes_menu" sequence="194"/> 
+
+</data>
+</odoo>

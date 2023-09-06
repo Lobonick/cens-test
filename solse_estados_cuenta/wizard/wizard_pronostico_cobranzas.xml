@@ -1,0 +1,42 @@
+<odoo>
+	<data>
+		<record id="wizard_reporte_pronostico_cobranzas" model="ir.ui.view">
+			<field name="name">Pronostico Cobranza</field>
+			<field name="model">solse.reporte.pronostico.cobranza</field>
+			<field name="arch" type="xml">
+				<form string="Obtener Estados de Cuenta">
+					<p class="oe_grey">
+						Pronostico Cobranza
+					</p>
+					<sheet>
+						<group>
+							<group>
+								<field name="tipo_reporte" invisible="1" />
+								<field name="empresa_ids" widget="many2many_tags"/>
+								<field name="contacto_ids" widget="many2many_tags" invisible="0"/>
+							</group>
+
+							<group>
+								<field name="fecha_ini" invisible="1"/>
+								<field name="fecha_fin" string="Fecha de referenia" required="1"/>
+							</group>
+						</group>
+					</sheet>
+					<footer>
+						<button string="Imprimir" name="action_pdf" type="object" default_focus="1" class="btn-primary"/>
+						<button string="Excel" name="action_excel" type="object" default_focus="1" class="btn-primary"/>
+						<button string="Cancelar" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_reporte_pronostico_cobranzas" model="ir.actions.act_window"> 
+			<field name="name">Pronostico Cobranza</field>
+			<field name="res_model">solse.reporte.pronostico.cobranza</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="wizard_reporte_pronostico_cobranzas"/>
+			<field name="target">new</field>
+		</record>
+	</data>
+</odoo>

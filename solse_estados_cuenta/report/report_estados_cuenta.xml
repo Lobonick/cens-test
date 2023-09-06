@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="template_estados_cuenta">
+		<t t-call="web.html_container">
+			<t t-if="not company">
+				<!-- Multicompany -->
+				<t t-if="res_company">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+				<t t-else="else">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+			</t>
+			
+			<div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+	            <div class="row col-12">
+	                <div class="col-3">
+	                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px; width: 90px;" alt="Logo"/>
+	                </div>
+	                <div class="col-4" />
+	                <div class="col-6" name="company_address" style="text-align: right; margin: 0px; padding: 0px;">
+	                	<div style="width:88%;">
+	                		<strong> <t t-esc="company.name"/></strong>
+		                    <br/>
+		                    <t t-esc="company.street" style="font-size: 12px;"/>
+	                	</div>
+	                    
+	                </div>
+	            </div>
+	            <div class="row col-12" style="height: 1px; width: 100%; background: black;">
+	            </div>
+	        </div>
+
+			<br/>
+
+			<div class="article o_report_layout_clean factura" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
+				<div class="page factura">
+					<div class="col-12" style="margin: 0; padding: 0;">
+						Estados de Cuentas			
+					</div>
+					<!--<div class="row" style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0;">-->
+					<div class="row" style="width: 100%; margin: 0; padding: 0; font-size: 12px;">
+						<div class="col-3" style="margin: 0; padding: 0;" t-if="fecha_ini">
+							<strong>Fecha Inicio:</strong><br/>
+							<t t-esc="fecha_ini"/>
+						</div>
+						<div  class="col-3" style="margin: 0; padding: 0;">
+							<strong>Fecha Fin:</strong><br/>
+							<t t-esc="fecha_fin"/>
+						</div>
+						<div  class="col-3" style="margin: 0; padding: 0;">
+							<strong>Cliente:</strong><br/>
+							<t t-esc="contacto"/>
+						</div>
+					</div>
+					<br/>
+					<div style="border: 0px; border-radius: 6px; width: 100%; margin: 0;">
+						<table style="width: 100%; margin: 0; font-size: 11px; border: 0px;">
+	                        <tbody style="width: 100%; margin: 0; border: 0px;">
+	                        	<t t-foreach="lineas" t-as="linea">
+	                        		<t t-if="linea['tipo'] =='titulo'">
+	                        			<tr style="border: 0px;">
+	                        				<th colspan="7">
+	                        					<span t-esc="linea['texto']" /> 
+	                        				</th>
+	                        			</tr>
+	                        		</t>
+	                        		<t t-elif="linea['tipo'] =='cabecera'">
+	                        			<tr style="background: #c9c9c9; border: 0px;">
+	                        				<th>
+	                        					<span t-esc="linea['documento']" />
+	                        				</th>
+	                        				<th>
+	                        					<span t-esc="linea['fecha_emision']" />
+	                        				</th>
+	                        				<th style="margin-left: 3px;">
+	                        					 <span style="margin-left: 3px;" t-esc="linea['fecha_vencimieno']" />
+	                        				</th>
+	                        				<th style="text-align: right;">
+	                        					<span t-esc="linea['importe']" />
+	                        				</th>
+	                        				<th style="text-align: right;max-width: 150px;">  
+	                        					<span t-esc="linea['referencia']"/>
+	                        				</th>
+	                        				<th style="text-align: right;max-width: 250px;">  
+	                        					<span t-esc="linea['pagos']"/>
+	                        				</th>
+	                        				<th style="text-align: right;">
+	                        					<span t-esc="linea['saldo_actual']"/> 
+	                        				</th>
+	                        				
+	                        				<!--<th>
+	                        					<span t-esc="linea['vendedor']" />
+	                        				</th>-->
+	                        			</tr>
+	                        		</t>
+	                        		<t t-elif="linea['tipo'] =='detalle'">
+	                        			<tr style="border: 1px; margin: 0px; padding: 0px;height: 8px;">
+	                        				<td style="margin: 0px; padding: 0px;border: 0px;"> 
+	                        					<span t-esc="linea['documento']" /> 
+	                        				</td>
+	                        				<td style="margin: 0px; padding: 0px;">
+	                        					<span t-esc="linea['fecha_emision']" />
+	                        				</td>
+	                        				<td style="margin: 0px; padding: 0px;margin-left: 3px;">
+	                        					<span style="margin-left: 3px;" t-esc="linea['fecha_vencimieno']" />
+	                        				</td>
+	                        				<td style="margin: 0px; padding: 0px;text-align: right;">
+	                        					<span t-esc="linea['currency_id']" /> 
+	                        					<span t-esc="linea['importe']" />
+	                        				</td>
+	                        				<td style="text-align: right;margin: 0px; padding: 0px;display: table-cell;vertical-align: bottom;max-width: 150px;">
+	                        					<!--<span t-esc="linea['currency_id']" /> -->
+	                        					<t t-if="linea['pagos'] in ['S/ 0.00', '$ 0.00'] ">
+	                        						<span t-esc="linea['referencia']" />
+	                        					</t>
+	                        					<t t-else=""> 
+	                        						<pre>
+	                        							<t  t-esc="linea['referencia']" />
+	                        						</pre>
+	                        					</t>
+	                        				</td>
+	                        				<td style="text-align: right;margin: 0px; padding: 0px;display: table-cell;vertical-align: bottom;max-width: 250px;">
+	                        					<!--<span t-esc="linea['currency_id']" /> -->
+	                        					<t t-if="linea['pagos'] in ['S/ 0.00', '$ 0.00'] ">
+	                        						<span t-esc="linea['pagos']" />
+	                        					</t>
+	                        					<t t-else=""> 
+	                        						<pre>
+	                        							<t  t-esc="linea['pagos']" />
+	                        						</pre>
+	                        					</t>
+	                        				</td>
+	                        				<td style="margin: 0px; padding: 0px;text-align: right;">
+	                        					<span t-esc="linea['currency_id']" /> 
+	                        					<span t-esc="linea['saldo_actual']" /> 
+	                        				</td>
+	                        				
+	                        				<!--<td> 
+	                        					<span t-esc="linea['vendedor']" />
+	                        				</td>-->
+	                        			</tr>
+	                        		</t>
+	                        		<t t-elif="linea['tipo'] =='total'">
+	                        			<tr style="border: 0px;">
+	                        				<th>
+	                        					Total
+	                        				</th>
+	                        				<td>
+	                        					
+	                        				</td>
+	                        				
+	                        				<td>
+	                        					
+	                        				</td>
+	                        				<th style="text-align: right;">
+	                        					<span t-esc="linea['currency_id']" /> 
+	                        					<span t-esc="linea['total_importe']" />
+	                        				</th>
+	                        				<td>
+	                        					
+	                        				</td>
+	                        				<th style="text-align: right;">
+	                        					<span t-esc="linea['currency_id']" /> 
+	                        					<span t-esc="linea['total_pago']" />
+	                        				</th>
+	                        				<th style="text-align: right;">
+	                        					<span t-esc="linea['currency_id']" /> 
+	                        					<span t-esc="linea['total_saldo']" />
+	                        				</th>
+	                        				<!--<td>
+	                        					
+	                        				</td>-->
+	                        			</tr>
+	                        			<tr style="border: 0px;">
+	                        				<td colspan="7">
+	                        					<p>
+	                        					</p>
+	                        				</td>
+	                        			</tr>
+	                        		</t>
+	                        	</t>
+	                        </tbody>
+	                    </table>
+					</div>
+				</div>
+			</div>
+
+			<div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+	            <div class="text-center" style="border-top: 1px solid black;">
+	                <ul class="list-inline mb4">
+	                    <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
+	                         adding d-inline class fixes the problem-->
+	                    <li t-if="company.phone" class="list-inline-item d-inline"><span class="o_force_ltr" t-field="company.phone"/></li>
+	                    <li t-if="company.email" class="list-inline-item d-inline"><span t-field="company.email"/></li>
+	                    <li t-if="company.website" class="list-inline-item d-inline"><span t-field="company.website"/></li>
+	                    <li t-if="company.vat" class="list-inline-item d-inline">RUC: <span t-field="company.vat"/></li>
+	                </ul>
+
+	                <div name="financial_infos">
+	                    <span t-field="company.report_footer"/>
+	                </div>
+
+	                <div t-if="report_type == 'pdf'" class="text-muted">
+	                    Página: <span class="page"/> / <span class="topage"/>
+	                </div>
+	                <div t-if="report_type == 'pdf' and display_name_in_footer" class="text-muted">
+	                    <span t-field="o.name"/>
+	                </div>
+	            </div>
+	        </div>
+		</t>
+	</template>
+
+	<report
+		id="estados_cuenta_report_pdf"
+		model="product.product"
+		string="Estados cuenta"
+		report_type="qweb-pdf"
+		name="solse_estados_cuenta.template_estados_cuenta"
+		file="solse_estados_cuenta.template_estados_cuenta"
+	/>
+
+	
+	<record id="solse_estados_cuenta.paperformat_estados_cuenta" model="report.paperformat">
+		<field name="name">Formato Papel (Estados cuenta)</field>
+		<field name="default" eval="True" />
+		<field name="format">custom</field>
+		<field name="page_height">297</field>
+		<field name="page_width">210</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">25</field> <!-- la diferencia (margin_top - header_spacing) es el espacio que queda en la parte superior de la hoja-->
+		<field name="header_spacing">20</field>
+		<field name="margin_bottom">20</field>
+		<field name="margin_left">7</field>
+		<field name="margin_right">7</field>
+		<field name="header_line" eval="False" /><!-- mostrar una linea en cabecera-->
+		<field name="dpi">90</field>
+	</record>
+
+
+	<record id="solse_estados_cuenta.estados_cuenta_report_pdf" model="ir.actions.report">
+		<field name="paperformat_id" ref="solse_estados_cuenta.paperformat_estados_cuenta"/>
+	</record>
+
+</odoo>

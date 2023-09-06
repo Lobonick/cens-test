@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="template_reporte_pronostico_cobranzas">
+		<t t-call="web.html_container">
+			<t t-if="not company">
+				<!-- Multicompany -->
+				<t t-if="res_company">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+				<t t-else="else">
+					<t t-set="company" t-value="res_company"/>
+				</t>
+			</t>
+			
+
+			<!-- Header -->
+			<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">
+				<div class="row">
+					<div class="col-2 text-left" style="font-size: 12px;">
+						<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>		
+					</div>
+					<div class="col-8 empresa" name="company_name" style="text-align: center;font-size: 12px;">
+						<strong style="font-size: 12px;"> 
+							<t t-esc="empresa"/>
+						</strong>
+					</div>
+					<div class="col-2 text-muted" style="font-size: 12px; text-align: right;">
+						<span class="page"/>
+						/  
+						<span class="topage"/>
+					</div>
+				</div>
+			</div>
+			<br/>
+
+			<div class="article o_report_layout_clean factura" data-oe-model="product.product" t-att-data-oe-id="o and o.id">
+				<div class="page factura">
+					<div class="col-12" style="margin: 0; padding: 0;">
+						Pronostico de Cobranzas	
+					</div>
+					<!--<div class="row" style="border: 1px solid #ddd !important; border-radius: 6px; width: 100%; margin: 0;">-->
+					<div class="row" style="width: 100%; margin: 0; padding: 0; font-size: 12px;">
+						<div  class="col-3" style="margin: 0; padding: 0;">
+							<strong>Fecha Referencia:</strong><br/>
+							<t t-esc="fecha_fin"/>
+						</div>
+						<div  class="col-3" style="margin: 0; padding: 0;">
+							<strong>Cliente:</strong><br/>
+							<t t-esc="contacto"/>
+						</div>
+					</div>
+					<br/>
+					<div style="border: 0px; border-radius: 6px; width: 100%; margin: 0;">
+						<table style="width: 100%; margin: 0; font-size: 11px; border: 0px;">
+							<thead>
+								<tr style="border: 1px; margin: 0px; padding: 0px;height: 8px;text-transform: lowercase;">
+                    				<th style="margin: 0px; padding: 0px;border: 0px;"> 
+                    					
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					Saldo Total Cliente
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					Importe Vencido
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					A pagar en 1 a 7 días
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					A pagar en 8 a 14 días
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					A pagar en 15 a 21 días
+                    				</th>
+                    				<th style="text-align: right;text-transform: capitalize;">
+                    					A pagar en mas de 21 días
+                    				</th>
+                    				
+                    			</tr>
+							</thead>
+	                        <tbody style="width: 100%; margin: 0; border: 0px;">
+	                        	<t t-foreach="lineas" t-as="linea">
+	                        		<t t-if="linea['tipo'] =='detalle'">
+	                        			<tr style="border: 1px; margin: 0px; padding: 0px;height: 8px;">
+	                        				<td style="margin: 0px; padding: 0px;border: 0px;"> 
+	                        					<span t-esc="linea['contacto']" /> 
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span t-esc="'%.2f'%(linea['saldo_total'])" />
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span t-esc="'%.2f'%(linea['importe_vencido'])" />
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span style="margin-left: 3px;" t-esc="'%.2f'%(linea['pagar_n1'])" />
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span t-esc="'%.2f'%(linea['pagar_n2'])" />
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span t-esc="'%.2f'%(linea['pagar_n3'])" /> 
+	                        				</td>
+	                        				<td style="text-align: right;">
+	                        					<span t-esc="'%.2f'%(linea['pagar_n4'])" /> 
+	                        				</td>
+	                        			</tr>
+	                        		</t>
+	                        		<t t-elif="linea['tipo'] =='total'">
+	                        			<tr >
+	                        				<th >
+	                        					<span t-esc="linea['texto']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_saldo_total']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_importe_vencido']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_pagar_1_7']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_pagar_8_14']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_pagar_15_21']" /> 
+	                        				</th>
+	                        				<th style="text-align: right;border-top: 1px solid gray;border-bottom: 2px solid gray;">
+	                        					<span t-esc="linea['total_pagar_21_mas']" /> 
+	                        				</th>
+	                        			</tr>
+	                        			<tr style="border: 0px; height: 3px;">
+	                        				<td colspan="7">
+	                        				</td>
+	                        			</tr>
+	                        		</t>
+	                        		
+	                        	</t>
+	                        </tbody>
+	                    </table>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer" >
+
+				
+				<br/>
+			</div>
+		</t>
+	</template>
+
+	<report
+		id="reporte_pronostico_cobranzas_report_pdf"
+		model="account.move"
+		string="Pronostico Cobranzas"
+		report_type="qweb-pdf"
+		name="solse_estados_cuenta.template_reporte_pronostico_cobranzas"
+		file="solse_estados_cuenta.template_reporte_pronostico_cobranzas"
+	/>
+
+	
+	<record id="solse_estados_cuenta.paperformat_reporte_pronostico_cobranzas" model="report.paperformat">
+		<field name="name">Formato Papel (Pronostico Cobranzas)</field>
+		<field name="default" eval="True" />
+		<field name="format">custom</field>
+		<field name="page_height">297</field>
+		<field name="page_width">210</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">15</field> <!-- la diferencia (margin_top - header_spacing) es el espacio que queda en la parte superior de la hoja-->
+		<field name="header_spacing">10</field>
+		<field name="margin_bottom">30</field>
+		<field name="margin_left">7</field>
+		<field name="margin_right">7</field>
+		<field name="header_line" eval="False" /><!-- mostrar una linea en cabecera-->
+		<field name="dpi">90</field>
+	</record>
+
+
+	<record id="solse_estados_cuenta.reporte_pronostico_cobranzas_report_pdf" model="ir.actions.report">
+		<field name="paperformat_id" ref="solse_estados_cuenta.paperformat_reporte_pronostico_cobranzas"/>
+	</record>
+
+</odoo>

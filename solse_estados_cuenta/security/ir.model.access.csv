@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solse_estados_cuenta,solse.estados.cuenta,solse_estados_cuenta.model_solse_estados_cuenta,,1,1,1,1
+access_solse_reporte_ventas,solse.reporte.ventas,solse_estados_cuenta.model_solse_reporte_ventas,,1,1,1,1
+access_solse_reporte_pronostico_cobranza,solse.reporte.pronostico.cobranza,solse_estados_cuenta.model_solse_reporte_pronostico_cobranza,,1,1,1,1
+access_solse_reporte_cobranza,solse.reporte.cobranza,solse_estados_cuenta.model_solse_reporte_cobranza,,1,1,1,1
+access_solse_reporte_calidad_deuda,solse.reporte.calidad.deuda,solse_estados_cuenta.model_solse_reporte_calidad_deuda,,1,1,1,1
+

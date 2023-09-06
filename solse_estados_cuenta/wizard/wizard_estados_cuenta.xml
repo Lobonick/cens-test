@@ -1,0 +1,42 @@
+<odoo>
+	<data>
+		<record id="wizard_estados_cuenta" model="ir.ui.view">
+			<field name="name">Obtener Estados de Cuenta</field>
+			<field name="model">solse.estados.cuenta</field>
+			<field name="arch" type="xml">
+				<form string="Obtener Estados de Cuenta">
+					<p class="oe_grey">
+						Estados de Cuenta
+					</p>
+					<sheet>
+						<group>
+							<group>
+								<field name="tipo_reporte" invisible="1"/>
+								<field name="contacto_ids" widget="many2many_tags" required="1"/>
+							</group>
+
+							<group>
+								<field name="fecha_ini"/>
+								<field name="fecha_fin" required="True" />
+							</group>
+						</group>
+					</sheet>
+					<footer>
+						<button string="Imprimir" name="action_pdf" type="object" default_focus="1" class="btn-primary"/>
+						<button string="Excel" name="generate_excel_report" type="object" default_focus="1" class="btn-primary"/>
+						
+						<button string="Cancelar" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_estados_cuenta" model="ir.actions.act_window"> 
+			<field name="name">Estados de Cuenta</field>
+			<field name="res_model">solse.estados.cuenta</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="wizard_estados_cuenta"/>
+			<field name="target">new</field>
+		</record>
+	</data>
+</odoo>

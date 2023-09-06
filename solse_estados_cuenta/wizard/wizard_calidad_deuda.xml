@@ -1,0 +1,43 @@
+<odoo>
+	<data>
+		<record id="wizard_reporte_calidad_deuda" model="ir.ui.view">
+			<field name="name">Calidad de Deuda</field>
+			<field name="model">solse.reporte.calidad.deuda</field>
+			<field name="arch" type="xml">
+				<form string="Obtener Estados de Cuenta">
+					<p class="oe_grey">
+						Calidad de Deuda
+					</p>
+					<sheet>
+						<group>
+							<group>
+								<field name="tipo_reporte" invisible="1"/> 
+								<field name="empresa_ids" widget="many2many_tags"/>
+								<field name="contacto_ids" widget="many2many_tags" />
+							</group>
+
+							<group>
+								<field name="fecha_ini" required="0"/>
+								<field name="fecha_fin" required="1"/>
+								<field name="moneda" required="1"/>
+							</group>
+						</group>
+					</sheet>
+					<footer>
+						<button string="Imprimir" name="action_pdf" type="object" default_focus="1" class="btn-primary"/>
+						<button string="Excel" name="generate_excel_report" type="object" default_focus="1" class="btn-primary"/>
+						<button string="Cancelar" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_reporte_calidad_deuda" model="ir.actions.act_window"> 
+			<field name="name">Calidad de Deuda</field>
+			<field name="res_model">solse.reporte.calidad.deuda</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="wizard_reporte_calidad_deuda"/>
+			<field name="target">new</field>
+		</record>
+	</data>
+</odoo>
