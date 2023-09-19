@@ -17,20 +17,6 @@ class AccountPaymentRegister(models.TransientModel):
 	transaction_number = fields.Char(string='Número de operación')
 	mostrar_check = fields.Boolean("Mostrar check", compute="_compute_mostrar_check", store=True)
 
-	@api.depends('can_edit_wizard', 'amount')
-	def _compute_payment_difference(self):
-		for wizard in self:
-			if wizard.can_edit_wizard:
-				lotes = wizard._get_batches()
-				_logging.info("lotesssssssssssssssssssss")
-				_logging.info(lotes)
-				batch_result = lotes[0]
-				total_amount_residual_in_wizard_currency = wizard\
-					._get_total_amount_in_wizard_currency_to_full_reconcile(batch_result, early_payment_discount=False)[0]
-				wizard.payment_difference = total_amount_residual_in_wizard_currency - wizard.amount
-			else:
-				wizard.payment_difference = 0.0
-
 	@api.depends('line_ids', 'line_ids.move_id')
 	def _compute_mostrar_check(self):
 		for reg in self:
@@ -77,14 +63,36 @@ class AccountPaymentRegister(models.TransientModel):
 				else:
 					wizard.communication = False
 
-	@api.onchange('es_detraccion_retencion', 'journal_id', 'currency_id')
+	@api.depends('can_edit_wizard', 'amount')
+	def _compute_payment_difference(self):
+		for wizard in self:
+			if wizard.can_edit_wizard:
+				lotes = wizard._get_batches()
+				batch_result = lotes[0]
+				total_amount_residual_in_wizard_currency = wizard\
+					._get_total_amount_in_wizard_currency_to_full_reconcile(batch_result, early_payment_discount=False)[0]
+				wizard.payment_difference = total_amount_residual_in_wizard_currency - wizard.amount
+			else:
+				wizard.payment_difference = 0.0
+
+	#@api.onchange('es_detraccion_retencion', 'currency_id')
+	@api.onchange('es_detraccion_retencion', 'tipo')
 	def _onchange_detraccion_retencion(self):
-		_logging.info("acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+		_logging.info("pppppppppppppppppppppppppp")
+		_logging.info(self.tipo)
 		factura = self.line_ids[0].move_id
 		self.payment_difference_handling = "open"
 		#self._compute_currency_id()
 		facturas_con_detraccion = self.mapped("line_ids.move_id").filtered(lambda r: r.tiene_detraccion)
 		facturas_con_detra_y_pago_detr = facturas_con_detraccion.filtered(lambda r: r.pago_detraccion)
+		if self.es_detraccion_retencion:
+			if self.tipo == 'normal':
+				self.tipo = 'detraccion'
+		else:
+			self.tipo = 'normal'
+
+		_logging.info(self.tipo)
+
 		if self.es_detraccion_retencion:
 			if self.tipo == 'normal':
 				self.tipo = 'detraccion'
@@ -94,8 +102,6 @@ class AccountPaymentRegister(models.TransientModel):
 			total_retencion = sum(self.mapped("line_ids.move_id").filtered(lambda r: not r.pago_detraccion).mapped('monto_retencion'))
 
 			self.amount = total_detraccion + total_retencion
-			_logging.info("solo pagarrrrrrrrrrrrrrrrrrrrr")
-			_logging.info(self.amount)
 
 		elif len(facturas_con_detraccion) and len(facturas_con_detra_y_pago_detr):
 			source_amount_currency = self.source_amount_currency
@@ -115,29 +121,23 @@ class AccountPaymentRegister(models.TransientModel):
 
 			total_detraccion = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion'))
 			total_retencion = sum(self.mapped("line_ids.move_id").mapped('monto_retencion'))
+			total_retencion = 0 # hasta crear lineas contables por retencion
 			self.amount = source_amount - total_detraccion - total_retencion
 		else:
 			source_amount_currency = self.source_amount_currency
 			total_detraccion_base = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion_base'))
 			total_retencion_base = sum(self.mapped("line_ids.move_id").mapped('monto_retencion_base'))
+			total_retencion_base = 0 # hasta crear lineas contables por retencion
 			self.amount = source_amount_currency - total_detraccion_base - total_retencion_base
+
+		#self._compute_from_lines()
 
 	@api.depends('source_amount', 'source_amount_currency', 'source_currency_id', 'company_id', 'currency_id', 'payment_date', 'mostrar_check')
 	def _compute_amount(self):
 		for wizard in self:
 			wizard._onchange_detraccion_retencion()
-			"""if wizard.source_currency_id == wizard.currency_id:
-				# Misma moneda.
-				wizard.amount = wizard.source_amount_currency
-			elif wizard.currency_id == wizard.company_id.currency_id:
-				# Pago expresado en la moneda de la empresa.
-				wizard.amount = wizard.source_amount
-			else:
-				# Moneda extranjera de pago diferente a la fijada en los asientos de diario.
-				amount_payment_currency = wizard.company_id.currency_id._convert(wizard.source_amount, wizard.currency_id, wizard.company_id, wizard.payment_date)
-				wizard.amount = amount_payment_currency"""
 
-	
+
 	@api.onchange('amount')
 	def _onchange_amount(self):
 		payment_difference_handling = 'open'
@@ -269,7 +269,6 @@ class AccountPaymentRegister(models.TransientModel):
 		#self.payment_difference_handling = 'reconcile'
 		return payment_vals
 
-
 	def _create_payments(self):
 		self.ensure_one()
 
@@ -337,6 +336,10 @@ class AccountPaymentRegister(models.TransientModel):
 				batches = new_batches
 
 			for batch_result in batches:
+				if self.tipo == 'detraccion' and batch_result['payment_values']['account_id'] != cuenta_det_id:
+					continue
+				if self.tipo == 'normal' and batch_result['payment_values']['account_id'] == cuenta_det_id:
+					continue
 				to_process.append({
 					'create_vals': self._create_payment_vals_from_batch(batch_result),
 					'to_reconcile': batch_result['lines'],
@@ -355,11 +358,13 @@ class AccountPaymentRegister(models.TransientModel):
 
 		return payments
 
+
+
+	#@api.depends('line_ids', 'tipo')
 	@api.depends('line_ids')
 	def _compute_from_lines(self):
+		_logging.info("_compute_from_linesssssssssssssss")
 		''' Load initial values from the account.moves passed through the context. '''
-		
-
 		for wizard in self:
 			batches = wizard._get_batches()
 			factura = self.line_ids[0].move_id
@@ -368,6 +373,9 @@ class AccountPaymentRegister(models.TransientModel):
 
 			cuenta_ret_id = factura.company_id.cuenta_retenciones.id
 			cuenta_ret_id = int(cuenta_ret_id)
+
+			facturas_con_detraccion = self.mapped("line_ids.move_id").filtered(lambda r: r.tiene_detraccion)
+			facturas_con_retencion = self.mapped("line_ids.move_id").filtered(lambda r: r.tiene_retencion)
 
 			if factura.move_type == 'in_invoice':
 				batch_result = batches[0]
@@ -386,11 +394,12 @@ class AccountPaymentRegister(models.TransientModel):
 						if payment_values['account_id'] == cuenta_ret_id:
 							batch_result = lot
 							break
-				else:
+				elif facturas_con_detraccion or facturas_con_retencion:
 					lote = False
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] != cuenta_det_id:
+							_logging.info("paso otra validacion")
 							batch_result = lot
 							break
 				
@@ -402,37 +411,94 @@ class AccountPaymentRegister(models.TransientModel):
 						wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
 						wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
 				wizard.update(wizard_values_from_batch)
-				wizard.can_edit_wizard = True
-				wizard.can_group_payments = len(batch_result['lines']) != 1
+
+				if len(batches) == 1:
+					wizard.can_edit_wizard = True
+					wizard.can_group_payments = len(batch_result['lines']) != 1
+				else:
+					wizard.can_edit_wizard = False
+					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
 			elif factura.move_type == 'out_invoice':
 				cuenta_det_id = factura.company_id.cuenta_detracciones.id
 				cuenta_det_id = int(cuenta_det_id)
 				batch_result = batches[0]
+				tiene_detraccion = False
 				if self.tipo == 'detraccion':
-					lote = False
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] == cuenta_det_id:
 							batch_result = lot
+							tiene_detraccion=True
 							break
 				else:
-					lote = False
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] != cuenta_det_id:
 							batch_result = lot
 							break
-				
+
 				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
-				if len(batches) > 1:
-					for indice in range(1, len(batches)):
-						temp = batches[indice]
+				if len(batches) == 1 or (len(batches) == 2 and tiene_detraccion):
+					_logging.info("primera opcion")
+					if len(batches) > 1:
+						for indice in range(1, len(batches)):
+							temp = batches[indice]
+							if temp == batch_result:
+								continue
+
+							if temp['payment_values']['account_id'] != cuenta_det_id:
+								continue
+
+							temp = wizard._get_wizard_values_from_batch(temp)
+							wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
+							wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
+					
+					wizard.update(wizard_values_from_batch)
+					wizard.can_edit_wizard = True
+					wizard.can_group_payments = len(batch_result['lines']) != 1
+				elif tiene_detraccion:
+					_logging.info("segunda opcion")
+					if len(batches) > 1:
+						for indice in range(0, len(batches)):
+							temp = batches[indice]
+							if temp == batch_result:
+								continue
+
+							if temp['payment_values']['account_id'] != cuenta_det_id:
+								continue
+							
+							temp = wizard._get_wizard_values_from_batch(temp)
+							wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
+							wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
+					
+					wizard_values_from_batch['partner_id'] = False
+					wizard_values_from_batch['partner_type'] = False
+					wizard.update(wizard_values_from_batch)
+					wizard.can_edit_wizard = False
+					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
+
+				else:
+					source_amount_temp = 0
+					source_amount_currency_temp = 0
+					for indice in range(0, len(batches)):	
+						temp = batches[indice]			
 						temp = wizard._get_wizard_values_from_batch(temp)
-						wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
-						wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
-				wizard.update(wizard_values_from_batch)
-				wizard.can_edit_wizard = True
-				wizard.can_group_payments = len(batch_result['lines']) != 1
+						source_amount_temp = source_amount_temp + temp['source_amount']
+						source_amount_currency_temp = source_amount_currency_temp + temp['source_amount_currency']
+
+					wizard.update({
+						'company_id': batches[0]['lines'][0].company_id.id,
+						'partner_id': False,
+						'partner_type': False,
+						'payment_type': wizard_values_from_batch['payment_type'],
+						'source_currency_id': False,
+						'source_amount': source_amount_temp,
+						'source_amount_currency': source_amount_currency_temp,
+					})
+
+					wizard.can_edit_wizard = False
+					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
+
 			else:
 				batch_result = batches[0]
 				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)

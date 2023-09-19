@@ -12,6 +12,19 @@
                 <field name="es_detraccion_retencion" attrs="{'invisible': [('mostrar_check', '=', False)]}"/>
                 <field name="tipo" attrs="{'invisible': [('mostrar_check', '=', False)]}" />
             </xpath>
+
+            <xpath expr="//label[@for='amount']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='amount_div']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}</attribute>
+            </xpath>
+
         </field>
     </record>
 
@@ -26,6 +39,5 @@
         </field>
     </record>
 
-    
 
 </odoo>

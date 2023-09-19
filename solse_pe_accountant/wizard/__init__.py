@@ -3,4 +3,5 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php
 
-from . import account_payment_register
+#from . import account_payment_register
+from . import account_payment_register_min

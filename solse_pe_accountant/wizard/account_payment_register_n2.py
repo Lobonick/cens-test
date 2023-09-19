@@ -17,20 +17,6 @@ class AccountPaymentRegister(models.TransientModel):
 	transaction_number = fields.Char(string='Número de operación')
 	mostrar_check = fields.Boolean("Mostrar check", compute="_compute_mostrar_check", store=True)
 
-	@api.depends('can_edit_wizard', 'amount')
-	def _compute_payment_difference(self):
-		for wizard in self:
-			if wizard.can_edit_wizard:
-				lotes = wizard._get_batches()
-				_logging.info("lotesssssssssssssssssssss")
-				_logging.info(lotes)
-				batch_result = lotes[0]
-				total_amount_residual_in_wizard_currency = wizard\
-					._get_total_amount_in_wizard_currency_to_full_reconcile(batch_result, early_payment_discount=False)[0]
-				wizard.payment_difference = total_amount_residual_in_wizard_currency - wizard.amount
-			else:
-				wizard.payment_difference = 0.0
-
 	@api.depends('line_ids', 'line_ids.move_id')
 	def _compute_mostrar_check(self):
 		for reg in self:
@@ -50,58 +36,41 @@ class AccountPaymentRegister(models.TransientModel):
 	def _compute_communication_2(self):
 		for wizard in self:
 			if wizard.can_edit_wizard:
-				#factura = wizard.line_ids[0].move_id
-				facturas = wizard.mapped("line_ids.move_id")
-				if facturas:
-					dato_array = []
-					for factura in facturas:
-						dato = factura.name
-						partes = dato.split(" ")
-						dato = partes[1] if len(partes) == 2 else partes[0]
-						dato_array.append(dato)
-					wizard.communication = ",".join(dato_array)
+				factura = wizard.line_ids[0].move_id
+				if factura:
+					dato = factura.name
+					partes = dato.split(" ")
+					dato = partes[1] if len(partes) == 2 else partes[0]
+					wizard.communication = dato
 				else:
 					batches = wizard._get_batches()
 					wizard.communication = wizard._get_batch_communication(batches[0])
 
 			else:
-				facturas = wizard.mapped("line_ids.move_id")
-				if facturas:
-					dato_array = []
-					for factura in facturas:
-						dato = factura.name
-						partes = dato.split(" ")
-						dato = partes[1] if len(partes) == 2 else partes[0]
-						dato_array.append(dato)
-					wizard.communication = ",".join(dato_array)
+				factura = wizard.line_ids[0].move_id
+				if factura:
+					dato = factura.name
+					partes = dato.split(" ")
+					dato = dato if len(partes) == 1 else dato[1]
+					wizard.communication = dato
 				else:
 					wizard.communication = False
 
 	@api.onchange('es_detraccion_retencion', 'journal_id', 'currency_id')
 	def _onchange_detraccion_retencion(self):
-		_logging.info("acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 		factura = self.line_ids[0].move_id
 		self.payment_difference_handling = "open"
 		#self._compute_currency_id()
-		facturas_con_detraccion = self.mapped("line_ids.move_id").filtered(lambda r: r.tiene_detraccion)
-		facturas_con_detra_y_pago_detr = facturas_con_detraccion.filtered(lambda r: r.pago_detraccion)
-		if self.es_detraccion_retencion:
+		if self.es_detraccion_retencion and not factura.pago_detraccion:
 			if self.tipo == 'normal':
 				self.tipo = 'detraccion'
 			self.currency_id = self.env.ref('base.PEN')
-
-			total_detraccion = sum(self.mapped("line_ids.move_id").filtered(lambda r: not r.pago_detraccion).mapped('monto_detraccion'))
-			total_retencion = sum(self.mapped("line_ids.move_id").filtered(lambda r: not r.pago_detraccion).mapped('monto_retencion'))
-
-			self.amount = total_detraccion + total_retencion
-			_logging.info("solo pagarrrrrrrrrrrrrrrrrrrrr")
-			_logging.info(self.amount)
-
-		elif len(facturas_con_detraccion) and len(facturas_con_detra_y_pago_detr):
+			self.amount = factura.monto_detraccion + factura.monto_retencion
+		elif factura.tiene_detraccion and factura.pago_detraccion:
 			source_amount_currency = self.source_amount_currency
-			monto_comparar = sum(facturas_con_detraccion.mapped('monto_neto_pagar_base'))
+			monto_comparar = factura.monto_neto_pagar_base
 			if factura.company_id.currency_id.id == self.currency_id.id:
-				monto_comparar = sum(facturas_con_detraccion.mapped('monto_neto_pagar'))
+				monto_comparar = factura.monto_neto_pagar
 			
 			if source_amount_currency + 1 > monto_comparar:
 				total_descontar = monto_comparar
@@ -109,20 +78,14 @@ class AccountPaymentRegister(models.TransientModel):
 				total_descontar = source_amount_currency
 
 			self.amount = total_descontar
-
 		elif factura.company_id.currency_id.id == self.currency_id.id:
 			source_amount = self.source_amount
-
-			total_detraccion = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion'))
-			total_retencion = sum(self.mapped("line_ids.move_id").mapped('monto_retencion'))
-			self.amount = source_amount - total_detraccion - total_retencion
+			self.amount = source_amount - factura.monto_detraccion - factura.monto_retencion
 		else:
 			source_amount_currency = self.source_amount_currency
-			total_detraccion_base = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion_base'))
-			total_retencion_base = sum(self.mapped("line_ids.move_id").mapped('monto_retencion_base'))
-			self.amount = source_amount_currency - total_detraccion_base - total_retencion_base
+			self.amount = source_amount_currency - factura.monto_detraccion_base - factura.monto_retencion_base
 
-	@api.depends('source_amount', 'source_amount_currency', 'source_currency_id', 'company_id', 'currency_id', 'payment_date', 'mostrar_check')
+	@api.depends('source_amount', 'source_amount_currency', 'source_currency_id', 'company_id', 'currency_id', 'payment_date')
 	def _compute_amount(self):
 		for wizard in self:
 			wizard._onchange_detraccion_retencion()
@@ -143,17 +106,12 @@ class AccountPaymentRegister(models.TransientModel):
 		payment_difference_handling = 'open'
 		factura = self.line_ids[0].move_id
 		if self.tipo == 'detraccion' and factura.move_type == 'in_invoice':
-			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
-			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
-			monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
 			diferencia = monto_detraccion - self.amount
 			if diferencia:
 				payment_difference_handling = 'reconcile'
 		elif self.tipo == 'detraccion' and factura.move_type == 'out_invoice':
-			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
-			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
-
-			monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
 			diferencia = self.amount - monto_detraccion
 			if diferencia:
 				payment_difference_handling = 'reconcile'
@@ -193,11 +151,7 @@ class AccountPaymentRegister(models.TransientModel):
 			cuenta_det_id = self.company_id.cuenta_detracciones_compra.id
 			cuenta_det_id = int(cuenta_det_id)
 			payment_vals['destination_account_id'] = cuenta_det_id
-
-			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
-			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
-
-			monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
 			diferencia = monto_detraccion - self.amount
 			
 			if diferencia and not crear_diferencia:
@@ -229,11 +183,7 @@ class AccountPaymentRegister(models.TransientModel):
 			cuenta_det_id = self.company_id.cuenta_detracciones.id
 			cuenta_det_id = int(cuenta_det_id)
 			payment_vals['destination_account_id'] = cuenta_det_id
-
-			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
-			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
-
-			monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+			monto_detraccion = abs(factura.amount_total_signed) - factura.monto_neto_pagar
 			diferencia = monto_detraccion - self.amount
 			
 			if diferencia and not crear_diferencia:
@@ -269,6 +219,47 @@ class AccountPaymentRegister(models.TransientModel):
 		#self.payment_difference_handling = 'reconcile'
 		return payment_vals
 
+	def _create_payments(self):
+		self.ensure_one()
+		batches = self._get_batches()
+		first_batch_result = batches[0]
+		edit_mode = self.can_edit_wizard and (len(first_batch_result['lines']) == 1 or self.group_payment)
+		to_process = []
+
+		if edit_mode:
+			payment_vals = self._create_payment_vals_from_wizard(first_batch_result)
+			to_process.append({
+				'create_vals': payment_vals,
+				'to_reconcile': first_batch_result['lines'],
+				'batch': first_batch_result,
+			})
+		else:
+			# Don't group payments: Create one batch per move.
+			if not self.group_payment:
+				new_batches = []
+				for batch_result in batches:
+					for line in batch_result['lines']:
+						new_batches.append({
+							**batch_result,
+							'payment_values': {
+								**batch_result['payment_values'],
+								'payment_type': 'inbound' if line.balance > 0 else 'outbound'
+							},
+							'lines': line,
+						})
+				batches = new_batches
+
+			for batch_result in batches:
+				to_process.append({
+					'create_vals': self._create_payment_vals_from_batch(batch_result),
+					'to_reconcile': batch_result['lines'],
+					'batch': batch_result,
+				})
+
+		payments = self._init_payments(to_process, edit_mode=edit_mode)
+		self._post_payments(to_process, edit_mode=edit_mode)
+		self._reconcile_payments(to_process, edit_mode=edit_mode)
+		return payments
 
 	def _create_payments(self):
 		self.ensure_one()
@@ -287,10 +278,8 @@ class AccountPaymentRegister(models.TransientModel):
 			cuenta_det_id = factura.company_id.cuenta_detracciones.id
 			cuenta_det_id = int(cuenta_det_id)
 
-		facturas_con_detraccion_con_pago = self.mapped("line_ids.move_id").filtered(lambda r: r.pago_detraccion)
-
 		if self.tipo == 'detraccion':
-			if len(facturas_con_detraccion_con_pago):
+			if factura.pago_detraccion:
 				raise UserError('Ya existe un pago por detracción')
 			for lot in batches:
 				payment_values = lot['payment_values']
@@ -299,7 +288,7 @@ class AccountPaymentRegister(models.TransientModel):
 					break
 
 		elif self.tipo == 'retencion':
-			if len(facturas_con_detraccion_con_pago):
+			if factura.pago_detraccion:
 				raise UserError('Ya existe un pago por detracción')
 			for lot in batches:
 				payment_values = lot['payment_values']
@@ -347,11 +336,8 @@ class AccountPaymentRegister(models.TransientModel):
 		self._post_payments(to_process, edit_mode=edit_mode)
 		self._reconcile_payments(to_process, edit_mode=edit_mode)
 
-		"""if payments and self.tipo == 'detraccion':
-			_logging.info("pagos generadosssssssssssssssssssssssssssssssssssss")
-			_logging.info(payments)
-			raise UserError('procesar pagos')
-			factura.pago_detraccion = payments[0].id"""
+		if payments and self.tipo == 'detraccion':
+			factura.pago_detraccion = payments[0].id
 
 		return payments
 
