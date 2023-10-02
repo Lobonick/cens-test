@@ -64,22 +64,16 @@ class AccountMoveSunat(models.Model):
 
 	def _compute_payments_widget_to_reconcile_info(self):
 		for move in self:
-			_logging.info("ingresamosssssssssssssssssssssssss")
 			move.invoice_outstanding_credits_debits_widget = False
 			move.invoice_has_outstanding = False
 
 			if move.state != 'posted' \
 					or move.payment_state not in ('not_paid', 'partial') \
 					or not move.is_invoice(include_receipts=True):
-
-				_logging.info("no paso la primera parte")
 				continue
 
 			pay_term_lines = move.line_ids\
 				.filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
-
-			_logging.info("cuenta de tipo pago")
-			_logging.info(pay_term_lines)
 
 			domain = [
 				('account_id', 'in', pay_term_lines.account_id.ids),
@@ -89,23 +83,16 @@ class AccountMoveSunat(models.Model):
 				'|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
 			]
 
-			_logging.info("dominiooooooo")
-			_logging.info(domain)
-
 			payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
 
 			if move.is_inbound():
-				_logging.info("is_inbound")
 				domain.append(('balance', '<', 0.0))
 				payments_widget_vals['title'] = _('Outstanding credits')
 			else:
-				_logging.info("elseeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 				domain.append(('balance', '>', 0.0))
 				payments_widget_vals['title'] = _('Outstanding debits')
 
 			lineas_buscar = self.env['account.move.line'].search(domain)
-			_logging.info("lineas del dominio")
-			_logging.info(lineas_buscar)
 			for line in lineas_buscar:
 
 				if line.currency_id == move.currency_id:
@@ -122,8 +109,6 @@ class AccountMoveSunat(models.Model):
 					)
 
 				if move.currency_id.is_zero(amount):
-					_logging.info("es ceroooooooooooooooo")
-					_logging.info(amount)
 					continue
 
 				payments_widget_vals['content'].append({

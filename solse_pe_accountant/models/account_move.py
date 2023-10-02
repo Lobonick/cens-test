@@ -370,21 +370,22 @@ class AccountMove(models.Model):
 						# base imponible en soles
 						untaxed_amount = invoice.amount_untaxed_signed
 
-					
+					monto_detraccion_base = invoice.monto_detraccion_base * sign
+					monto_detraccion = invoice.monto_detraccion * sign
 
 					if invoice.tiene_detraccion:
 						"""if not is_draft and id_linea_detraccion:
 							untaxed_amount_currency = invoice.amount_total_in_currency_signed
 							untaxed_amount = invoice.amount_total_signed"""
 						residuo = (invoice.amount_total_in_currency_signed - tax_amount_currency)
-						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
-						untaxed_amount = untaxed_amount - invoice.monto_detraccion
+						untaxed_amount_currency = untaxed_amount_currency - monto_detraccion_base
+						untaxed_amount = untaxed_amount - monto_detraccion
 					elif invoice.tiene_detraccion:
 						residuo = (invoice.amount_total_in_currency_signed - tax_amount_currency)
 
 						if (invoice.amount_total_in_currency_signed - tax_amount_currency) == untaxed_amount_currency:
-							untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
-							untaxed_amount = untaxed_amount - invoice.monto_detraccion
+							untaxed_amount_currency = untaxed_amount_currency - monto_detraccion_base
+							untaxed_amount = untaxed_amount - monto_detraccion
 
 
 					invoice_payment_terms = invoice.invoice_payment_term_id._compute_terms(
@@ -443,23 +444,26 @@ class AccountMove(models.Model):
 							'discount_percentage': 0
 						})
 						values = {
-							'balance': invoice.monto_detraccion,
-							'amount_currency': invoice.monto_detraccion_base,
+							'balance': monto_detraccion,
+							'amount_currency': monto_detraccion_base,
 						}
 						if key_detraccion not in invoice.needed_terms:
 							invoice.needed_terms[key_detraccion] = values
 						else:
-							invoice.needed_terms[key_detraccion]['balance'] = invoice.monto_detraccion
-							invoice.needed_terms[key_detraccion]['amount_currency'] = invoice.monto_detraccion_base
+							invoice.needed_terms[key_detraccion]['balance'] = monto_detraccion
+							invoice.needed_terms[key_detraccion]['amount_currency'] = monto_detraccion_base
 
 				else:
 
 					untaxed_amount_currency = invoice.amount_total_in_currency_signed
 					untaxed_amount = invoice.amount_total_signed
 
+					monto_detraccion_base = invoice.monto_detraccion_base * sign
+					monto_detraccion = invoice.monto_detraccion * sign
+
 					if invoice.tiene_detraccion:
-						untaxed_amount_currency = untaxed_amount_currency - invoice.monto_detraccion_base
-						untaxed_amount = untaxed_amount - invoice.monto_detraccion
+						untaxed_amount_currency = untaxed_amount_currency - monto_detraccion_base
+						untaxed_amount = untaxed_amount - monto_detraccion
 
 						if invoice.move_type == 'out_invoice' and not cuenta_det_id:
 							raise UserError("No se ha configurado una cuenta de detracción para ventas")
@@ -476,8 +480,8 @@ class AccountMove(models.Model):
 							'discount_percentage': 0
 						})
 						values = {
-							'balance': invoice.monto_detraccion,
-							'amount_currency': invoice.monto_detraccion_base,
+							'balance': monto_detraccion,
+							'amount_currency': monto_detraccion_base,
 						}
 
 						values_n2 = {
@@ -493,8 +497,8 @@ class AccountMove(models.Model):
 
 
 						if key_detraccion in invoice.needed_terms:
-							invoice.needed_terms[key_detraccion]['balance'] = invoice.monto_detraccion
-							invoice.needed_terms[key_detraccion]['amount_currency'] = invoice.monto_detraccion_base
+							invoice.needed_terms[key_detraccion]['balance'] = monto_detraccion
+							invoice.needed_terms[key_detraccion]['amount_currency'] = monto_detraccion_base
 						else:
 							invoice.needed_terms[key_detraccion] = values
 

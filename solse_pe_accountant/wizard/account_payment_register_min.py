@@ -78,8 +78,6 @@ class AccountPaymentRegister(models.TransientModel):
 	#@api.onchange('es_detraccion_retencion', 'currency_id')
 	@api.onchange('es_detraccion_retencion', 'tipo')
 	def _onchange_detraccion_retencion(self):
-		_logging.info("pppppppppppppppppppppppppp")
-		_logging.info(self.tipo)
 		factura = self.line_ids[0].move_id
 		self.payment_difference_handling = "open"
 		#self._compute_currency_id()
@@ -90,8 +88,6 @@ class AccountPaymentRegister(models.TransientModel):
 				self.tipo = 'detraccion'
 		else:
 			self.tipo = 'normal'
-
-		_logging.info(self.tipo)
 
 		if self.es_detraccion_retencion:
 			if self.tipo == 'normal':
@@ -353,7 +349,7 @@ class AccountPaymentRegister(models.TransientModel):
 		"""if payments and self.tipo == 'detraccion':
 			_logging.info("pagos generadosssssssssssssssssssssssssssssssssssss")
 			_logging.info(payments)
-			raise UserError('procesar pagos')
+			#raise UserError('procesar pagos')
 			factura.pago_detraccion = payments[0].id"""
 
 		return payments
@@ -363,7 +359,6 @@ class AccountPaymentRegister(models.TransientModel):
 	#@api.depends('line_ids', 'tipo')
 	@api.depends('line_ids')
 	def _compute_from_lines(self):
-		_logging.info("_compute_from_linesssssssssssssss")
 		''' Load initial values from the account.moves passed through the context. '''
 		for wizard in self:
 			batches = wizard._get_batches()
@@ -380,7 +375,6 @@ class AccountPaymentRegister(models.TransientModel):
 			if factura.move_type == 'in_invoice':
 				batch_result = batches[0]
 				if self.tipo == 'detraccion':
-					lote = False
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] == cuenta_det_id:
@@ -388,18 +382,16 @@ class AccountPaymentRegister(models.TransientModel):
 							break
 
 				elif self.tipo == 'retencion':
-					lote = False
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] == cuenta_ret_id:
 							batch_result = lot
 							break
-				elif facturas_con_detraccion or facturas_con_retencion:
-					lote = False
+				#elif facturas_con_detraccion or facturas_con_retencion:
+				else:
 					for lot in batches:
 						payment_values = lot['payment_values']
 						if payment_values['account_id'] != cuenta_det_id:
-							_logging.info("paso otra validacion")
 							batch_result = lot
 							break
 				
@@ -407,6 +399,12 @@ class AccountPaymentRegister(models.TransientModel):
 				if len(batches) > 1:
 					for indice in range(1, len(batches)):
 						temp = batches[indice]
+						if temp == batch_result:
+								continue
+
+						if temp['payment_values']['account_id'] != cuenta_det_id:
+							continue
+
 						temp = wizard._get_wizard_values_from_batch(temp)
 						wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
 						wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
@@ -439,7 +437,6 @@ class AccountPaymentRegister(models.TransientModel):
 
 				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
 				if len(batches) == 1 or (len(batches) == 2 and tiene_detraccion):
-					_logging.info("primera opcion")
 					if len(batches) > 1:
 						for indice in range(1, len(batches)):
 							temp = batches[indice]
@@ -457,7 +454,6 @@ class AccountPaymentRegister(models.TransientModel):
 					wizard.can_edit_wizard = True
 					wizard.can_group_payments = len(batch_result['lines']) != 1
 				elif tiene_detraccion:
-					_logging.info("segunda opcion")
 					if len(batches) > 1:
 						for indice in range(0, len(batches)):
 							temp = batches[indice]
