@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_hr_employee_form_inherit">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <!--
+                <xpath expr="//field[@name='company_id']" position="after">
+                <field name="x_cens_seleccion" string="NUEVO-08 Text" />
+                <field name="x_cens_seleccion" string="Unidad de Negocio:" attrs="{}" options="{&quot;no_open&quot;:true,&quot;no_create&quot;:true}"/>
+
+                -->
+                <xpath expr="//field[@name='company_country_code']" position="after">
+                    <field name="x_cens_char" string="NUEVO-01 Char" />
+                    <field name="x_cens_text" string="NUEVO-02 Text" />
+                    <field name="x_cens_integer" string="NUEVO-03 Integer" />
+                    <field name="x_cens_float" string="NUEVO-04 Float" />
+                    <field name="x_cens_fecha" string="NUEVO-05 Date" />
+                    <field name="x_cens_fecha_hora" string="NUEVO-06 Datetime" />
+                    <field name="x_cens_boolean" string="NUEVO-07 Boolean" />
+                    <field name="x_cens_seleccion" string="Unidad de Negocio:" attrs="{}" options="{}"/>
+
+                </xpath>
+            </field>
+            
+        </record>
+    </data>
+</odoo>
