@@ -21,6 +21,7 @@
                     <field name="x_cens_fecha_hora" string="NUEVO-06 Datetime" />
                     <field name="x_cens_boolean" string="NUEVO-07 Boolean" />
                     <field name="x_cens_seleccion" string="Unidad de Negocio:" attrs="{}" options="{}"/>
+                    <field name="x_cens_many2one" string="Sub de Negocio:" attrs="{}" options="{}"/>
 
                 </xpath>
             </field>

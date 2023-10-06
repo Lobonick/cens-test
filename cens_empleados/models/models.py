@@ -15,5 +15,7 @@ class HrEmployeeCustom(models.Model):
         ('2', 'Opción 2'),
         ('3', 'Opción 3')
     ], string='Campo de selección')
+    x_cens_many2one = fields.Many2one(comodel_name='x_hr.employee.sun', string='Mi Campo Many2one')
+
 
     
