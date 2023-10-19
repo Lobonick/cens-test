@@ -7,7 +7,8 @@ class HrEmployeeCustom(models.Model):
     # ---------------------------
     # AGREGA CAMPOS AL MODELO
     # ---------------------------
-    x_cens_id_empleado = fields.Integer(string='ID del Empleado activo.')
+    x_cens_id_empleado = fields.Integer(string='ID del Empleado activo.', readonly=True)
+    x_cens_vaca_anio = fields.Selection([('2019', '2019'), ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024')], string='Año de Vacaciones', default='2023')
     x_cens_vacaciones_tomadas = fields.Many2many(
         comodel_name='hr.leave', 
         relation='x_hr_employee_hr_leave_rel', 
@@ -16,19 +17,20 @@ class HrEmployeeCustom(models.Model):
         string='VACACIONES TOMADAS:',
         default=lambda self: self._default_x_cens_vacaciones_tomadas() )
     x_cens_vaca_adeudadas = fields.Integer(string="Adeudadas:")
-    x_cens_vaca_enero = fields.Integer(string="Enero")
-    x_cens_vaca_febrero = fields.Integer(string="Febrero")
-    x_cens_vaca_marzo = fields.Integer(string="Marzo")
-    x_cens_vaca_abril = fields.Integer(string="Abril")
-    x_cens_vaca_mayo = fields.Integer(string="Mayo")
-    x_cens_vaca_junio = fields.Integer(string="Junio")
-    x_cens_vaca_julio = fields.Integer(string="Julio")
-    x_cens_vaca_agosto = fields.Integer(string="Agosto")
-    x_cens_vaca_setiembre = fields.Integer(string="Septiembre")
-    x_cens_vaca_octubre = fields.Integer(string="Octubre")
-    x_cens_vaca_noviembre = fields.Integer(string="Noviembre")
-    x_cens_vaca_diciembre = fields.Integer(string="Diciembre")
-    x_cens_vaca_total = fields.Integer(string="TOTAL ASIGNADO:")
+    x_cens_vaca_enero = fields.Integer(string="Enero", readonly=True)
+    x_cens_vaca_febrero = fields.Integer(string="Febrero", readonly=True)
+    x_cens_vaca_marzo = fields.Integer(string="Marzo", readonly=True)
+    x_cens_vaca_abril = fields.Integer(string="Abril", readonly=True)
+    x_cens_vaca_mayo = fields.Integer(string="Mayo", readonly=True)
+    x_cens_vaca_junio = fields.Integer(string="Junio", readonly=True)
+    x_cens_vaca_julio = fields.Integer(string="Julio", readonly=True)
+    x_cens_vaca_agosto = fields.Integer(string="Agosto", readonly=True)
+    x_cens_vaca_setiembre = fields.Integer(string="Septiembre", readonly=True)
+    x_cens_vaca_octubre = fields.Integer(string="Octubre", readonly=True)
+    x_cens_vaca_noviembre = fields.Integer(string="Noviembre", readonly=True)
+    x_cens_vaca_diciembre = fields.Integer(string="Diciembre", readonly=True)
+    x_cens_vaca_total = fields.Integer(string="TOTAL ASIGNADO:", readonly=True)
+    
 
     # ------------------------------
     # ACCION PARA EL BOTÓN ACOMODAR
@@ -40,13 +42,15 @@ class HrEmployeeCustom(models.Model):
 
             lines  = self.x_cens_vacaciones_tomadas
             w_acum = 0
+            w_anio = int(record.x_cens_vaca_anio)
             for line in lines:
                 w_fech_ini = line.date_from 
                 w_fech_fin = line.date_to
                 # Si las fechas son del mismo mes
                 if (w_fech_ini.month == w_fech_fin.month):
                     w_dias_tot = (w_fech_fin - w_fech_ini).days + 1
-                    self.acumula_en_mes(record, w_fech_ini.month, w_dias_tot)
+                    if (w_fech_ini.year == w_anio):
+                        self.acumula_en_mes(record, w_fech_ini.month, w_dias_tot)
                 else:
                     # Si las fechas son de diferentes meses
                     # my_date = fields.Date.today()  # Obtener la fecha actual
@@ -56,12 +60,17 @@ class HrEmployeeCustom(models.Model):
                     w_dias_mes1 = (last_day_of_first_month - w_fech_ini).days + 1
                     w_dias_mes2 = (w_fech_fin - first_day_of_last_month).days + 1
 
-                    self.acumula_en_mes(record, w_fech_ini.month, w_dias_mes1)
-                    self.acumula_en_mes(record, w_fech_fin.month, w_dias_mes2)
+                    if (w_fech_ini.year == w_anio):
+                        self.acumula_en_mes(record, w_fech_ini.month, w_dias_mes1)
+                    if (w_fech_fin.year == w_anio):
+                        self.acumula_en_mes(record, w_fech_fin.month, w_dias_mes2)
                     w_dias_tot = w_dias_mes1 + w_dias_mes2
             self.totaliza_campos(record)
         pass
     
+    # -------------------------------
+    # ACCION PARA EL BOTÓN BLANQUEAR
+    # -------------------------------
     def action_custom_button_blanquea(self):
         for record in self:
             self.blanquea_campos(record)

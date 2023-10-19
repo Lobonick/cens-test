@@ -49,6 +49,7 @@
                         <group name="studio_group_q1">
                             <group name="studio_group_q1_left" string="__________________________">
                                 <field name="x_cens_id_empleado" string="ID Empleado" />
+                                <field name="x_cens_vaca_anio" string="Año" widget="selection" onchange="action_custom_button()"/>
                             </group>/&gt;
                             <group name="studio_group_q1_right" string="EJECUCIÓN DESAGREGADA ANUAL ">
                                 <field name="x_cens_vaca_adeudadas" string="Adeudadas:" default="0"/>
@@ -73,6 +74,7 @@
                     </page>
                 </xpath>
                 <!--
+                    selection="[('2019', '2019'), ('2020', '2020'), ('2021', '2021'), ('2022', '2022'), ('2023', '2023'), ('2024', '2024')]"
                 <xpath expr="//field[@name='company_id']" position="after">
                 <field name="x_cens_seleccion" string="NUEVO-08 Text" />
                 <field name="x_cens_seleccion" string="Unidad de Negocio:" attrs="{}" options="{&quot;no_open&quot;:true,&quot;no_create&quot;:true}"/>

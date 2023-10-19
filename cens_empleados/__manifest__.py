@@ -12,7 +12,7 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
     'category': 'Human Resources/Employees',
-	'version': '1.0.4.02',
+	'version': '1.0.5.07',
 	'depends': ['base','hr'],
 	'data': ['views/hr_employee_view.xml'],
  	'installable': True,
