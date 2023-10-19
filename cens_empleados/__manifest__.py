@@ -4,11 +4,15 @@
 	'summary': """
 		Actualizaciones adicionales para el módulo empleados""",
 
-	'description': "Actualizaciones adicionales para módulo empleados",
+    'description': """
+		Actualizaciones adicionales para módulo empleados.
+        CENS-PERÚ 
+	""",
 
 	'author': "Área de Sistemas - CENS-PERÚ",
+    "website": "https://www.cens.com.pe",
     'category': 'Human Resources/Employees',
-	'version': '1.0.2.02',
+	'version': '1.0.4.02',
 	'depends': ['base','hr'],
 	'data': ['views/hr_employee_view.xml'],
  	'installable': True,

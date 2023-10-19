@@ -6,12 +6,76 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Vacaciones">
+                        <!-- Aquí puedes agregar los campos o elementos que deseas incluir en la página "vaca" -->
+                        <group name="studio_group_q2" string="HISTORIAL DE VACACIONES">
+                            <field name="x_cens_vacaciones_tomadas" string="VACACIONES TOMADAS:" domain="[&quot;&amp;&quot;,[&quot;holiday_status_id.id&quot;,&quot;=&quot;,8],[&quot;employee_id.id&quot;,&quot;=&quot;,x_cens_id_empleado]]" context="{'self.x_cens_id_empleado': x_cens_id_empleado}">
+                            <tree string="Time Off Requests" sample="1">
+                                <field name="employee_id" invisible="1"/>
+                                <field name="all_employee_ids" widget="many2many_avatar_employee" decoration-muted="not active_employee" string="Employees"/>
+                                <field name="department_id" optional="hidden"/>
+                                <field name="holiday_type" string="Mode" groups="base.group_no_one"/>
+                                <field name="holiday_status_id" class="fw-bold"/>
+                                <field name="name"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="number_of_days" optional="show" sum="Sum of Duración (días)"/>
+                                <field name="duration_display" string="Duration" attrs="{}" invisible="1"/>
+                                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state in ('confirm','validate1')" decoration-success="state == 'validate'"/>
+                                <field name="active_employee" invisible="1"/>
+                                <field name="employee_company_id" invisible="1"/>
+                                <field name="category_id" invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="message_needaction" invisible="1"/>
+                                <button string="Approve" name="action_approve" type="object" icon="fa-thumbs-up" states="confirm" groups="hr_holidays.group_hr_holidays_responsible"/>
+                                <button string="Validate" name="action_validate" type="object" icon="fa-check" states="validate1" groups="hr_holidays.group_hr_holidays_user"/>
+                                <button string="Refuse" name="action_refuse" type="object" icon="fa-times" states="confirm,validate1" groups="hr_holidays.group_hr_holidays_user"/>
+                                <field name="activity_exception_decoration" widget="activity_exception"/>
+                            </tree>
+                            </field>
+                        </group>
+
+                        <xpath expr="//group[@name='studio_group_q2_right']" position="inside">
+                            <!-- ... Asigna Acciones a los Botones ... -->
+                            <div>
+                            <button name="action_custom_button" string="Acomoda Datos" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                            <span class="oe_inline oe_separating_element"> </span>
+                            <button name="action_custom_button_blanquea" string="Blanquea Campos" icon="fa-check" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                            </div>
+                        </xpath>
+
+                        <group name="studio_group_q1">
+                            <group name="studio_group_q1_left" string="__________________________">
+                                <field name="x_cens_id_empleado" string="ID Empleado" />
+                            </group>/&gt;
+                            <group name="studio_group_q1_right" string="EJECUCIÓN DESAGREGADA ANUAL ">
+                                <field name="x_cens_vaca_adeudadas" string="Adeudadas:" default="0"/>
+                                <field name="x_cens_vaca_enero" string="Enero" default="0"/>
+                                <field name="x_cens_vaca_febrero" string="Febrero" default="0"/>
+                                <field name="x_cens_vaca_marzo" string="Marzo" default="0"/>
+                                <field name="x_cens_vaca_abril" string="Abril" default="0"/>
+                                <field name="x_cens_vaca_mayo" string="Mayo" default="0"/>
+                                <field name="x_cens_vaca_junio" string="Junio" default="0"/>
+                                <field name="x_cens_vaca_julio" string="Julio" default="0"/>
+                                <field name="x_cens_vaca_agosto" string="Agosto" default="0"/>
+                                <field name="x_cens_vaca_setiembre" string="Septiembre" default="0"/>
+                                <field name="x_cens_vaca_octubre" string="Octubre" default="0"/>
+                                <field name="x_cens_vaca_noviembre" string="Noviembre" default="0"/>
+                                <field name="x_cens_vaca_diciembre" string="Diciembre" default="0"/>
+                                <field name="x_cens_vaca_total" string="TOTAL ASIGNADO" default="0"/>
+                            </group>
+                        </group>
+
+                        
+
+                    </page>
+                </xpath>
                 <!--
                 <xpath expr="//field[@name='company_id']" position="after">
                 <field name="x_cens_seleccion" string="NUEVO-08 Text" />
                 <field name="x_cens_seleccion" string="Unidad de Negocio:" attrs="{}" options="{&quot;no_open&quot;:true,&quot;no_create&quot;:true}"/>
-
-                -->
                 <xpath expr="//field[@name='company_country_code']" position="after">
                     <field name="x_cens_char" string="NUEVO-01 Char" />
                     <field name="x_cens_text" string="NUEVO-02 Text" />
@@ -24,6 +88,7 @@
                     <field name="x_cens_many2one" string="Sub de Negocio:" attrs="{}" options="{}"/>
 
                 </xpath>
+                -->
             </field>
             
         </record>
