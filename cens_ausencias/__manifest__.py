@@ -11,9 +11,9 @@
 
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
-	'category': 'Human Resources/Time Off',
-	'version': '1.0.0.01',
-	'depends': ['hr', 'calendar', 'resource'],
+	'category': 'Human Resources/Time-Off',
+ 	'version': '1.0.2.09',
+	'depends': ['base','hr','hr_holidays','calendar','resource'],
 	'data': ['views/hr_leave_view_form_cens.xml'],
  	'installable': True,
 	'application': True,
