@@ -1,0 +1,3185 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* qa_letter_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-22 16:35+0000\n"
+"PO-Revision-Date: 2022-04-22 16:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: qa_letter_management
+#: model:mail.template,subject:qa_letter_management.email_template_letters
+msgid ""
+"${object.company_id.name} Bills of Exchange (Ref ${object.name or 'n/a'})"
+msgstr ""
+"${object.company_id.name} Letras de Cambio (Ref ${object.name or 'n/a'})"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"(1) En caso de mora, esta Letra de Cambio\n"
+"                                    generará\n"
+"                                    las\n"
+"                                    tasas de interés compensatorio y moratorio más altas, que la ley permita a su último\n"
+"                                    Tenedor."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"(1) En caso de mora, esta Letra de Cambio\n"
+"                                generará\n"
+"                                las\n"
+"                                tasas de interés compensatorio y moratorio más altas, que la ley permita a su último\n"
+"                                Tenedor."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"(2) El plazo de vencimiento podrá ser\n"
+"                                    prorrogado\n"
+"                                    por el\n"
+"                                    Tenedor,\n"
+"                                    por\n"
+"                                    el plazo que\n"
+"                                    éste señale, sin que sea necesaria la intervención del obligado principal ni de los\n"
+"                                    solidarios."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"(2) El plazo de vencimiento podrá ser\n"
+"                                prorrogado\n"
+"                                por el\n"
+"                                Tenedor,\n"
+"                                por\n"
+"                                el plazo que\n"
+"                                éste señale, sin que sea necesaria la intervención del obligado principal ni de los\n"
+"                                solidarios."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"(3) Su importe debe ser pagodo solo en la\n"
+"                                    misma\n"
+"                                    moneda\n"
+"                                    que expresa este título valor."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"(3) Su importe debe ser pagodo solo en la\n"
+"                                misma\n"
+"                                moneda\n"
+"                                que expresa este título valor."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"(4) Esta Letra de Cambio no requiere ser\n"
+"                                    protestada\n"
+"                                    por\n"
+"                                    falta de pagl."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"(4) Esta Letra de Cambio no requiere ser\n"
+"                                protestada\n"
+"                                por\n"
+"                                falta de pago."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.actions.report,print_report_name:qa_letter_management.action_account_boe_report
+msgid "(object._get_report_base_filename())"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#, python-format
+msgid ", has generated letters.\n"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"--------------------------\n"
+"                                                     \n"
+"                                    --------------------------\n"
+"                                                  \n"
+"                                               Aceptante            \n"
+"                                     \n"
+"                                                      \n"
+"                                       \n"
+"                                    Aceptante"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"--------------------------\n"
+"                                                 \n"
+"                                --------------------------\n"
+"                                              \n"
+"                                           Aceptante            \n"
+"                                 \n"
+"                                                  \n"
+"                                   \n"
+"                                Aceptante"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"<b style=\"font-size: 12px;\">                    \n"
+"                                                 \n"
+"                                                   \n"
+"                           \n"
+"                              \n"
+"                        NO ESCRIBIR NI FIRMAR DEBAJO\n"
+"                        DE\n"
+"                        ESTA LINEA\n"
+"                    </b>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<b style=\"font-size: 12px;\">                    \n"
+"                                             \n"
+"                                               \n"
+"                       \n"
+"                          \n"
+"                    NO ESCRIBIR NI FIRMAR DEBAJO\n"
+"                    DE\n"
+"                    ESTA LINEA\n"
+"                </b>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<b style=\"font-size: 12px;\">                    \n"
+"                                             \n"
+"                                               \n"
+"                       \n"
+"                          \n"
+"                    NO ESCRIBIR NI FIRMAR DEBAJO\n"
+"                    DE\n"
+"                    ESTA LINEA\n"
+"                </b>\n"
+"\n"
+"\n"
+"\n"
+"                <br/>\n"
+"                <br/>\n"
+"                <br/>\n"
+"                <br/>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"<br/>\n"
+"                                            <span style=\"font-size: 12px;\">Domicilio:</span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<br/>\n"
+"                                        <span style=\"font-size: 12px;\">Domicilio:</span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"<br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                <b style=\"font-size: 10px;margin: 0px;\">Clausulas Especiales:</b>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <br/>\n"
+"                            <b style=\"font-size: 10px;margin: 0px;\">Clausulas Especiales:</b>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:mail.template,body_html:qa_letter_management.email_template_letters
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Dear\n"
+"        % if object.partner_id.parent_id:\n"
+"            ${object.partner_id.name} (${object.partner_id.parent_id.name}),\n"
+"        % else:\n"
+"            ${object.partner_id.name},\n"
+"        % endif\n"
+"        <br/><br/>\n"
+"        Here are your bills of exchange amounting in <strong>${format_amount(object.total_amount_letras, object.currency_id)}</strong>\n"
+"        from ${object.company_id.name}.\n"
+"        Please send them back signed as soon as possible.\n"
+"        <br/><br/>\n"
+"        Do not hesitate to contact us if you have any questions.\n"
+"        % if user.signature:\n"
+"            <br/>\n"
+"            ${user.signature | safe}\n"
+"        % endif\n"
+"    </p>\n"
+"</div>\n"
+"            "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Estimado\n"
+"        % if object.partner_id.parent_id:\n"
+"            ${object.partner_id.name} (${object.partner_id.parent_id.name}),\n"
+"        % else:\n"
+"            ${object.partner_id.name},\n"
+"        % endif\n"
+"        <br/><br/>\n"
+"        Aqui estan sus letras de cambio por un importe de <strong>${format_amount(object.total_amount_letras, object.currency_id)}</strong>\n"
+"        de ${object.company_id.name}.\n"
+"        Por favor devuelvalas firmadas lo antes posible.\n"
+"        <br/><br/>\n"
+"        No dude en contactarnos si tuviera alguna consulta.\n"
+"        % if user.signature:\n"
+"            <br/>\n"
+"            ${user.signature | safe}\n"
+"        % endif\n"
+"    </p>\n"
+"</div>\n"
+"            "
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid ""
+"<span attrs=\"{'invisible': [('composition_mode', '!=', 'mass_mail')]}\">\n"
+"                                        <strong>Email mass mailing</strong> on\n"
+"                                        <span>the selected records</span>\n"
+"                                    </span>\n"
+"                                    <span>Followers of the document and</span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.res_config_settings_view_form_inherit_account_inherit
+msgid "<span class=\"o_form_label\">Advanced Payment from Letter Journal</span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid ""
+"<span id=\"amount_docs_span\" attrs=\"{'invisible':[('exchange_type','!=',False)]}\">Importe Docs\n"
+"                                        </span>\n"
+"                                        <span id=\"amount_docs_receivable_span\" attrs=\"{'invisible':[('exchange_type','not in',['collection'])]}\">\n"
+"                                            Importe\n"
+"                                            Doc Cobrar\n"
+"                                        </span>\n"
+"                                        <span id=\"amount_docs_payable_span\" attrs=\"{'invisible':[('exchange_type','not in',['payment'])]}\">Importe\n"
+"                                            Doc\n"
+"                                            Pagar\n"
+"                                        </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid ""
+"<span id=\"date_portfolio\" attrs=\"{'invisible':[('operation_methods','not in',['portfolio'])]}\">Fecha\n"
+"                                </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<span style=\"font-size: 10px;margin: 0px;\" valign=\"top\" width=\"25%\">   \n"
+"                                          \n"
+"                                           Horacio Urteaga 1156 Of . 201\n"
+"                                        Lima\n"
+"                                        11-Perú\n"
+"                                    </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "<span style=\"font-size: 12px;\">Aceptante:  </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "<span style=\"font-size: 12px;\">Aval Permanente:  </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"<span style=\"font-size: 12px;\">           Importe  \n"
+"                                                       \n"
+"                                     \n"
+"                                                        \n"
+"                                     \n"
+"                                                       \n"
+"                                     \n"
+"                                                         \n"
+"                                                       \n"
+"                                     \n"
+"                                </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"<span style=\"font-size: 12px;\">           Importe  \n"
+"                                                   \n"
+"                                 \n"
+"                                                    \n"
+"                                 \n"
+"                                                   \n"
+"                                 \n"
+"                                                     \n"
+"                                                   \n"
+"                                 \n"
+"                            </span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "<span>DIA / MES / AÑO</span>"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__acceptance_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__acceptance_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__acceptance_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__acceptance_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__acceptance_date
+msgid "Acceptance Date"
+msgstr "Fecha de Aceptación"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__acceptor_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__acceptor_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__acceptor_id
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_account_invoice_filter_inherit
+msgid "Acceptor"
+msgstr "Aceptante"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__access_warning
+msgid "Access warning"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_account_letter_send
+msgid "Account Letter Send"
+msgstr "Envío de Letras"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_account_move_reversal
+msgid "Account Move Reversal"
+msgstr "Revocación de movimiento en cuenta"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__bank_acc_number_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__bank_acc_number_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__bank_acc_number_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__bank_acc_number_id
+msgid "Account Number"
+msgstr "N° de Cuenta"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__active_domain
+msgid "Active domain"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_locations_form_view
+msgid "Add Dates"
+msgstr "Añadir Fechas"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__add_sign
+msgid "Add Sign"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_locations_form_view
+msgid "Add Tracing"
+msgstr "Añadir Seguimiento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Add contacts to notify..."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Add the Invoice Number to validate"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Add the Invoice serie to validate"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__partner_ids
+msgid "Additional Contacts"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_config_settings__advanced_journal_id
+msgid "Advanced Journal"
+msgstr "Diario de Anticipos"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__advanced_payment_move_id
+msgid "Advanced Payment Move"
+msgstr "Asiento de anticipo"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company__advanced_journal_id
+msgid "Advanced journal"
+msgstr "Diario de anticipos"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Amount"
+msgstr "Importe"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__total_amount_fact
+msgid "Amount Docs. Receivable"
+msgstr "Importe Doc Cobrar"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_tree_view
+msgid "Amount Invoices"
+msgstr "Monto Facturas"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__amount_letter
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__amount_letter
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__amount_letter
+msgid "Amount Letter"
+msgstr "Importe de Letra"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_tree_view
+msgid "Amount Letters"
+msgstr "Monto Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__letter_number
+msgid "Amount of Letters"
+msgstr "Cantidad de Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__amount_due
+msgid "Amount owed"
+msgstr "Monto Adeudado"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Amount to pay"
+msgstr "Imp. a Pagar"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__analytic_tag_ids
+msgid "Analytic Tags"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__analytic_account_id
+msgid "Analytical Account"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__no_auto_thread
+msgid ""
+"Answers do not go in the original document discussion thread. This has an "
+"impact on the generated message-id."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__is_seat_generated
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__is_seat_generated
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__is_seat_generated
+msgid "Asiento generado"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "Attach a document for follow-up"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Attach a file"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__attachment_id
+msgid "Attachment Documents"
+msgstr "Adjuntar Documentos"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__attachment_ids
+msgid "Attachments"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__author_id
+msgid "Author"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__author_id
+msgid ""
+"Author of the message. If not set, email_from may hold an email address that"
+" did not match any partner."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "B=Bank refund"
+msgstr "B=Devolución de banco"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "BANCO"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__bank_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__bank_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__bank_id
+msgid "Bank"
+msgstr "Banco"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__bank_interests
+msgid "Bank Interests"
+msgstr "Intereses Bancarios"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__bank_journal_id
+msgid "Bank Journal"
+msgstr "Diario de Banco"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Bank journal %s does not have a responsibility account."
+msgstr "El diario de banco %s no tiene una cuenta de responsabilidad."
+
+#. module: qa_letter_management
+#: model:ir.actions.report,name:qa_letter_management.action_account_boe_report
+msgid "Bills of Exchange"
+msgstr "Letras de Cambio"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Bills of Exchange send & Print"
+msgstr "Letras de Cambio enviar & imprimir"
+
+#. module: qa_letter_management
+#: model:mail.template,report_name:qa_letter_management.email_template_letters
+msgid ""
+"Bills_${(object.name or '').replace('/','_')}${object.state == 'draft' and "
+"'_draft' or ''}"
+msgstr ""
+"Letras_${(object.name or '').replace('/','_')}${object.state == 'draft' and "
+"'_draft' or ''}"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__partner_id
+msgid "Business"
+msgstr "Empresa"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#, python-format
+msgid ""
+"But if these Published letters have letters generated in another template, "
+"revert your payment entry first."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "C=Collection"
+msgstr "C=Cobranza"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "CANCELAR PLANTILLA"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__campaign_id
+msgid "Campaign"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/account_move.py:0
+#: code:addons/qa_letter_management/models/account_move.py:0
+#, python-format
+msgid ""
+"Can't unreconcile this payment because it was redeemed. Please revert the "
+"redemption and try again."
+msgstr ""
+"No se puede romper la conciliación, es un canje. Por favor revierta "
+"el canje e intente nuevamente."
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_date_rate_wizard
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__state__cancel
+msgid "Cancelado"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Cancelaron / Revirtieron las letras y asientos generados en la plantilla N°:"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Cannot find a product for the generation of documents, You should configure "
+"it. Press the button to go to your company settings."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Choose a debit note journal"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Choose a journal for the letters generate"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Choose a series of for the Debit Note"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Click on Generate Interests"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_update__document_type_code
+msgid "Code"
+msgstr "Código"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__exchange_type__collection
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__collection
+msgid "Collection"
+msgstr "Cobro"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__commentary
+msgid "Commentary"
+msgstr "Comentario"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_res_company
+msgid "Companies"
+msgstr "Compañias"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__company_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__compensatory_interest
+msgid "Compensatory Int."
+msgstr "Int. Compensatorio"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__comp_interest_rate
+msgid "Compensatory Rate"
+msgstr "Tasa Compensatoria"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__composer_id
+msgid "Composer"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__composition_mode
+msgid "Composition mode"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__body
+msgid "Contents"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__create_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__letters_is_created
+msgid "Created letters"
+msgstr "Letras creadas"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__create_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Creditor"
+msgstr "Acreedor"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__currency_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__currency_id
+msgid "Currency"
+msgstr "Divisa"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__partner_type__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__out_refund
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__out_refund
+msgid "Customer Credit Note"
+msgstr "Nota de Crédito de Cliente"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__out_invoice
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__out_invoice
+msgid "Customer Invoice"
+msgstr "Factura de Cliente"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__access_url
+msgid "Customer Portal URL"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "Customer letters only"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "D.C."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "D.I/RUC:"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "D=Discount"
+msgstr "D=Descuento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__exchange_date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__date
+msgid "Date "
+msgstr "Fecha"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_date_rate_wizard
+msgid "Date & Rate Wizard"
+msgstr "Asistente de Fecha & Tasa"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__date_amortize
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__date_amortize
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__date_amortize
+msgid "Date Amortize"
+msgstr "Fecha de Amortización"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__date_tracing
+msgid "Date Tracing"
+msgstr "Fecha"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/get_post_date_and_rate.py:0
+#: code:addons/qa_letter_management/wizard/get_post_date_and_rate.py:0
+#: model:ir.model,name:qa_letter_management.model_date_rate_wizard
+#, python-format
+msgid "Date and rate Wizard"
+msgstr "Asistente de fecha y tasa"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Date due is missing"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__debit_create_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__debit_create_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__debit_create_id
+msgid "Debit Note generated from template"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Debit Notes"
+msgstr "Notas de débito"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_debit_generated
+msgid "Debit generated"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__all_debit_generated_posted
+msgid "Debit generated is Posted"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__debit_notes_in_docs
+msgid "Debit in Docs"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__paid_amount
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Debt"
+msgstr "Deuda"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__delay_days
+msgid "Delay Days"
+msgstr "Dias de Retraso"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__auto_delete
+msgid "Delete Emails"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Delete Letters"
+msgstr "Borrar Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__auto_delete_message
+msgid "Delete Message Copy"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Delete debit notes"
+msgstr "Borrar notas de debito"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__difference_amount
+msgid "Difference"
+msgstr "Diferencia"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard___writeoff_account_id
+msgid "Difference Account"
+msgstr "Cuenta de Diferencia"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__amount_discount
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__amount_discount
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__amount_discount
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__discount
+msgid "Discount"
+msgstr "Descuento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_journal__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move_reversal__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_update__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_sunat_series__display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__auto_delete_message
+msgid ""
+"Do not keep a copy of the email in the document communication history (mass "
+"mailing only)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__document_type_id
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Doc. type"
+msgstr "Tipo Doc."
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__doc_letters_id
+msgid "Docs letter"
+msgstr "Letras seleccionadas"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Docs. Receivable"
+msgstr "Docs. por Cobrar"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Document Type"
+msgstr "Tipo de Documento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__document_type_code
+msgid "Document code"
+msgstr "Código de documento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__document_number
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Document number"
+msgstr "N° Documento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__document_type_id
+msgid "Document type"
+msgstr "Tipo de documento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_locations_form_view
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Documents cannot have different currencies"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__state__draft
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__expiration_date
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Due date"
+msgstr "F. vcto"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Elige primero el Tipo de Canje"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__is_email
+msgid "Email"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__email_from
+msgid ""
+"Email address of the sender. This field is set when no matching partner is "
+"found and replaces the author_id field in the chatter."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__internal_type__wizard
+msgid "Emergente"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__invoice_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__invoice_date
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Emission Date"
+msgstr "Fecha de emisión"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"En el siguente lugar de pago, o con cargo en la cuenta del\n"
+"                                Banco"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"En el siguente lugar de pago, o con cargo en la cuenta del\n"
+"                            Banco"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__endorsement
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__endorsement
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__endorsement
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__endorsement
+msgid "Endorsement"
+msgstr "Aval"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Enter an amount greater than 0 in Compensatory Interest"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Enter an amount greater than 0 in Interest on Arrears"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Enter the Unique Code"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Enter values in the interests of the tab >> Docs. receivable <<"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__portfolio
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+#, python-format
+msgid "Exchange"
+msgstr "Cartera"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__exchange_date
+msgid "Exchange Date"
+msgstr "Fecha de Cambio"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__user_exchange_rate
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__user_exchange_rate
+msgid "Exchange Rate User"
+msgstr "Tipo de Cambio Usuario"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/Polimaster/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Exchange letter template "
+msgstr "Canje de letras "
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__exchange_type
+msgid "Exchange Type"
+msgstr "Tipo de Canje"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__exchange_rate
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__exchange_rate
+msgid "Exchange rate"
+msgstr "Tipo de Cambio"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Exchanged"
+msgstr "Canjeado"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__how_days_expires
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__how_days_expires
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__how_days_expires
+msgid "Expiration Days"
+msgstr "Días Vcto"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "F=Refinancing"
+msgstr "F=Refinanciamiento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "FECHA DE GIRO"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "FECHA DE VENCIMIENTO"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management_det__generate_move_id
+msgid "Factura generada - No se usa para canje"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management_det__move_id
+msgid "Factura seleccionada para procesar"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__field_invisible
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__field_invisible
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__field_invisible
+msgid "Field Invisible"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__financial_expenses
+msgid "Financial Expenses"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Firma:"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "For this operation, select those that have the same partner"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"For this process, you need to have the Letters Payable module installed."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"For this process, you need to have the Letters Receivable module installed."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_locations_form_view
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Form Document"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_masterlocations_form_view
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.letter_masterlocations_tree_view
+msgid "Form Maestro de ubicaciones"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__free_days
+msgid "Free days"
+msgstr "Dias Libres"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__email_from
+msgid "From"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "G=Warranty"
+msgstr "G=Garantía"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__list_debit_notes_ids
+msgid "Generate Debit Note"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Generate Debit notes"
+msgstr "Generar Nota de débito"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__generate_interest
+msgid "Generate Interest"
+msgstr "Generar Intereses"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__list_letters_ids
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Generate Letters"
+msgstr "Letras Generadas"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Generate and publish the debit note before generating the letters"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Generate the letters first"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__letter_create_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__letter_create_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__letter_create_id
+msgid "Generated from Letter Template N°"
+msgstr "Generado desde Plantilla de Letras N°"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__generate_move_id
+msgid "Generated invoice"
+msgstr "Factura generada"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_generated
+msgid "Generated letters o debit notes"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Go to Homologation"
+msgstr "Ir a Homologación"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Go to my company settings"
+msgstr "Ir a ajustes de compañía"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Go to the configuration panel"
+msgstr "Ir al panel de configuración"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_view_search
+msgid "Group By..."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_account_update
+msgid "Homologación de Cuentas"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_journal__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move_reversal__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_update__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_config_settings__id
+#: model:ir.model.fields,field_description:qa_letter_management.field_sunat_series__id
+msgid "ID"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "IGV"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_needaction
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_has_error
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"Importe a\n"
+"                                                        debitar en la\n"
+"                                                        siguiente\n"
+"                                                        cuenta del Banco que se\n"
+"                                                        indica"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"Importe a\n"
+"                                                    debitar en la\n"
+"                                                    siguiente\n"
+"                                                    cuenta del Banco que se\n"
+"                                                    indica"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__state__in_process
+msgid "In Process"
+msgstr "En Proceso"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__letter_state__collection
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management_det__letter_state__collection
+msgid "In collection"
+msgstr "En Cobranza"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__letter_state__discount
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management_det__letter_state__discount
+msgid "In discount"
+msgstr "En Descuento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__letter_state__portfolio
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management_det__letter_state__portfolio
+msgid "In portfolio"
+msgstr "En Cartera"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__letter_state__protest
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management_det__letter_state__protest
+msgid "In protest"
+msgstr "En Protesto"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "In the selected documents, there are some paid"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__letter_state__warranty
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management_det__letter_state__warranty
+msgid "In warranty"
+msgstr "En Garantía"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__include_interests_in_letter
+msgid "Include interest in the letter"
+msgstr "Incluir interés en la letra"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Indica una serie en los documentos generados >> Pestaña Letras <<"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__parent_id
+msgid "Initial thread message."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__interest_on_arrears
+msgid "Int. on arrears"
+msgstr "Int. Moratorio"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Interest amounts in Docs. receivables other than the amount of the debit notes generated,\n"
+"delete and regenerate debit notes"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__all_amount_interest
+msgid "Interests"
+msgstr "Intereses"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__move_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__move_id
+msgid "Invoice"
+msgstr "Factura"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__locations_line_ids
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__letter_det_ids
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_account_invoice_filter_inherit
+msgid "Invoices"
+msgstr "Documentos"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_debit
+msgid "Is Debit"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_letter
+msgid "Is Letter"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_move_sent
+msgid "Is Move Sent"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__printed
+msgid "Is Printed"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_exchanged
+msgid "Is exchanged"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__is_move_sent
+msgid "It indicates that the invoice/payment has been sent."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_account_journal
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__another_journal_id
+msgid "Journal"
+msgstr "Diario"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__account_id
+msgid "Journal / Account"
+msgstr "Diario / Cuenta"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__journal_debit_note_id
+msgid "Journal Debit note"
+msgstr "Diario N/D"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_account_move
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__entry
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__entry
+msgid "Journal Entry"
+msgstr "Asiento Contable"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Journal to Pay missing"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__journal_id
+msgid "Journal to pay"
+msgstr "Diario a pagar"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.res_config_settings_view_form_inherit_account_inherit
+msgid "Journal used for advanced payments created by letter redemption"
+msgstr "Diario usado para la creación de anticipos creados en el canje de letras"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "LUGAR DE GIRO"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_journal____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move_reversal____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_update____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:qa_letter_management.field_sunat_series____last_update
+msgid "Last Modified on"
+msgstr "Ultima Modificación en"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__write_uid
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_date_rate_wizard__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__write_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__layout
+msgid "Layout"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Legend - Letter Symbology"
+msgstr "Leyenda -- Simbología de Letras"
+
+#. module: qa_letter_management
+#: model:ir.actions.report,name:qa_letter_management.action_report_letter_agra
+msgid "Letra de Cambio"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Letter "
+msgstr "Letra "
+
+#. module: qa_letter_management
+#: model:ir.ui.menu,name:qa_letter_management.letters_menu_root
+msgid "Letter Management"
+msgstr "Gestión de letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_update__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__letter_state
+msgid "Letter State"
+msgstr "Estado Letra"
+
+#. module: qa_letter_management
+#: model:ir.actions.act_window,name:qa_letter_management.action_emerg_letter_location
+msgid "Letter Tracking"
+msgstr "Seguimiento de Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company__letter_portfolio
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_update__letter_state__portfolio
+msgid "Letter in portfolio"
+msgstr "Letra en Cartera"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_res_company__letter_interest
+msgid "Letter interest"
+msgstr "Interés de la Letra"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_account_invoice_filter_inherit
+msgid "Letter status"
+msgstr "Estado de las Letras"
+
+#. module: qa_letter_management
+#: model:ir.actions.act_window,name:qa_letter_management.action_letter_master_loc
+msgid "Letter tracking"
+msgstr "Seguimiento de Letras"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Letters"
+msgstr "Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__total_amount_letras
+msgid "Letters Amount"
+msgstr "Importe de Letras"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Letters are generated, debit notes cannot be deleted\n"
+"Delete the letters generated first"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Letters have been generated in template N°:"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_account_invoice_filter_inherit
+msgid "Letters in portfolio"
+msgstr "Letras en Cartera"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_letter_management_det
+msgid "Lineas Factura"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_letter_locations
+msgid "Lineas de seguimiento de letras"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__letter_location_id
+msgid "Location - commentary"
+msgstr "Ubicación - comentario"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__name
+msgid "Location status"
+msgstr "Estado de ubicación"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__is_log
+msgid "Log an Internal Note"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Logo"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Los procesos de Cobranza, Descuento, Renovación, Refinanciamiento, Protesto "
+"y Devolucion no estan disponibles para Proveedores"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "MONEDA E IMPORTE"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_letter_masterlocations
+msgid "Maestro de ubicaciones"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__mail_activity_type_id
+msgid "Mail Activity Type"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__medium_id
+msgid "Medium"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__record_name
+msgid "Message Record Name"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__message_type
+msgid ""
+"Message type: email for email message, notification for system message, "
+"comment for other messages such as user replies"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__mora_interest_rate
+msgid "Moratorium Rate"
+msgstr "Tasa Moratoria"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "NUMERO"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "NUMERO DE CUENTA"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__record_name
+msgid "Name get of the related document."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__letter_amount
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__letter_amount
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__letter_amount
+msgid "Net"
+msgstr "Neto"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "New"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"No ADVANCED JOURNAL was found associated with this company, you must "
+"configure it. Settings // Accounting configuration"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"No BRIDGE JOURNAL was found associated with this company, you must configure"
+" it. Settings // Accounting configuration"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "No hay tipo de canje!"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__no_auto_thread
+msgid "No threading for answers"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Nombre del Representante"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__notify
+msgid "Notify followers"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__notify
+msgid "Notify followers of the document (mass post only)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__document_number_agra
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__document_number_agra
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__document_number_agra
+msgid "Numero de documento"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "N° Seat"
+msgstr "N° Asiento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "OFICINA"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__office_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__office_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__office_name
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__office_name
+msgid "Office"
+msgstr "Oficina"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#, python-format
+msgid "One of the letters on the template "
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Only documents with posted state"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Only in Draft and In Process state"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid ""
+"Only select documents of type Letters >> with status: Draft or Posted <<"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__operation_methods
+msgid "Operation Method"
+msgstr "Método de Operación"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__other_currency
+msgid "Other Corrency"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__mail_server_id
+msgid "Outgoing mail server"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "P=Protest"
+msgstr "P=Protesto"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__internal_type__window
+msgid "Pantalla"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__parent_id
+msgid "Parent Message"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Partial Redeemed"
+msgstr "Canje Parcial"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__payment_state__in_redemption
+msgid "Partial redeemed"
+msgstr "Canje parcial"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__partner_id
+msgid "Partner"
+msgstr "Socio"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__partner_type
+msgid "Partner Type"
+msgstr "Tipo de Socio"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__exchange_type__payment
+msgid "Payment"
+msgstr "Pago"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__payment_methods_id
+msgid "Payment Methods"
+msgstr "Método de Pago"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__payment_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__payment_state
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__payment_state
+msgid "Payment Status"
+msgstr "Estado de pago"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__seat_generated_by_payment
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__seat_generated_by_payment_ids
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Payment entry"
+msgstr "Asiento Cobro"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__payment_term
+msgid "Payment term"
+msgstr "Término de Pago"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__days_range
+msgid "Payment term between letters"
+msgstr "Plazo de pago entre letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__phone
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__phone
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__phone
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__phone
+msgid "Phone"
+msgstr "Teléfono"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__templates_cancelled_ids
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__templates_cancelled_ids
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__templates_cancelled_ids
+msgid "Plantillas de letras canceladas"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid ""
+"Por esta LETRA DE CAMBIO, se servirá(n) pagar\n"
+"                                incondicionalmente\n"
+"                                a\n"
+"                                la orden de"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid ""
+"Por esta LETRA DE CAMBIO, se servirá(n) pagar\n"
+"                            incondicionalmente\n"
+"                            a\n"
+"                            la orden de\n"
+"                            GUILLERMO ROMERO S.A.C."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__access_url
+msgid "Portal Access URL"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Post debit notes"
+msgstr "Publicar notas de debito"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__state__posted
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_view_search
+msgid "Posted"
+msgstr "Publicado"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Preview as a PDF"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__is_print
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Print"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__protest
+msgid "Protest"
+msgstr "Protesto"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Protested"
+msgstr "Protestada"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Publish the debit note first"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__in_receipt
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__in_receipt
+msgid "Purchase Receipt"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "R.U.C."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid "R.U.C.20123030843"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "R=Renewal"
+msgstr "R=Renovación"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "REF. DEL GIRADOR"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__payment_type__inbound
+msgid "Receive money"
+msgstr "Recibir Dinero"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Recipients"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_date_rate_wizard
+msgid "Reconcile"
+msgstr "Conciliar"
+
+#. module: qa_letter_management
+#: model:ir.actions.act_window,name:qa_letter_management.action_emerg_letter_management
+msgid "Redeem to Letters"
+msgstr "Canjear a Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__account_move__payment_state__redeemed
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Redeemed"
+msgstr "Canjeado"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Ref. Number"
+msgstr "Número Ref."
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Ref. serie"
+msgstr "Serie Ref."
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__refinancing
+msgid "Refinancing"
+msgstr "Refinanciamiento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Refund document number"
+msgstr "Número del documento reembolso"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Refund document series"
+msgstr "Serie del documento reembolso"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Regenerate the letters, the series is missing"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__res_id
+msgid "Related Document ID"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__model
+msgid "Related Document Model"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__letter_fact_id
+msgid "Related to template N°"
+msgstr "Relacionada a la plantilla N°"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__renewal
+msgid "Renewal"
+msgstr "Renovacion"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__renewal_percentage
+msgid "Renewal Percentage %"
+msgstr "Porcentaje de renovación %"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__reply_to
+msgid ""
+"Reply email address. Setting the reply_to bypasses the automatic thread "
+"creation."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__reply_to
+msgid "Reply-To"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_import_journal_creation__responsibility_account_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_journal__responsibility_account_id
+msgid "Reponsibility Acount"
+msgstr "Cuenta de responsabilidad"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__require_attach_document
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_masterlocations__require_attach_document
+msgid "Require attach document"
+msgstr "Requiere adjuntar documento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__operation_methods__return
+msgid "Return"
+msgstr "Devolución"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__out_receipt
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__out_receipt
+msgid "Sales Receipt"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__invoice_user_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__invoice_user_id
+msgid "Salesperson"
+msgstr "Vendedor"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__is_same_partner
+msgid "Same partner"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Save and close"
+msgstr "Guardar y cerrar"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Save as a new template"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Save as new template"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_view_search
+msgid "Search Gestión"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__seat_generated_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__seat_generated_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__seat_generated_id
+msgid "Seat generated from template"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__asiento_letters
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__asiento_letters
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__asiento_letters
+msgid "Seats / Letters"
+msgstr "Asientos / Letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__access_token
+msgid "Security Token"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Select a series for debit notes"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "Select a tracking status"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Select a type of Currency"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"Selected documents cannot be exchanged if they have already been exchanged"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Send"
+msgstr "Enviar"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Send & Print"
+msgstr "Enviar & Imprimir"
+
+#. module: qa_letter_management
+#: model:ir.actions.act_window,name:qa_letter_management.letter_send
+msgid "Send & print"
+msgstr "Enviar & imprimir"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__send_date
+msgid "Send Date"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Send Letter"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_invoice_send.py:0
+#: code:addons/qa_letter_management/wizard/account_invoice_send.py:0
+#, python-format
+msgid "Send invoice"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__payment_type__outbound
+msgid "Send money"
+msgstr "Enviar Dinero"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__new_bank_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__new_bank_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__new_bank_id
+msgid "Send to Bank"
+msgstr "Envío a Banco"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__debit_notes_serie_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_sunat_series__name
+msgid "Serie"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_sunat_series
+msgid "Series"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__send_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__send_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__send_date
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__send_date
+msgid "Shipping date"
+msgstr "F. Envío"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__source_id
+msgid "Source"
+msgstr "Fuente"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations_line__state_doc
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__state
+msgid "State"
+msgstr "Estado"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__state_tracing
+msgid "Status tracing"
+msgstr "Estado de seguimiento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__subject
+msgid "Subject"
+msgstr "Asunto"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_letter_send_wizard_form
+msgid "Subject..."
+msgstr "Asunto..."
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__subtype_id
+msgid "Subtype"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__partner_type__supplier
+msgid "Supplier"
+msgstr "Proveedor"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__mora_interest_rate
+msgid "Tasa de interes hacia los docs por cobrar a canjear"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Tax Base"
+msgstr "Base Imp."
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management___tax_ids_debit
+msgid "Taxes"
+msgstr "Impuestos"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management___tax_ids_debit
+msgid "Taxes that apply on the base amount"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__user_id
+msgid "Technical field used to fit the generic behavior in mail templates."
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Telefax:(+511)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Telf.:(+511)"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+msgid "Telf.:(+511) 431 6923 Telefax:(+511)3300533"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_agra
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.report_letter_template
+msgid "Teléf:"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__name
+msgid "Template Name"
+msgstr "Nombre de Plantilla"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_tree_view
+msgid "Template N°"
+msgstr "Número de Plantilla"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__have_letters_generated_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__have_letters_generated_id
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__have_letters_generated_id
+msgid "Template Ref."
+msgstr "Plantilla Ref."
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_view_search
+msgid "Template Status"
+msgstr "Estado de la Plantilla"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__have_letters_template_cancelled
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__have_letters_template_cancelled
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__have_letters_template_cancelled
+msgid "Template cancelled"
+msgstr "Plantilla cancelada"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_letter_management
+msgid "Template for the generation of type documents: letters and debit notes"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"The Letters Receivable or Payable modules were not found to be installed."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "The acceptance date cannot be less than the shipping date"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"The account for advanced payments is not configured in homologation. Please "
+"add an advanced payment account for %s"
+msgstr ""
+"La cuenta de anticipos no está configurada en homologación. Por favor "
+"agregue una cuenta de anticipos para %s"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "The comment is already created"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"The debit note cannot be created because the letters were generated with "
+"interest included"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The documents must have a amount payable (can be partial payment)"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The documents must have a balance due"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The exchange rate cannot be 0"
+msgstr "El tipo de cambio no debe ser 0"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_invoice_send.py:0
+#: code:addons/qa_letter_management/wizard/account_invoice_send.py:0
+#, python-format
+msgid ""
+"The following invoice(s) will not be sent by email, because the customers "
+"don't have email address."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The journal with which the letters will are generated is missing"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#, python-format
+msgid "The letter template No. "
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"The name of the template does not have any digits. It is not posible to "
+"create the letters."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The template is published, debit notes cannot be deleted"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The template is published, the letters cannot be deleted"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "The value entered in Letters to be generated must be greater than 0"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/ubications_master.py:0
+#: code:addons/qa_letter_management/models/ubications_master.py:0
+#, python-format
+msgid "There are no documents to comment"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "There is no document to generate letters"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"There is no letters to redeem the invoices, probably they were deleted "
+"before. Please press the \"DELETE LETTERS\" button and generate them again."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "This entry for protest was generated from template No."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "This entry for renewal discount was generated from template No."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__campaign_id
+msgid ""
+"This is a name that helps you keep track of your different campaign efforts,"
+" e.g. Fall_Drive, Christmas_Special"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__medium_id
+msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__source_id
+msgid ""
+"This is the source of the link, e.g. Search Engine, another domain, or name "
+"of email list"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__auto_delete
+msgid ""
+"This option permanently removes any track of email after it's been sent, "
+"including from the Technical menu in the Settings, in order to preserve "
+"storage space of your Odoo database."
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "To exchange documents, select invoices, debit notes, tickets"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"To generate the letters, the documents must have a amount payable (can be "
+"partial payment)"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "To generate the letters, the documents must have a balance due"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__amount_payable
+msgid "To pay"
+msgstr "A pagar"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#: code:addons/qa_letter_management/wizard/account_move_reversal.py:0
+#, python-format
+msgid ""
+"To reverse the payment entry you need:\n"
+"Create internal credit notes for each letter posted. When the amount owed\n"
+"for these letters is 0, you can make the reversal of the payment entry.\n"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management_det__new_amount_to_pay
+msgid "Total"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Total interest"
+msgstr "Total intereses"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__last_tracing
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__tracing_ids
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__last_tracing
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__tracing_ids
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__last_tracing
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__tracing_ids
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.account_move_form_inherit
+msgid "Tracing"
+msgstr "Seguimiento"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__tracing_created
+msgid "Tracing created"
+msgstr "Seguimiento creado"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.view_account_invoice_filter_inherit
+msgid "Tracing letters"
+msgstr "Seguimiento de las Letras"
+
+#. module: qa_letter_management
+#: model:ir.ui.menu,name:qa_letter_management.letter_ubications_menu
+msgid "Tracking concepts"
+msgstr "Conceptos de seguimiento"
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_tree_view
+msgid "Tree Document"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__city
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__city
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__city
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__city
+msgid "Turn Place"
+msgstr "Lugar de Giro"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__message_type
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_locations__move_type
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__move_type
+msgid "Type"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_bank_statement_line__unique_code_supplier
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_move__unique_code_supplier
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_payment__unique_code_supplier
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__unique_code_supplier
+msgid "Unique Code"
+msgstr "Cód. Único"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__use_active_domain
+msgid "Use active domain"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__template_id
+msgid "Use template"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__user_id
+msgid "User"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "Validate"
+msgstr "Validar"
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Values are missing in the Due Days field"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "Values entered in the Day Range must be greater than 0"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__in_invoice
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__in_invoice
+msgid "Vendor Bill"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_locations__move_type__in_refund
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__letter_management__move_type__in_refund
+msgid "Vendor Credit Note"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__internal_type
+msgid "View Type"
+msgstr "Tipo de Vista"
+
+#. module: qa_letter_management
+#: model:ir.model.fields.selection,name:qa_letter_management.selection__sale_order__invoice_status__waiting
+msgid "Waiting for letter"
+msgstr "Esperando letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__payment_type
+msgid "Way to pay"
+msgstr "Forma de Pago"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_letter_management__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_account_letter_send__is_log
+msgid "Whether the message is an internal note (comment mode only)"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You cannot validate this operation since there are differences in the "
+"amounts of the Amount of >> Docs. Charge + interest << and Letters"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You cannot validate this operation since there are differences in the "
+"amounts of the Amount of >> Docs. Charge and Letters <<"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but it is different from"
+" the Series selected in the template"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but it is different from"
+" the Tax selected in the template"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but there is no Series "
+"value selected in the template"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but there is no Tax "
+"value selected in the template"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "You have to generate the letters"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__invoice_without_email
+msgid "bills that will not be sent"
+msgstr "letras que no serán enviadas"
+
+#. module: qa_letter_management
+#: model:ir.model,name:qa_letter_management.model_letter_locations_line
+msgid "letter locations line"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,field_description:qa_letter_management.field_account_letter_send__invoice_ids
+msgid "letters"
+msgstr "letras"
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__is_debit
+msgid "nota de debito generada en la Pestaña de letras - Caso 3"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__is_debit_generated
+msgid ""
+"nota de debito generada, ubicada en un campo en la pestaña Nota de debito- "
+"Caso 4"
+msgstr ""
+
+#. module: qa_letter_management
+#: model:ir.model.fields,help:qa_letter_management.field_letter_management__debit_notes_in_docs
+msgid ""
+"nota de debito seleccionada, en la pestaña de docs. por cobrar - Caso 1 y 2"
+msgstr ""
+
+#. module: qa_letter_management
+#: code:addons/extra-addons/DesarrolloLetras/qa_letter_management/models/letter_management.py:0
+#: code:addons/qa_letter_management/models/letter_management.py:0
+#, python-format
+msgid "only validates when the template is in the >> in process << state"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid "or"
+msgstr ""
+
+#. module: qa_letter_management
+#: model_terms:ir.ui.view,arch_db:qa_letter_management.qa_letter_management_form_view
+msgid ""
+"¿Seguro de cancelar la plantilla? --- Los asientos generados deben estar "
+"cancelados / revertidos"
+msgstr ""

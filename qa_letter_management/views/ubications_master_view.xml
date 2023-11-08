@@ -1,0 +1,99 @@
+<odoo>
+    <record id="letter_masterlocations_form_view" model="ir.ui.view">
+        <field name="name">letter.masterlocations.form.view</field>
+        <field name="model">letter.masterlocations</field>
+        <field name="arch" type="xml">
+            <form string="Form Maestro de ubicaciones">
+                <sheet>
+                    <group>
+                        <field name="id" readonly="1" invisible="1"/>
+                        <field name="name"/>
+                        <field name="require_attach_document"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="letter_masterlocations_tree_view" model="ir.ui.view">
+        <field name="name">letter.masterlocations.tree.view</field>
+        <field name="model">letter.masterlocations</field>
+        <field name="arch" type="xml">
+            <tree string="Form Maestro de ubicaciones" editable="bottom">
+                <field name="id" readonly="1" invisible="1"/>
+                <field name="name"/>
+                <field name="require_attach_document"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_letter_master_loc" model="ir.actions.act_window">
+        <field name="name">Letter tracking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">letter.masterlocations</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="letter_locations_form_view" model="ir.ui.view">
+        <field name="name">letter.locations.form.view</field>
+        <field name="model">letter.locations</field>
+        <field name="arch" type="xml">
+            <form string="Form Document">
+                <header>
+                    <button name="add_tracing" string="Add Tracing" type="object"
+                            attrs="{'invisible':[('tracing_created','=',True)]}"/>
+                </header>
+                <sheet>
+                    <group col="2">
+                        <group>
+                            <field name="date_tracing" readonly="1" required="1"/>
+                            <field name="state_tracing"/>
+                            <field name="invoice_user_id" required="1"/>
+                            <field name="move_type" required="1" readonly="1" invisible="1"/>
+                            <field name="document_type_id" required="1" readonly="1" invisible="1"/>
+                            <field name="commentary"/>
+
+                            <field name="send_date"/>
+                            <field name="acceptance_date"/>
+                            <button name="add_send_and_acceptance_date" string="Add Dates" type="object"/>
+                            <field name="tracing_created" readonly="1" invisible="1"/>
+                            <field name="require_attach_document" invisible="1"/>
+                            <field name="doc_letters_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <div>
+                                <field name="attachment_id" widget="many2many_binary"
+                                       attrs="{'invisible':[('require_attach_document','!=',True)],'required':[('require_attach_document','=',True)]}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents">
+                            <field name="locations_line_ids">
+                                <tree editable="bottom" default_order="id desc" delete="false" create="false">
+                                    <field name="move_id" options="{'no_create_edit':True}"
+                                           domain="['&amp;',('state','in',['draft','posted']),'&amp;',('move_type','=',parent.move_type),('l10n_latam_document_type_id','=',parent.document_type_id)]"/>
+                                    <field name="letter_state"/>
+                                    <field name="invoice_date"/>
+                                    <field name="send_date"/>
+                                    <field name="acceptance_date"/>
+                                    <field name="state_doc"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer invisible="1"/>
+            </form>
+        </field>
+    </record>
+    <act_window id="action_emerg_letter_location"
+                name="Letter Tracking"
+                res_model="letter.locations"
+                binding_model="account.move"
+                view_mode="form"
+                view_id="letter_locations_form_view"
+                target="new"
+                context="{'default_internal_type':'wizard'}"
+    />
+    <menuitem id="letter_ubications_menu" name="Tracking concepts" sequence="1" parent="letters_menu_root"
+              action="action_letter_master_loc"/>
+</odoo>

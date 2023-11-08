@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_letter_management_all,access_letter_management_all,model_letter_management,,1,1,1,1
+access_letter_management_det_all,access_letter_management_det_all,model_letter_management_det,,1,1,1,1
+access_letter_masterlocations_all,access_letter_masterlocations_all,model_letter_masterlocations,,1,1,1,1
+access_letter_locations_all,access_letter_locations_all,model_letter_locations,,1,1,1,1
+access_letter_locations_line_all,access_letter_locations_line_all,model_letter_locations_line,,1,1,1,1
+access_account_letter_send,access_account_letter_send,model_account_letter_send,,1,1,1,1
+access_date_rate_wizard,access_date_rate_wizard,model_date_rate_wizard,,1,1,1,1
+access_account_update,access_account_update,model_account_update,,1,1,1,1

@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="account_update_tree_1_inherit" model="ir.ui.view">
+            <field name="name">account.update.tree.inherit</field>
+            <field name="model">account.update</field>
+            <field name="inherit_id" ref="qa_standard_locations_account.view_account_update_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[1]/field[@name='transaction_type']" position="after">
+                    <field name="letter_state" attrs="{'readonly':[('document_type_code','!=','LT')]}"/>
+                    <field name="document_type_code" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

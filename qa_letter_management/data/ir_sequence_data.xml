@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for sale.order -->
+        <record id="seq_sale_letter_management" model="ir.sequence">
+            <field name="name">Letter Management</field>
+            <field name="code">letter.management.sale</field>
+            <field name="prefix">LM-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_purchase_letter_management" model="ir.sequence">
+            <field name="name">Letter Management</field>
+            <field name="code">letter.management.purchase</field>
+            <field name="prefix">LM-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_bank_letter_management" model="ir.sequence">
+            <field name="name">Bank Letter Management</field>
+            <field name="code">letter.management.bank</field>
+            <field name="prefix">SB-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_renewal_letter_management" model="ir.sequence">
+            <field name="name">Renewal Letter Management</field>
+            <field name="code">letter.management.renewal</field>
+            <field name="prefix">RN-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_protest_letter_management" model="ir.sequence">
+            <field name="name">Protest Letter Management</field>
+            <field name="code">letter.management.protest</field>
+            <field name="prefix">PL-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_refinancing_letter_management" model="ir.sequence">
+            <field name="name">Refinancing Letter Management</field>
+            <field name="code">letter.management.refinancing</field>
+            <field name="prefix">RF-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

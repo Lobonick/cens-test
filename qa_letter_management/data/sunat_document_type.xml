@@ -1,0 +1,19 @@
+<odoo>
+
+    <record id="document_type_lt1" model="l10n_latam.document.type">
+        <field name='sequence'>10</field>
+        <field name='code'>LT</field>
+        <field name="name">Letra de Cambio</field>
+        <field name='country_id' ref='base.pe'/>
+        <field name="doc_code_prefix">LT</field>
+        <field name='internal_type'>invoice</field>
+    </record>
+    <record model="l10n_latam.document.type" id="document_type_07_letter">
+        <field name='sequence'>10</field>
+        <field name='code'>LT</field>
+        <field name="name">Nota de crédito Interna</field>
+        <field name='country_id' ref='base.pe'/>
+        <field name="doc_code_prefix">LT</field>
+        <field name='internal_type'>invoice</field>
+    </record>
+</odoo>

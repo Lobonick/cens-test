@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_letter_agra">
+        <t t-call="web.basic_layout">
+            <style>
+                table{border: 1px solid #000000;padding:1px;}
+                td {border: 1px solid #000000;padding:1px;}
+                tr {border: 1px solid #000000;padding:1px;}
+                th {border: 1px solid #000000;padding:1px;}
+                blockquote {border: 1px solid #000000;padding:1px;}
+
+                .Rotate-180
+                {
+                -webkit-transform: rotate(-180deg);
+                -moz-transform: rotate(-180deg);
+                -ms-transform: rotate(-180deg);
+                -o-transform: rotate(-180deg);
+                transform: rotate(-180deg);
+                }
+
+                .Rotate-90
+                {
+                -webkit-transform: rotate(-90deg);
+                -moz-transform: rotate(-90deg);
+                -ms-transform: rotate(-90deg);
+                -o-transform: rotate(-90deg);
+                transform: rotate(-90deg);
+                }
+
+            </style>
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <div class="page">
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div class="row" style="border-bottom: black 1px solid;">
+                    <!--                    <div style="border-left: red 1px solid;" class="col-4 Rotate-90">-->
+                    <div class="col-3" style="height:500px;">
+
+                        <div class="Rotate-90" style="height:705px;">
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <b style="font-size: 10px;margin: 0px;">Clausulas Especiales:</b>
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(1) En caso de mora, esta Letra de Cambio
+                                generará
+                                las
+                                tasas de interés compensatorio y moratorio más altas, que la ley permita a su último
+                                Tenedor.
+                            </p>
+                            <!--                        <p style="font-size: 10px;">moratorio más altas, que la ley permita a su último Tenedor.</p>-->
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(2) El plazo de vencimiento podrá ser
+                                prorrogado
+                                por el
+                                Tenedor,
+                                por
+                                el plazo que
+                                éste señale, sin que sea necesaria la intervención del obligado principal ni de los
+                                solidarios.
+                            </p>
+                            <!--                        <p style="font-size: 10px;">sin que sea necesaria la intervención del obligado principal ni de los-->
+                            <!--                            solidarios.-->
+                            <!--                        </p>-->
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(3) Su importe debe ser pagodo solo en la
+                                misma
+                                moneda
+                                que expresa este título valor.
+                            </p>
+                            <p style="font-size: 10px;width: 500px;margin: 0px;">(4) Esta Letra de Cambio no requiere ser
+                                protestada
+                                por
+                                falta de pago.
+                            </p>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <p style="font-size: 13px;width: 380px;">&#160;&#160; &#160;&#160; &#160;--------------------------
+                                &#160;&#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                --------------------------
+                                &#160; &#160; &#160; &#160; &#160;&#160; &#160;&#160;&#160;
+                                &#160; &#160; &#160;&#160; &#160; &#160; Aceptante &#160; &#160; &#160; &#160; &#160; &#160;
+                                &#160;
+                                &#160; &#160; &#160; &#160; &#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                &#160;&#160;&#160;
+                                Aceptante
+                            </p>
+
+
+                            <p style="font-size: 13px;">&#160; &#160; &#160; &#160; &#160; Nombre del Representante</p>
+                            <!--                        <span style="font-size: 12px;width: 500px;">&#160; &#160; &#160; &#160; Aceptante &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; Aceptante-->
+                            <!--                        </span>-->
+                        </div>
+
+                    </div>
+                    <div style="border-left: black 1px solid;" class="col-12">
+                        <span>
+                            <!--                                <img src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+
+
+                            <img t-if="o.company_id.logo" style="max-height: 43px;" alt="Logo"
+                                 t-att-src="image_data_uri(o.company_id.logo)"
+                            />
+                        </span>
+                        <br/>
+                        <br/>
+                        <table style="width: 816px">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        NUMERO LETRA
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        REF. DEL GIRADOR
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        LUGAR DE GIRO
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        FECHA DE GIRO
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        FECHA DE VENCIMIENTO
+                                    </th>
+                                    <!--                                    <blockquote style="font-size: 12px;border-top-right-radius: 20px;">-->
+                                    <!--                                        <span>MONEDA E IMPORTE</span>-->
+                                    <!--                                    </blockquote>-->
+                                    <th style="font-size: 12px;" class="text-center">
+                                        MONEDA E IMPORTE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--                                <tr t-foreach="o.letter_create_id.letter_det_ids" t-as="lin">-->
+                                <tr>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <!-- <span t-field="o.sunat_serie"/>
+                                        <span t-field="o.sunat_number"/> -->
+                                    </td>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <t t-foreach="o.letter_create_id.letter_det_ids" t-as="invoice">
+                                            <span t-field="invoice.document_number"/>
+                                            <br/>
+                                        </t>
+                                        <!--                                        <span t-field="o.document_number_agra"/>-->
+                                    </td>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.city"/>
+                                    </td>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        <span>AÑO / MES / DIA</span>
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        <span>AÑO / MES / DIA</span>
+                                    </th>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+
+                                        <span t-field="o.amount_total"/>
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.sunat_serie"/>-->
+                                    <!--                                        <span t-field="o.sunat_number"/>-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.ref"/>-->
+                                    <!--                                    </td>-->
+                                    <td style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.invoice_date"/>
+                                    </td>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.city"/>-->
+                                    <!--                                    </td>-->
+                                    <td style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.invoice_date_due"/>
+                                    </td>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.amount_total"/>-->
+                                    <!--                                    </td>-->
+                                </tr>
+                                <!--                                </tr>-->
+                            </tbody>
+
+                        </table>
+
+                        <p style="font-size: 12px;margin: 0px;">
+                            Por esta LETRA DE CAMBIO, se servirá(n) pagar
+                            a
+                            la orden de: REPUESTOS NEW LID S.R.L   la cantidad de
+                        </p>
+
+                        <blockquote style="width: 816px;border-radius: 10px;">
+                            <span style="font-size: 12px;">&#160; &#160; &#160; &#160; &#160; &#160;Importe &#160;
+                                &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                            </span>
+                            <span style="font-size: 12px;" t-field="o.amount_text"/>
+                        </blockquote>
+                        <p style="font-size: 12px;">Valor que sentara(n) en cuenta segun aviso de sus ss.ss en el siguiente lugar de pago:
+                        </p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <blockquote style="width: 360px;border-radius: 10px;">
+                                    <!--                                    <table style="width: 275px;">-->
+                                    <th>
+                                        <span style="font-size: 12px;">GIRADO A: &#160;</span>
+                                        <span style="font-size: 12px;" t-field="o.partner_id.name"/>
+                                        
+
+
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">D.I/RUC:
+                                            <span style="font-size: 12px;" t-field="o.partner_id.vat"/>
+                                            &#160; &#160; &#160; &#160; &#160;
+                                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                            &#160;
+                                            &#160;
+                                            TELEFONO: &#160;
+                                        </span>
+                                        <span style="font-size: 12px;" t-field="o.phone"/>
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">DIRECCION:</span>
+                                        <span style="font-size: 12px;">
+                                            <t t-esc="o.partner_id.street"/>
+                                            &#160;-
+                                            <t t-esc="o.partner_id.l10n_pe_district.name"/>-
+                                            <t t-esc="o.partner_id.city_id.name"/>
+
+                                        </span>
+                                    </th>
+                                    <!--                                </table>-->
+                                </blockquote>
+                            </div>
+                            <div class="8">
+                                <bloquote style="width: 395px;border-radius: 10px;">
+                                    <table style="width: 450px">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 12px;border-" class="text-center" colspan="4">
+                                                    Importe a
+                                                    debitar en 
+                                                    cuenta del Aceptante del Banco
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    BANCO
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    OFICINA
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    NUMERO DE CUENTA
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    D.C.
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.bank_id.name"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.letter_create_id.office_name"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.letter_create_id.bank_acc_number_id.acc_number"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.bank_id.bic"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </bloquote>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <blockquote style="width: 360px;height:135px;border-radius: 10px;margin: 0px;">
+                                    <!--                                    <table style="width: 278px;border-radius: 10px;">-->
+                                    <th>
+                                        <span style="font-size: 12px;">AVALISTA: &#160;</span>
+                                        <span style="font-size: 12px;" t-field="o.endorsement"/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        
+                                        <!--<p style="font-size: 12px;text-align: center">&#160; &#160; &#160;&#160; &#160;
+                                            &#160;
+                                            &#160;&#160; &#160;&#160;&#160; &#160;&#160;&#160; &#160;&#160; &#160;
+                                            &#160;&#160; &#160; &#160;&#160;&#160; &#160; &#160;&#160;
+                                            &#160;&#160; &#160;&#160;&#160;Teléf:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.phone"/>
+                                        </p>-->
+                                        <span style="font-size: 12px;">D.I/RUC:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.vat"/>
+                                            &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                            &#160; &#160; &#160; &#160; &#160;&#160;&#160; &#160; &#160; &#160;&#160;&#160;
+                                            &#160; &#160;
+                                            TELEFONO:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.phone"/>
+                                        </span>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">DIRECCION:</span>
+                                        <span style="font-size: 12px;" t-field="o.endorsement.street_name"/>
+                                        <br/>
+                                    </th>
+                                    <!--                                    </table>-->
+                                </blockquote>
+                            </div>
+                            <div class="8">
+                                <blockquote style="width: 450px;height:135px;border-radius: 10px;margin: 0px;">
+                                    <!--                                    <table>-->
+                                    <!--                                        <span>-->
+                                    <!--                                            <img style="width: 130px; height: 30px;"-->
+                                    <!--                                                 src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+                                    <!--                                        </span>-->
+                                    <span>
+                                        <!--                                <img src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+
+                                        <img t-if="o.company_id.logo" style="width: 110px; height: 20px;margin: 0px;"
+                                             alt="Logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                        />
+
+                                    </span>
+
+                                    <span style="font-size: 10px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;
+                                        &#160; &#160;Horacio Urteaga 1156 Of . 201
+                                        Lima
+                                        11-Perú
+                                    </span>
+                                    <p style="font-size: 10px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;&#160;
+                                        &#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                        Telf.:(+511) 431 6923 Telefax:(+511)3300533
+                                    </p>
+
+                                    <!--                                    <span style="font-size: 12px; text-align: right;">&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;Telf.:(+511) 431 6923-->
+                                    <!--                                        Telefax:(+511) 330-->
+                                    <!--                                        0533-->
+                                    <!--                                    </span>-->
+
+                                    <p style="font-size: 13px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;
+                                        &#160;&#160; &#160; &#160;&#160;
+                                        &#160; &#160; &#160; &#160;&#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                        &#160; &#160;&#160; &#160; &#160; &#160; &#160;&#160;&#160;&#160;&#160; &#160;
+                                        R.U.C.20123030843
+                                    </p>
+                                    <br/>
+                                    <br/>
+                                    <p style="font-size: 12px; text-align: left;">Firma:</p>
+
+                                    <!--                                    </table>-->
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <b style="font-size: 12px;">&#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160; &#160; &#160;
+                    &#160;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160;
+                    &#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160;
+                    &#160; &#160;
+                    &#160;&#160; &#160; &#160;
+                    NO ESCRIBIR NI FIRMAR DEBAJO
+                    DE
+                    ESTA LINEA
+                </b>
+
+
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                
+                <div class="row" style="border-bottom: black 1px solid;">
+                    <!--                    <div style="border-left: red 1px solid;" class="col-4 Rotate-90">-->
+                    <div class="col-3" style="height:500px;">
+
+                        <div class="Rotate-90" style="height:705px;">
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <b style="font-size: 10px;margin: 0px;">Clausulas Especiales:</b>
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(1) En caso de mora, esta Letra de Cambio
+                                generará
+                                las
+                                tasas de interés compensatorio y moratorio más altas, que la ley permita a su último
+                                Tenedor.
+                            </p>
+                            <!--                        <p style="font-size: 10px;">moratorio más altas, que la ley permita a su último Tenedor.</p>-->
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(2) El plazo de vencimiento podrá ser
+                                prorrogado
+                                por el
+                                Tenedor,
+                                por
+                                el plazo que
+                                éste señale, sin que sea necesaria la intervención del obligado principal ni de los
+                                solidarios.
+                            </p>
+                            <!--                        <p style="font-size: 10px;">sin que sea necesaria la intervención del obligado principal ni de los-->
+                            <!--                            solidarios.-->
+                            <!--                        </p>-->
+                            <p style="font-size: 10px;width: 400px;margin: 0px;">(3) Su importe debe ser pagodo solo en la
+                                misma
+                                moneda
+                                que expresa este título valor.
+                            </p>
+                            <p style="font-size: 10px;width: 500px;margin: 0px;">(4) Esta Letra de Cambio no requiere ser
+                                protestada
+                                por
+                                falta de pago.
+                            </p>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <p style="font-size: 13px;width: 380px;">&#160;&#160; &#160;&#160; &#160;--------------------------
+                                &#160;&#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                --------------------------
+                                &#160; &#160; &#160; &#160; &#160;&#160; &#160;&#160;&#160;
+                                &#160; &#160; &#160;&#160; &#160; &#160; Aceptante &#160; &#160; &#160; &#160; &#160; &#160;
+                                &#160;
+                                &#160; &#160; &#160; &#160; &#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                &#160;&#160;&#160;
+                                Aceptante
+                            </p>
+
+
+                            <p style="font-size: 13px;">&#160; &#160; &#160; &#160; &#160; Nombre del Representante</p>
+                            <!--                        <span style="font-size: 12px;width: 500px;">&#160; &#160; &#160; &#160; Aceptante &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160;-->
+                            <!--                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; Aceptante-->
+                            <!--                        </span>-->
+                        </div>
+
+                    </div>
+                    <div style="border-left: black 1px solid;" class="col-12">
+                        <span>
+                            <!--                                <img src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+
+
+                            <img t-if="o.company_id.logo" style="max-height: 43px;" alt="Logo"
+                                 t-att-src="image_data_uri(o.company_id.logo)"
+                            />
+                        </span>
+                        <br/>
+                        <br/>
+                        <table style="width: 816px">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        NUMERO LETRA
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        REF. DEL GIRADOR
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        LUGAR DE GIRO
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        FECHA DE GIRO
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        FECHA DE VENCIMIENTO
+                                    </th>
+                                    <!--                                    <blockquote style="font-size: 12px;border-top-right-radius: 20px;">-->
+                                    <!--                                        <span>MONEDA E IMPORTE</span>-->
+                                    <!--                                    </blockquote>-->
+                                    <th style="font-size: 12px;" class="text-center">
+                                        MONEDA E IMPORTE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--                                <tr t-foreach="o.letter_create_id.letter_det_ids" t-as="lin">-->
+                                <tr>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <!-- <span t-field="o.sunat_serie"/>
+                                        <span t-field="o.sunat_number"/> -->
+                                    </td>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <t t-foreach="o.letter_create_id.letter_det_ids" t-as="invoice">
+                                            <span t-field="invoice.document_number"/>
+                                            <br/>
+                                        </t>
+                                        <!--                                        <span t-field="o.document_number_agra"/>-->
+                                    </td>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.city"/>
+                                    </td>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        <span>AÑO / MES / DIA</span>
+                                    </th>
+                                    <th style="font-size: 12px;" class="text-center">
+                                        <span>AÑO / MES / DIA</span>
+                                    </th>
+                                    <td rowspan="2" style="font-size: 12px;vertical-align: middle;" class="text-center">
+
+                                        <span t-field="o.amount_total"/>
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.sunat_serie"/>-->
+                                    <!--                                        <span t-field="o.sunat_number"/>-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.ref"/>-->
+                                    <!--                                    </td>-->
+                                    <td style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.invoice_date"/>
+                                    </td>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.city"/>-->
+                                    <!--                                    </td>-->
+                                    <td style="font-size: 12px;vertical-align: middle;" class="text-center">
+                                        <span t-field="o.invoice_date_due"/>
+                                    </td>
+                                    <!--                                    <td style="font-size: 12px;" class="text-center">-->
+                                    <!--                                        <span t-field="o.amount_total"/>-->
+                                    <!--                                    </td>-->
+                                </tr>
+                                <!--                                </tr>-->
+                            </tbody>
+
+                        </table>
+
+                        <p style="font-size: 12px;margin: 0px;">
+                            Por esta LETRA DE CAMBIO, se servirá(n) pagar
+                            a
+                            la orden de: REPUESTOS NEW LID S.R.L   la cantidad de
+                        </p>
+
+                        <blockquote style="width: 816px;border-radius: 10px;">
+                            <span style="font-size: 12px;">&#160; &#160; &#160; &#160; &#160; &#160;Importe &#160;
+                                &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                                &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;&#160; &#160; &#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                &#160;
+                            </span>
+                            <span style="font-size: 12px;" t-field="o.amount_text"/>
+                        </blockquote>
+                        <p style="font-size: 12px;">Valor que sentara(n) en cuenta segun aviso de sus ss.ss en el siguiente lugar de pago:
+                        </p>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <blockquote style="width: 360px;border-radius: 10px;">
+                                    <!--                                    <table style="width: 275px;">-->
+                                    <th>
+                                        <span style="font-size: 12px;">GIRADO A: &#160;</span>
+                                        <span style="font-size: 12px;" t-field="o.partner_id.name"/>
+                                        
+
+
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">D.I/RUC:
+                                            <span style="font-size: 12px;" t-field="o.partner_id.vat"/>
+                                            &#160; &#160; &#160; &#160; &#160;
+                                            &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;
+                                            &#160;
+                                            &#160;
+                                            TELEFONO: &#160;
+                                        </span>
+                                        <span style="font-size: 12px;" t-field="o.phone"/>
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">DIRECCION:</span>
+                                        <span style="font-size: 12px;">
+                                            <t t-esc="o.partner_id.street"/>
+                                            &#160;-
+                                            <t t-esc="o.partner_id.l10n_pe_district.name"/>-
+                                            <t t-esc="o.partner_id.city_id.name"/>
+
+                                        </span>
+                                    </th>
+                                    <!--                                </table>-->
+                                </blockquote>
+                            </div>
+                            <div class="8">
+                                <bloquote style="width: 395px;border-radius: 10px;">
+                                    <table style="width: 450px">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 12px;border-" class="text-center" colspan="4">
+                                                    Importe a
+                                                    debitar en 
+                                                    cuenta del Aceptante del Banco
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    BANCO
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    OFICINA
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    NUMERO DE CUENTA
+                                                </th>
+                                                <th style="font-size: 12px;" class="text-center">
+                                                    D.C.
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.bank_id.name"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.letter_create_id.office_name"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.letter_create_id.bank_acc_number_id.acc_number"/>
+                                                </td>
+                                                <td style="font-size: 12px;" class="text-center">
+                                                    <br/>
+                                                    <span t-field="o.bank_id.bic"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </bloquote>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <blockquote style="width: 360px;height:135px;border-radius: 10px;margin: 0px;">
+                                    <!--                                    <table style="width: 278px;border-radius: 10px;">-->
+                                    <th>
+                                        <span style="font-size: 12px;">AVALISTA: &#160;</span>
+                                        <span style="font-size: 12px;" t-field="o.endorsement"/>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        
+                                        <!--<p style="font-size: 12px;text-align: center">&#160; &#160; &#160;&#160; &#160;
+                                            &#160;
+                                            &#160;&#160; &#160;&#160;&#160; &#160;&#160;&#160; &#160;&#160; &#160;
+                                            &#160;&#160; &#160; &#160;&#160;&#160; &#160; &#160;&#160;
+                                            &#160;&#160; &#160;&#160;&#160;Teléf:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.phone"/>
+                                        </p>-->
+                                        <span style="font-size: 12px;">D.I/RUC:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.vat"/>
+                                            &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                            &#160; &#160; &#160; &#160; &#160;&#160;&#160; &#160; &#160; &#160;&#160;&#160;
+                                            &#160; &#160;
+                                            TELEFONO:
+                                            <span style="font-size: 12px;" t-field="o.endorsement.phone"/>
+                                        </span>
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <span style="font-size: 12px;">DIRECCION:</span>
+                                        <span style="font-size: 12px;" t-field="o.endorsement.street_name"/>
+                                        <br/>
+                                    </th>
+                                    <!--                                    </table>-->
+                                </blockquote>
+                            </div>
+                            <div class="8">
+                                <blockquote style="width: 450px;height:135px;border-radius: 10px;margin: 0px;">
+                                    <!--                                    <table>-->
+                                    <!--                                        <span>-->
+                                    <!--                                            <img style="width: 130px; height: 30px;"-->
+                                    <!--                                                 src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+                                    <!--                                        </span>-->
+                                    <span>
+                                        <!--                                <img src="/qa_letter_management/static/description/report/log-agra.png"/>-->
+
+                                        <img t-if="o.company_id.logo" style="width: 110px; height: 20px;margin: 0px;"
+                                             alt="Logo" t-att-src="image_data_uri(o.company_id.logo)"
+                                        />
+
+                                    </span>
+
+                                    <span style="font-size: 10px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;
+                                        &#160; &#160;Horacio Urteaga 1156 Of . 201
+                                        Lima
+                                        11-Perú
+                                    </span>
+                                    <p style="font-size: 10px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                        &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;&#160;
+                                        &#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160; &#160; &#160;&#160;
+                                        Telf.:(+511) 431 6923 Telefax:(+511)3300533
+                                    </p>
+
+                                    <!--                                    <span style="font-size: 12px; text-align: right;">&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;Telf.:(+511) 431 6923-->
+                                    <!--                                        Telefax:(+511) 330-->
+                                    <!--                                        0533-->
+                                    <!--                                    </span>-->
+
+                                    <p style="font-size: 13px;margin: 0px;" valign="top" width="25%">&#160; &#160;
+                                        &#160;&#160;
+                                        &#160;&#160; &#160; &#160;&#160;
+                                        &#160; &#160; &#160; &#160;&#160;&#160; &#160; &#160; &#160;&#160; &#160; &#160;
+                                        &#160; &#160;&#160; &#160; &#160; &#160; &#160;&#160;&#160;&#160;&#160; &#160;
+                                        R.U.C.20123030843
+                                    </p>
+                                    <br/>
+                                    <br/>
+                                    <p style="font-size: 12px; text-align: left;">Firma:</p>
+
+                                    <!--                                    </table>-->
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <b style="font-size: 12px;">&#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160; &#160; &#160;
+                    &#160;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160;
+                    &#160; &#160; &#160; &#160; &#160; &#160;&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160;
+                    &#160; &#160;
+                    &#160;&#160; &#160; &#160;
+                    NO ESCRIBIR NI FIRMAR DEBAJO
+                    DE
+                    ESTA LINEA
+                </b>
+
+            </div>
+        </t>
+    </template>
+
+    <template id="letter_agra">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="qa_letter_management.report_letter_agra" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

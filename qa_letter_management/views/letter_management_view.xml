@@ -1,0 +1,482 @@
+<odoo>
+
+    <record id="qa_letter_management_form_view" model="ir.ui.view">
+        <field name="name">qa_letter_management.form.view</field>
+        <field name="model">letter.management</field>
+        <field name="arch" type="xml">
+            <form string="Form Document" duplicate="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_process,posted"/>
+                    <button name="generate_letters" string="Generate Letters" type="object"
+                            icon="fa-plus-circle" invisible="context.get('is_modal')"
+                            attrs="{'invisible':['|',('letters_is_created','=',True),('state','in',['posted'])]}"/>
+                    <!--                            attrs="{'invisible':['|','|',('letters_is_created','=',True),('operation_methods','in',['collection','discount']),('state','in',['posted'])]}"/>-->
+                    <!--                    <button name="create_send" string="Create Send" type="object"-->
+                    <!--                            icon="fa-plus-circle" invisible="context.get('is_modal')"-->
+                    <!--                            attrs="{'invisible': ['|','|',('letters_is_created','=',True),('operation_methods','not in',['collection','discount']),('state','in',['posted'])]}"/>-->
+                    <button name="delete_letters" string="Delete Letters" type="object" icon="fa-trash-o"
+                            attrs="{'invisible':['|',('state','in',['posted', 'cancel']),('letters_is_created','=',False)]}"/>
+                    <button name="btn_generate_debit_note" string="Generate Debit notes" type="object"
+                            invisible="context.get('is_modal')"
+                            icon="fa-plus-circle"
+                            attrs="{'invisible':['|',('is_debit','=',True),'|',('generate_interest','=',False),('is_debit_generated','=',True)]}"/>
+                    <!--                                                attrs="{'invisible':['|',('operation_methods','not in',['portfolio','renewal','refinancing']),'|',('is_debit','=',True),'|',('generate_interest','=',False),('is_debit_generated','=',True)]}"/>-->
+                    <!--                                        <button name="action_saves" string="Redirect" type="object"/>-->
+                    <button name="exchange_process" class="oe_highlight" string="Validate" type="object"
+                            icon="fa-check-circle"
+                            attrs="{'invisible':['|',('letters_is_created','=',False),('state','not in',['in_process'])]}"/>
+                    <button name="btn_cancel_template"
+                            confirm="¿Seguro de cancelar la plantilla? --- Los asientos generados deben estar cancelados / revertidos"
+                            attrs="{'invisible':[('state', 'not in', ['posted'])]}"
+                            type="object" string="CANCELAR PLANTILLA" class="btn btn-danger"/>
+                    <!-- ############## POLIMASTER ################ -->
+                    <field name="is_move_sent" invisible="1"/>
+                    <button name="action_letter_sent" type="object" string="Send &amp; Print" attrs="{'invisible':['|', '|', ('state', '=', 'draft'), ('operation_methods', 'not in', ['portfolio', 'refinancing', 'renewal']), ('is_move_sent', '=', True)]}" class="oe_highlight"/>
+                    <button name="action_letter_sent" type="object" string="Send &amp; Print" attrs="{'invisible':['|', '|', ('state', '=', 'draft'), ('operation_methods', 'not in', ['portfolio', 'refinancing', 'renewal']), ('is_move_sent', '=', False)]}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Exchanged"
+                            attrs="{'invisible':['|',('state','=','cancel'),'&amp;',('is_exchanged','!=',True),'|',('operation_methods','not in',['portfolio']),('operation_methods','in',['portfolio'])]}"/>
+                    <!-- ############## POLIMASTER ################ -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="left_column">
+                            <!-- ############## POLIMASTER ################ -->
+                            <!-- <field name="id" string="Template N°"/> -->
+                            <field name="operation_methods"/>
+                            <!--                            <field name="is_template_cancelled"/>-->
+                            <!--                            <field name="exchange_type"/>-->
+                            <field name="exchange_type" attrs="{'readonly':[('letter_det_ids','>','0')]}"/>
+                            <field name="payment_type"/>
+                            <field name="internal_type" invisible="1"/>
+                            <field name="move_type" invisible="1"/>
+                            <h7 id="lot_creation" style="font-weight:bold;">
+                                <span id="date_portfolio"
+                                      attrs="{'invisible':[('operation_methods','not in',['portfolio'])]}">Fecha
+                                </span>
+                            </h7>
+                            <div>
+                                <field name="date"
+                                       attrs="{'readonly':['|','|',('operation_methods','not in',['portfolio']),('state','not in',['draft']),('exchange_type','not in',['payment'])]}"/>
+                                <!--                                       attrs="{'readonly':[('state','not in',['draft'])],'invisible':[('operation_methods','not in',['portfolio'])]}"/>-->
+                            </div>
+                            <field name="company_id"/>
+                            <field name="city"
+                                   attrs="{'readonly':[('state','not in',['draft'])], 'invisible':[('exchange_type','not in',['collection'])]}"/>
+
+                            <!--                                <field name="suitable_journal_ids" invisible="1"/>-->
+                            <field name="journal_id" invisible="1"/>
+                            <field name="another_journal_id"
+                                   attrs="{'readonly':[('letters_is_created','=',True)]}"
+                                   domain="[('type','=','sale' if exchange_type == 'collection' else 'purchase'),('letter_type','=',True)]"/>
+                            <field name="partner_id" force_save="1"
+                                   attrs="{'readonly':[('is_same_partner','=',True)]}"/>
+                            <!--                                   attrs="{'invisible':[('is_same_partner','!=',True)],'readonly':[('is_same_partner','=',True)]}"/>-->
+                            <field name="phone" invisible="1"/>
+                            <field name="endorsement" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+
+                            <field name="bank_id"
+                                   attrs="{'readonly':[('letters_is_created','=',True)], 'invisible':[('exchange_type','not in',['collection'])]}"/>
+                            <field name="bank_acc_number_id" force_save="1"
+                                   domain="[('bank_id','=',bank_id)]"
+                                   attrs="{'readonly':['|',('bank_id','=',False),('letters_is_created','=',True)], 'invisible':[('exchange_type','not in',['collection'])]}"/>
+                            <field name="office_name"
+                                   attrs="{'readonly':[('letters_is_created','=',True)], 'invisible':[('exchange_type','not in',['collection'])]}"/>
+
+                            <field name="is_exchanged" readonly="1" invisible="1"/>
+                            <field name="letters_is_created" readonly="1" invisible="1"/>
+                            <field name="is_letter" readonly="1" invisible="1"/>
+                            <field name="is_debit" readonly="1" invisible="1"/>
+                            <field name="is_debit_generated" readonly="1" invisible="1"/>
+                            <field name="all_debit_generated_posted" readonly="1" invisible="1"/>
+
+                            <field name="debit_notes_in_docs" readonly="1" invisible="1"/>
+                            <field name="is_same_partner" readonly="1"/>
+                            <field name="payment_type" force_save="1" />
+                        </group>
+                        <group name="right_column">
+                            <field name="currency_id" 
+                                   attrs="{'readonly':['|',('total_amount_fact','>', '0'),'|',('all_amount_interest','>','0'),('state','not in',['draft'])]}"/>
+                            <field name="other_currency" invisible="1"/>
+                            <field name="exchange_date"
+                                   attrs="{'readonly':[('state','not in',['draft','in_process'])],'invisible':['|',('other_currency', '!=', True),('user_exchange_rate', '=', True)],'required':[('other_currency', '=', True),('user_exchange_rate', '=', False)]}"
+                                   />
+                            <field name="user_exchange_rate"
+                                   attrs="{'readonly':[('state','not in',['draft','in_process'])],'invisible':[('other_currency', '!=', True)]}"
+                                   />
+                            <field name="exchange_rate" force_save="1"
+                                   attrs="{'readonly':['|',('state','not in',['draft','in_process']),('user_exchange_rate', '!=', True)],'invisible':[('other_currency', '!=', True)]}"
+                                   />
+                            <!-- ############## POLIMASTER ################ -->
+                            <field name="renewal_percentage" attrs="{'readonly':[('state','not in',['draft'])], 'invisible': [('operation_methods','!=','renewal')]}"/>
+                            <field name="generate_interest" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+
+                            <field name="mora_interest_rate" invisible="1"/>
+                            <field name="comp_interest_rate" invisible="1"/>
+                            <field name="include_interests_in_letter"
+                                   attrs="{'invisible':[('generate_interest','!=',True)],'readonly':[('letters_is_created','=',True)]}"
+                            />
+
+                            <field name="debit_notes_serie_id" force_save="1" 
+                                   attrs="{'invisible':[('generate_interest','!=',True)],'readonly':['|',('is_debit','=',True),('is_debit_generated','=',True)]}"/>
+                            <field name="_tax_ids_debit" widget="many2many_tags"
+                                   domain="[('type_tax_use','in',['sale']),('active','=',True)]"
+                                   options="{'no_create_edit': True}"
+                                   attrs="{'invisible':[('generate_interest','!=',True)],'readonly':['|',('is_debit','=',True),('is_debit_generated','=',True)]}"/>
+
+                            <field name="journal_debit_note_id"
+                                   attrs="{'invisible':[('generate_interest', '!=', True)],'readonly':[('is_debit_generated','!=',False)]}"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Docs. Receivable" id="docs_receivable_tab">
+                            <div class="div_docs">
+                                <field name="letter_det_ids"
+                                       attrs="{'readonly':['|','|',('exchange_type','=',False),('partner_id','=',False),'|',('is_debit_generated','=',True),('state','not in',['draft'])]}"
+                                       widget="one2many">
+
+                                    <tree editable="bottom" default_order="id desc" class="tree_docs">
+                                        <field name="partner_id" force_save="1" options="{'no_open': True}"
+                                               attrs="{'readonly':[('parent.is_same_partner','=',True)]}"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="generate_move_id" invisible="1"/>
+                                        <field name="document_type_code" invisible="1"/>
+                                        <field name="currency_id" optional="hidden"/>
+                                        <field name="document_type_id" force_save="1"
+                                               options="{'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'readonly':[('move_id','!=',False)]}"
+                                        />
+                                        <field name="move_id" force_save="1"
+                                               options="{'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'readonly':[('move_id','!=',False)]}"/>
+                                        <field name="document_number" options="{'no_open': True}"/>
+                                        <field name="paid_amount" widget="monetary" force_save="1"/>
+
+                                        <field name="amount_payable" widget="monetary"
+                                               attrs="{'readonly':[('parent.state','not in',['draft'])]}"/>
+                                        <field name="interest_on_arrears" widget="monetary"
+                                               attrs="{'readonly':[('parent.state','not in',['draft'])],'column_invisible':[('parent.generate_interest', '!=', True)]}"/>
+                                        <field name="compensatory_interest" widget="monetary"
+                                               attrs="{'readonly':[('parent.state','not in',['draft'])],'column_invisible':[('parent.generate_interest', '!=', True)]}"/>
+
+                                        <field name="new_amount_to_pay" widget="monetary"
+                                               attrs="{'column_invisible':[('parent.generate_interest', '!=', True)]}"/>
+                                        <field name="invoice_date"/>
+                                        <field name="expiration_date"/>
+                                        <field name="delay_days" optional="hidden"/>
+                                        <field name="payment_term" optional="hidden"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </page>
+                        <page string="Debit Notes" id="debit_notes_tab"
+                              attrs="{'invisible':[('generate_interest','!=',True)]}">
+                            <field name="list_debit_notes_ids">
+                                <tree editable="bottom" delete="false" create="false" default_order="id desc"
+                                      decoration-info="state=='draft'">
+                                    <field name="id" readonly="1" invisible="1"/>
+                                    <field name="l10n_latam_document_type_id" readonly="1" invisible="1"
+                                           string="Document Type"/>
+                                    <field name="document_type_code" readonly="1" invisible="1"/>
+                                    <field name="name" readonly="1" string="N° Seat"/>
+                                    <field name="l10n_latam_document_number" readonly="1" string="Document number"/>
+                                    <field name="invoice_date" readonly="1"/>
+
+                                    <field name="invoice_date_due"
+                                           attrs="{'readonly':[('state','in',['posted'])]}"/>
+
+                                    <!--<field name="refund_invoice_sunat_serie" readonly="1" string="Ref. serie"
+                                           help="Refund document series"/>
+                                    <field name="refund_invoice_sunat_number" string="Ref. Number" readonly="1"
+                                           help="Refund document number"/>-->
+
+
+                                    <field name="currency_id" readonly="1" invisible="1"/>
+                                    <field name="state" readonly="1"/>
+                                    <field name="letter_amount" string="Amount" widget="monetary" readonly="1"
+                                           invisible="1"/>
+                                    <field name="amount_untaxed" string="Tax Base" widget="monetary" readonly="1"/>
+                                    <!--<field name="total_igv" readonly="1" widget="monetary" string="IGV"/>-->
+                                    <field name="amount_total" readonly="1"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <group>
+                                    <field name="all_amount_interest" string="Total interest"
+                                           attrs="{'invisible':[('is_debit_generated','!=',True)]}"/>
+                                    <button name="posted_debit_generate" string="Post debit notes"
+                                            type="object"
+                                            attrs="{'invisible':['|',('is_debit_generated','=',False),'&amp;',('is_debit_generated','=',True),('all_debit_generated_posted','=',True)]}"/>
+                                    <button name="delete_debit_notes_generated" string="Delete debit notes"
+                                            type="object"
+                                            attrs="{'invisible':['|',('is_debit_generated','=',False),'&amp;',('is_debit_generated','=',True),('all_debit_generated_posted','=',True)]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Payment entry" id="payment_entry_tab"
+                              attrs="{'invisible':[('state','not in',['posted','cancel'])]}">
+                            <field name="seat_generated_by_payment_ids">
+                                <tree editable="false" delete="false" create="false" default_order="id desc">
+                                    <field name="id" invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="ref" readonly="1"/>
+                                    <field name="date"/>
+                                    <!--<field name="gloss" readonly="1"/>-->
+                                    <field name="company_id"/>
+                                    <field name="journal_id"/>
+                                    <field name="suitable_journal_ids"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Letters" id="letters_generated_tab">
+                            <group>
+                                <group style="width:50%;">
+                                    <field name="letter_number"
+                                           attrs="{'readonly':[('letters_is_created','=',True)]}"/>
+                                    <field name="days_to_first"
+                                           attrs="{'readonly':[('letters_is_created','=',True)]}"/>
+                                    <field name="days_range"
+                                           attrs="{'readonly':[('letters_is_created','=',True)]}"/>
+                                    <!-- <field name="invoice_user_id" force_save="1"
+                                           attrs="{'readonly':[('letters_is_created','=',True)]}"/> -->
+                                    <div class="o_row">
+                                        <field name="invoice_user_id" force_save="1"
+                                            attrs="{'readonly':[('letters_is_created','=',True)]}"/>
+                                        <!-- <button name="add_letter" type="object" string="Add Letter"/> -->
+                                    </div>
+                                </group>
+                                <group style="width:40%;">
+                                    <h7 id="amount_docs" style="font-weight:bold;">
+                                        <span id="amount_docs_span"
+                                              attrs="{'invisible':[('exchange_type','!=',False)]}">Importe Docs
+                                        </span>
+                                        <span id="amount_docs_receivable_span"
+                                              attrs="{'invisible':[('exchange_type','not in',['collection'])]}">
+                                            Importe
+                                            Doc Cobrar
+                                        </span>
+                                        <span id="amount_docs_payable_span"
+                                              attrs="{'invisible':[('exchange_type','not in',['payment'])]}">Importe
+                                            Doc
+                                            Pagar
+                                        </span>
+                                    </h7>
+                                    <div>
+                                        <field name="total_amount_fact" widget="monetary"/>
+                                    </div>
+                                    <field name="all_amount_interest" widget="monetary"/>
+
+                                    <field name="total_amount_letras" widget="monetary"/>
+                                    <field name="difference_amount" style="color:Red;" widget="monetary"
+                                           attrs="{'invisible':[('difference_amount','=',0)]}"/>
+                                    
+                                    <!-- ############## POLIMASTER ################ -->
+                                    <field name="advanced_payment_move_id" readonly="1" attrs="{'invisible':[('advanced_payment_move_id','=',False)]}"/>
+                                </group>
+                            </group>
+                            <!--                            <page>-->
+                            <div class="div_docs">
+                                <!--                            <group>-->
+                                <!--                                <group>-->
+                                <field name="list_letters_ids">
+                                    <!--     <field name="list_letters_ids" attrs="{'invisible':[('letters_is_created','!=',True)]}">-->
+                                    <tree editable="bottom" create="false" default_order="id asc"
+                                          class="tree_docs"
+                                          decoration-info="state=='draft'">
+                                        <field name="id" readonly="1" invisible="1"/>
+                                        <field name="l10n_latam_document_type_id" readonly="1" string="Doc. type"
+                                               options="{'no_create_edit': True, 'no_open': True}"/>
+                                        <field name="document_type_code" readonly="1" invisible="1"/>
+                                        <field name="name" readonly="1" string="N° Seat"/>
+                                        <field name="field_invisible" invisible="1"/>
+                                        <field name="l10n_latam_document_number" />
+
+                                        <!--<field name="sunat_serie" invisible="1" attrs="{'readonly':['|',('parent.operation_methods','!=','portfolio'),('state','not in',['draft'])]}"/>
+
+                                        <field name="sunat_number" invisible="0" attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['collection'])]}"/>
+                                        <field name="sunat_number_temp" invisible="1" attrs="{'readonly':['|',('parent.operation_methods','!=','portfolio'),('state','not in',['draft'])]}"/>-->
+                                        
+                                        <!--                                        <field name="document_number" readonly="1" string="Document number"-->
+                                        <!--                                               style="min-width:140px; width: 150px;"/>-->
+
+                                        <!-- ############## POLIMASTER ################ -->
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="partner_id" attrs="{'readonly':['|',('parent.operation_methods','!=','portfolio'),('state','not in',['draft'])]}"/>
+
+                                        <field name="acceptor_id" attrs="{'readonly':['|',('parent.operation_methods','!=','portfolio'),('state','not in',['draft'])]}"/>
+
+                                        <field name="invoice_date"  attrs="{'readonly':[('state','not in',['draft'])]}" string="Emission Date"/>
+
+                                        <field name="date_amortize" invisible="1"/>
+                                        <field name="how_days_expires"
+                                               attrs="{'readonly':['|',('document_type_code','=','08'),('state','not in',['draft'])]}"/>
+                                        <field name="send_date"
+                                               attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['collection'])],'readonly':[('state','in',['posted'])]}"/>
+                                        <field name="acceptance_date"
+                                               attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['collection'])],'readonly':[('state','in',['posted'])]}"/>
+                                        <field name="invoice_date_due" string="Due date" force_save="1" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                        <field name="currency_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                                        <field name="amount_letter" invisible="1" string="Amount to pay"
+                                               readonly="1"
+                                               widget="monetary"/>
+                                        <field name="exchange_rate" attrs="{'readonly':['|',('parent.currency_id','=', 'currency_id'),('state','not in',['draft'])]}"/>
+                                        <field name="letter_amount" widget="monetary" force_save="1"
+                                               attrs="{'readonly':[('parent.state','not in',['draft','in_process'])]}"/>
+                                        <field name="payment_state" readonly="1" invisible="1"/>
+
+                                        <field name="amount_total" readonly="1" optional="hidden"
+                                               attrs="{'column_invisible':[('parent.operation_methods', 'in',['discount','renewal'])]}"/>
+                                        <field name="amount_residual" readonly="1" string="Debt"
+                                               attrs="{'column_invisible':[('parent.state','not in',['posted'])]}"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="letter_state" readonly="1"/>
+                                        <field name="have_letters_generated_id" readonly="1"
+                                               attrs="{'invisible':[('parent.exchange_type', 'not in', ['collection'])]}"/>
+                                        <button name="download_file_letter" icon="fa-download" type="object"
+                                                attrs="{'invisible':[('parent.exchange_type', 'not in', ['collection'])]}"/>
+
+                                    </tree>
+
+                                </field>
+                                <!--                                </group>-->
+                                <!--                            </group>-->
+                            </div>
+                            <!--                            </page>-->
+                        </page>
+
+                    </notebook>
+                    <group col="9" colspan="1" attrs="{'invisible':[('exchange_type','in',['payment'])]}">
+                        <h3 colspan="3">Legend - Letter Symbology</h3>
+                        <newline/>
+                        <h8>Exchange</h8>
+                        <h8>C=Collection</h8>
+                        <h8>G=Warranty</h8>
+                        <h8>D=Discount</h8>
+                        <h8>R=Renewal</h8>
+                        <h8>F=Refinancing</h8>
+                        <h8>P=Protest</h8>
+                        <h8 colspan="2">B=Bank refund</h8>
+                    </group>
+                </sheet>
+                <footer invisible="not context.get('is_modal')">
+                    <button name="action_generate_letters_and_open_form" string="Generate Letters" type="object"
+                            context="{'open_payment': True}" class="btn-primary"/>
+                    <button name="action_generate_debit_notes_and_open_form" string="Generate Debit notes"
+                            type="object"
+                            context="{'open_payment': True}"
+                            attrs="{'invisible':['|',('operation_methods','not in',['portfolio','renewal','refinancing']),('generate_interest','=',False)]}"/>
+                    <button name="action_generate_letters_and_open_form" string="Save and close" type="object"/>
+                    or
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="qa_letter_management_form_view_no_create" model="ir.ui.view">
+        <field name="name">qa_letter_management.form.view.inherit</field>
+        <field name="model">letter.management</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="qa_letter_management.qa_letter_management_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//footer" position="replace"/>
+        </field>
+    </record>
+
+    <record id="qa_letter_management_tree_view" model="ir.ui.view">
+        <field name="name">qa_letter_management.tree.view</field>
+        <field name="model">letter.management</field>
+        <field name="arch" type="xml">
+            <tree string="Tree Document" default_order="id desc" decoration-info="state=='draft'">
+                <field name="operation_methods"/>
+                <field name="name" string="Template N°"/>
+                <field name="partner_id"/>
+                <field name="date" string=""/>
+                <field name="invoice_user_id" optional="show"/>
+                <field name="bank_id"/>
+                <field name="currency_id"/>
+                <field name="total_amount_fact" string="Amount Invoices" widget="monetary"/>
+                <field name="total_amount_letras" string="Amount Letters" widget="monetary"/>                
+                <!-- ############## POLIMASTER ################ -->
+                <!-- <field name="state" widget="badge"/> -->
+                <field name="state" widget="badge" decoration-success="state in 'posted'" decoration-danger="state in 'cancel'" decoration-warning="state in 'in_process'"/>
+            
+            </tree>
+        </field>
+    </record>
+
+    <record id="qa_letter_management_view_search" model="ir.ui.view">
+        <field name="name">qa_letter_management.letter.search</field>
+        <field name="model">letter.management</field>
+        <field name="arch" type="xml">
+            <search string="Search Gestión">
+                <!--                        <field name="state"/>-->
+                <!--                        <field name="partner_type"/>-->
+                <filter name="state" string="Template Status"/>
+                <separator/>
+                <group expand="0" string="Group By...">
+                    <filter name="state_posted" string="Posted" domain="[('state','=','posted')]"/>
+                    <!--                <filter name="state_posted" string="Posted" domain="[('state','=','posted')]"/>-->
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+            <record id="qa_letter_management_view_search" model="ir.ui.view">
+                <field name="name">qa_letter_management.letter.select</field>
+                <field name="model">letter.management</field>
+                <field name="arch" type="xml">
+                    <search string="Search Plantilla">
+                        <field name="name"/>
+                        <field name="letter_det_ids" string="Invoice" filter_domain="[('letter_det_ids.move_id.document_number', 'ilike', self)]"/>
+                        <group expand="0" string="Group By">
+                            <filter string="Partner" name="partner" context="{'group_by':'partner_id'}"/>
+                            <filter string="Operation Methods" name="operation_methods" context="{'group_by':'operation_methods'}"/>
+                        </group>
+                    </search>
+                </field>
+            </record>
+
+    <!--    <record id="action_qa_letter_management_out_invoice" model="ir.actions.act_window">-->
+    <!--    <record id="action_qa_letter_management" model="ir.actions.act_window">-->
+    <!--        <field name="name">Letter Management Receivable</field>-->
+    <!--        <field name="res_model">letter.management</field>-->
+    <!--        <field name="view_mode">tree,form</field>-->
+    <!--        <field name="view_id" ref="qa_letter_management_tree_view"/>-->
+    <!--        <field name="search_view_id" ref="qa_letter_management_view_search"/>-->
+    <!--        <field name="context">{'default_internal_type': 'window', 'default_exchange_type': 'collection'}</field>-->
+    <!--        <field name="help" type="html">-->
+    <!--            <p class="o_view_nocontent_smiling_face">-->
+    <!--                Create a letter template for your customers!-->
+    <!--            </p>-->
+    <!--            <p>-->
+    <!--                Check if you have Multicurrencies activated-->
+    <!--            </p>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <act_window id="action_emerg_letter_management"
+                name="Redeem to Letters"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'portfolio', 'is_modal':True}"
+    />
+
+</odoo>

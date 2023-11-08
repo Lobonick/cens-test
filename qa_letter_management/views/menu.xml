@@ -1,0 +1,5 @@
+<odoo>
+<!--    menu para el maestro de ubicaciones-->
+    <menuitem id="letters_menu_root" name="Letter Management" sequence="2"
+              parent="account.menu_finance_configuration"/>
+</odoo>

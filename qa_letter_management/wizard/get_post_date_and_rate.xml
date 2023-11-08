@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_date_rate_wizard_form" model="ir.ui.view">
+            <field name="name">date.rate.wizard.form</field>
+            <field name="model">date.rate.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Date Rate Wizard 2">
+                    <group>
+                        <group invisible="not context.get('protest')">
+                            <field name="bank_journal_id" domain="[('type','=','bank')]" options="{'no_create_edit': True, 'no_open': True}" required="context.get('protest')" readonly="context.get('protest')"/>
+                            <field name="_writeoff_account_id" required="context.get('protest')"/>
+                            <field name="analytic_account_id" attrs="{'required': [('is_destiny_account','=', True),('analytic_tag_ids','=', [])],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" attrs="{'required': [('is_destiny_account','=', True),('analytic_account_id','=', False)],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="is_destiny_account" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="bank_interests" invisible="not context.get('protest')"/>
+                            <field name="financial_expenses" invisible="not context.get('protest')"/>
+                            <field name="exchange_date"/>
+                            <field name="user_exchange_rate" invisible="context.get('currency')" groups="base.group_multi_currency"/>
+                            <field name="exchange_rate" force_save="1" invisible="context.get('currency')" attrs="{'readonly': [('user_exchange_rate','=',False)]}" groups="base.group_multi_currency"/>
+                        </group>
+                        <group invisible="not context.get('difference_payment')" string="Difference">
+                            <field name="_writeoff_account_id" required="context.get('difference_payment')"/>
+                            <field name="analytic_account_id" attrs="{'required': [('is_destiny_account','=', True),('analytic_tag_ids','=', [])],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" attrs="{'required': [('is_destiny_account','=', True),('analytic_account_id','=', False)],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="is_destiny_account" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Conciliar" name="send_expenses" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

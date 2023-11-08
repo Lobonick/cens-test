@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_journal_form_inherit_letter" model="ir.ui.view">
+            <field name="name">account.journal.form.inherit.letter</field>
+            <field name="model">account.journal</field>
+            <field name="priority">150</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//notebook//page[@name='bank_account']//group[1]//group[1]//field[@name='default_account_id'][3]" position="attributes">
+                    <attribute name="attrs">{ 'invisible': [('type', '!=', 'sale')]}</attribute>
+                </xpath>
+                <xpath expr="//notebook//page[@name='bank_account']//group[1]//group[1]//field[@name='default_account_id'][4]" position="attributes">
+                    <attribute name="attrs">{ 'invisible': [('type', '!=', 'purchase')]}</attribute>
+                </xpath>-->
+                <!-- ############## POLIMASTER ################ -->
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="responsibility_account_id" attrs="{'invisible': [('type','!=','bank')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="letter_type" attrs="{'invisible': [('type','not in',('sale','purchase'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='bank_statements_source']" position="after">
+                    <field name="bank_partner_id" attrs="{'invisible': [('type','!=','bank')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+
+.div_docs {
+    width: 100% !important;
+    height: auto !important;
+    overflow: auto;
+    display: block;
+}
+
+.tree_docs {
+    width: 150% !important;
+    display: block;
+    overflow: hidden;
+}

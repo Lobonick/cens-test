@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets_backend" name="letter_management assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css"
+                  href="/qa_letter_management/static/src/css/letters_management_css.css"/>
+        </xpath>
+    </template>
+</odoo>
