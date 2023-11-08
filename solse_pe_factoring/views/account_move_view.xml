@@ -3,12 +3,29 @@
 
 
 	<record id="invoice_view_form" model="ir.ui.view">
-		<field name="name">account_move_peruvian_inherit_form</field>
+		<field name="name">account_move_factoring_inherit_form</field>
 		<field name="model">account.move</field>
 		<field name="inherit_id" ref="account.view_move_form" />
 		<field name="arch" type="xml">
 			<xpath expr="//field[@name='l10n_latam_document_type_id']" position="after">
-				<field name="con_factoring" />
+				<field name="es_x_factoring" invisible="1"/>
+				<field name="pagar_con" string="Cobrar con" attrs="{'invisible': [('es_x_factoring', '=', False)]}"/>
+			</xpath>
+
+			<xpath expr="//header[1]" position="inside">
+				<button type="object" name="pagar_factoring" string="Pagar Factoring" attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'),('es_x_factoring', '=', False), ('asiento_factoring_cancelacion', '!=', False)]}" />
+				<button type="object" name="cobrar_garantia" string="Cobrar Garantia" attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'),('es_x_factoring', '=', False), ('asiento_factoring_garantia', '!=', False)]}" />
+			</xpath>
+
+			<xpath expr="//page[2]" position="after">
+				<page name="Asientos Factoring" attrs="{'invisible': [('es_x_factoring', '=', False)]}">
+					<group>
+						<group>
+							<field name="asiento_factoring_cancelacion" />
+							<field name="asiento_factoring_garantia" />
+						</group>
+					</group>
+				</page>
 			</xpath>
 		</field>
 	</record>

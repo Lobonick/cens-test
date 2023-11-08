@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+	<record model="ir.ui.view" id="view_partner_form">
+		<field name="name">res.partner.view.form.inherit.factoring</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="l10n_latam_base.view_partner_latam_form" />
+		<field name="arch" type="xml">
+
+			<xpath expr="//page[@name='sales_purchases']" position="after">
+				<page name="factoring" string="Factoring" attrs="{'invisible': [('is_company','=',False)]}">
+					<group name="container_factoring">
+						<group string="Información Factoring">
+							<field name="es_emp_factoring" />
+							<field name="porc_garantia_factoring" attrs="{'invisible': [('es_emp_factoring', '=', False)], 'required': [('es_emp_factoring', '=', True)]}" />
+							<field name="porc_cobro_factoring" attrs="{'invisible': [('es_emp_factoring', '=', False)], 'required': [('es_emp_factoring', '=', True)]}"/>
+						</group>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+
+
+</odoo>

@@ -2,25 +2,56 @@
 <odoo>
 <data>
 
-    <record id="res_config_settings_view_form" model="ir.ui.view">
-        <field name="name">solse.account.config.settings.view.form</field>
-        <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@id='default_detraccion'][1]"  position="inside">
-                <div class="o_setting_right_pane">
-                <span class="o_form_label">Cuenta para Factoring</span>
-                <div class="text-muted">
-                    Cuenta para factoring
-                </div>
-                <div class="text-muted">
-                    <field name="cuenta_factoring"/>
-                </div>
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+		<field name="name">solse.account.config.settings.view.form</field>
+		<field name="model">res.config.settings</field>
+		<field name="inherit_id" ref="account.res_config_settings_view_form"/>
+		<field name="arch" type="xml">
 
-            </div>
-            </xpath>
-        </field>
-    </record>
+			<xpath expr="//div[@id='analytic']"  position="after">
+				<h2>Configuración Factoring</h2>
+				<div class="row mt16 o_settings_container" id="pe_account">
+					<div class="col-12 col-lg-6 o_setting_box" id="default_detraccion">
+						<div class="o_setting_left_pane"/>
+						<div class="o_setting_right_pane">
+							<span class="o_form_label">Cuenta para Factoring (Asignar)</span>
+							<div class="text-muted">
+								Cuenta para factoring (asignar)
+							</div>
+							<div class="text-muted">
+								<field name="cuenta_factoring"/>
+							</div>
+						</div>
+						<div class="o_setting_right_pane">
+							<span class="o_form_label">Cuenta para Factoring (Garantia)</span>
+							<div class="text-muted">
+								Cuenta de factoring por defecto (garantia)
+							</div>
+							<div class="text-muted">
+								<field name="cuenta_factoring_garantia"/>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-12 col-lg-6 o_setting_box" id="default_detraccion">
+						<div class="o_setting_left_pane"/>
+						<div class="o_setting_right_pane">
+							<span class="o_form_label">Cuenta para Factoring (Gastos)</span>
+							<div class="text-muted">
+								Cuenta de factoring por defecto (gastos)
+							</div>
+							<div class="text-muted">
+								<field name="cuenta_factoring_gastos"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</xpath>
+
+		</field>
+	</record>
 
 </data>
 </odoo>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="view_account_payment_register_form" model="ir.ui.view">
         <field name="name">account.payment.register.form</field>
         <field name="model">account.payment.register</field>
@@ -7,9 +8,13 @@
         <field name="arch" type="xml"> 
             <xpath expr="//field[@name='communication']" position="after">
                 <field name="con_factoring"/>
+                <field name="empresa_factoring" attrs="{'invisible': [('con_factoring', '=', False)], 'required': [('con_factoring', '=', True)]}" domain="[('es_emp_factoring', '=', True)]"/>
+            </xpath>
+
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', '|', ('con_factoring', '=', True), ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>
    
-
 </odoo>

@@ -12,203 +12,162 @@ class AccountPaymentRegister(models.TransientModel):
 	_inherit = 'account.payment.register'
 
 	con_factoring = fields.Boolean("Pagado con Factoring")
+	empresa_factoring = fields.Many2one("res.partner", string="Empresa Factoring")
 
-	def _create_payments(self):
-		self.ensure_one()
-		cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
-		cuenta_det_id = int(cuenta_det_id)
+	def obtener_lineas_pago(self, env, factura, pago):
+		lineas_pagar = []
+		for move in factura:
+			move.invoice_outstanding_credits_debits_widget = False
+			move.invoice_has_outstanding = False
 
-		cuenta_ret_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_retenciones')
-		cuenta_ret_id = int(cuenta_ret_id)
+			if move.state != 'posted' \
+					or move.payment_state not in ('not_paid', 'partial') \
+					or not move.is_invoice(include_receipts=True):
 
-		cuenta_factoring = self.env['ir.config_parameter'].sudo().get_param('solse_pe_factoring.default_cuenta_factoring')
-		cuenta_factoring = int(cuenta_factoring or 0)
+				continue
 
-		batches = self._get_batches()
-		batch_result = batches[0]
-		factura = self.line_ids[0].move_id
+			pay_term_lines = move.line_ids\
+				.filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
 
-		if factura.move_type == 'out_invoice':
-			cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
-			cuenta_det_id = int(cuenta_det_id)
+			domain = [
+				('account_id', 'in', pay_term_lines.account_id.ids),
+				('parent_state', '=', 'posted'),
+				('partner_id', '=', move.commercial_partner_id.id),
+				('reconciled', '=', False),
+				'|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
+			]
 
-		if self.tipo == 'detraccion':
-			if factura.pago_detraccion:
-				raise UserError('Ya existe un pago por detracción')
-			for lot in batches:
-				payment_values = lot['payment_values']
-				if payment_values['account_id'] == cuenta_det_id:
-					batch_result = lot
-					break
+			payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
 
-		elif self.tipo == 'retencion':
-			if factura.pago_detraccion:
-				raise UserError('Ya existe un pago por detracción')
-			for lot in batches:
-				payment_values = lot['payment_values']
-				if payment_values['account_id'] == cuenta_ret_id:
-					batch_result = lot
-					break
+			if move.is_inbound():
+				domain.append(('balance', '<', 0.0))
+				payments_widget_vals['title'] = _('Outstanding credits')
+			else:
+				domain.append(('balance', '>', 0.0))
+				payments_widget_vals['title'] = _('Outstanding debits')
 
-		elif self.con_factoring:
-			factura.con_factoring = True
-			for lot in batches:
-				payment_values = lot['payment_values']
-				if payment_values['account_id'] == cuenta_factoring:
-					batch_result = lot
-					break
+			lineas_recorrer = env['account.move.line'].sudo().search(domain)
+			#return []
 
-		else:
-			for lot in batches:
-				payment_values = lot['payment_values']
-				if payment_values['account_id'] != cuenta_det_id:
-					batch_result = lot
-					break
+			for line in lineas_recorrer:
 
-		edit_mode = self.can_edit_wizard and (len(batch_result['lines']) == 1 or self.group_payment)
-		to_process = []
+				if line.currency_id == move.currency_id:
+					# Same foreign currency.
+					amount = abs(line.amount_residual_currency)
+				else:
+					# Different foreign currencies.
+					amount = line.company_currency_id._convert(
+						abs(line.amount_residual),
+						move.currency_id,
+						move.company_id,
+						line.date,
+					)
 
-		if edit_mode:
-			payment_vals = self._create_payment_vals_from_wizard(batch_result)
-			to_process.append({
-				'create_vals': payment_vals,
-				'to_reconcile': batch_result['lines'],
-				'batch': batch_result,
-			})
-		else:
-			# Don't group payments: Create one batch per move.
-			if not self.group_payment:
-				new_batches = []
-				for batch_result in batches:
-					for line in batch_result['lines']:
-						new_batches.append({
-							**batch_result,
-							'lines': line,
-						})
-				batches = new_batches
+				if move.currency_id.is_zero(amount):
+					continue
 
-			for batch_result in batches:
-				to_process.append({
-					'create_vals': self._create_payment_vals_from_batch(batch_result),
-					'to_reconcile': batch_result['lines'],
-					'batch': batch_result,
-				})
 
-		payments = self._init_payments(to_process, edit_mode=edit_mode)
-		self._post_payments(to_process, edit_mode=edit_mode)
-		self._reconcile_payments(to_process, edit_mode=edit_mode)
+				"""if line.payment_id.id == pago.id:
+					lineas_pagar.append(line)"""
+				if line.name == "Facturas por Cobrar":
+					lineas_pagar.append(line)
 
-		if payments and self.tipo == 'detraccion':
-			factura.pago_detraccion = payments[0].id
+		return lineas_pagar
 
-		return payments
+	def procesar_pago_con_factoring(self):
+		_logging.info("procesar_pago_con_factoring")
 
-	@api.depends('line_ids')
-	def _compute_from_lines(self):
-		''' Load initial values from the account.moves passed through the context. '''
-		cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones_compra')
-		cuenta_det_id = int(cuenta_det_id)
-
-		cuenta_ret_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_retenciones')
-		cuenta_ret_id = int(cuenta_ret_id)
-
-		cuenta_factoring = self.env['ir.config_parameter'].sudo().get_param('solse_pe_factoring.default_cuenta_factoring')
-		cuenta_factoring = int(cuenta_factoring or 0)
+		amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
+		amount_total_signed = abs(amount_total_signed)
+		factura = self.line_ids.move_id[0]
 
 		for wizard in self:
 			batches = wizard._get_batches()
-			factura = self.line_ids[0].move_id
-			if factura.move_type == 'in_invoice':
-				batch_result = batches[0]
-				if self.tipo == 'detraccion':
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] == cuenta_det_id:
-							batch_result = lot
-							break
+			cuentas = []
+			for lot in batches:
+				payment_values = lot['payment_values']
+				cuentas.append(payment_values['account_id'])
 
-				elif self.tipo == 'retencion':
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] == cuenta_ret_id:
-							batch_result = lot
-							break
-				else:
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] != cuenta_det_id:
-							batch_result = lot
-							break
-				
-				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
-				if len(batches) > 1:
-					for indice in range(1, len(batches)):
-						temp = batches[indice]
-						temp = wizard._get_wizard_values_from_batch(temp)
-						wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
-						wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
-				wizard.update(wizard_values_from_batch)
-				wizard.can_edit_wizard = True
-				wizard.can_group_payments = len(batch_result['lines']) != 1
-			elif factura.move_type == 'out_invoice':
-				cuenta_det_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_accountant.default_cuenta_detracciones')
-				cuenta_det_id = int(cuenta_det_id)
-				batch_result = batches[0]
-				if self.tipo == 'detraccion':
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] == cuenta_det_id:
-							batch_result = lot
-							break
-				elif self.con_factoring:
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] == cuenta_factoring:
-							batch_result = lot
-							break
-				else:
-					lote = False
-					for lot in batches:
-						payment_values = lot['payment_values']
-						if payment_values['account_id'] not in [cuenta_det_id, cuenta_ret_id, cuenta_factoring]:
-							batch_result = lot
-							break
-				
-				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
-				if len(batches) > 1:
-					for indice in range(1, len(batches)):
-						temp = batches[indice]
-						temp = wizard._get_wizard_values_from_batch(temp)
-						wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
-						wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
-				wizard.update(wizard_values_from_batch)
-				wizard.can_edit_wizard = True
-				wizard.can_group_payments = len(batch_result['lines']) != 1
-			else:
-				batch_result = batches[0]
-				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
-				if len(batches) == 1:
-					# == Single batch to be mounted on the view ==
-					wizard.update(wizard_values_from_batch)
-					wizard.can_edit_wizard = True
-					wizard.can_group_payments = len(batch_result['lines']) != 1
-				else:
-					# == Multiple batches: The wizard is not editable  ==
-					wizard.update({
-						'company_id': batches[0]['lines'][0].company_id.id,
-						'partner_id': False,
-						'partner_type': False,
-						'payment_type': wizard_values_from_batch['payment_type'],
-						'source_currency_id': False,
-						'source_amount': False,
-						'source_amount_currency': False,
-					})
+			cuentas_cont = self.env['account.account'].search([('id', 'in', cuentas)])
 
-					wizard.can_edit_wizard = False
-					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
+			cuenta_factorign_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_factoring.default_cuenta_factoring')
+			cuenta_factorign_id = int(cuenta_factorign_id)
 
+			cuenta_garantia_id = self.env['ir.config_parameter'].sudo().get_param('solse_pe_factoring.default_cuenta_factoring_garantia')
+			cuenta_garantia_id = int(cuenta_garantia_id)
+
+			porc_garantia = self.empresa_factoring.porc_garantia_factoring
+
+			monto_garantia = amount_total_signed * (porc_garantia / 100)
+			monto_factoring = amount_total_signed - monto_garantia
+
+			
+
+			datos_asiento = {
+				'move_type': 'entry',
+				'ref': 'Asignacion de factoring (%s)' % factura.name,
+				'glosa': 'Asignacion de factoring (%s)' % factura.name,
+				'es_x_factoring': True,
+				'factura_enlazada': factura.id,
+				'empresa_factoring': self.empresa_factoring.id,
+				'line_ids': [
+					(0, None, {
+						'name': 'Factoring',
+						'account_id': cuenta_factorign_id,
+						'debit': monto_factoring,
+						'credit': 0.0,
+						'partner_id': factura.partner_id.id,
+					}),
+					(0, None, {
+						'name': 'Garantia de Factoring',
+						'account_id': cuenta_garantia_id,
+						'debit': monto_garantia,
+						'credit': 0.0,
+						'partner_id': factura.partner_id.id,
+					}),
+					(0, None, {
+						'name': 'Facturas por Cobrar',
+						'account_id': cuentas[0],
+						'debit': 0,
+						'credit': amount_total_signed,
+						'partner_id': factura.partner_id.id,
+					}),
+				]
+			}
+			asiento_factoring = self.env['account.move'].create(datos_asiento)
+			asiento_factoring.action_post()
+			factura.write({'factura_factoring': asiento_factoring.id})
+
+			linea_pago = self.obtener_lineas_pago(self.env, factura, asiento_factoring)
+
+			for linea_pagar in linea_pago:
+				factura.js_assign_outstanding_line(linea_pagar.id)
+
+			
+			return True
+
+	def action_create_payments(self):
+		if self.con_factoring:
+			return self.procesar_pago_con_factoring()
+		payments = self._create_payments()
+
+		if self._context.get('dont_redirect_to_payments'):
+			return True
+
+		action = {
+			'name': _('Payments'),
+			'type': 'ir.actions.act_window',
+			'res_model': 'account.payment',
+			'context': {'create': False},
+		}
+		if len(payments) == 1:
+			action.update({
+				'view_mode': 'form',
+				'res_id': payments.id,
+			})
+		else:
+			action.update({
+				'view_mode': 'tree,form',
+				'domain': [('id', 'in', payments.ids)],
+			})
+		return action

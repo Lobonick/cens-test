@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+	<record id="action_facturas_factoring" model="ir.actions.act_window">
+        <field name="name">Facturas Factoring</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="account.view_in_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('move_type', '=', 'entry'), ('es_x_factoring', '=', True)]</field>
+        <field name="context">{'default_move_type': 'entry'}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Facturas por factoring
+          </p>
+        </field>
+    </record>
+
+
+    <menuitem name="Facturas por Factoring" id="menu_facturas_por_factoring" parent="account.menu_finance_receivables" action="action_facturas_factoring"/>
+
+</data>
+</odoo>
