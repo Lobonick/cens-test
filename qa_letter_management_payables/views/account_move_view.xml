@@ -1,0 +1,17 @@
+<odoo>
+
+    <!-- <record id="account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="priority">53</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_type']" position="after">
+
+                <field name="unique_code"
+                       attrs="{'invisible':[('document_type_code','!=','LT')]}"/>
+            </xpath>
+        </field>
+    </record> -->
+    
+</odoo>

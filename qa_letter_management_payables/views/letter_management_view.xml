@@ -1,0 +1,53 @@
+<odoo>
+
+   <record id="qa_letter_management_form_view_inherit_payables" model="ir.ui.view">
+       <field name="name">qa_letter_management.form.view.inherit</field>
+       <field name="model">letter.management</field>
+       <field name="inherit_id" ref="qa_letter_management.qa_letter_management_form_view"/>
+       <field name="arch" type="xml">
+           <xpath expr="//page[@id='letters_generated_tab']/group/group/div/field[@name='invoice_user_id']"
+                  position="after">
+               <field name="unique_code_supplier" attrs="{'readonly':[('state', 'in', ['posted'])],'invisible':[('exchange_type','not in',['payment'])]}"/>
+           </xpath>
+           <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='name']"
+                  position="after">
+               <field name="l10n_latam_document_number" force_save="1"
+                      attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['payment'])], 'readonly':[('parent.state', 'in', ['posted'])]}"/>
+               <field name="unique_code_supplier" force_save="1"
+                      attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['payment'])], 'readonly':[('parent.state', 'in', ['posted'])]}"/>
+           </xpath>
+       </field>
+   </record>
+
+    <record id="action_qa_letter_management_inherit_payables" model="ir.actions.act_window">
+        <field name="name">Letter Management Payables</field>
+        <field name="res_model">letter.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="qa_letter_management.qa_letter_management_tree_view"/>
+        <field name="search_view_id" ref="qa_letter_management.qa_letter_management_view_search"/>
+        <field name="domain">[('exchange_type', '=', 'payment')]</field>
+        <field name="context">{'default_internal_type':'window', 'default_exchange_type': 'payment', 'search_default_letters_payables':1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a letter template for your suppliers!
+            </p>
+            <p>
+                Check if you have Multicurrencies activated
+            </p>
+        </field>
+    </record>
+
+<!--    <record id="qa_letter_management_view_search_inherit_payables" model="ir.ui.view">-->
+<!--        <field name="name">qa_letter_management.letter.search.inherit</field>-->
+<!--        <field name="model">letter.management</field>-->
+<!--        <field name="inherit_id" ref="qa_letter_management.qa_letter_management_view_search"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//filter[@name='posted']" position="after">-->
+<!--                <filter string="Letters payables" name="letters_payables" invisible="1"-->
+<!--                        domain="[('partner_type','=','supplier')]"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+</odoo>

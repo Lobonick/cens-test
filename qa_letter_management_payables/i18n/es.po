@@ -1,0 +1,24 @@
+#. module: qa_letter_management_payables
+#: model_terms:ir.actions.act_window,help:qa_letter_management_payables.action_qa_letter_management_inherit_payables
+msgid "Create a letter template for your suppliers!"
+msgstr "Crea una plantilla de letras para tus proveedores!"
+
+#. module: qa_letter_management_payables
+#: model_terms:ir.actions.act_window,help:qa_letter_management_payables.action_qa_letter_management_inherit_payables
+msgid "Check if you have Multicurrencies activated"
+msgstr "Verifica si tienes Multimonedas activada"
+
+#. module: qa_letter_management_payables
+#: model:ir.ui.menu,name:qa_letter_management_payables.menu_qa_letter_management_letter_payables
+msgid "Letter Management"
+msgstr "Gestión de letras"
+
+#. module: qa_letter_management_payables
+#: model:ir.actions.act_window,name:qa_letter_management_payables.action_qa_letter_management_inherit_payables
+msgid "Letter Management Payables"
+msgstr "Gestión de letras por Pagar"
+
+#. module: qa_letter_management_payables
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_payables.qa_letter_management_view_search_inherit_payables
+msgid "Letters payables"
+msgstr "Letras por Pagar"

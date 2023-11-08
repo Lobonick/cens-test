@@ -1,0 +1,8 @@
+<odoo>
+    <!--    <menuitem id="letters_menu_root" name="Letter Management" sequence="2"-->
+    <!--              parent="account.menu_finance_configuration"/>-->
+
+    <!--    <menuitem action="action_qa_letter_management_out_invoice" id="menu_qa_letter_management_letter_out"-->
+    <menuitem action="action_qa_letter_management_inherit_payables" id="menu_qa_letter_management_letter_payables"
+              parent="account.menu_finance_payables" sequence="1" groups="account.group_account_user"/>
+</odoo>
