@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solse_caelco_material,access_solse_caelco_material,model_solse_caelco_material,,1,1,1,1
+access_solse_caelco_serie,access_solse_caelco_serie,model_solse_caelco_serie,,1,1,1,1

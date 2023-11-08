@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+	<!-- nueva vista lista lote -->
+	<record id="detalle_vencimiento_facturas_tree" model="ir.ui.view">
+		<field name="name">account.move.line.tree</field>
+		<field name="model">account.move.line</field>
+		<field name="arch" type="xml">
+			<tree create="0" expand="1">
+				<field name="id" invisible="1"/>
+				<field name="move_id" optional="show"/>
+				<field name="partner_id" string="Contacto" optional="show"/>
+				<field name="balance" optional="show"/>
+				<field name="date_maturity" optional="show"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_vencimiento_facturas_search" model="ir.ui.view">
+		<field name="name">account.move.line.search.pdv.view</field>
+		<field name="model">account.move.line</field>
+		<field name="arch" type="xml">
+			<search string="Vencimientos de Cuotas">
+				<field name="product_id" />
+				<field name="move_id" />
+				<field name="partner_id" />
+
+				<group expand="1" string="Group By">
+					<filter string="Producto" name='product_id' context="{'group_by':'product_id'}"/>
+					<filter string="Cliente" name='group_partner_id' context="{'group_by':'partner_id'}"/>
+					<filter string="Comprobante" name='group_move_id' context="{'group_by':'move_id'}"/>
+					<separator orientation="vertical" />
+				</group>
+				
+			</search>
+		</field>
+	</record>
+
+	<record id="detalle_vencimiento_facturas_action_ventas" model="ir.actions.act_window">
+		<field name="name">Vencimiento de Facturas (Ventas)</field>
+		<field name="res_model">account.move.line</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree</field>
+		<field name="view_id" ref="detalle_vencimiento_facturas_tree"/>
+		<field name="search_view_id" ref="view_vencimiento_facturas_search"/>
+		<field name="domain">[('date_maturity', '!=', False), ('tipo_factura', 'in', ['out_invoice']), ('saldo', '!=', 0)]</field>
+		<field name="context">{'search_default_group_partner_id': 1, 'search_default_group_move_id': 1}</field>
+	</record>
+
+	<record id="detalle_vencimiento_facturas_action_compras" model="ir.actions.act_window">
+		<field name="name">Vencimiento de Facturas (Compras)</field>
+		<field name="res_model">account.move.line</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree</field>
+		<field name="view_id" ref="detalle_vencimiento_facturas_tree"/>
+		<field name="search_view_id" ref="view_vencimiento_facturas_search"/>
+		<field name="domain">[('date_maturity', '!=', False), ('tipo_factura', 'in', ['in_invoice']), ('saldo', '!=', 0)]</field>
+		<field name="context">{'search_default_group_partner_id': 1, 'search_default_group_move_id': 1}</field>
+	</record> 
+
+	<menuitem
+		action="detalle_vencimiento_facturas_action_ventas"
+		id="menu_detalle_vencimiento_facturas_venta"
+		name="Vencimiento de Facturas (Venta)"
+		parent="account.menu_finance_reports"  sequence="170"/> 
+
+	<menuitem
+		action="detalle_vencimiento_facturas_action_compras"
+		id="menu_detalle_vencimiento_facturas_compra"
+		name="Vencimiento de Facturas (Compras)"
+		parent="account.menu_finance_reports"  sequence="171"/> 
+
+  </data>
+</odoo>
