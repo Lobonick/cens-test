@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="custom_hr_leave_view_form">
+            <field name="name">hr.leave.view.form.custom</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Re-Code" name="calcula_correlativo" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='holiday_type']" position="before">
+                    <group name="studio_group_bloque1">
+                        <group name="studio_group_bloque1_left">
+                            <field name="x_cens_codiden" string="CÓDIGO:" />
+                        </group>    
+                        <group name="studio_group_bloque1_right"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+<!--
+    <xpath expr="//field[@name='holiday_type']" position="after">
+
+</xpath>
+  <xpath expr="//form[1]/sheet[1]/div[2]/div[1]/group[@name='col_left']/field[@name='employee_ids']" position="attributes">
+    <attribute name="attrs">{"invisible": ["|",["holiday_type","!=","employee"],"&amp;",["state","=","validate"],["employee_id","!=",False]], "readonly": [], "required": [["holiday_type","=","employee"],["state","in",["draft","cancel","refuse"]]]}</attribute>
+  </xpath>
+
+-->
