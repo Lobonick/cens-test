@@ -1,0 +1,119 @@
+<odoo>
+    <data>
+        <record id="account_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="priority">53</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//widget[@name='web_ribbon']" position='after'>
+                    <widget name="web_ribbon" title="Responsibility"
+                            bg_color="bg-warning"
+                            attrs="{'invisible': ['|', ('payment_state', '!=', 'responsibility'), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                </xpath>
+                <xpath expr="//header/button[@name='action_register_payment']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': ['|', '|', ('state', '!=', 'posted'), ('payment_state', 'not in', ('not_paid', 'partial', 'in_redemption','responsibility')), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}
+                    </attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_date']" position="after">
+                    <field name="document_type_code" invisible="1" />
+                    <field name="unique_code"
+                           attrs="{'invisible':['|',('document_type_code','!=','LT'),('letter_state','not in',['collection','discount'])]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='bank_id']" position="after">
+                    <field name="new_bank_id"
+                           attrs="{'readonly':[('state','not in',['draft'])],
+                           'invisible':['|','&amp;',('document_type_code','==','LT'),('letter_state','in',['portfolio','protest']),
+                           '|',('document_type_code','!=','LT'),('move_type','not in',['out_invoice'])]}"/>
+                </xpath>
+                <xpath expr="//field[@name='bank_id']" position="attributes">
+                     <attribute name="attrs">{'readonly':[('state','not in',['draft'])], 'invisible':['|','&amp;',('document_type_code','==','LT'),('letter_state','not in',['portfolio','protest']), '|',('document_type_code','!=','LT'),('move_type','not in',['out_invoice'])]}</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[last()]" position="after">
+                    <page name="renewals_letter_page" string="Renewals"
+                            attrs="{'invisible':['|', ('document_type_code','!=','LT'), ('renewal_ids','=', [])]}">
+                        <field name="renewal_ids" widget="one2many"/>
+                    </page>
+                </xpath>
+
+                <xpath expr="//field[@name='acceptor_id']" position="after">
+                    <field name="origin_id" attrs="{'invisible':['|',('document_type_code','!=','LT'),('origin_id','=', False)]}"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.select.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='to_check']" position="after">
+                   <filter string="Letters in collection" name="letters_collection"
+                            domain="['&amp;',('document_type_code','=','LT'),('letter_state','=','collection')]"/>
+                    <filter string="Letters in discount" name="letters_discount"
+                            domain="['&amp;',('document_type_code','=','LT'),('letter_state','=','discount')]"/>
+                    <filter string="Letters in protest" name="letters_protest"
+                            domain="['&amp;',('document_type_code','=','LT'),('letter_state','=','protest')]"/>
+                    <filter string="Third Party Letters" name="third_party"
+                            domain="['&amp;',('document_type_code','=','LT'),('third_party','=', True)]"/>
+                </xpath>
+                <xpath expr="//group/filter[@name='duedate']" position="after">
+                    <filter string="Tipo de Documento" name="l10n_latam_document_type_id" context="{'group_by':'l10n_latam_document_type_id'}"/>
+                    <filter string="Unique Code" name="unique_code_group" context="{'group_by':'unique_code'}"/>
+                    <filter string="Bank" name="bank" context="{'group_by':'new_bank_id'}"/>
+                </xpath>
+                <xpath expr="/search/field[@name='journal_id']" position="after">
+                    <field name="unique_code"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="account_invoice_tree_inherit_letter_payable" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="qa_letter_management.account_invoice_tree_inherit_letter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_state']" position='attributes'>
+                    <attribute name="decoration-warning">payment_state in ('partial', 'in_payment', 'in_redemption')</attribute>
+                    <attribute name="decoration-danger">payment_state in ('not_paid', 'responsibility')</attribute>
+                </xpath>
+                <xpath expr="//field[@name='new_bank_id']" position='after'>
+                    <field name="unique_code" groups="base.group_user" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="account_invoice_filter_inherit_letter_payable" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='open']" position='attributes'>
+                    <attribute name="domain">[('payment_state', 'in', ('not_paid', 'responsibility')), ('state', '=', 'posted')]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record id="account_invoice_tree_inherit_letter" model="ir.ui.view">
+            <field name="name">account.move.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="priority">50</field>
+            <field name="inherit_id" ref="qa_standard_locations_account.account_move_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='sunat_number']" position="attributes">
+                     <attribute name="readonly">0</attribute>
+                     <attribute name="attrs">{'invisible':['|',('move_type','not in',['out_invoice', 'out_refund','out_receipt']),('state','!=','draft'),('document_type_code','!=','LT')], 'readonly':['|',('state','not in',['draft']),('document_type_code','!=','LT')]}</attribute>
+                </xpath> 
+                <xpath expr="//field[@name='sunat_number_temp']" position="attributes">
+                     <attribute name="readonly">0</attribute>
+                     <attribute name="attrs">{'readonly':['|',('state','not in',['draft']),('document_type_code','!=','LT')]}</attribute>
+                </xpath>
+            </field>
+        </record>-->
+
+    </data>
+</odoo>

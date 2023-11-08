@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_fees_comissions_wizard" model="ir.ui.view">
+            <field name="name">fees.comissions.wizard.form</field>
+            <field name="model">fees.comissions.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Fees and Comissions Wizard">
+                    <group>
+                        <group>
+                            <field name="exchange_date"/>
+                            <field name="user_exchange_rate" invisible="context.get('currency')" groups="base.group_multi_currency"/>
+                            <field name="exchange_rate" force_save="1" invisible="context.get('currency')" attrs="{'readonly': [('user_exchange_rate','=',False)]}" groups="base.group_multi_currency"/>
+                            <field name="bank_interests"/>
+                            <field name="financial_expenses"/>
+                            <field name="_writeoff_account_id" required="1"/>
+                            <field name="analytic_account_id" attrs="{'required': [('is_destiny_account','=', True),('analytic_tag_ids','=', [])],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" attrs="{'required': [('is_destiny_account','=', True),('analytic_account_id','=', False)],'invisible': [('is_destiny_account', '=', False)]}"/>
+                            <field name="is_destiny_account" invisible="1"/>
+                        </group>
+                        <group>
+                            <!-- <field name="total_discount_manual"/>
+                            <field name="total_discount_real" attrs="{'invisible': [('total_discount_manual','=', False)], 'required': [('total_discount_manual','=', True)]}"/> -->
+                            <field name="claim"/>
+                            <field name="claim_journal_id" attrs="{'invisible':[('claim','=', False)], 'required': [('claim','=', True)]}"/>
+                            <field name="claim_account_id" attrs="{'invisible':[('claim','=', False)], 'required': [('claim','=', True)]}" domain="[('deprecated','=',False)]"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Process" name="send_expenses" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

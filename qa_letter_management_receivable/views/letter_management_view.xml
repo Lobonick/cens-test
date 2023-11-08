@@ -1,0 +1,394 @@
+<odoo>
+
+    <!--    Form-->
+
+    <record id="qa_letter_management_form_view_inherit_receivables" model="ir.ui.view">
+        <field name="name">qa_letter_management.form.view.inherit</field>
+        <field name="model">letter.management</field>
+        <field name="inherit_id" ref="qa_letter_management.qa_letter_management_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header//button[@name='generate_letters']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible':['|','|',('letters_is_created','=',True),('operation_methods','in',['collection','discount']),('state','in',['posted'])]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//header//button[@name='btn_generate_debit_note']" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('operation_methods','not in',['portfolio','renewal','refinancing']),'|',('is_debit','=',True),'|',('generate_interest','=',False),('is_debit_generated','=',True)]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//header//button[@name='generate_letters']" position="after">
+                <button name="create_send" string="Create Send" type="object"
+                        icon="fa-plus-circle" invisible="context.get('is_modal')"
+                        attrs="{'invisible': ['|','|',('letters_is_created','=',True),('operation_methods','not in',['collection','discount']),('state','in',['posted'])]}"/>
+            </xpath>
+            <!--### FORM -->
+
+            <xpath expr="//form/sheet/widget[last()]" position="after">
+                <widget name="web_ribbon" title="In collection"
+                        attrs="{'invisible':['&amp;',('is_collection','!=',True),'|',('operation_methods','not in',['collection']),('operation_methods','in',['collection'])]}"/>
+                <widget name="web_ribbon" title="Renewed"
+                        attrs="{'invisible':['&amp;',('is_renewal','!=',True),'|',('operation_methods','not in',['renewal']),('operation_methods','in',['renewal'])]}"/>
+                <widget name="web_ribbon" title="Discount"
+                        attrs="{'invisible':['&amp;',('is_discount','!=',True),'|',('operation_methods','not in',['discount']),('operation_methods','in',['discount'])]}"/>
+                <widget name="web_ribbon" title="Refinanced"
+                        attrs="{'invisible':['&amp;',('is_refinanced','!=',True),'|',('operation_methods','not in',['refinancing']),('operation_methods','in',['refinancing'])]}"/>
+                <widget name="web_ribbon" title="Protested"
+                        bg_color="bg-danger"
+                        attrs="{'invisible':['&amp;',('is_protest','!=',True),'|',('operation_methods','not in',['protest']),('operation_methods','in',['protest'])]}"/>
+                <widget name="web_ribbon" title="Returned"
+                        attrs="{'invisible':['&amp;',('is_return','!=',True),'|',('operation_methods','not in',['return']),('operation_methods','in',['return'])]}"/>
+                <!--                -->
+            </xpath>
+
+            <!--Group Left-->
+
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='city']" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('exchange_type','not in',['collection']),('operation_methods','not in',['portfolio'])],
+                    'readonly':[('state','not in',['draft'])]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'invisible':['&amp;',('operation_methods','not in',['portfolio','renewal','refinancing']),('is_same_partner','!=',True)],
+                    'readonly':[('is_same_partner','=',True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='endorsement']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible':[('operation_methods','not in',['portfolio'])],
+                    'readonly':[('state','not in',['draft'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='bank_id']" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('exchange_type', 'not in', ['collection']),('operation_methods','not in',['portfolio','refinancing'])],
+                    'readonly':[('letters_is_created','=',True)]}
+                </attribute>
+            </xpath>
+<!--            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='bank_acc_number_id']"-->
+<!--                   position="attributes">-->
+<!--                <attribute name="attrs">{'invisible':['|',('exchange_type', 'not in', ['collection']),('operation_methods','not in',['portfolio','refinancing'])],-->
+<!--                    'readonly':[('letters_is_created','=',True)]}-->
+<!--                </attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='bank_acc_number_id']" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('exchange_type', 'not in', ['collection']),('operation_methods','not in',['portfolio','refinancing'])],
+                    'readonly':['|','&amp;',('operation_methods','in',['portfolio','renewal','refinancing']),('bank_id','=',False),('letters_is_created','=',True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='office_name']" position="attributes">
+                <attribute name="attrs">{'invisible':['|',('exchange_type', 'not in', ['collection']),('operation_methods','not in',['portfolio','refinancing'])],
+                    'readonly':[('letters_is_created','=',True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']/group/group/field[@name='letter_number']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible':[('operation_methods','not in',['portfolio','refinancing'])],
+                    'readonly':[('letters_is_created','=',True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']/group/group/field[@name='days_range']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible':[('operation_methods','not in',['portfolio','refinancing'])],
+                    'readonly':[('letters_is_created','=',True)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']/group//group/field[@name='all_amount_interest']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible':[('operation_methods','not in',['portfolio','renewal','refinancing'])]}
+                </attribute>
+            </xpath>
+           <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='exchange_type']" position="attributes">
+                <attribute name="attrs">{'readonly':['|',('letter_det_ids','>','0'),('operation_methods','not in',['portfolio'])]}
+                </attribute>
+            </xpath>
+
+
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='exchange_type']" position="after">
+                <field name="type_collection"
+                       attrs="{'readonly':['|',('letters_is_created','=',True),('state','in',['posted'])],'invisible':[('operation_methods','not in',['collection'])]}" widget="radio"/>
+            </xpath>
+
+
+            <xpath expr="//form/sheet/group/group[@name='left_column']/h7[@id='lot_creation']/span[@id='date_portfolio']" position="after">
+                <span id="lot_creation_date" attrs="{'invisible':[('operation_methods','in',['portfolio', 'renewal'])]}">Fecha de creación de Lote</span>
+                <span id="renewal_date" attrs="{'invisible':[('operation_methods','not in',['renewal'])]}">Fecha de Renovación</span>
+            </xpath>
+
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='bank_id']" position="after">
+                <field name="new_bank_id"
+                       attrs="{'readonly':[('letters_is_created','=',True)], 'invisible':[('operation_methods','not in',['collection','discount'])]}"/>
+            </xpath>
+
+            <!--<xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='another_journal_id']" position="before">
+                <field name="letters_serie_id" force_save="1" domain="[('document_type_code','=','LT')]" invisible="1"
+                                   attrs="{'readonly':[('letters_is_created','=',True)]}"/>
+            </xpath>-->
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='office_name']" position="after">
+                <field name="add_financial_expenses"
+                       attrs="{'invisible':['|',('is_state_discount','!=',True),('operation_methods', 'not in', ['discount','return','protest'])], 'readonly':['|','&amp;',('is_state_discount','=',True),('operation_methods','in', ['discount']),('state','in',['posted'])]}"/>
+
+            </xpath>
+            <xpath expr="//form/sheet/group/group[@name='left_column']/field[@name='is_exchanged']" position="after">
+                <field name="is_state_discount" readonly="1" invisible="1"/>
+                <field name="is_collection" readonly="1" invisible="1"/>
+                <field name="is_discount" readonly="1" invisible="1"/>
+                <field name="is_renewal" readonly="1" invisible="1"/>
+                <field name="is_refinanced" readonly="1" invisible="1"/>
+                <field name="is_protest" readonly="1" invisible="1"/>
+                <field name="is_return" readonly="1" invisible="1"/>
+
+            </xpath>
+
+            <!--Group Right-->
+
+            <xpath expr="//form/sheet/group/group[@name='right_column']/field[@name='journal_debit_note_id']"
+                   position="before">
+                <field name="commentary"
+                       attrs="{'invisible':[('operation_methods','in',['portfolio'])],'readonly':[('state','not in',['draft'])]}"/>
+            </xpath>
+
+            <xpath expr="//form/sheet/group/group[@name='right_column']/field[@name='journal_debit_note_id']"
+                   position="after">
+                <field name="reason_cancellation"
+                       attrs="{'invisible':[('operation_methods','not in',['return'])],'readonly':[('state','not in',['draft'])]}"/>
+                <field name="percentage_discount"
+                       attrs="{'invisible':[('operation_methods', 'not in', ['discount'])],
+                                   'readonly':[('state','not in',['draft'])]}"/>
+            </xpath>
+            <xpath expr="//field[@name='generate_interest']" position="attributes">
+                <attribute name="attrs">{'invisible':[('operation_methods','not in',['portfolio','renewal','refinancing'])],
+                    'readonly':[('state','not in',['draft'])]}
+                </attribute>
+            </xpath>
+
+
+            <!--TAB DOCS RECEIVABLE-->
+<!--            TREE-->
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']" position="attributes">
+                <attribute name="attrs">{'readonly':['|','&amp;',('partner_id','=',False),('operation_methods','in',['portfolio','renewal','refinancing']),'|',('is_debit_generated','=',True),('state','not in',['draft'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']/tree/field[@name='partner_id']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':['|','&amp;',('parent.is_same_partner','=',True),('parent.operation_methods','in',['portfolio','renewal','refinancing']),'&amp;',('move_id','!=',False),('parent.operation_methods','not in',['portfolio','renewal','refinancing'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']/tree/field[@name='document_type_id']"
+                   position="attributes">
+                <attribute name="attrs">
+                    {'readonly':['|',('move_id','!=',False),('parent.operation_methods','in',['collection','discount','protest','return'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']/tree/field[@name='document_type_id']"
+                   position="after">
+                <field name="letter_state" force_save="1"
+                       attrs="{'readonly':['|','&amp;',('document_type_code','!=','LT'),('parent.operation_methods','in',['portfolio','renewal','refinancing']),'|',('move_id','!=',False),('parent.operation_methods','not in',['portfolio','renewal','refinancing'])],'required':[('document_type_code','=','LT')],'column_invisible':[('parent.operation_methods', 'in', ['portfolio'])]}"/>
+            </xpath>
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']/tree/field[@name='move_id']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':['|','&amp;',('document_type_code','=','LT'),('parent.operation_methods','in',['portfolio']),'|','&amp;',('document_type_code','=','LT'),('letter_state','=',False),('move_id','!=',False)]}</attribute>
+            </xpath>
+            <xpath expr="//page[@id='docs_receivable_tab']//div/field[@name='letter_det_ids']/tree/field[@name='amount_payable']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':['|','&amp;',('parent.state','in',['draft','in_process','posted']),('parent.operation_methods', 'not in', ['portfolio']),'&amp;',('parent.state','not in',['draft']),('parent.operation_methods', 'in', ['portfolio'])]}
+                </attribute>
+            </xpath>
+            <!--TAB DEBIT NOTES-->
+            <!--TAB PAYMENT ENTRY-->
+            <!--TAB LETTERS GENERATED-->
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']/group/group/div/field[@name='invoice_user_id']" position="after">
+                <field name="unique_code" force_save="1"
+                       attrs="{'readonly':[('state','not in',['in_process'])],'invisible':[('operation_methods', 'not in', ['collection','discount'])]}"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']/group//group/field[@name='all_amount_interest']" position="after">
+                <field name="total_discount_all_letters" readonly="1" widget="monetary" attrs="{'invisible':[('operation_methods','not in',['discount'])]}"/>
+            </xpath>
+<!--            TREE-->
+             <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='name']" position="after">
+                <field name="field_invisible" invisible="1"/>
+                <field name="l10n_latam_document_number" invisible="1" string="Document number" attrs="{'column_invisible':[('parent.exchange_type', 'not in', ['collection'])], 'readonly': [('field_invisible','=',True)]}"/>
+                <field name="unique_code" force_save="1"
+                   attrs="{'column_invisible':[('parent.operation_methods', 'not in', ['collection','discount'])], 'readonly':[('parent.state','in',['posted'])]}"/>
+            </xpath>
+
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='how_days_expires']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':['|',('document_type_code','=','08'),('state','not in',['draft'])],
+                    'column_invisible':[('parent.operation_methods', 'not in', ['renewal','portfolio','refinancing'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='send_date']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':[('state','in',['posted'])],
+                    'column_invisible':['|',('parent.exchange_type', 'not in', ['collection']),('parent.operation_methods', 'not in', ['collection','portfolio','discount','refinancing'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='acceptance_date']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':[('state','in',['posted'])],
+                    'column_invisible':['|',('parent.exchange_type', 'not in', ['collection']),('parent.operation_methods', 'not in', ['collection','portfolio','discount','refinancing'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='amount_letter']"
+                   position="attributes">
+                <attribute name="attrs">{'column_invisible':[('parent.operation_methods', 'not in', ['discount'])]}</attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='amount_letter']"
+                   position="after">
+                 <field name="amount_discount"
+                        attrs="{'readonly':[('state','not in',['draft'])],'column_invisible':[('parent.operation_methods', 'not in', ['discount'])]}"
+                        widget="monetary"/>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='letter_amount']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':['|',('parent.operation_methods','not in',['portfolio','refinancing','renewal']),('parent.state','not in',['draft','in_process'])]}</attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/field[@name='amount_total']"
+                   position="attributes">
+                <attribute name="attrs">{'column_invisible':[('parent.operation_methods', 'in',['discount','renewal'])]}</attribute>
+            </xpath>
+            <xpath expr="//page[@id='letters_generated_tab']/div/field[@name='list_letters_ids']/tree/button[@name='download_file_letter']"
+                   position="attributes">
+                <attribute name="attrs">{'invisible':[('parent.operation_methods','not in',['portfolio','refinancing'])]}</attribute>
+            </xpath>
+
+            <!--TAB FINANCIAL EXPENSES-->
+            <xpath expr="//form/sheet/notebook/page[@id='letters_generated_tab']" position="after">
+                <page id="financial_expenses_tab" string="Financial expenses"
+                      attrs="{'invisible':[('add_financial_expenses','!=',True)],'readonly':[('state','in',['posted'])]}">
+                    <group>
+                        <group>
+                            <field name="total_discount_all_letters" string="Financial expenses"
+                                widget="monetary"
+                                attrs="{'required':['&amp;',('add_financial_expenses','=',True),('state','in',['in_process'])],'readonly':['|',('state','in',['posted']),('operation_methods','not in',['return','protest'])]}"/>
+
+                            <field name="disbursement_date"
+                                attrs="{'required':[('add_financial_expenses','=',True)],'readonly':[('state','in',['posted'])]}"/>
+
+                            <field name="journal_id_type_bank_id"
+                                attrs="{'required':[('add_financial_expenses','=',True)],'readonly':[('state','in',['posted'])]}"
+                                domain="[('responsibility_account_id','!=',False)]"/>
+
+                            <field name="loans_type_id"
+                                attrs="{'required':['&amp;',('operation_methods','in',['return','protest']),'&amp;',('state','in',['in_process']),('add_financial_expenses','=',True)],'readonly':[('state','in',['posted'])],'invisible':[('operation_methods','not in',['return','protest'])]}"/>
+
+                            <field name="_writeoff_account_id"
+                                attrs="{'required':['&amp;','&amp;',('add_financial_expenses','=',True),('total_discount_all_letters','!=',0),('complete_disbursement','=', False)],'readonly':[('state','in',['posted'])], 'invisible':[('complete_disbursement','=', True)]}"
+                                domain="[('deprecated','=',False)]"/>
+                            <field name="analytic_account_id"
+                                attrs="{'readonly':[('state','in',['posted'])], 'required': [('_writeoff_account_id','!=', False),('complete_disbursement','=', False)], 'invisible':[('complete_disbursement','=', True)]}"/>
+
+                            <!--<field name="analytic_tag_ids" widget="many2many_tags" required="0"
+                                attrs="{'readonly':[('state','in',['posted'])], 'invisible':[('complete_disbursement','=', True)]}"/>-->
+
+                            <field name="journal_id" readonly="1" invisible="1"/>
+
+                            <field name="total_discount_manual" attrs="{'readonly':[('state','in',['posted'])], 'invisible':[('complete_disbursement','=', True)]}"/>
+                            <field name="total_discount_real" attrs="{'invisible': ['|',('complete_disbursement','=', True),('total_discount_manual','=', False)], 'readonly':[('state','in',['posted'])], 'required': [('total_discount_manual','=', True)]}"/>
+                            <field name="claim" attrs="{'invisible': ['|',('complete_disbursement','=', True),('total_discount_manual','=', False)], 'readonly':[('state','in',['posted'])]}"/>
+                            <field name="claim_journal_id" attrs="{'invisible':['|','|',('complete_disbursement','=', True),('claim','=', False),('total_discount_manual','=', False)], 'readonly':[('state','in',['posted'])], 'required': [('claim','=', True)]}"/>
+                            <field name="claim_account_id" attrs="{'invisible':['|','|',('complete_disbursement','=', True),('claim','=', False),('total_discount_manual','=', False)], 'readonly':[('state','in',['posted'])], 'required': [('claim','=', True)]}" domain="[('deprecated','=',False)]"/>
+                        </group>
+                        <group>
+                            <field name="complete_disbursement" attrs="{'readonly':[('state','in',['posted'])]}"/>
+                            <button name="fees_comissions" string="Fees and Comissions" type="object"
+                                icon="fa-plus-circle"
+                                attrs="{'invisible': ['|','|',('state','in',['draft','in_process','cancel']),('complete_disbursement','=',False),('fees_comissions_id','!=',False)]}"/>
+                            <button name="delete_fees_comissions" string="Delete Fees and Comissions" type="object"
+                                icon="fa-times-circle-o"
+                                attrs="{'invisible': ['|','|',('state','in',['draft','in_process','cancel']),('complete_disbursement','=',False),('fees_comissions_id','=',False)]}"/>
+                            <field name="move_expenses_id" readonly="1" attrs="{'invisible':[('move_expenses_id','=', False)]}"/>
+                            <field name="move_claim_expenses_id" readonly="1" attrs="{'invisible':[('move_claim_expenses_id','=', False)]}"/>
+                            <field name="fees_comissions_id" readonly="1" attrs="{'invisible':[('fees_comissions_id','=', False)]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="action_qa_letter_management_inherit_receivables" model="ir.actions.act_window">
+        <field name="name">Letter Management Receivables</field>
+        <field name="res_model">letter.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="qa_letter_management.qa_letter_management_tree_view"/>
+<!--        <field name="search_view_id" ref="qa_letter_management.qa_letter_management_view_search"/>-->
+        <field name="context">{'default_internal_type':'window','default_exchange_type':'collection', 'search_default_letters_receivables':1}</field>
+        <field name="domain">[('exchange_type', '=', 'collection')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a letter template for your customers!
+            </p>
+            <p>
+                Check if you have Multicurrencies activated
+            </p>
+        </field>
+    </record>
+
+<!--    <record id="qa_letter_management_view_search_inherit_receivables" model="ir.ui.view">-->
+<!--        <field name="name">qa_letter_management.letter.search.inherit</field>-->
+<!--        <field name="model">letter.management</field>-->
+<!--        <field name="inherit_id" ref="qa_letter_management.qa_letter_management_view_search"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//filter[@name='posted']" position="after">-->
+<!--                <filter string="Letters receivables" name="letters_receivables"-->
+<!--                        invisible="1" domain="[('partner_type','=','customer')]"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <act_window id="action_emerg_letter_collection"
+                name="Send to Bank -> Collection"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'collection', 'is_modal':True}"
+    />
+    <act_window id="action_emerg_letter_discount"
+                name="Send to Bank -> Discount"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'discount', 'is_modal':True}"
+    />
+    <act_window id="action_emerg_letter_renewal"
+                name="Renew letter"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'renewal', 'is_modal':True}"
+    />
+    <!--                view_id="qa_letter_management_form_view"-->
+    <act_window id="action_emerg_letter_refinancing"
+                name="Refinance letters"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'refinancing', 'is_modal':True}"
+    />
+    <act_window id="action_emerg_letter_protest"
+                name="Protest letters"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'protest', 'is_modal':True}"
+    />
+    <act_window id="action_emerg_letter_return"
+                name="Return letters"
+                res_model="letter.management"
+                binding_model="account.move"
+                view_mode="form"
+                target="new"
+                context="{'default_internal_type':'wizard', 'default_operation_methods':'return', 'is_modal':True}"
+    />
+
+</odoo>

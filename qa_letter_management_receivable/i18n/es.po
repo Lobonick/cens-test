@@ -1,0 +1,948 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* qa_letter_management_receivable
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-02 18:48+0000\n"
+"PO-Revision-Date: 2022-07-02 18:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/account_payment_register.py:0
+#: code:addons/qa_letter_management_receivable/models/account_payment_register.py:0
+#, python-format
+msgid " Only responsibility"
+msgstr " Solo responsabilidad"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__percentage_discount
+msgid "% Discount"
+msgstr "% Descuento"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid ""
+"<span id=\"lot_creation_date\" attrs=\"{'invisible':[('operation_methods','in',['portfolio', 'renewal'])]}\">Fecha de creación de Lote</span>\n"
+"                <span id=\"renewal_date\" attrs=\"{'invisible':[('operation_methods','not in',['renewal'])]}\">Fecha de Renovación</span>"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Acceptance date is missing"
+msgstr "Falta la fecha de aceptación"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_advance_multi_payment
+msgid "Advance Multi Payment"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__total_discount_all_letters
+msgid "Amount Total Discount"
+msgstr "Monto total de descuento"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "An amount has not been assigned in the Financial expenses field"
+msgstr "No se ha ingresado un importe en el campo Gastos Financieros"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__analytic_tag_ids
+msgid "Analytic Tags"
+msgstr "Etiquetas Analíticas"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__analytic_account_id
+msgid "Analytical Account"
+msgstr "Cuenta Analítica"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__journal_id_type_bank_id
+msgid "Bank"
+msgstr "Banco"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__add_financial_expenses
+msgid "Banking expenses"
+msgstr "Gastos Bancarios"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Can't %s letters in %s state"
+msgstr "No se puede %s letras en estado %s"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/account_move.py:0
+#: code:addons/qa_letter_management_receivable/models/account_move.py:0
+#, python-format
+msgid "Can't pay letters from diferent banks at once."
+msgstr "No se puede pagar letras de diferentes bancos."
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/account_move.py:0
+#: code:addons/qa_letter_management_receivable/models/account_move.py:0
+#, python-format
+msgid ""
+"Can't unreconcile this payment because it's a letter discount payment. "
+"Please try to cancel the payment move first."
+msgstr ""
+"No se puede romper la conciliación porque es un pago de letra en descuento. "
+"Por favor primero cancele el pago y el asiento."
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Cannot find a product for the generation of documents, You should configure "
+"it. Press the button to go to your company settings."
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.actions.act_window,help:qa_letter_management_receivable.action_qa_letter_management_inherit_receivables
+msgid "Check if you have Multicurrencies activated"
+msgstr "Verifica si tienes Multimonedas activada"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Choose a Bank-type Journal"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Choose a Loans Account"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Choose an accounting account of type Expenses"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__claim
+msgid "Claim"
+msgstr "Reclamo"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__claim_account_id
+msgid "Claim Account"
+msgstr "Cuenta de Reclamo"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__move_claim_expenses_id
+msgid "Claim Expenses Entry"
+msgstr "Asiento de Reclamo"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__claim_journal_id
+msgid "Claim Journal"
+msgstr "Diario de Reclamo"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Collection"
+msgstr "Cobranza"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__commentary
+msgid "Commentary"
+msgstr "Comentario"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__complete_disbursement
+msgid "Complete disbursement"
+msgstr "Desembolso completo"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Create Send"
+msgstr "Crear envío"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.actions.act_window,help:qa_letter_management_receivable.action_qa_letter_management_inherit_receivables
+msgid "Create a letter template for your customers!"
+msgstr "Crea una plantilla de letras para tus clientes!"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Date due is missing"
+msgstr "Falta la fecha de vencimiento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management___writeoff_account_id
+msgid "Difference Account"
+msgstr "Cuenta de Gastos"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Disbursement "
+msgstr "Desembolso"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__move_expenses_id
+msgid "Disbursement and Expenses Entry"
+msgstr "Asiento de Desembolso y Gastos"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_bank_statement_line__amount_discount
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__amount_discount
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__amount_discount
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+#, python-format
+msgid "Discount"
+msgstr "Descuento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__total_discount_manual
+msgid "Discount Manual"
+msgstr "Descuento Manual"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__total_discount_real
+msgid "Discount Real"
+msgstr "Descuento Real"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment_register__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_update__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_advance_multi_payment__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management_det__display_name
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company__display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Document number"
+msgstr "Numero de documento"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Elige primero el Tipo de Canje"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Exchange"
+msgstr "Cambio"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Financial expenses"
+msgstr "Gastos Financieros"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "For this operation, select those that have the same partner"
+msgstr "Para esta operación, seleccione aquellos que tengan el mismo socio"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "For this process, just select letters with the same letter status"
+msgstr "Para este proceso, solo seleccione letras con el mismo estado"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management__type_collection__free
+msgid "Free collection"
+msgstr "Cobranza libre"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Go to my company settings"
+msgstr "Ir a ajustes de companía"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_account_update
+msgid "Homologación de Cuentas"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment_register__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_update__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_advance_multi_payment__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management_det__id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company__id
+msgid "ID"
+msgstr "Identificación"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management_det__letter_state__collection
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "In collection"
+msgstr "En Cobranza"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management_det__letter_state__discount
+msgid "In discount"
+msgstr "En Descuento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management_det__letter_state__portfolio
+msgid "In portfolio"
+msgstr "En Cartera"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management_det__letter_state__protest
+msgid "In protest"
+msgstr "En Protesto"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"In the selection, if you choose letters, they have to be in Portfolio or "
+"Protest status"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"In the selection, if you choose letters, they have to be in Portfolio status"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management_det__letter_state__warranty
+msgid "In warranty"
+msgstr "En Garantía"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Interest amounts in Docs. receivables other than the amount of the debit notes generated, \n"
+"\" delete and regenerate debit notes"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_collection
+msgid "Is Collection"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_discount
+msgid "Is Discount"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_protest
+msgid "Is Protest"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_refinanced
+msgid "Is Refinanced"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_renewal
+msgid "Is Renewal"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_return
+msgid "Is Return"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment_register__is_discount_letter
+msgid "Is discount letter?"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_expenses_account
+msgid "Is expenses account"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento Contable"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Just select documents of type letters, with status in collection (Free or "
+"warramty) or discount"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Just select documents of type letters, with status in collection (Free or "
+"warranty) or discount"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Just select documents of type letters, with status in portfolio"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Just select documents of type letters, with status in portfolio or protest"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment_register____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_update____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_advance_multi_payment____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management_det____last_update
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company____last_update
+msgid "Last Modified on"
+msgstr "Ultima Modificación en"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Letter "
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_qa_letter_management_inherit_receivables
+#: model:ir.ui.menu,name:qa_letter_management_receivable.menu_qa_letter_management_letter_receivables
+msgid "Letter Management Receivables"
+msgstr "Gestión de letras por Cobrar"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_update__letter_state
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management_det__letter_state
+msgid "Letter State"
+msgstr "Estado Letra"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company__letter_collection
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__account_update__letter_state__collection
+msgid "Letter in collection"
+msgstr "Letra en Cobranza"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__account_update__letter_state__discount
+msgid "Letter in discount"
+msgstr "Letra en Descuento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company__letter_discount_me
+msgid "Letter in discount ME"
+msgstr "Letra en Descuento ME"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_res_company__letter_discount
+msgid "Letter in discount MN"
+msgstr "Letra en Descuento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__account_update__letter_state__protest
+msgid "Letter in protest"
+msgstr "Letra en Protesto"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__account_update__letter_state__warranty
+msgid "Letter in warranty"
+msgstr "Letra en Garantía"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Letters cannot be collected again if they are already collected"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Letters cannot be discounted again if they are already on Discount"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Letters cannot be protested again if they are already protested"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Letters cannot be returned again if they are already returned"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.view_account_invoice_filter_inherit
+msgid "Letters in collection"
+msgstr "Letras en Cobranza"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.view_account_invoice_filter_inherit
+msgid "Letters in discount"
+msgstr "Letras en Descuento"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.view_account_invoice_filter_inherit
+msgid "Letters in protest"
+msgstr "Letras en Protesto"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_letter_management_det
+msgid "Lineas Factura"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__loans_type_id
+msgid "Loans Account"
+msgstr "Cuenta Préstamos"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Los procesos de Cobranza, Descuento, Renovación, Refinanciamiento, Protesto "
+"y Devolucion no estan disponibles para Proveedores"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "No hay tipo de canje!"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Only letter type documents"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"Only letter type documents, Delete those documents that are different from "
+"the type Letters"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Only letters in portfolio"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment_register__only_responsibility
+msgid "Only responsability"
+msgstr "Solo responsabilidad"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_bank_statement_line__origin_id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__origin_id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__origin_id
+msgid "Origin"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Protest"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_protest
+msgid "Protest letters"
+msgstr "Protestar Letras"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Protested"
+msgstr "Protestado"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Publish the generated debit notes"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__reason_cancellation
+msgid "Reason for Cancellation"
+msgstr "Motivo de Anulación"
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_refinancing
+msgid "Refinance letters"
+msgstr "Refinanciar letras"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Refinanced"
+msgstr "Refinanciado"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Refinancing"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_account_payment_register
+msgid "Register Payment"
+msgstr "Registrar pago"
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_renewal
+msgid "Renew letter"
+msgstr "Renovar letra"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Renewal"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_bank_statement_line__renewal_ids
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__renewal_ids
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__renewal_ids
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.account_move_form_inherit
+msgid "Renewals"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Renewed"
+msgstr "Renovado"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Return"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_return
+msgid "Return letters"
+msgstr "Devolver Letras"
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.qa_letter_management_form_view_inherit_receivables
+msgid "Returned"
+msgstr "Devuelto"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Select letter type documents"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_bank_statement_line__new_bank_id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__new_bank_id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__new_bank_id
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__new_bank_id
+msgid "Send to Bank"
+msgstr "Envío a Banco"
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_collection
+msgid "Send to Bank -> Collection"
+msgstr "Envío a Banco -> Cobranza"
+
+#. module: qa_letter_management_receivable
+#: model:ir.actions.act_window,name:qa_letter_management_receivable.action_emerg_letter_discount
+msgid "Send to Bank -> Discount"
+msgstr "Envío a Banco -> Descuento"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__letters_serie_id
+msgid "Serie for letters"
+msgstr "Serie: Letras"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Shipping date is missing"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__type_collection
+msgid "Shipping method"
+msgstr "Método de envío"
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__is_state_discount
+msgid "State Discount"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model,name:qa_letter_management_receivable.model_letter_management
+msgid "Template for the generation of type documents: letters and debit notes"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "The amount in total discount manual should be different than real."
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "The line document was not found"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.view_account_invoice_filter_inherit
+msgid "Third Party Letters"
+msgstr "Letras de Terceros"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "This entry for claim expenses was generated from template No."
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "This entry for financial expenses was generated from template No."
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "To exchange documents, select invoices, debit notes, tickets"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"To refinance documents, select portfolio letters, invoices, debit notes, "
+"tickets"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "To renewal documents, select a letter"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "To renewal documents, select a letter in portfolio"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_bank_statement_line__unique_code
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_move__unique_code
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_account_payment__unique_code
+#: model:ir.model.fields,field_description:qa_letter_management_receivable.field_letter_management__unique_code
+#: model_terms:ir.ui.view,arch_db:qa_letter_management_receivable.view_account_invoice_filter_inherit
+msgid "Unique Code"
+msgstr "Cód. Único"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "Values are missing in the Due Days field"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: model:ir.model.fields.selection,name:qa_letter_management_receivable.selection__letter_management__type_collection__warranty
+msgid "Warranty"
+msgstr "Garantía"
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "You cannot refinance letters if they are already Refinanced"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "You cannot renew letters again if they are already renewed"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but it is different from"
+" the Series selected in the template"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but it is different from"
+" the Tax selected in the template"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but there is no Series "
+"value selected in the template"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"You have generated a debit note in the Letters tab, but there is no Tax "
+"value selected in the template"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "You need to assign an >> account or tag << analytic"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "You need to put a value greater than 0 in the % Discount field"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid ""
+"You need to put a value greater than 0 in the Renewal Percentage % field"
+msgstr ""
+
+#. module: qa_letter_management_receivable
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/extra-addons/Polimaster/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#: code:addons/qa_letter_management_receivable/models/letter_management.py:0
+#, python-format
+msgid "You only need to choose a Letter type document"
+msgstr ""

@@ -1,0 +1,4 @@
+<odoo>
+    <menuitem action="action_qa_letter_management_inherit_receivables" id="menu_qa_letter_management_letter_receivables"
+              parent="account.menu_finance_receivables" sequence="1" groups="account.group_account_user"/>
+</odoo>
