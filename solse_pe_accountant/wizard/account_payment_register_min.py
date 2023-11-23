@@ -16,6 +16,8 @@ class AccountPaymentRegister(models.TransientModel):
 	communication = fields.Char(string="Memo", store=True, readonly=False, compute='_compute_communication_2')
 	transaction_number = fields.Char(string='Número de operación')
 	mostrar_check = fields.Boolean("Mostrar check", compute="_compute_mostrar_check", store=True)
+	autodetraccion = fields.Boolean("Autodetracción")
+	monto_autodetraccion = fields.Monetary(currency_field='currency_id', string="Importe", default=0.00)
 
 	@api.depends('line_ids', 'line_ids.move_id')
 	def _compute_mostrar_check(self):
@@ -63,12 +65,28 @@ class AccountPaymentRegister(models.TransientModel):
 				else:
 					wizard.communication = False
 
-	@api.depends('can_edit_wizard', 'amount')
+	@api.depends('can_edit_wizard', 'amount', 'es_detraccion_retencion')
 	def _compute_payment_difference(self):
+		factura = self.line_ids[0].move_id
+		cuenta_det_id = factura.company_id.cuenta_detracciones_compra.id
+		cuenta_det_id = int(cuenta_det_id)
+
+		if factura.move_type == 'out_invoice':
+			cuenta_det_id = factura.company_id.cuenta_detracciones.id
+			cuenta_det_id = int(cuenta_det_id)
+
 		for wizard in self:
-			if wizard.can_edit_wizard:
+			if wizard.can_edit_wizard and not self.autodetraccion:
 				lotes = wizard._get_batches()
 				batch_result = lotes[0]
+				if self.es_detraccion_retencion and self.tipo == 'detraccion':
+					for lot in lotes:
+						payment_values = lot['payment_values']
+						if payment_values['account_id'] == cuenta_det_id:
+							batch_result = lot
+							break
+
+				
 				total_amount_residual_in_wizard_currency = wizard\
 					._get_total_amount_in_wizard_currency_to_full_reconcile(batch_result, early_payment_discount=False)[0]
 				wizard.payment_difference = total_amount_residual_in_wizard_currency - wizard.amount
@@ -76,7 +94,7 @@ class AccountPaymentRegister(models.TransientModel):
 				wizard.payment_difference = 0.0
 
 	#@api.onchange('es_detraccion_retencion', 'currency_id')
-	@api.onchange('es_detraccion_retencion', 'tipo')
+	@api.onchange('es_detraccion_retencion', 'tipo', 'autodetraccion')
 	def _onchange_detraccion_retencion(self):
 		factura = self.line_ids[0].move_id
 		self.payment_difference_handling = "open"
@@ -88,6 +106,9 @@ class AccountPaymentRegister(models.TransientModel):
 				self.tipo = 'detraccion'
 		else:
 			self.tipo = 'normal'
+
+		if self.autodetraccion:
+			self.monto_autodetraccion = self.source_amount_currency
 
 		if self.es_detraccion_retencion:
 			if self.tipo == 'normal':
@@ -112,19 +133,26 @@ class AccountPaymentRegister(models.TransientModel):
 
 			self.amount = total_descontar
 
-		elif factura.company_id.currency_id.id == self.currency_id.id:
+		elif factura.company_id.currency_id.id == self.currency_id.id:# and not self.autodetraccion:
 			source_amount = self.source_amount
 
 			total_detraccion = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion'))
 			total_retencion = sum(self.mapped("line_ids.move_id").mapped('monto_retencion'))
 			total_retencion = 0 # hasta crear lineas contables por retencion
 			self.amount = source_amount - total_detraccion - total_retencion
+		#elif not self.autodetraccion:
 		else:
 			source_amount_currency = self.source_amount_currency
 			total_detraccion_base = sum(self.mapped("line_ids.move_id").mapped('monto_detraccion_base'))
 			total_retencion_base = sum(self.mapped("line_ids.move_id").mapped('monto_retencion_base'))
 			total_retencion_base = 0 # hasta crear lineas contables por retencion
 			self.amount = source_amount_currency - total_detraccion_base - total_retencion_base
+		"""else:
+			source_amount_currency = self.source_amount_currency
+			_logging.info("source_amount_currency")
+			_logging.info(source_amount_currency)
+			self.amount = source_amount_currency"""
+
 
 		#self._compute_from_lines()
 
@@ -138,14 +166,14 @@ class AccountPaymentRegister(models.TransientModel):
 	def _onchange_amount(self):
 		payment_difference_handling = 'open'
 		factura = self.line_ids[0].move_id
-		if self.tipo == 'detraccion' and factura.move_type == 'in_invoice':
+		if self.tipo == 'detraccion' and factura.move_type == 'in_invoice':# and not self.autodetraccion:
 			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
 			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
 			monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
 			diferencia = monto_detraccion - self.amount
 			if diferencia:
 				payment_difference_handling = 'reconcile'
-		elif self.tipo == 'detraccion' and factura.move_type == 'out_invoice':
+		elif self.tipo == 'detraccion' and factura.move_type == 'out_invoice':# and not self.autodetraccion:
 			amount_total_signed = sum(self.mapped("line_ids.move_id").mapped('amount_total_signed'))
 			monto_neto_pagar = sum(self.mapped("line_ids.move_id").mapped('monto_neto_pagar'))
 
@@ -268,9 +296,13 @@ class AccountPaymentRegister(models.TransientModel):
 	def _create_payments(self):
 		self.ensure_one()
 
+
 		batches = self._get_batches()
 		batch_result = batches[0]
 		factura = self.line_ids[0].move_id
+
+		if self.autodetraccion and not factura.company_id.cuenta_detraccion:
+			raise UserError("No se ha establecido una cuenta de detracción en la empresa")
 
 		cuenta_det_id = factura.company_id.cuenta_detracciones_compra.id
 		cuenta_det_id = int(cuenta_det_id)
@@ -342,17 +374,102 @@ class AccountPaymentRegister(models.TransientModel):
 					'batch': batch_result,
 				})
 
+		batches = self._get_batches()
+		if self.autodetraccion and not self.group_payment:
+			self.crear_autodetraccion_independiente(cuenta_det_id, batches, to_process, edit_mode)
+			#raise UserError("Detener el proceso")
+
+		if self.autodetraccion and self.group_payment:
+			raise UserError("Por el momento la autodetracción no se permite cuando se agrupan los pagos")
+
 		payments = self._init_payments(to_process, edit_mode=edit_mode)
 		self._post_payments(to_process, edit_mode=edit_mode)
 		self._reconcile_payments(to_process, edit_mode=edit_mode)
 
-		"""if payments and self.tipo == 'detraccion':
-			_logging.info("pagos generadosssssssssssssssssssssssssssssssssssss")
-			_logging.info(payments)
+		if payments and self.tipo == 'detraccion' and not self.autodetraccion and not self.group_payment and len(payments) == 1:
 			#raise UserError('procesar pagos')
-			factura.pago_detraccion = payments[0].id"""
+			factura.pago_detraccion = payments[0].id
+		elif payments and self.tipo == 'detraccion' and not self.autodetraccion and not self.group_payment and len(payments) > 1:
+			for pago in payments:
+				factura_p = self.env['account.move'].search([('name', '=', pago.ref), ('company_id', '=', pago.company_id.id)])
+				if factura_p:
+					factura_p.pago_detraccion = pago.id
+
+		#raise UserError("terminar proceso")
 
 		return payments
+
+	def crear_autodetraccion_independiente(self, cuenta_det_id, batches, to_process, edit_mode):
+		to_process_detraccion = []
+		factura = self.line_ids[0].move_id
+		if self.autodetraccion:
+			lote_detraccion = False
+			for lot in batches:
+				payment_values = lot['payment_values']
+				if payment_values['account_id'] == cuenta_det_id:
+					lote_detraccion = lot
+
+			if not lote_detraccion:
+				raise UserError("No se pudo establecer el asiento para la detracción")
+			monto_pagar_autodetraccion = self.monto_autodetraccion - self.amount
+			for linea in lote_detraccion['lines']:
+				amount_total_signed = linea.move_id.amount_total_signed
+				monto_neto_pagar = linea.move_id.monto_neto_pagar
+				monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+
+				create_vals = {
+					'date': to_process[0]['create_vals']['date'], 
+					'amount': monto_detraccion, 
+					'payment_type': to_process[0]['create_vals']['payment_type'], 
+					'partner_type': to_process[0]['create_vals']['partner_type'], 
+					'ref': linea.move_id.name, 
+					'journal_id': to_process[0]['create_vals']['journal_id'], 
+					'currency_id': to_process[0]['create_vals']['currency_id'], 
+					'partner_id': to_process[0]['create_vals']['partner_id'], 
+					'partner_bank_id': to_process[0]['create_vals']['partner_bank_id'], 
+					'payment_method_line_id': to_process[0]['create_vals']['payment_method_line_id'], 
+					'destination_account_id': cuenta_det_id, 
+					'write_off_line_vals': to_process[0]['create_vals']['write_off_line_vals'], 
+					'payment_token_id': to_process[0]['create_vals']['payment_token_id'] if 'payment_token_id' in to_process[0]['create_vals'] else False, 
+					'team_id': to_process[0]['create_vals']['team_id'] if 'team_id' in to_process[0]['create_vals'] else False, 
+					'transaction_number': to_process[0]['create_vals']['transaction_number'] if 'transaction_number' in to_process[0]['create_vals'] else False
+				}
+				dato_json_detrac = {
+					'create_vals': create_vals,
+					'to_reconcile': linea,
+					'batch': {
+						'lines': linea,
+						'payment_values': lote_detraccion['payment_values']
+					},
+				}
+				to_process_detraccion.append(dato_json_detrac)
+
+		if self.autodetraccion and to_process_detraccion and factura.move_type == 'out_invoice':
+			payments_detrac = self._init_payments(to_process_detraccion, edit_mode=edit_mode)
+			self._post_payments(to_process_detraccion, edit_mode=edit_mode)
+			self._reconcile_payments(to_process_detraccion, edit_mode=edit_mode)
+
+			for linea in lote_detraccion['lines']:
+				amount_total_signed = linea.move_id.amount_total_signed
+				monto_neto_pagar = linea.move_id.monto_neto_pagar
+				monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+				datos_pago_pendiente = {
+					'is_internal_transfer': True,
+					'es_x_autodetraccion': True,
+					'payment_type': 'outbound',
+					'amount': monto_detraccion,
+					'date': to_process[0]['create_vals']['date'],
+					'ref': 'Por pago de autodetracción para factura: %s' % linea.move_id.name,
+					'journal_id': to_process[0]['create_vals']['journal_id'],
+					'destination_journal_id': factura.company_id.cuenta_detraccion.id,
+				}
+				pago_pendiente = self.env['account.payment'].create(datos_pago_pendiente)
+				linea.move_id.write({'pago_detraccion': pago_pendiente.id})
+
+		elif self.autodetraccion and to_process_detraccion and factura.move_type == 'in_invoice':
+			payments_detrac = self._init_payments(to_process_detraccion, edit_mode=edit_mode)
+			self._post_payments(to_process_detraccion, edit_mode=edit_mode)
+			self._reconcile_payments(to_process_detraccion, edit_mode=edit_mode)
 
 
 
@@ -421,6 +538,12 @@ class AccountPaymentRegister(models.TransientModel):
 				cuenta_det_id = int(cuenta_det_id)
 				batch_result = batches[0]
 				tiene_detraccion = False
+				cuenta_con_detraccion = False
+				for lot in batches:
+					payment_values = lot['payment_values']
+					if payment_values['account_id'] == cuenta_det_id:
+						cuenta_con_detraccion=True
+
 				if self.tipo == 'detraccion':
 					for lot in batches:
 						payment_values = lot['payment_values']
@@ -436,7 +559,11 @@ class AccountPaymentRegister(models.TransientModel):
 							break
 
 				wizard_values_from_batch = wizard._get_wizard_values_from_batch(batch_result)
-				if len(batches) == 1 or (len(batches) == 2 and tiene_detraccion):
+				if len(batches) == 1 and not tiene_detraccion:
+					wizard.update(wizard_values_from_batch)
+					wizard.can_edit_wizard = True
+					wizard.can_group_payments = len(batch_result['lines']) != 1
+				elif len(batches) == 1 or (len(batches) == 2 and tiene_detraccion):
 					if len(batches) > 1:
 						for indice in range(1, len(batches)):
 							temp = batches[indice]
@@ -451,7 +578,7 @@ class AccountPaymentRegister(models.TransientModel):
 							wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
 					
 					wizard.update(wizard_values_from_batch)
-					wizard.can_edit_wizard = True
+					wizard.can_edit_wizard = False
 					wizard.can_group_payments = len(batch_result['lines']) != 1
 				elif tiene_detraccion:
 					if len(batches) > 1:
@@ -473,6 +600,24 @@ class AccountPaymentRegister(models.TransientModel):
 					wizard.can_edit_wizard = False
 					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
 
+				elif len(batches) == 1 or (len(batches) == 2 and cuenta_con_detraccion):
+					if len(batches) > 1:
+						for indice in range(1, len(batches)):
+							temp = batches[indice]
+							if temp == batch_result:
+								continue
+
+							if temp['payment_values']['account_id'] != cuenta_det_id:
+								continue
+
+							temp = wizard._get_wizard_values_from_batch(temp)
+							wizard_values_from_batch['source_amount'] = wizard_values_from_batch['source_amount'] + temp['source_amount']
+							wizard_values_from_batch['source_amount_currency'] = wizard_values_from_batch['source_amount_currency'] + temp['source_amount_currency']
+
+					wizard.update(wizard_values_from_batch)
+
+					wizard.can_edit_wizard = True
+					wizard.can_group_payments = len(batch_result['lines']) != 1
 				else:
 					source_amount_temp = 0
 					source_amount_currency_temp = 0
@@ -492,7 +637,13 @@ class AccountPaymentRegister(models.TransientModel):
 						'source_amount_currency': source_amount_currency_temp,
 					})
 
-					wizard.can_edit_wizard = False
+					cant_batches_val = 0
+					for lot in batches:
+						payment_values = lot['payment_values']
+						if payment_values['account_id'] != cuenta_det_id:
+							cant_batches_val += 1
+
+					wizard.can_edit_wizard = True if cant_batches_val == 1 else False
 					wizard.can_group_payments = any(len(batch_result['lines']) != 1 for batch_result in batches)
 
 			else:

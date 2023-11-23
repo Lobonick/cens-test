@@ -18,6 +18,7 @@ class AccountPayment(models.Model):
 
 	transaction_number = fields.Char(string='Número de operación')
 	glosa = fields.Char('Glosa', compute="_compute_glosa", store=True)
+	es_x_autodetraccion = fields.Boolean("Es por autodetracción")
 
 	@api.depends('reconciled_invoice_ids')
 	def _compute_glosa(self):

@@ -9,21 +9,44 @@
                 <field name="source_amount_currency"/>
                 <field name="available_partner_bank_ids" widget="many2many_tags"/>
                 <field name="mostrar_check" invisible="1"/>
-                <field name="es_detraccion_retencion" attrs="{'invisible': [('mostrar_check', '=', False)]}"/>
-                <field name="tipo" attrs="{'invisible': [('mostrar_check', '=', False)]}" />
+                <field name="es_detraccion_retencion" attrs="{'invisible': ['|',('mostrar_check', '=', False), ('autodetraccion', '=', True)]}"/>
+                <field name="tipo" attrs="{'invisible': [('mostrar_check', '=', False)], 'readonly': [('autodetraccion', '=', True)]}" force_save="1" />
+                <field name="autodetraccion" attrs="{'invisible': ['|', '|',('tipo', '!=', 'normal'), ('mostrar_check', '=', False), ('amount', '=', 0)]}" />
             </xpath>
 
             <xpath expr="//label[@for='amount']" position="attributes">
-                <attribute name="attrs">{}</attribute>
+                <attribute name="attrs">{'invisible': [('autodetraccion', '=', True)]}</attribute>
             </xpath>
+
+            <xpath expr="//label[@for='amount']" position="after">
+                <label for="monto_autodetraccion" attrs="{'invisible': [('autodetraccion', '=', False)]}"/>
+            </xpath>
+
+            <!--<xpath expr="//field[@name='amount']" position="before">
+                <field name="monto_autodetraccion" attrs="{'invisible': [('autodetraccion', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'invisible': [('autodetraccion', '=', True)]}</attribute>
+            </xpath>-->
+            
 
             <xpath expr="//div[@name='amount_div']" position="attributes">
-                <attribute name="attrs">{}</attribute>
+                <attribute name="attrs">{'invisible': [('autodetraccion', '=', True)]}</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='amount']" position="attributes">
-                <attribute name="attrs">{'readonly': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}</attribute>
+            <xpath expr="//div[@name='amount_div']" position="after">
+                <div name="amount_div" class="o_row" attrs="{'invisible': [('autodetraccion', '=', False)]}">
+                    <field name="monto_autodetraccion"/>
+                    <field name="currency_id"
+                           required="1"
+                           options="{'no_create': True, 'no_open': True}"
+                           groups="base.group_multi_currency"/>
+                </div>
             </xpath>
+
+            <!--<xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}</attribute>
+            </xpath>-->
 
         </field>
     </record>
