@@ -17,7 +17,7 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "https://www.solse.pe",
 	'category': 'Financial',
-	'version': '16.0.0.9',
+	'version': '16.0.0.18',
 	'license': 'Other proprietary',
 	'depends': [
 		'account',
@@ -26,10 +26,14 @@
 		'solse_pe_accountant',
 	],
 	'data': [
+		'security/ir.model.access.csv',
+		'wizard/cobrar_factoring.xml',
+		'wizard/garantia_factoring.xml',
 		'views/res_config_settings_view.xml',
 		'views/empresa_factoring_view.xml',
 		'views/facturas_factoring_view.xml',
 		'views/account_move_view.xml',
+		'views/planillas_factoring_view.xml',
 		'wizard/account_payment_register_views.xml',
 	],
 	'installable': True,

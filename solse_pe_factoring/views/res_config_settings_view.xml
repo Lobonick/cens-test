@@ -45,6 +45,15 @@
 								<field name="cuenta_factoring_gastos"/>
 							</div>
 						</div>
+						<div class="o_setting_right_pane">
+							<span class="o_form_label">Cuenta para Factoring (Comisión Fija)</span>
+							<div class="text-muted">
+								Cuenta de factoring por defecto (comisión)
+							</div>
+							<div class="text-muted">
+								<field name="cuenta_factoring_comision"/>
+							</div>
+						</div>
 					</div>
 
 				</div>

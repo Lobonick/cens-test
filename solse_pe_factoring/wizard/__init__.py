@@ -4,3 +4,5 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php
 
 from . import account_payment_register
+from . import cobrar_factoring
+from . import cobrar_garantia

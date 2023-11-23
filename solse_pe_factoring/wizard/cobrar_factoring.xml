@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record id="view_registrar_cobro_wizard" model="ir.ui.view">
+        <field name="name">Registrar Cobro</field>
+        <field name="model">solse.factoring.cobrar.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Datos">
+                <group>
+                    <group colspan="4" col="4">
+                        <field name="cobrar_con"/>
+                        <field name="monto_cobrar"/>
+                    </group>
+
+                </group>
+                <footer>
+                    <button name="registrar_cobro" string="Confirmar" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel" class="btn-default"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_registrar_cobro_wizard" model="ir.actions.act_window">
+        <field name="name">Registrar Cobro</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">solse.factoring.cobrar.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

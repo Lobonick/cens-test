@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  	<record id="planillas_factoring_form" model="ir.ui.view">
+        <field name="name">solse.factoring.planillas.form</field>
+		<field name="model">solse.factoring.planillas</field>
+        <field name="arch" type="xml">
+            <form string="Planillas Factoring">
+            	<header>
+            		<button name="procesar_pago_con_factoring" type="object" class="oe_highlight" string="Pagar Factoring" attrs="{'invisible': [('estado', '!=', 'borrador')]}"/>
+                <button name="regresar_borrador" type="object" string="Regresar a Borrador" attrs="{'invisible': [('estado', 'in', ['borrador', 'finalizado'])]}"/>
+                <button name="%(action_view_registrar_cobro_wizard)d" type="action" class="oe_highlight" string="Cobrar Factoring" attrs="{'invisible': ['|',('estado', 'not in', ['asignado', 'cobrando']), ('monto_factoring_pendiente', 'in', [0, False])]}" />
+                <button name="%(action_view_registrar_cobro_garantia_wizard)d" type="action" class="oe_highlight" string="Cobrar Garantia" attrs="{'invisible': [('estado', 'not in', ['asignado', 'cobrando'])]}" />
+                <field name="estado" widget="statusbar" statusbar_visible="borrador,asignado,cobrando,finalizado"/>
+            	</header>
+              <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" default_focus="1" placeholder="Nombre Planilla"/>
+                    </h1>
+                </div>
+                  <group>
+                      <group>
+                        <field name="fecha" required="True" attrs="{'readonly': [('estado', '!=', 'borrador')]}"/>
+                        <field name="empresa_factoring" required="True" attrs="{'readonly': [('estado', '!=', 'borrador')]}"/>
+                        <field name="porc_garantia_factoring" required="True" attrs="{'readonly': [('estado', '!=', 'borrador')]}"/>
+                        <field name="monto_comision_fija" attrs="{'readonly': [('estado', '!=', 'borrador')]}"/>
+                        <field name="porc_cobro_factoring" required="True" attrs="{'readonly': [('estado', '!=', 'borrador')]}"/>
+                      </group>
+                      <group>
+                        <field name="monto_total_factoring"/>
+                        <field name="monto_comision_factoring"/>
+                        <field name="monto_garantia_factoring"/>
+                        <field name="monto_neto_cobrar"/>
+                      </group>
+                      <group>
+                        <field name="monto_factoring_cobrado"/>
+                        <field name="monto_factoring_pendiente"/>
+                      </group>
+                  </group>
+                  <notebook>
+                        <page name="factura_ids_pagar" string="Facturas a Pagar">
+                        	<field name="factura_ids" widget="section_and_note_one2many"  attrs="{'readonly': [('estado', '!=', 'borrador')]}">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="partner_id" />
+                                    <field name="amount_total_signed" />
+                                    <field name="monto_neto_pagar" string="Monto Factoring"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page name="asiento_factoring_ids_form" string="Asientos Factoring">
+                        	<field name="asiento_factoring_ids" widget="section_and_note_one2many"  >
+                                <tree>
+                                    <field name="name" />
+                                    <field name="ref" />
+                                    <field name="partner_id" />
+                                    <field name="amount_total_signed" />
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page name="asiento_cobro_ids_form" string="Asientos Cobro">
+                          <field name="asiento_cobro_ids" widget="section_and_note_one2many"  >
+                                <tree>
+                                    <field name="name" />
+                                    <field name="ref" />
+                                    <field name="partner_id" />
+                                    <field name="amount_total_signed" />
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page name="asiento_garantia_ids_form" string="Asiento Garantia">
+                          <field name="asiento_garantia_ids" widget="section_and_note_one2many"  >
+                                <tree>
+                                    <field name="name" />
+                                    <field name="ref" />
+                                    <field name="partner_id" />
+                                    <field name="amount_total_signed" />
+                                </tree>
+                            </field>
+                        </page>
+
+                    </notebook>
+              </sheet>
+            </form>
+        </field>
+    </record>
+
+	<record id="planillas_factoring_tree" model="ir.ui.view">
+		<field name="name">solse.factoring.planillas.tree</field>
+		<field name="model">solse.factoring.planillas</field>
+		<field name="arch" type="xml">
+			<tree create="1" expand="1">
+				<field name="name" optional="show"/>
+				<field name="empresa_factoring" optional="show"/>
+				<field name="porc_garantia_factoring" optional="show"/>
+				<field name="porc_cobro_factoring" optional="show"/>
+        <field name="monto_total_factoring" optional="show" />
+        <field name="monto_comision_factoring" optional="show" />
+        <field name="monto_garantia_factoring" optional="show" />
+        <field name="monto_neto_cobrar" optional="show" />
+        <field name="estado" optional="show"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="view_vencimiento_facturas_search" model="ir.ui.view">
+		<field name="name">solse.factoring.planillas.search.pdv.view</field>
+		<field name="model">solse.factoring.planillas</field>
+		<field name="arch" type="xml">
+			<search string="Planillas Factoring">
+				<field name="name" />
+				<field name="empresa_factoring" />
+
+				<group expand="1" string="Group By">
+					<filter string="Proveedor" name='empresa_factoring' context="{'group_by':'empresa_factoring'}"/>
+					<separator orientation="vertical" />
+				</group>
+				
+			</search>
+		</field>
+	</record>
+
+	<record id="planillas_factoring_action_ventas" model="ir.actions.act_window">
+		<field name="name">Planillas Factoring</field>
+		<field name="res_model">solse.factoring.planillas</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree,form</field>
+		<field name="search_view_id" ref="view_vencimiento_facturas_search"/>
+		<field name="domain">[]</field>
+		<field name="context">{}</field>
+	</record>
+
+	<menuitem
+		action="planillas_factoring_action_ventas"
+		id="menu_planillas_factoring_venta"
+		name="Planillas Factoring"
+		parent="account.menu_finance_receivables"  sequence="170"/> 
+
+
+  </data>
+</odoo>

@@ -2,6 +2,21 @@
 <odoo>
 <data>
 
+    <record id="view_account_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.factoring.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//group/filter[@name='duedate']" position='after'>
+                    <filter string="Factura Enlazada" name="factura_enlazada" context="{'group_by': 'factura_enlazada'}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
 	<record id="action_facturas_factoring" model="ir.actions.act_window">
         <field name="name">Facturas Factoring</field>
         <field name="res_model">account.move</field>
@@ -9,7 +24,7 @@
         <field name="view_id" ref="account.view_in_invoice_tree"/>
         <field name="search_view_id" ref="account.view_account_invoice_filter"/>
         <field name="domain">[('move_type', '=', 'entry'), ('es_x_factoring', '=', True)]</field>
-        <field name="context">{'default_move_type': 'entry'}</field>
+        <field name="context">{'default_move_type': 'entry', 'search_default_factura_enlazada': 1}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             Facturas por factoring

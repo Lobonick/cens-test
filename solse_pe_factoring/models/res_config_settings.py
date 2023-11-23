@@ -13,4 +13,5 @@ class ResConfigSettings(models.TransientModel):
 
 	cuenta_factoring = fields.Many2one("account.account", string="Cuenta para Factoring", config_parameter='solse_pe_factoring.default_cuenta_factoring')
 	cuenta_factoring_gastos = fields.Many2one("account.account", string="Cuenta para Factoring (Gastos)", config_parameter='solse_pe_factoring.default_cuenta_factoring_gastos')
+	cuenta_factoring_comision = fields.Many2one("account.account", string="Cuenta para Factoring (Comisión)", config_parameter='solse_pe_factoring.default_cuenta_factoring_comision')
 	cuenta_factoring_garantia = fields.Many2one("account.account", string="Cuenta para Factoring (Garantia)", config_parameter='solse_pe_factoring.default_cuenta_factoring_garantia')
