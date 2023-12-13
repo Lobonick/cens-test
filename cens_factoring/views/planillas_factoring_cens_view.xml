@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record  model="ir.ui.view" id="view_planillas_factoring_form_inherit">
+            <field name="name">planillas_factoring.form.inherit</field>
+            <field name="model">solse.factoring.planillas</field>
+            <field name="inherit_id" ref="solse_pe_factoring.planillas_factoring_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Imprimir Planilla" name="imprime_planilla_factoring" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="x_cens_marcador_pagina" class="oe_left" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                </xpath>
+                <xpath expr="//field[@name='empresa_factoring']" position="before">
+                    <field name="x_cens_company_id" string="Compañia:" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='empresa_factoring']" position="after">
+                    <field name="x_cens_logo_financiera" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[1]" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="name">grupo1_left</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[1]" position="after">
+                    <group name="grupo1_right" string="PARÁMETROS">
+                    </group>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[3]" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="name">grupo2_left</attribute>
+                    <attribute name="string">RESUMEN ACUMULADO</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[4]" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="name">grupo2_right</attribute>
+                    <attribute name="string">DESEMBOLSOS EJECUTADOS</attribute>
+                </xpath>
+                <xpath expr="//group[@name='grupo2_left']" position="before">
+                    <field name="x_cens_linea_separadora" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                </xpath>
+                <xpath expr="//group[@name='grupo1_right']" position="inside">
+                    <xpath expr="//field[@name='porc_garantia_factoring']" position="move"/>
+                    <xpath expr="//field[@name='monto_comision_fija']" position="move"/>
+                    <xpath expr="//field[@name='porc_cobro_factoring']" position="move"/>
+                </xpath>
+                <!-- **************** DETALLE DE LA PLANILLA ************** -->
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='factura_ids_pagar']/field[@name='factura_ids']/tree[1]/field[@name='name']" position="after">
+                    <field name="invoice_date" optional="show"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='factura_ids_pagar']/field[@name='factura_ids']/tree[1]/field[@name='partner_id']" position="after">
+                    <field name="x_studio_proyecto" optional="show"/>
+                    <field name="x_studio_moneda" optional="show"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='factura_ids_pagar']/field[@name='factura_ids']/tree[1]/field[@name='amount_total_signed']" position="attributes">
+                    <attribute name="sum">Sum of Total con signo</attribute>
+                </xpath>
+                <xpath expr="//field[@name='monto_neto_pagar']" position="attributes">
+                    <attribute name="sum">Sum of Monto Factoring</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
+
+<!--
+<xpath expr="//group[@name='grupo2_left']" position="before">
+                    <field name="x_cens_linea_separadora" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                </xpath>
+
+-->
