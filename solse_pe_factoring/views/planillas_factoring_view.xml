@@ -64,6 +64,7 @@
                         <page name="asiento_cobro_ids_form" string="Asientos Cobro">
                           <field name="asiento_cobro_ids" widget="section_and_note_one2many"  >
                                 <tree>
+                                    <field name="date" />
                                     <field name="name" />
                                     <field name="ref" />
                                     <field name="partner_id" />
@@ -75,6 +76,7 @@
                         <page name="asiento_garantia_ids_form" string="Asiento Garantia">
                           <field name="asiento_garantia_ids" widget="section_and_note_one2many"  >
                                 <tree>
+                                    <field name="date" />
                                     <field name="name" />
                                     <field name="ref" />
                                     <field name="partner_id" />

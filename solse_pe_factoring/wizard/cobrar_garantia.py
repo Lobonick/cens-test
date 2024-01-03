@@ -15,6 +15,7 @@ class CobrarGarantiaFactoring(models.TransientModel):
 
 	cobrar_con = fields.Many2one("account.journal", domain=[('type', 'in', ['cash', 'bank'])])
 	monto_cobrar = fields.Float("Monto a cobrar")
+	fecha = fields.Date("Fecha")
 
 	@api.model
 	def default_get(self, fields_list):
@@ -68,6 +69,7 @@ class CobrarGarantiaFactoring(models.TransientModel):
 
 		datos_asiento = {
 			'move_type': 'entry',
+			'date': self.fecha,
 			'planilla_fact_n3': planilla.id,
 			'ref': 'Por la cobro de garantia retenida (%s) con %s' % (planilla.name, self.cobrar_con.name),
 			'glosa': 'Por la cobro de garantia retenida (%s) con %s' % (planilla.name, self.cobrar_con.name),

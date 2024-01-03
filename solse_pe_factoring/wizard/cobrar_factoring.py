@@ -16,6 +16,7 @@ class CobrarFactoring(models.TransientModel):
 
 	cobrar_con = fields.Many2one("account.journal", domain=[('type', 'in', ['cash', 'bank'])])
 	monto_cobrar = fields.Float("Monto a cobrar")
+	fecha = fields.Date("Fecha")
 
 	@api.model
 	def default_get(self, fields_list):
@@ -81,7 +82,7 @@ class CobrarFactoring(models.TransientModel):
 		monto_gastos = round(monto_gastos, 2)
 
 		if planilla.comision_fija_restante >= monto_gastos:
-			raise UserError("El monto fijo de comision no puede ser mayor o igual a al monto de gasto cobrado en este asiento")
+			raise UserError("El monto fijo de comision no puede ser mayor o igual a al monto de gasto cobrado en este asiento (%s > %s)" % (str(planilla.comision_fija_restante), str(monto_gastos)))
 		
 
 		monto_cobrar = monto_factoring - monto_gastos
@@ -90,6 +91,7 @@ class CobrarFactoring(models.TransientModel):
 
 		datos_asiento = {
 			'move_type': 'entry',
+			'date': self.fecha,
 			'planilla_fact_n2': planilla.id,
 			'ref': 'Por la cancelacion de la planilla (%s) con %s' % (planilla.name, self.cobrar_con.name),
 			'glosa': 'Por la cancelacion de la planilla (%s) con %s'% (planilla.name, self.cobrar_con.name),
