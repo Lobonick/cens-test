@@ -100,7 +100,7 @@ def get_estado_cpe(move_id):
 		serie = nombre[0]
 		numero = nombre[1]
 		param = {
-			'numRuc': move_id.company_id.partner_id.doc_number,
+			'numRuc': move_id.company_id.partner_id.doc_number or move_id.company_id.partner_id.vat,
 			'codComp': move_id.pe_invoice_code,
 			'numeroSerie': serie,
 			'numero': numero,

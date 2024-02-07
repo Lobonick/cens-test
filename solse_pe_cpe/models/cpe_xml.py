@@ -1544,7 +1544,7 @@ class CPE:
 			summary_gift = 0
 			summary_export = 0
 			for invoice_id in batch.summary_ids.filtered(lambda inv: inv.journal_id.id == journal_id.id).sorted(key=(lambda r: r.name)):
-				if invoice_id.pe_cpe_id.state in ('draft', 'cancel'):
+				if invoice_id.pe_cpe_id.state in ('draft', 'cancel') and not invoice_id.forzar_resumen:
 					raise UserError(_('The invoice N° %s must be sent to the sunat to generate this document.') % invoice_id.l10n_latam_document_number)
 				else:
 					taxes = []

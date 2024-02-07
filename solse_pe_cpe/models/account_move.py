@@ -3,10 +3,6 @@
 from odoo import api, fields, tools, models, _
 import odoo.addons.decimal_precision as dp
 from odoo.exceptions import UserError, Warning, ValidationError
-from pdf417gen.encoding import to_bytes, encode_high, encode_rows
-from pdf417gen.util import chunks
-from pdf417gen.compaction import compact_bytes
-from pdf417gen import render_image
 import tempfile
 import base64
 #from base64 import encodestring
@@ -21,7 +17,7 @@ from lxml import etree
 import json
 import sys
 import time
-from .cpe_servicios_extras import get_estado_cpe
+#from .cpe_servicios_extras import get_estado_cpe
 
 import logging
 _logging = logging.getLogger(__name__)
@@ -147,6 +143,8 @@ class AccountMove(models.Model):
 		inverse='_inverse_tax_totals_pe',
 		exportable=False,
 	)
+
+	forzar_resumen = fields.Boolean("Forzar resumen")
 
 	def _get_l10n_latam_documents_domain(self):
 		self.ensure_one()
@@ -646,6 +644,10 @@ class AccountMove(models.Model):
 		invoice_id = self
 		province_id = invoice_id.company_id.partner_id.city_id
 		province_id = province_id.name.strip() if province_id else ''
+		if not invoice_id.company_id.partner_id.zip:
+			raise UserError("Se debe establecer un ubigeo para la empresa")
+		if not invoice_id.company_id.partner_id.street:
+			raise UserError("Se debe establecer una dirección para la empresa")
 		datos = {
 			'comercial_name': invoice_id.company_id.partner_id.commercial_name.strip() or '-',
 			'legal_name': invoice_id.company_id.partner_id.legal_name.strip() or '-',
@@ -879,7 +881,8 @@ class AccountMove(models.Model):
 
 	def _get_pdf417_code(self):
 		for invoice_id in self:
-			res = []
+			invoice_id.sunat_pdf417_code = False
+			"""res = []
 			if invoice_id.name and invoice_id.l10n_latam_document_type_id.is_cpe:
 				res.append(invoice_id.company_id.partner_id.doc_number)
 				res.append(invoice_id.l10n_latam_document_type_id.code or '')
@@ -903,7 +906,7 @@ class AccountMove(models.Model):
 				image.save(tmpf, 'png')
 				invoice_id.sunat_pdf417_code = encodestring(tmpf.getvalue())
 			else:
-				invoice_id.sunat_pdf417_code = False
+				invoice_id.sunat_pdf417_code = False"""
 
 	@api.depends('name', 'l10n_latam_document_type_id.is_cpe', 'l10n_latam_document_type_id.code', 'amount_tax', 'amount_total', 'invoice_date', 'partner_id.doc_number', 'partner_id.doc_type', 'company_id.partner_id.doc_number')
 	def _compute_get_qr_code(self):
@@ -1308,11 +1311,11 @@ class AccountMove(models.Model):
 		return res
 
 	# consultar estado
-	def consultar_estado_sunat(self):
+	"""def consultar_estado_sunat(self):
 		rpt = get_estado_cpe(self)
 		if rpt['rpta'] == 0:
 			raise Warning(rpt['mensaje'])
-		self.sunat_estado_manual = rpt['estado']
+		self.sunat_estado_manual = rpt['estado']"""
 
 	@api.model
 	def pe_credit_debit_code(self, invoice_ids, credit_code, debit_code):

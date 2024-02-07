@@ -542,7 +542,7 @@ class PeruSunatCpe(models.Model):
 
 	# Tarea programada para "Envio Automatico de Facturas y Notas debito"	
 	def send_async_cpe(self):
-		cpe_ids = self.search([('state', 'in', ['generate', 'send']), ('type', 'in', ['sync'])])
+		cpe_ids = self.search([('state', 'in', ['draft','generate', 'send']), ('type', 'in', ['sync'])])
 		for cpe_id in cpe_ids:
 			if cpe_id.invoice_ids:
 				if cpe_id.invoice_ids[0].pe_invoice_code not in ["03", "07"] and cpe_id.invoice_ids[0].origin_doc_code not in ["03", "07"]:

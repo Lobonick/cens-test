@@ -36,7 +36,7 @@
 				<xpath expr="//button[@name='button_cancel']" position="after">
 					<button name="button_annul" class="btn btn-danger" type="object" confirm="¿Seguro que quiere anular esta factura en Sunat? Los datos ya no podrán ser editados una vez anulado el comprobante y el número ya no podrá usarse mas" string="Anular Factura" attrs="{'invisible':['|', ('state', '!=', 'posted'), ('estado_sunat', 'not in', ['05', '09', '07'])]}" groups="account.group_account_invoice" />
 
-					<button name="consultar_estado_sunat" string="Consultar" type="object" attrs="{'invisible':[('is_cpe', '=', False)]}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />
+					<!--<button name="consultar_estado_sunat" string="Consultar" type="object" attrs="{'invisible':[('is_cpe', '=', False)]}" groups="solse_pe_cpe.group_solse_pe_cpe_manager" />-->
 				</xpath> 
 				<xpath expr="//button[@name='button_cancel']" position="attributes">
 					<attribute name="invisible">1</attribute>

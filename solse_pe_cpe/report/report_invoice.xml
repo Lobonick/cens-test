@@ -75,14 +75,14 @@
 								<div class="col-xs-3"> <t t-esc="o.partner_id.name" style="word-wrap: break-word;"/></div>
 							</div>
 
-							<div class="row" t-if="o.partner_id.doc_number">
+							<div class="row" t-if="o.partner_id.vat">
 								<div style="width: 90px; font-weight: bold;">
 									<t t-if="o.partner_id.doc_type=='6'" class="col-3"> RUC: </t>
 									<t t-else="" class="col-3"> DNI: </t>
 								</div>
-								<div class="col-xs-3"> <t t-esc="o.partner_id.doc_number"/></div>
+								<div class="col-xs-3"> <t t-esc="o.partner_id.vat"/></div>
 							</div>
-							<div class="row" t-if="o.partner_id.doc_number">
+							<div class="row" t-if="o.partner_id.vat">
 								<div style="width: 90px; font-weight: bold;"> Direccion:</div>
 								<div class="col-xs-3" style="word-wrap: break-word; width: 69%;"> 
 									<t t-esc="o.partner_id.street" style="word-wrap: break-word;"/>

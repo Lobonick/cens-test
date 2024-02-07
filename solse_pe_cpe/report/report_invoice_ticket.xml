@@ -86,7 +86,7 @@
 					<t t-else="">
 						<t t-esc="o.partner_id.name"/><br />
 					</t>
-					<t t-esc="o.partner_id.doc_number"/>
+					<t t-esc="o.partner_id.vat"/>
 					<br />
 					<t t-if="o.partner_id.street">
 						<t t-esc="o.partner_id.street"/><br />

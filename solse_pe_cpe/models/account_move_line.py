@@ -3,10 +3,6 @@
 from odoo import api, fields, tools, models, _
 import odoo.addons.decimal_precision as dp
 from odoo.exceptions import UserError, Warning
-from pdf417gen.encoding import to_bytes, encode_high, encode_rows
-from pdf417gen.util import chunks
-from pdf417gen.compaction import compact_bytes
-from pdf417gen import render_image
 import tempfile
 import re
 from datetime import datetime, date, timedelta
@@ -15,7 +11,6 @@ from io import StringIO, BytesIO
 from importlib import reload
 import sys
 import time
-from .cpe_servicios_extras import get_estado_cpe
 from . import constantes
 
 import logging

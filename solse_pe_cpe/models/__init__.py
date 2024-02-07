@@ -12,6 +12,6 @@ from . import cpe_xml
 from . import cpe_core
 from . import res_company
 from . import solse_cpe
-from . import cpe_servicios_extras
+#from . import cpe_servicios_extras
 from . import account_payment_term
 from . import account_journal
