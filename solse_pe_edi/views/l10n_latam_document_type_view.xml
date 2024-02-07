@@ -38,8 +38,8 @@
             	<field name="is_cpe" attrs="{'invisible': [('country_id', '!=', %(base.pe)d)]}"/>
                 <field name="is_synchronous" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('is_cpe', '=', False)]}"/>
                 <field name="is_synchronous_anull" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('is_cpe', '=', False)]}"/>
-                <field name="nota_credito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}"/>
-                <field name="nota_debito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}"/>
+                <field name="nota_credito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}" />
+                <field name="nota_debito" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('code', 'not in', ['01', '03', '00'])]}" />
                 <field name="usar_prefijo_personalizado" attrs="{'invisible': [('country_id', '!=', %(base.pe)d)]}"/>
                 <field name="prefijo" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False)]}"/>
                 <field name="secuencia_id" attrs="{'invisible': ['|', ('country_id', '!=', %(base.pe)d), ('usar_prefijo_personalizado', '=', False)]}"/>

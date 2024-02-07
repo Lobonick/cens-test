@@ -55,11 +55,27 @@ class AccountMove(models.Model):
 			else:
 				reg.nro_cuenta_detraccion = ''
 
-	@api.depends('invoice_line_ids.product_id', 'amount_total', 'partner_id')
+	@api.depends('invoice_line_ids.product_id', 'amount_total', 'partner_id', 'currency_id', 'invoice_date_due', 'invoice_payment_term_id')
 	def _compute_detraccion_retencion(self):
 		for reg in self:
 			#_logging.info('datos de la detraccion')
 			#_logging.info(reg.tiene_detraccion)
+			if reg.l10n_latam_document_type_id.code not in ['00' '0', '03', '01', '07', '08']:
+				reg.tiene_detraccion = False
+				reg.detraccion_id = False
+				reg.porc_detraccion = 0
+				reg.monto_detraccion = 0
+				reg.monto_detraccion_base = 0
+				reg.tiene_retencion = False
+				reg.monto_retencion = 0
+				reg.monto_retencion_base = 0
+				reg.monto_neto_pagar = 0
+				reg.monto_neto_pagar_base = 0
+				continue
+
+
+
+
 			datos = reg._validar_detraccion_retencion(False)
 			reg.tiene_detraccion = datos['tiene_detraccion']
 			reg.detraccion_id = datos['detraccion_id']
@@ -130,8 +146,6 @@ class AccountMove(models.Model):
 
 		for rec in self.filtered(lambda x: x.journal_id and x.l10n_latam_use_documents and x.partner_id):
 			dominio = rec._get_l10n_latam_documents_domain()
-			_logging.info("dominio a buscar ")
-			_logging.info(dominio)
 			rec.l10n_latam_available_document_type_ids = self.env['l10n_latam.document.type'].search(dominio)
 		
 
