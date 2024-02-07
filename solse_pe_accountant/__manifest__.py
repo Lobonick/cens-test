@@ -21,7 +21,7 @@
 	'author': "F & M Solutions Service S.A.C",
 	'website': "https://www.solse.pe",
 	'category': 'Financial',
-	'version': '16.0.0.20',
+	'version': '16.0.0.24',
 	'license': 'Other proprietary',
 	'depends': [
 		'account',

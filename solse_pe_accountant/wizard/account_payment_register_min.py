@@ -19,6 +19,17 @@ class AccountPaymentRegister(models.TransientModel):
 	autodetraccion = fields.Boolean("Autodetracción")
 	monto_autodetraccion = fields.Monetary(currency_field='currency_id', string="Importe", default=0.00)
 
+	@api.depends('can_edit_wizard')
+	def _compute_group_payment(self):
+		for wizard in self:
+			"""if wizard.can_edit_wizard:
+				batches = wizard._get_batches()
+				wizard.group_payment = len(batches[0]['lines'].move_id) == 1
+			else:
+				wizard.group_payment = False
+			"""
+			return False
+
 	@api.depends('line_ids', 'line_ids.move_id')
 	def _compute_mostrar_check(self):
 		for reg in self:
@@ -109,6 +120,7 @@ class AccountPaymentRegister(models.TransientModel):
 
 		if self.autodetraccion:
 			self.monto_autodetraccion = self.source_amount_currency
+			self.currency_id = factura.currency_id.id
 
 		if self.es_detraccion_retencion:
 			if self.tipo == 'normal':
@@ -416,6 +428,8 @@ class AccountPaymentRegister(models.TransientModel):
 				amount_total_signed = linea.move_id.amount_total_signed
 				monto_neto_pagar = linea.move_id.monto_neto_pagar
 				monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+				if linea.currency_id.id != self.company_id.currency_id.id:
+					monto_detraccion = abs(linea.move_id.amount_total_in_currency_signed) - linea.move_id.monto_neto_pagar_base
 
 				create_vals = {
 					'date': to_process[0]['create_vals']['date'], 
@@ -452,7 +466,11 @@ class AccountPaymentRegister(models.TransientModel):
 			for linea in lote_detraccion['lines']:
 				amount_total_signed = linea.move_id.amount_total_signed
 				monto_neto_pagar = linea.move_id.monto_neto_pagar
-				monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+				#monto_detraccion = abs(amount_total_signed) - monto_neto_pagar
+				monto_detraccion = linea.move_id.monto_detraccion
+				"""if linea.currency_id.id != self.company_id.currency_id.id:
+					monto_detraccion = abs(linea.move_id.amount_total_in_currency_signed) - linea.move_id.monto_neto_pagar_base"""
+					
 				datos_pago_pendiente = {
 					'is_internal_transfer': True,
 					'es_x_autodetraccion': True,
@@ -462,6 +480,7 @@ class AccountPaymentRegister(models.TransientModel):
 					'ref': 'Por pago de autodetracción para factura: %s' % linea.move_id.name,
 					'journal_id': to_process[0]['create_vals']['journal_id'],
 					'destination_journal_id': factura.company_id.cuenta_detraccion.id,
+					#'currency_id': self.currency_id.id,
 				}
 				pago_pendiente = self.env['account.payment'].create(datos_pago_pendiente)
 				linea.move_id.write({'pago_detraccion': pago_pendiente.id})
