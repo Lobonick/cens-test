@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="helpdesk_ticket_form_inherit">
+            <field name="name">helpdesk.ticket.form.cens_inherit</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string=" CERRAR TICKET " name="cerrar_ticket_atencion" icon="fa-thumbs-up" confirm="¿Está seguro de CERRAR TICKET?" type="object" class="oe_highlight"/>
+ 
+                    <!--
+                    <span class="oe_inline oe_separating_element"> </span>
+                    <button name="action_custom_button" string="Acomoda Datos" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                    -->        
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='sale_order_id'][2]" position="after">
+                    <group name="cens_group_1"></group>
+                    <field name="x_studio_ticket_imagen" options="{&quot;size&quot;:[0,270]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;stage_id&quot;,&quot;=&quot;,5]]}"/>
+                    <field name="cens_ticket_imagen2" options="{&quot;size&quot;:[0,270]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;stage_id&quot;,&quot;!=&quot;,5]]}"/>
+
+                    <field name="cens_fecha_actual" attrs="{}" force_save="True" readonly="1"/>
+                    <!-- <h1>Tiempo Trancurrido:</h1> -->
+
+                    <div class="oe_right" name="title_x">
+                        <h1>Tiempo Transcurrido:</h1>
+                        <h1><field name="cens_fecha_texto" attrs="{}" force_save="True" readonly="1"/></h1>
+                    </div>
+                    <div></div>
+
+                    <div>
+                        <button name="action_button_refresh_fecha" string=" Refresh " type="object" class="oe_right oe_highlight oe_button oe_highlighted"/>
+                    </div>
+                </xpath>
+
+                <!-- *********************************************** -->
+                <!-- AGREGA ATRIBUTO: Sólo lectura SI (stage_id = 5) -->
+                <!-- *********************************************** -->
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='priority']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='ticket_type_id']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <!--
+                <xpath expr="//field[@name='x_studio_descripcion_eventualidad']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='x_studio_imagen_1']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='x_studio_imagen_2']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='x_studio_archivo_1']" position="attributes">
+                    <attribute name="attrs">{"readonly": [["stage_id","=",5]]}</attribute>
+                </xpath>
+                -->
+            </field>
+        </record>
+    </data>
+</odoo>
+
+
+
+<!-- 
+        <div class="oe_title oe_right" name="title_y" style="width: 400px;">
+            <h1><field name="fecha_texto"/></h1>
+        </div>
+        <group name="cens_group_1">
+            <group name="cens_group_1_left"/>
+            <group name="cens_group_1_right"/>
+        </group>
+
+        <xpath expr="//div[@class='o_field_tree']" position="after">
+            <button name="import_to_spreadsheet" string="Importar a hoja de cálculo" type="object"/>
+        </xpath>
+
+
+        <record model="ir.ui.view" id="custom_hr_leave_view_form">
+            <field name="name">hr.leave.view.form.custom</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.view_hr_leave_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+
+        <record model="ir.ui.view" id="view_crm_lead_inherit">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+ 
+-->
