@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_account_move_form_apertura" model="ir.ui.view">
+		<field name="name">account.move.form.apertura</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="solse_pe_edi.view_move_form_or"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='monto_retencion']" position="after">
+				<field name="es_x_apertura"  />
+				<field name="fecha_tipo_cambio"  invisible="1" />
+				<field name="date" invisible="1"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_move_form_bcrnt" model="ir.ui.view">
+		<field name="name">account.move.form.bcrnt</field>
+		<field name="model">account.move.line</field>
+		<field name="inherit_id" ref="account.view_move_line_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='date']" position="after">
+				<field name="glosa" optional="hide"/>           
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_move_form_accountant" model="ir.ui.view">
+		<field name="name">account.move.form.accountant</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='invoice_vendor_bill_id']" position="after">
+				<field name="glosa" optional="hide" />
+			</xpath>
+			<xpath expr="//field[@name='to_check']" position="after">
+				<field name="asiento_det_ret" readonly="1" />
+			</xpath>
+
+			<xpath expr="//group[@id='header_right_group']" position="inside">
+				<field name="transaction_number" attrs="{'invisible': [('move_type', 'not in', ('entry'))]}"/>
+			</xpath>
+			<xpath expr="//field[@name='payment_reference']" position="after">
+				<field name="transaction_number" attrs="{'invisible': [('move_type', 'not in', ('entry'))]}"/>
+			</xpath>
+			<xpath expr="//field[@name='ref'][1]" position="attributes">
+				<attribute name="attrs">{'invisible':[('move_type', 'not in', ('in_invoice', 'in_receipt', 'in_refund'))], 'required': [('move_type', '=', 'in_invoice')]}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='ref'][2]" position="attributes">
+				<attribute name="attrs">{'invisible':[('move_type', 'in', ('in_invoice', 'in_receipt', 'in_refund', 'out_invoice', 'out_refund')), ('es_x_apertura', '=', False)], 'required': [('move_type', '=', 'in_invoice')]}</attribute>
+			</xpath>
+			<xpath expr="//div[@class='o_td_label']" position="before">
+				<field name="fecha_apertura" attrs="{'required': [('move_type', '=', 'out_invoice'), ('es_x_apertura', '=', True)], 'invisible': [('es_x_apertura', '=', False)]}" />
+				<!--<field name="fecha_tipo_cambio" attrs="{'required': [('move_type', '=', 'out_invoice'), ('es_x_apertura', '=', True)], 'invisible': [('es_x_apertura', '=', False)]}" />-->
+			</xpath>
+		</field>
+	</record>
+
+	<!--<record id="view_bank_statement_form" model="ir.ui.view">
+		<field name="name">account.bank.statement.inherit.view.form</field>
+		<field name="model">account.bank.statement</field>
+		<field name="inherit_id" ref="account.view_bank_statement_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='line_ids']/tree/field[@name='amount_currency']" position="after">
+				<field name="transaction_number" optional="show"/>
+			</xpath>
+		</field>
+	</record>
+	<record id="view_bank_statement_line_search" model="ir.ui.view">
+		<field name="name">account.bank.statement.line.inherit.view.search</field>
+		<field name="model">account.bank.statement.line</field>
+		<field name="inherit_id" ref="account.view_bank_statement_line_search"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='transaction_type']" position="after">
+				<field name="transaction_number"/>
+			</xpath>
+		</field>
+	</record>-->
+	
+	<record id="view_account_payment_form" model="ir.ui.view">
+		<field name="name">account.payment.inherit.view.form</field>
+		<field name="model">account.payment</field>
+		<field name="inherit_id" ref="account.view_account_payment_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='ref']" position="after">
+				<field name="available_partner_bank_ids" invisible="1" />
+				<field name="partner_bank_id" invisible="1"/>
+				<field name="transaction_number"/>
+			</xpath>
+		</field>
+	</record>
+
+
+</odoo>
