@@ -43,11 +43,11 @@ class ReportesFinanciero(models.TransientModel):
 	hasta_fecha_actual = fields.Boolean("Hasta Fecha actual")
 	excluir_cierre = fields.Boolean("Excluir asientos cierre")
 
-
 	agente = fields.Many2one("res.partner", string="Agente")
 	todos_los_agentes = fields.Boolean("Todos los agentes")
 
-
+	documento_venta_ids = fields.Many2many('l10n_latam.document.type', 'venta_report_l10n_latam_id', 'report_venta_id', 'doc_venta_id', string='Documentos a incluir', required=False, domain="[('sub_type', 'in', ['sale'])]")
+	documento_compra_ids = fields.Many2many('l10n_latam.document.type', 'compra_report_l10n_latam_id', 'report_compra_id', 'doc_compra_id', string='Documentos a incluir', required=False, domain="[('sub_type', 'in', ['purchase'])]")
 
 	def _compute_account_balance(self, accounts):
 		""" compute the balance, debit
@@ -138,16 +138,27 @@ class ReportesFinanciero(models.TransientModel):
 
 		dominio_tipo_doc = [('sub_type', '=', 'purchase')]
 		tipo_doc_compras = self.env['l10n_latam.document.type'].search(dominio_tipo_doc)
+		doc_type_ids = []
+		for reg in self.documento_compra_ids:
+			doc_type_ids.append(reg.id)
+
 		for tipo_doc in tipo_doc_compras:
 			dominio_facturas = [("invoice_date", ">=", fecha_inicio), ("invoice_date", "<=", fecha_fin), 
 			('state','=', 'posted'), ('l10n_latam_document_type_id', '=', tipo_doc.id)]
+			if self.documento_compra_ids:
+				dominio_facturas.append(('l10n_latam_document_type_id', 'in', doc_type_ids))
 			facturas = self.env['account.move'].search(dominio_facturas, order="invoice_date desc")
 
 			if tipo_doc.prefijo not in json_datos:
 				json_datos[tipo_doc.prefijo] = {}
 
 			for factura in facturas:
-				correlativo = factura.name.split("-")[1]
+				correlativo = factura.name.split("-")
+				if len(correlativo) > 1:
+					correlativo = correlativo[1]
+				else:
+					correlativo = correlativo[0]
+					
 				total_usd = factura.amount_total
 				tipo_cambio = factura.tipo_cambio_dolar_sistema
 				inafecto = factura.pe_unaffected_amount
@@ -215,9 +226,17 @@ class ReportesFinanciero(models.TransientModel):
 		comision_reventa = 0
 		comision_total_total = 0
 
+		doc_type_ids = []
+		for reg in self.documento_venta_ids:
+			doc_type_ids.append(reg.id)
+
 		dominio_facturas = [("invoice_date", ">=", fecha_inicio), ("invoice_date", "<=", fecha_fin), 
 		('state','in', ['posted', 'annul', 'cancel']), ('l10n_latam_document_type_id.sub_type', '=', 'sale')]
+		if self.documento_venta_ids:
+			dominio_facturas.append(('l10n_latam_document_type_id', 'in', doc_type_ids))
 		facturas = self.env['account.move'].search(dominio_facturas, order="invoice_date desc")
+
+		
 
 		for factura in facturas:
 			correlativo = factura.name.split("-")[1]
@@ -241,14 +260,14 @@ class ReportesFinanciero(models.TransientModel):
 			sunat_code = factura.pe_invoice_code or '00'
 			if sunat_code in ['07'] :
 				origin = factura.reversed_entry_id
-				origin_number = origin.ref
+				origin_number = origin.l10n_latam_document_number
 				#origin_number = origin_number and ('-' in origin_number) and origin_number.split('-') or ['', '']
 				fecha_ref = origin.invoice_date.strftime('%d/%m/%Y')
 				cod_ref = origin.pe_invoice_code
 				doc_ref = origin_number
 			elif sunat_code in ['08'] :
 				origin = factura.debit_origin_id
-				origin_number = origin.ref
+				origin_number = origin.l10n_latam_document_number
 				#origin_number = origin_number and ('-' in origin_number) and origin_number.split('-') or ['', '']
 				fecha_ref = origin.invoice_date.strftime('%d/%m/%Y')
 				cod_ref = origin.pe_invoice_code
@@ -264,6 +283,15 @@ class ReportesFinanciero(models.TransientModel):
 				percep = 0
 				total_venta = 0
 				total_pagar = 0
+
+			if sunat_code in ['07']:
+				total_usd = (total_usd * -1.00)
+				valor_venta = (valor_venta * -1.00)
+				inafecto = (inafecto * -1.00)
+				igv = (igv * -1.00)
+				percep = (percep * -1.00)
+				total_venta = (total_venta * -1.00)
+				total_pagar = (total_pagar * -1.00)
 
 			datos_factura = {
 				'correlativo': correlativo,
@@ -432,13 +460,18 @@ class ReportesFinanciero(models.TransientModel):
 			utilidad_bruta = abs(OPINC["balance"])
 		if "balance" in COS:
 			utilidad_bruta = utilidad_bruta - abs(COS["balance"])
+		elif not COS:
+			COS = {'balance': 0.0}
+		else:
+			COS['balance'] = 0.0
+
 
 		margen_operativo = utilidad_bruta
 		if "balance" in EXP_OP:
 			margen_operativo = margen_operativo - (EXP_OP["balance"] if "balance" in EXP_OP else 0)
 
 		otros_ingresos_egresos = 0
-		if "balance" in OIN_FIN:
+		"""if "balance" in OIN_FIN:
 			otros_ingresos_egresos = abs(OIN_FIN["balance"])
 
 		if "balance" in EXP_FIN:
@@ -448,7 +481,19 @@ class ReportesFinanciero(models.TransientModel):
 			otros_ingresos_egresos = otros_ingresos_egresos + (OIN["balance"] * -1)
 
 		if "balance" in EXP:
-			otros_ingresos_egresos = otros_ingresos_egresos - abs(EXP["balance"])
+			otros_ingresos_egresos = otros_ingresos_egresos - abs(EXP["balance"])"""
+
+		if "balance" in OIN_FIN:
+			otros_ingresos_egresos = OIN_FIN["balance"]
+
+		if "balance" in EXP_FIN:
+			otros_ingresos_egresos = otros_ingresos_egresos - abs(EXP_FIN["balance"])
+
+		if "balance" in OIN:
+			otros_ingresos_egresos = otros_ingresos_egresos + (OIN["balance"])
+
+		if "balance" in EXP:
+			otros_ingresos_egresos = otros_ingresos_egresos - EXP["balance"]
 
 		#otros_ingresos_egresos = OIN_FIN["balance"] - EXP_FIN["balance"] + OIN["balance"]
 
@@ -612,10 +657,10 @@ class ReportesFinanciero(models.TransientModel):
 		total_activo_corriente = caja_y_bancos
 
 		if 'balance' in A_CXCOBRARC:
-			total_activo_corriente += abs(A_CXCOBRARC['balance'])
+			total_activo_corriente += A_CXCOBRARC['balance']
 
 		if 'balance' in A_CXCOBRARO:
-			total_activo_corriente += abs(A_CXCOBRARO['balance'])
+			total_activo_corriente += A_CXCOBRARO['balance']
 
 		total_activo_fijo = 0
 		if 'balance' in A_INMUEBLES:

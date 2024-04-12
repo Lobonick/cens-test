@@ -33,9 +33,9 @@
 
     
 
-    <!--<menuitem id="menu_finance_entries_accounting_ledgers" name="Libro Mayor" parent="account.menu_finance_entries" sequence="3"/>
+    <menuitem id="menu_finance_entries_accounting_ledgers" name="Libro Mayor" parent="account.menu_finance_entries" sequence="3"/>
     <menuitem id="menu_action_account_moves_ledger_general" action="action_s_account_moves_ledger_general" groups="account.group_account_readonly" sequence="1" name="Libro mayor" parent="menu_finance_entries_accounting_ledgers"/>
-    <menuitem id="menu_action_s_account_moves_ledger_partner" action="action_s_account_moves_ledger_partner" groups="account.group_account_readonly" sequence="2" name="Libro mayor de socios" parent="menu_finance_entries_accounting_ledgers"/>-->
+    <menuitem id="menu_action_s_account_moves_ledger_partner" action="action_s_account_moves_ledger_partner" groups="account.group_account_readonly" sequence="2" name="Libro mayor de socios" parent="menu_finance_entries_accounting_ledgers"/>
 
 </data>
 </odoo>

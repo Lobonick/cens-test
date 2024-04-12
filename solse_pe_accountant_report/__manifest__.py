@@ -17,11 +17,12 @@
 	'website': "https://www.solse.pe",
 
 	'category': 'Financial',
-	'version': '16.0.0.2',
+	'version': '16.0.0.4',
 	'license': 'Other proprietary',
 	'depends': [
 		'account',
 		'report_xlsx',
+		'solse_pe_cpe',
 	],
 	'data': [
 		'security/ir.model.access.csv',

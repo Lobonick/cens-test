@@ -358,7 +358,12 @@
 		                                </td>
 		                                <td>
 		                                	<!--<span t-if="linea['credit']" t-esc="linea['credit']"/>-->
-		                                	<t t-esc="abs(linea['balance'])"/>
+		                                	<t t-if="linea['balance'] >= 0">
+		                                		<t t-esc="linea['balance']"/>
+		                                	</t>
+		                                	<t t-else="">
+		                                		(<t t-esc="abs(linea['balance'])"/>)
+		                                	</t>
 		                                </td>
 		                                <td >
 	                                		<!--<t t-esc="linea['balance']"/>-->
