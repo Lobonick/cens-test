@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="crm_lead_form_inherit">
+            <field name="name">crm.lead.form.cens_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="export_to_spreadsheet" string="Exportar a Excel" type="object"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
+                    <field name="cens_conta_visita" string="Visitas:"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+<!-- 
+ 
+<xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
+    <field name="x_studio_comentario" string="Comentario:" attrs="{}" invisible="1"/>
+    <field name="x_studio_observaciones" string="OBSERVACIONES:"/>
+  </xpath>
+
+                   <span class="oe_inline oe_separating_element"> </span>
+                    <button name="play_sound" type="object" string="Reproducir Sonido"/>
+-->
