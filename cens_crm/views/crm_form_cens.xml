@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="crm_lead_form_inherit">
+            <field name="name">crm.lead.form.cens_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
+                    <field name="cens_conta_visita" string="Visitas:" invisible="1"/>
+                    <field name="cens_fecha_actual" string="Fecha Actual:" invisible="1"/>
+                    <field name="cens_user_id" string="Usuario Actual:" invisible="1"/>
+                    <field name="cens_campo_control" string="CONTROL:" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_lead_tree_inherit">
+            <field name="name">crm.lead.tree.opportunity.cens_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="export_to_spreadsheet" string="Exportar a Excel" type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
+
+<!-- 
+ 
+                   <button string="Mostrar Popup" type="object" on_click="odoo.define('cens_crm.popup_message', function (require) { require('cens_crm.popup_message').openPopupMessage(); })"/>
+ 
+
+
+
+<xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
+    <field name="x_studio_comentario" string="Comentario:" attrs="{}" invisible="1"/>
+    <field name="x_studio_observaciones" string="OBSERVACIONES:"/>
+  </xpath>
+
+                   <span class="oe_inline oe_separating_element"> </span>
+                    <button name="play_sound" type="object" string="Reproducir Sonido"/>
+-->

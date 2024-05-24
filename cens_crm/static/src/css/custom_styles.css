@@ -1,0 +1,28 @@
+/* 
+-----------------------------------------
+CSS PERSONALIZADO PARAEL MÓDULO CENS
+-----------------------------------------
+*/
+.o_list_view thead th {
+    background-color: #0e748b; 
+    color: white; 
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Asegura que los encabezados estén por encima del contenido */
+}
+
+.o_list_view thead {
+    display: table-header-group; /* Asegura que el encabezado se comporte correctamente */
+}
+
+.o_list_view table {
+    border-collapse: separate; /* Necesario para que position: sticky funcione en algunas versiones de CSS */
+}
+
+.o_list_view tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Color de fondo para filas impares */
+}
+
+.o_list_view tbody tr:nth-child(even) {
+    background-color: #ffffff; /* Color de fondo para filas pares */
+}
