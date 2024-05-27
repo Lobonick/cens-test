@@ -26,3 +26,8 @@ CSS PERSONALIZADO PARAEL MÓDULO CENS
 .o_list_view tbody tr:nth-child(even) {
     background-color: #ffffff; /* Color de fondo para filas pares */
 }
+
+/* Color de fondo para la fila sobre la que está el puntero del mouse */
+.o_list_view tbody tr:hover {
+    background-color: #d9d9d9; /* Color más oscuro para resaltar la fila */
+}

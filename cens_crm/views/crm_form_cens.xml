@@ -21,7 +21,7 @@
             <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="export_to_spreadsheet" string="Exportar a Excel" type="object"/>
+                    <button name="export_to_spreadsheet" class="btn btn-primary" string="Exportar a Excel" type="object"/>
                 </xpath>
             </field>
         </record>
