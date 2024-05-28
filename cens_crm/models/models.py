@@ -286,12 +286,13 @@ class crm_lead_Custom(models.Model):
                     worksheet.write(w_fila, 17, w_lead.x_studio_proyectos_asignados_rpt, cell_format_left)
                     w_cant = len(w_lead.x_studio_proyectos_vinculados)
                     if (w_cant > 1):
-                        w_titu = 'PROYECTOS ASIGNADOS:'+'\n'+'---------------------------------------'+'\n'
-                        worksheet.write_comment(w_fila, 17, w_titu + w_lead.x_studio_proyectos_asignados_rpt2, {
-                                                'author': 'CENS-PERÚ',
-                                                'width': 400,  # pixels
-                                                'color': '#f5e69b',
-                                                'font_name': 'Arial'
+                        if w_lead.x_studio_proyectos_asignados_rpt2:
+                            w_titu = 'PROYECTOS ASIGNADOS:'+'\n'+'---------------------------------------'+'\n'
+                            worksheet.write_comment(w_fila, 17, w_titu + w_lead.x_studio_proyectos_asignados_rpt2, {
+                                                    'author': 'CENS-PERÚ',
+                                                    'width': 400,  # pixels
+                                                    'color': '#f5e69b',
+                                                    'font_name': 'Arial'
                                         })
                 else:
                     worksheet.write(w_fila, 17, " ")
