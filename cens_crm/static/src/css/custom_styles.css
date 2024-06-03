@@ -3,6 +3,9 @@
 CSS PERSONALIZADO PARAEL MÓDULO CENS
 -----------------------------------------
 */
+/* ---------------------------------------------------------------- */
+/* Cambia el color y fija posción BARRA TITULOS   */
+/* ---------------------------------------------------------------- */
 .o_list_view thead th {
     background-color: #0e748b; 
     color: white; 
@@ -15,6 +18,9 @@ CSS PERSONALIZADO PARAEL MÓDULO CENS
     display: table-header-group; /* Asegura que el encabezado se comporte correctamente */
 }
 
+/* --------------------------------------------------------------------- */
+/* Intercala el color de fondo de los FILAS y HOVER del cuerpo reporte   */
+/* --------------------------------------------------------------------- */
 .o_list_view table {
     border-collapse: separate; /* Necesario para que position: sticky funcione en algunas versiones de CSS */
 }
@@ -31,3 +37,17 @@ CSS PERSONALIZADO PARAEL MÓDULO CENS
 .o_list_view tbody tr:hover {
     background-color: #d9d9d9; /* Color más oscuro para resaltar la fila */
 }
+
+/* ---------------------------------------------------------------- */
+/* Cambia el color de fondo de los recuadros KANBAN (NO FUNCIONA)*/
+/* ---------------------------------------------------------------- */
+.o_kanban_view .o_kanban_record {
+    background-color: #F7CD1F; /* !important - Cambia esto al color de fondo que prefieras */
+    border: 1px solid #d9d9d9; /* Opcional: Agrega un borde (SI FUNCA) */
+}
+
+/* Opcional: Cambia el color de fondo al pasar el mouse */
+.o_kanban_view .o_kanban_record:hover {
+    background-color: #f2f2f2; /* !important - Cambia esto al color de fondo que prefieras al hacer hover */
+}
+

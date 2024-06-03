@@ -6,12 +6,49 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_lead_view_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_generar_extorno" 
+                            class="oe_highlight" 
+                            string="Generar Extorno" 
+                            icon="fa-thumbs-up" 
+                            confirm="¿Está seguro de GENERAR EXTORNO?" 
+                            type="object" 
+                            attrs="{'invisible': ['|',['x_studio_monto_de_operacion_entero', '&lt;', 0],['x_studio_nro_agrupamiento', '=', 'ON-']]}"/>
+                    <button name="action_generar_extorno_new" 
+                            class="oe_highlight" 
+                            string="Generar Extorno" 
+                            icon="fa-thumbs-up" 
+                            confirm="¿Está seguro de GENERAR EXTORNO?" 
+                            type="object" 
+                            attrs="{'invisible': [['x_studio_nro_agrupamiento', '!=', 'ON-']]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_generar_extorno']" position="attributes">
+                    <attribute name="effect">{"message":"Well Done!","img_url":"https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png","fadeout":"fast"}</attribute>
+                </xpath>
+                <field name="x_studio_monto_de_operacion_entero" invisible="1"/>
+                <field name="x_studio_nro_agrupamiento" invisible="1"/>
                 <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
                     <field name="cens_conta_visita" string="Visitas:" invisible="1"/>
                     <field name="cens_fecha_actual" string="Fecha Actual:" invisible="1"/>
                     <field name="cens_user_id" string="Usuario Actual:" invisible="1"/>
                     <field name="cens_campo_control" string="CONTROL:" invisible="1"/>
                 </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/div[1]" position="after">
+                    <field name="cens_marcador_extorno" string="" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_monto_de_operacion_entero&quot;,&quot;&gt;=&quot;,0]]}"/>
+                    <div></div>
+                    <div attrs="{&quot;invisible&quot;: [[&quot;x_studio_monto_de_operacion_entero&quot;, &quot;&lt;&quot;, 0]]}">
+                        <field name="x_studio_related_field_tz16I" options="{&quot;size&quot;:[0,120]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_estado_oportunidad&quot;,&quot;!=&quot;,&quot;Ganada&quot;]]}"/>
+                        <field name="x_studio_related_field_sB6wi" options="{&quot;size&quot;:[0,120]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_estado_oportunidad&quot;,&quot;!=&quot;,&quot;Cerrada&quot;]]}"/>
+                        <field name="x_studio_related_field_1WCVi" options="{&quot;size&quot;:[0,120]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_estado_oportunidad&quot;,&quot;!=&quot;,&quot;Anulada&quot;]]}"/>
+                        <field name="x_studio_related_field_J1GlJ" options="{&quot;size&quot;:[0,120]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_estado_oportunidad&quot;,&quot;!=&quot;,&quot;Perdida&quot;]]}"/>
+                        <field name="x_studio_related_field_2chNu" options="{&quot;size&quot;:[0,120]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_estado_oportunidad&quot;,&quot;!=&quot;,&quot;Abierto&quot;]]}"/>
+                    </div>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
+                    <field name="x_studio_comentario" string="Comentario:" attrs="{}" invisible="1"/>
+                    <field name="x_studio_observaciones" string="OBSERVACIONES:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_monto_de_operacion_entero&quot;,&quot;&lt;&quot;,0]]}"/>
+                </xpath>
+ 
             </field>
         </record>
 
@@ -23,6 +60,13 @@
                 <xpath expr="//header" position="inside">
                     <button name="export_to_spreadsheet" class="btn btn-primary" string="Exportar a Excel" type="object"/>
                 </xpath>
+                <xpath expr="//tree[1]" position="attributes">
+                    <attribute name="decoration-danger">x_studio_monto_de_operacion_entero &lt; 0</attribute>
+                    <attribute name="decoration-bf">(x_studio_moneda_simbolo == 'US$.') or (x_studio_monto_de_operacion_entero &lt; 0)</attribute>
+                    <attribute name="decoration-success">(x_studio_moneda_simbolo == 'US$.') and (x_studio_monto_de_operacion_entero &gt;= 0) </attribute>
+                    <attribute name="edit">true</attribute>
+                    <attribute name="multi_edit">true</attribute>
+                </xpath>
             </field>
         </record>
 
@@ -33,8 +77,12 @@
 <!-- 
  
                    <button string="Mostrar Popup" type="object" on_click="odoo.define('cens_crm.popup_message', function (require) { require('cens_crm.popup_message').openPopupMessage(); })"/>
- 
 
+                "{&quot;invisible&quot;: [[&quot;x_studio_monto_de_operacion_entero&quot;, &quot;&lt;&quot;, 0]]}" />
+
+                <field name="x_studio_monto_de_operacion_entero" invisible="1"/>
+                <field name="x_studio_moneda_simbolo" invisible="1"/>
+                <field name="x_studio_estado_oportunidad" invisible="1"/>
 
 
 <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
@@ -45,3 +93,5 @@
                    <span class="oe_inline oe_separating_element"> </span>
                     <button name="play_sound" type="object" string="Reproducir Sonido"/>
 -->
+
+

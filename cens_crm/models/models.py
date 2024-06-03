@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 import xlsxwriter
 import base64
 from io import BytesIO
+from odoo.exceptions import UserError
 
 #
 # clase: import xlsxwriter
@@ -26,10 +27,12 @@ class crm_lead_Custom(models.Model):
     _inherit = 'crm.lead'
     file_data = fields.Binary("File")
     file_name = fields.Char("File Name")
+
     # ---------------------------
     # AGREGA CAMPOS AL MODELO
     # ---------------------------
     cens_user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
+    cens_marcador_extorno = fields.Binary(string="Imagen Extorno", related='company_id.x_studio_marcador_extorno')
     cens_fecha_actual = fields.Datetime(string='Fecha Actual:', readonly=True, existing_field=True)
     cens_conta_visita = fields.Integer(string='Visitas:', readonly=True, default=0, existing_field=True)
     cens_solicitudes_gasto = fields.Many2many(
@@ -49,6 +52,58 @@ class crm_lead_Custom(models.Model):
         w_correlativo = ""
         return True
     
+    # ------------------------------------
+    # GENERAR EXTORNO - Duplica registro
+    # ------------------------------------
+    def action_generar_extorno(self):
+        w_Pase_Ok = False
+        for record in self:
+            if (record.partner_id):
+                w_Pase_Ok = True
+            else:
+                w_Pase_Ok = False
+                record.x_studio_observaciones = "ATENCIÓN: Debe seleccionar un CLIENTE."
+        if w_Pase_Ok:
+            for lead in self:
+                new_lead = lead.copy()
+                new_lead.x_studio_fecha_de_oportunidad = datetime.now()
+                new_lead.x_studio_monto_de_operacion_entero = new_lead.x_studio_monto_de_operacion_entero * -1
+                new_lead.name = f"Extorno de {lead.name}"
+                # Copiar los registros relacionados de x_studio_proyectos_vinculados
+                for related_record in lead.x_studio_proyectos_vinculados:
+                    self.env['x_crm_lead_line_b50b7'].create({
+                        'x_crm_lead_id': new_lead.id,
+                        'x_name': related_record.x_name,
+                        'x_studio_imagen_proyecto': related_record.x_studio_imagen_proyecto,
+                        'x_studio_many2one_field_p3hXb': related_record.x_studio_many2one_field_p3hXb.id,
+                        'x_studio_referencia_telco': related_record.x_studio_referencia_telco,
+                        'x_studio_responsable': related_record.x_studio_responsable,
+                        'x_studio_sequence': related_record.x_studio_sequence,
+                    })
+            return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'crm.lead',
+            'res_id': new_lead.id,
+            'target': 'current',
+            }    
+    
+    @api.model
+    def action_generar_extorno_new(self):
+        w_Pase_Ok = False
+        for record in self:
+            raise UserError("No se puede generar el extorno porque el Nro. de Agrupamiento no es 'ON-'.")
+            record.x_studio_monto_de_operacion_entero = -1
+            record.name = "Nuevo Extorno..."
+            record.x_studio_margen_utilidad = 0.01
+            record.x_studio_entrega_propuesta = datetime.now()
+            record.x_studio_fecha_proyectada_de_cierre = datetime.now()
+            record.date_deadline = datetime.now()
+            record.contact_name = "NONE"
+            record.function = "NONE"
+            record.mobile = "000-000-000"
+        return True
+
     # -------------------------------------------------------------------------------------------------------
     # ACCION - EXPORTAR REPORTE HACIA HOJA DE CALCULO EN EXCEL (Usa librería: xlsxwriter, base64, BytesIO)
     # -------------------------------------------------------------------------------------------------------
@@ -141,8 +196,6 @@ class crm_lead_Custom(models.Model):
             cell_format_perd.set_font_color('red')        ##--- Motivo de la Pérdida
             cell_format_perd.set_align('vcenter')
             cell_format_perd.set_text_wrap()
-            # ------
-            worksheet.write(5, 0, datetime.now(), cell_format_fech)
             # ------                                (ColIni,ColFin,Ancho) --- AJUSTA EL ANCHO DE LAS COLUMNAS
             worksheet.set_column(0, 0, 9)       #-- Ord
             worksheet.set_column(1, 1, 13)      #-- Código 
@@ -157,7 +210,7 @@ class crm_lead_Custom(models.Model):
             worksheet.set_column(10, 10, 12)    #-- Importe DOLARES
             worksheet.set_column(11, 11, 9)     #-- Tipo de Cambio
             worksheet.set_column(12, 12, 12)    #-- Importe AJUSTADO
-            worksheet.set_column(13, 13, 10)     #-- Margen Utilidad %
+            worksheet.set_column(13, 13, 10)    #-- Margen Utilidad %
             worksheet.set_column(14, 14, 12)    #-- Utilidad Esperada
             worksheet.set_column(15, 15, 40)    #-- Descripción de la Oportunidad
             worksheet.set_column(16, 16, 10)    #-- Código TELCO oportunidad
@@ -179,6 +232,7 @@ class crm_lead_Custom(models.Model):
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
             worksheet.write('H4', 'OPORTUNIDADES DE NEGOCIO - CENS', cell_format_cabe)
+            # ------
             worksheet.write('A5', 'FECHA:')
             worksheet.write('B5', datetime.now(), cell_format_fech)
             #-----
@@ -189,15 +243,15 @@ class crm_lead_Custom(models.Model):
             worksheet.write('B6', w_usuario_names)
             #-----
             merge_format = workbook.add_format({'align': 'center'})
-            worksheet.merge_range('J6:M6', 'Merged Cells', merge_format)
-            worksheet.write('J6', 'IMPORTES DE PROPUESTAS NEGOCIADAS', cell_format_tuti)
+            worksheet.merge_range('J6:O6', 'Merged Cells', merge_format)
+            worksheet.write('J6', 'IMPORTES SOBRE LA PROPUESTA NEGOCIADA', cell_format_tuti)
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
             # -------------------------------------------------------------------------------------
             cell_format_tuti.set_font_name('Arial')
             cell_format_tuti.set_font_color('black')
             cell_format_tuti.set_font_size(8)
-            cell_format_tuti.set_text_wrap()                 # FORMATO DE CELDA
+            cell_format_tuti.set_text_wrap()                 # FORMATO TÍTULO - COLUMNAS IMPORTES
             cell_format_tuti.set_bg_color('#92CDDC')
             cell_format_tuti.set_align('center')
             cell_format_tuti.set_align('vcenter')
@@ -205,7 +259,7 @@ class crm_lead_Custom(models.Model):
             cell_format_titu.set_font_name('Arial')
             cell_format_titu.set_font_color('white')
             cell_format_titu.set_font_size(8)
-            cell_format_titu.set_text_wrap()                 # FORMATO DE CELDA
+            cell_format_titu.set_text_wrap()                 # FORMATO TÍTULO - TODA LA BARRA
             cell_format_titu.set_bg_color('#31869B')
             cell_format_titu.set_align('center')
             cell_format_titu.set_align('vcenter')
@@ -271,7 +325,7 @@ class crm_lead_Custom(models.Model):
                     lines  = w_lead.x_studio_proyectos_vinculados
                     w_acum_codig = ""
                     w_cont_regis = 0
-                    w_cant_regis = len(lines)                               #-- EXTRAE CÓDIGO PROYECTO
+                    w_cant_regis = len(lines)                               #-- EXTRAE LOS CÓDIGOS PROYECTO
                     for line in lines:
                         w_cont_regis += 1
                         if (line.x_studio_referencia_telco):
@@ -285,7 +339,7 @@ class crm_lead_Custom(models.Model):
                 if w_lead.x_studio_proyectos_asignados_rpt:
                     worksheet.write(w_fila, 17, w_lead.x_studio_proyectos_asignados_rpt, cell_format_left)
                     w_cant = len(w_lead.x_studio_proyectos_vinculados)
-                    if (w_cant > 1):
+                    if (w_cant > 1):                                        #-- INSERTA COMENTARIO EN CELDA
                         if w_lead.x_studio_proyectos_asignados_rpt2:
                             w_titu = 'PROYECTOS ASIGNADOS:'+'\n'+'---------------------------------------'+'\n'
                             worksheet.write_comment(w_fila, 17, w_titu + w_lead.x_studio_proyectos_asignados_rpt2, {
@@ -296,20 +350,23 @@ class crm_lead_Custom(models.Model):
                                         })
                 else:
                     worksheet.write(w_fila, 17, " ")
-                #-----
+                #-----                                          DETERMINA Y PINTA - ESTADO OPORTUNIDAD
                 worksheet.write(w_fila, 18, w_lead.x_studio_porcentaje_de_probabilidad, cell_format_porc)
-                if (w_lead.x_studio_estado_oportunidad == "Ganada"):
-                    worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_verd)
-                elif (w_lead.x_studio_estado_oportunidad == "Abierto"):
-                    worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_amba)
-                elif (w_lead.x_studio_estado_oportunidad == "Anulada"):
-                    worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
-                    worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
-                elif (w_lead.x_studio_estado_oportunidad == "Perdida"):
-                    worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
-                    worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                if (w_lead.x_studio_monto_de_operacion_entero>=0):
+                    if (w_lead.x_studio_estado_oportunidad == "Ganada"):
+                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_verd)
+                    elif (w_lead.x_studio_estado_oportunidad == "Abierto"):
+                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_amba)
+                    elif (w_lead.x_studio_estado_oportunidad == "Anulada"):
+                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
+                        worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                    elif (w_lead.x_studio_estado_oportunidad == "Perdida"):
+                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
+                        worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                    else:
+                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_cent)
                 else:
-                    worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_cent)
+                    worksheet.write(w_fila, 19, "EXTORNO", cell_format_cent)
 
                 worksheet.write(w_fila, 20, w_lead.x_studio_fecha_hora_ultimo_estado, cell_format_fech)
                 worksheet.write(w_fila, 21, w_lead.x_fecha_win_texto, cell_format_fech)
@@ -412,3 +469,17 @@ class crm_lead_Custom(models.Model):
 #        for record in self:
 #            record.x_hora = datetime.strptime(record.date_from, '%Y-%m-%d %H:%M:%S').strftime('%H:%M')
 
+
+            # Copiar los registros relacionados de x_studio_proyectos_vinculados
+            #for related_record in lead.x_studio_proyectos_vinculados:
+                #self.env['x_crm_lead_line_b50b7'].create({
+                #    'x_crm_lead_id': new_lead.id,
+                #    'x_project_id': related_record.x_project_id.id,
+                #    'x_state': related_record.x_state,
+                #    'x_cliente': related_record.x_cliente,
+                #    'x_contrato': related_record.x_contrato,
+                #    'x_fecha_inicio': related_record.x_fecha_inicio,
+                #    'x_fecha_fin': related_record.x_fecha_fin,
+                #    'x_monto': related_record.x_monto,
+                #    'x_observaciones': related_record.x_observaciones,
+                #})

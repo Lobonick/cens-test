@@ -12,7 +12,7 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
 	'category': 'Sales/CRM',
- 	'version': '16.0.2.41',
+ 	'version': '16.0.2.86',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
@@ -45,3 +45,6 @@
  	'icon': "https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png",
     "sequence": 1,
 }
+
+# https://sisac-peru.com/public_html/wp-content/uploads/2024/05cens_homepage.mp4
+# https://cens.pe//wp-content//uploads//2024//02//02111.mp4
