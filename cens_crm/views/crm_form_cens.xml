@@ -14,6 +14,7 @@
                             confirm="¿Está seguro de GENERAR EXTORNO?" 
                             type="object" 
                             attrs="{'invisible': ['|',['x_studio_monto_de_operacion_entero', '&lt;', 0],['x_studio_nro_agrupamiento', '=', 'ON-']]}"/>
+                    <!--
                     <button name="action_generar_extorno_new" 
                             class="oe_highlight" 
                             string="Generar Extorno" 
@@ -21,9 +22,16 @@
                             confirm="¿Está seguro de GENERAR EXTORNO?" 
                             type="object" 
                             attrs="{'invisible': [['x_studio_nro_agrupamiento', '!=', 'ON-']]}"/>
+                    -->
                 </xpath>
                 <xpath expr="//button[@name='action_generar_extorno']" position="attributes">
                     <attribute name="effect">{"message":"Well Done!","img_url":"https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png","fadeout":"fast"}</attribute>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="before">
+                    <!-- ... Asigna Acciones a los Botones ... -->
+                    <div>
+                        <button name="action_generar_extorno_new" string="Generar Extorno" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                    </div>
                 </xpath>
                 <field name="x_studio_monto_de_operacion_entero" invisible="1"/>
                 <field name="x_studio_nro_agrupamiento" invisible="1"/>
