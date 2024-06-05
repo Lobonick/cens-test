@@ -35,14 +35,6 @@ class crm_lead_Custom(models.Model):
     cens_marcador_extorno = fields.Binary(string="Imagen Extorno", related='company_id.x_studio_marcador_extorno')
     cens_fecha_actual = fields.Datetime(string='Fecha Actual:', readonly=True, existing_field=True)
     cens_conta_visita = fields.Integer(string='Visitas:', readonly=True, default=0, existing_field=True)
-    cens_solicitudes_gasto = fields.Many2many(
-        comodel_name='hr.expense', 
-        relation='x_crm_lead_hr_expense_rel', 
-        column1='crm_lead_id', 
-        column2='hr_expense_id', 
-        string='Solicitudes Gasto:',
-        default=lambda self: self._default_cens_solicitudes_gasto(),
-        existing_field=True )
     cens_campo_control = fields.Char("CONTROL:")
      
     # ------------------------------
@@ -88,21 +80,36 @@ class crm_lead_Custom(models.Model):
             'target': 'current',
             }    
     
-    @api.model
-    def action_generar_extorno_new(self):
-        w_Pase_Ok = False
-        for record in self:
-            raise UserError("No se puede generar el extorno porque el Nro. de Agrupamiento no es 'ON-'.")
-            record.x_studio_monto_de_operacion_entero = -1
-            record.name = "Nuevo Extorno..."
-            record.x_studio_margen_utilidad = 0.01
-            record.x_studio_entrega_propuesta = datetime.now()
-            record.x_studio_fecha_proyectada_de_cierre = datetime.now()
-            record.date_deadline = datetime.now()
-            record.contact_name = "NONE"
-            record.function = "NONE"
-            record.mobile = "000-000-000"
+    # ----------------------------------------------------
+    # GENERAR EXTORNO DESDE NUEVO - Crea nuevo registro
+    # ----------------------------------------------------
+    def action_generar_extorno_nuevo(self):
+        new_lead = self.create({
+            'x_studio_monto_de_operacion_entero': -1,
+            'x_studio_moneda_monto': "soles",
+            'name': "Nuevo Extorno...",
+            'x_studio_margen_utilidad': 0.01,
+            'x_studio_entrega_propuesta': datetime.now(),
+            'x_studio_fecha_proyectada_de_cierre': datetime.now(),      # Crea un nuevo registro de crm.lead
+            'date_deadline': datetime.now(),
+            'contact_name': "NONE",
+            'function': "NONE",
+            'mobile': "000-000-000"
+        })
         return True
+
+    # @api.model
+    # def create(self, vals):
+    #    if 'cens_user_id' not in vals:
+    #        vals['cens_user_id'] = self.env.user.id
+
+    #    for record in self:
+    #        current_datetime = datetime.now()
+    #        record.cens_fecha_actual = current_datetime
+    #        record.cens_campo_control = "ENTRÓ LA WADA"
+
+    #    return super(crm_lead_Custom, self).create(vals)
+
 
     # -------------------------------------------------------------------------------------------------------
     # ACCION - EXPORTAR REPORTE HACIA HOJA DE CALCULO EN EXCEL (Usa librería: xlsxwriter, base64, BytesIO)
@@ -402,17 +409,6 @@ class crm_lead_Custom(models.Model):
         }
 
     # -------------------------------------
-    # ACCIÓN - CARGA SOLICITUDES DE GASTO
-    # -------------------------------------
-    def _default_cens_solicitudes_gasto(self):
-        # for record in self:
-        #    record.x_cens_id_oportunidad = self.env.context.get('active_id')
-        active_solicitudes = self.env['hr.expense'].search([('x_cens_oportunidad_id', '=', self.env.context.get('active_id'))], limit=1)
-        if active_solicitudes:
-            return [(6, 0, active_solicitudes.cens_solicitudes_gasto.ids)]
-        return False
-
-    # -------------------------------------
     # MÉTODO - INICIALIZA VARIABLES
     # -------------------------------------
     def inicializa_variables(self):
@@ -429,17 +425,17 @@ class crm_lead_Custom(models.Model):
     #    record.inicializa_variables()
     #    return record
     
-    @api.model
-    def create(self, vals):
-        if 'cens_user_id' not in vals:
-            vals['cens_user_id'] = self.env.user.id
+    # @api.model
+    # def create(self, vals):
+    #    if 'cens_user_id' not in vals:
+    #        vals['cens_user_id'] = self.env.user.id
 
-        for record in self:
-            current_datetime = datetime.now()
-            record.cens_fecha_actual = current_datetime
-            record.cens_campo_control = "ENTRÓ LA WADA"
+    #    for record in self:
+    #        current_datetime = datetime.now()
+    #        record.cens_fecha_actual = current_datetime
+    #        record.cens_campo_control = "ENTRÓ LA WADA"
 
-        return super(crm_lead_Custom, self).create(vals)
+    #    return super(crm_lead_Custom, self).create(vals)
 
 
 #    @api.onchange('date_from')

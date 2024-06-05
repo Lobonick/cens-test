@@ -14,18 +14,9 @@
                             confirm="¿Está seguro de GENERAR EXTORNO?" 
                             type="object" 
                             attrs="{'invisible': ['|',['x_studio_monto_de_operacion_entero', '&lt;', 0],['x_studio_nro_agrupamiento', '=', 'ON-']]}"/>
-                    <!--
-                    <button name="action_generar_extorno_new" 
-                            class="oe_highlight" 
-                            string="Generar Extorno" 
-                            icon="fa-thumbs-up" 
-                            confirm="¿Está seguro de GENERAR EXTORNO?" 
-                            type="object" 
-                            attrs="{'invisible': [['x_studio_nro_agrupamiento', '!=', 'ON-']]}"/>
-                    -->
                 </xpath>
                 <xpath expr="//button[@name='action_generar_extorno']" position="attributes">
-                    <attribute name="effect">{"message":"Well Done!","img_url":"https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png","fadeout":"fast"}</attribute>
+                    <attribute name="effect">{"message":"Extorno Ok!","img_url":"https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png","fadeout":"fast"}</attribute>
                 </xpath>
                 <field name="x_studio_monto_de_operacion_entero" invisible="1"/>
                 <field name="x_studio_nro_agrupamiento" invisible="1"/>
@@ -61,6 +52,13 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="export_to_spreadsheet" class="btn btn-primary" string="Exportar a Excel" type="object"/>
+                    <button name="action_generar_extorno_nuevo" 
+                            class="oe_highlight" 
+                            string="Generar Extorno" 
+                            icon="fa-thumbs-up" 
+                            confirm="¿Está seguro de GENERAR EXTORNO?" 
+                            type="object" 
+                            attrs="{}"/>
                 </xpath>
                 <xpath expr="//tree[1]" position="attributes">
                     <attribute name="decoration-danger">x_studio_monto_de_operacion_entero &lt; 0</attribute>
@@ -69,6 +67,7 @@
                     <attribute name="edit">true</attribute>
                     <attribute name="multi_edit">true</attribute>
                 </xpath>
+
             </field>
         </record>
 
