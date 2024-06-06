@@ -298,11 +298,16 @@ class crm_lead_Custom(models.Model):
             worksheet.write('W7', 'MOTIVO DE LA PÉRDIDA', cell_format_titu)         #-- 22
             worksheet.freeze_panes(7, 0)
             # -------------------------------------------------------------------------------------
-            # CUERPO DEL REPORTE
+            # CUERPO PRINCIPAL DEL REPORTE
             # -------------------------------------------------------------------------------------
             w_leads = self.search(self._context.get('active_domain', []))  # Obtener registros según el dominio activo en la vista
             w_dato = ""
             w_fila = 7
+            w_acum_gana = 0
+            w_acum_abie = 0
+            w_acum_anul = 0
+            w_acum_perd = 0
+            w_acum_exto = 0
             for w_lead in w_leads:
                 worksheet.write(w_fila, 0, w_fila-6, cell_format_cent)   
                 worksheet.write(w_fila, 1, w_lead.x_studio_nro_agrupamiento, cell_format_cent)
@@ -357,28 +362,77 @@ class crm_lead_Custom(models.Model):
                                         })
                 else:
                     worksheet.write(w_fila, 17, " ")
+
                 #-----                                          DETERMINA Y PINTA - ESTADO OPORTUNIDAD
                 worksheet.write(w_fila, 18, w_lead.x_studio_porcentaje_de_probabilidad, cell_format_porc)
                 if (w_lead.x_studio_monto_de_operacion_entero>=0):
                     if (w_lead.x_studio_estado_oportunidad == "Ganada"):
                         worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_verd)
+                        w_acum_gana += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Abierto"):
                         worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_amba)
+                        w_acum_abie += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Anulada"):
                         worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
                         worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                        w_acum_anul += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Perdida"):
                         worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
                         worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                        w_acum_perd += w_lead.x_studio_monto_ajustado_reporte
                     else:
                         worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_cent)
                 else:
                     worksheet.write(w_fila, 19, "EXTORNO", cell_format_cent)
+                    w_acum_exto += w_lead.x_studio_monto_ajustado_reporte
 
                 worksheet.write(w_fila, 20, w_lead.x_studio_fecha_hora_ultimo_estado, cell_format_fech)
                 worksheet.write(w_fila, 21, w_lead.x_fecha_win_texto, cell_format_fech)
                 w_fila += 1
 
+            # ---------------------------------------------------------
+            # GENERA GRÁFICO COMPARATIVO
+            # ---------------------------------------------------------
+            worksheet2 = workbook.add_worksheet("COMPARATIVO")
+            worksheet2.activate()
+            datos1 = ["Ganadas", "Abiertas", "Anuladas", "Perdidas", "Extornadas"]
+            datos2 = [w_acum_gana, w_acum_abie, w_acum_anul, w_acum_perd, w_acum_exto]
+            worksheet2.write_column('A1', datos1, cell_format_left)
+            worksheet2.write_column('B1', datos2, cell_format_nume)
+            worksheet2.write_column('A7', "Acumulado", cell_format_left)
+            
+            grafico1 = workbook.add_chart({'type': 'bar', 
+                                           'name': 'COMPARATIVO DE OPORTUNIDADES',
+                                           'data_labels': {'value': True,                   # Etiquetas de datos
+                                                           'value': '=COMPARATIVO!$B$1:$B$5',
+                                                           'position': 'outside_end',   # Posición de las etiquetas de datos
+                                                           'font': {'size': 10,  # Tamaño de la fuente de las etiquetas
+                                                                    'color': 'black'}
+                                                          }
+                                           })
+
+            grafico1.add_series({"name": "=COMPARATIVO!$A$7",
+                                 "categories": "=COMPARATIVO!$A$1:$A$5",
+                                 "values": "=COMPARATIVO!$B$1:$B$5",
+                                 'fill':   {'color': '#FF9900'},
+                                })
+            grafico1.set_title({"name": "COMPARATIVO OPORTUNIDADES DE NEGOCIO (ON)"+"\n"+"(Según Estatus y Periodo)"})
+            grafico1.set_x_axis({"name": "ESTADOS OPORTUNIDADES"})
+            grafico1.set_y_axis({"name": "ACUMULADO (S/.)"})
+            grafico1.set_size({'width': 840, 'height': 480})
+            
+            grafico1.set_table()       # Mostrar la tabla de datos
+            grafico1.set_legend({'position': 'none'})  # Desactivar la leyenda
+            grafico1.set_x_axis({'num_format': '0"K"'})    # Formatear los valores del eje Y de forma abreviada
+            grafico1.set_x_axis({'position_axis': 'on_tick'})  # Establecer los ejes en vertical primario
+            grafico1.set_y_axis({'position_axis': 'value'})
+            grafico1.set_style(13)
+            grafico1.set_plotarea({'fill':   {'color': '#DBEEF4'}})
+
+
+            worksheet2.insert_chart('A1', grafico1)  # Insert the chart into the worksheet.
+
+            worksheet.activate()
             workbook.close()
 
         # -------------------------------------------------------------------------------------
