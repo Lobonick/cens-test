@@ -207,29 +207,30 @@ class crm_lead_Custom(models.Model):
             worksheet.set_column(0, 0, 9)       #-- Ord
             worksheet.set_column(1, 1, 13)      #-- Código 
             worksheet.set_column(2, 2, 12)      #-- F.Registro
-            worksheet.set_column(3, 3, 12)      #-- F.Cierre
-            worksheet.set_column(4, 4, 19)      #-- GDN
-            worksheet.set_column(5, 5, 12)      #-- UDN
-            worksheet.set_column(6, 6, 16)      #-- SUN
-            worksheet.set_column(7, 7, 35)      #-- Cliente
-            worksheet.set_column(8, 8, 5)       #-- Moneda
-            worksheet.set_column(9, 9, 12)      #-- Importe SOLES
-            worksheet.set_column(10, 10, 12)    #-- Importe DOLARES
-            worksheet.set_column(11, 11, 9)     #-- Tipo de Cambio
-            worksheet.set_column(12, 12, 12)    #-- Importe AJUSTADO
-            worksheet.set_column(13, 13, 10)    #-- Margen Utilidad %
-            worksheet.set_column(14, 14, 12)    #-- Utilidad Esperada
-            worksheet.set_column(15, 15, 40)    #-- Descripción de la Oportunidad
-            worksheet.set_column(16, 16, 10)    #-- Código TELCO oportunidad
-            worksheet.set_column(17, 17, 40)    #-- Proyecto Asignado
-            worksheet.set_column(18, 18, 12)    #-- Probabilidad
-            worksheet.set_column(19, 19, 12)    #-- Estado Oportunidad
-            worksheet.set_column(20, 20, 12)    #-- Fecha Último Estado
-            worksheet.set_column(21, 21, 12)    #-- Fecha de GANADA
-            worksheet.set_column(22, 22, 50)    #-- Motivo de la Pérdida
+            worksheet.set_column(3, 3, 12)      #-- F.Estimada de Cierre
+            worksheet.set_column(4, 4, 12)      #-- F.Cierre
+            worksheet.set_column(5, 5, 19)      #-- GDN
+            worksheet.set_column(6, 6, 12)      #-- UDN
+            worksheet.set_column(7, 7, 16)      #-- SUN
+            worksheet.set_column(8, 8, 35)      #-- Cliente
+            worksheet.set_column(9, 9, 5)       #-- Moneda
+            worksheet.set_column(10, 10, 12)      #-- Importe SOLES
+            worksheet.set_column(11, 11, 12)    #-- Importe DOLARES
+            worksheet.set_column(12, 12, 9)     #-- Tipo de Cambio
+            worksheet.set_column(13, 13, 12)    #-- Importe AJUSTADO
+            worksheet.set_column(14, 14, 10)    #-- Margen Utilidad %
+            worksheet.set_column(15, 15, 12)    #-- Utilidad Esperada
+            worksheet.set_column(16, 16, 40)    #-- Descripción de la Oportunidad
+            worksheet.set_column(17, 17, 10)    #-- Código TELCO oportunidad
+            worksheet.set_column(18, 18, 40)    #-- Proyecto Asignado
+            worksheet.set_column(19, 19, 12)    #-- Probabilidad
+            worksheet.set_column(20, 20, 12)    #-- Estado Oportunidad
+            worksheet.set_column(21, 21, 12)    #-- Fecha Último Estado
+            worksheet.set_column(22, 22, 12)    #-- Fecha de GANADA
+            worksheet.set_column(23, 23, 50)    #-- Motivo de la Pérdida
             # ------
             worksheet.set_row(6, 27)        # (Fila,Altura)
-            worksheet.set_zoom(85)
+            worksheet.set_zoom(85)          # %-Zoom
             # -------------------------------------------------------------------------------------
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
@@ -276,26 +277,27 @@ class crm_lead_Custom(models.Model):
             worksheet.write('A7', 'ORD', cell_format_titu)                          #-- 00
             worksheet.write('B7', 'CÓDIGO', cell_format_titu)                       #-- 01
             worksheet.write('C7', 'FECHA REGISTRO', cell_format_titu)               #-- 02
-            worksheet.write('D7', 'FECHA CIERRE OPORTUNIDAD', cell_format_titu)     #-- 03
-            worksheet.write('E7', 'GDN REPONSABLE', cell_format_titu)               #-- 04
-            worksheet.write('F7', 'UNIDAD DE NEGOCIO', cell_format_titu)            #-- 05
-            worksheet.write('G7', 'SUB.UNIDAD DE NEGOCIO', cell_format_titu)        #-- 06
-            worksheet.write('H7', 'C L I E N T E', cell_format_titu)                #-- 07
-            worksheet.write('I7', 'MONE', cell_format_titu)                         #-- 08
-            worksheet.write('J7', 'IMPORTE SOLES(PEN)', cell_format_titu)           #-- 09
-            worksheet.write('K7', 'IMPORTE DÓLARES(USD)', cell_format_titu)         #-- 10
-            worksheet.write('L7', 'TIPO CAMBIO', cell_format_titu)                  #-- 11
-            worksheet.write('M7', 'AJUSTADO SOLES', cell_format_titu)               #-- 12
-            worksheet.write('N7', 'MARGEN UTILIDAD', cell_format_titu)              #-- 13
-            worksheet.write('O7', 'UTILIDAD ESPERADA', cell_format_titu)            #-- 14
-            worksheet.write('P7', 'DESCRIPCIÓN DE LA OPORTUNIDAD', cell_format_titu)#-- 15
-            worksheet.write('Q7', 'CÓDIGO TELCO-GO', cell_format_titu)              #-- 16
-            worksheet.write('R7', 'PROYECTO ASIGNADO', cell_format_titu)            #-- 17
-            worksheet.write('S7', 'PROBABILIDAD %', cell_format_titu)               #-- 18
-            worksheet.write('T7', 'ESTADO OPORTUNIDAD', cell_format_titu)           #-- 19
-            worksheet.write('U7', 'FECHA ÚLTIMO ESTADO', cell_format_titu)          #-- 20
-            worksheet.write('V7', 'FECHA DE GANADA', cell_format_titu)              #-- 21
-            worksheet.write('W7', 'MOTIVO DE LA PÉRDIDA', cell_format_titu)         #-- 22
+            worksheet.write('D7', 'CIERRE ESTIMADO', cell_format_titu)     #-- 03
+            worksheet.write('E7', 'CIERRE OPORTUNIDAD', cell_format_titu)     #-- 04
+            worksheet.write('F7', 'GDN REPONSABLE', cell_format_titu)               #-- 05
+            worksheet.write('G7', 'UNIDAD DE NEGOCIO', cell_format_titu)            #-- 06
+            worksheet.write('H7', 'SUB.UNIDAD DE NEGOCIO', cell_format_titu)        #-- 07
+            worksheet.write('I7', 'C L I E N T E', cell_format_titu)                #-- 08
+            worksheet.write('J7', 'MONE', cell_format_titu)                         #-- 09
+            worksheet.write('K7', 'IMPORTE SOLES(PEN)', cell_format_titu)           #-- 10
+            worksheet.write('L7', 'IMPORTE DÓLARES(USD)', cell_format_titu)         #-- 11
+            worksheet.write('M7', 'TIPO CAMBIO', cell_format_titu)                  #-- 12
+            worksheet.write('N7', 'AJUSTADO SOLES', cell_format_titu)               #-- 13
+            worksheet.write('O7', 'MARGEN UTILIDAD', cell_format_titu)              #-- 14
+            worksheet.write('P7', 'UTILIDAD ESPERADA', cell_format_titu)            #-- 15
+            worksheet.write('Q7', 'DESCRIPCIÓN DE LA OPORTUNIDAD', cell_format_titu)#-- 16
+            worksheet.write('R7', 'CÓDIGO TELCO-GO', cell_format_titu)              #-- 17
+            worksheet.write('S7', 'PROYECTO ASIGNADO', cell_format_titu)            #-- 18
+            worksheet.write('T7', 'PROBABILIDAD %', cell_format_titu)               #-- 19
+            worksheet.write('U7', 'ESTADO OPORTUNIDAD', cell_format_titu)           #-- 20
+            worksheet.write('V7', 'FECHA ÚLTIMO ESTADO', cell_format_titu)          #-- 21
+            worksheet.write('W7', 'FECHA DE GANADA', cell_format_titu)              #-- 22
+            worksheet.write('X7', 'MOTIVO DE LA PÉRDIDA', cell_format_titu)         #-- 23
             worksheet.freeze_panes(7, 0)
             # -------------------------------------------------------------------------------------
             # CUERPO PRINCIPAL DEL REPORTE
@@ -312,26 +314,27 @@ class crm_lead_Custom(models.Model):
                 worksheet.write(w_fila, 0, w_fila-6, cell_format_cent)   
                 worksheet.write(w_fila, 1, w_lead.x_studio_nro_agrupamiento, cell_format_cent)
                 worksheet.write(w_fila, 2, w_lead.x_studio_fecha_de_oportunidad, cell_format_fech)
-                worksheet.write(w_fila, 3, w_lead.date_deadline, cell_format_fech)
-                worksheet.write(w_fila, 4, w_lead.x_studio_gdn_responsable, cell_format_left)
+                worksheet.write(w_fila, 3, w_lead.x_studio_fecha_proyectada_de_cierre, cell_format_fech)
+                worksheet.write(w_fila, 4, w_lead.date_deadline, cell_format_fech)
+                worksheet.write(w_fila, 5, w_lead.x_studio_gdn_responsable, cell_format_left)
                 w_dato = w_lead.x_studio_many2one_field_t33Z2.x_udn_abrv
-                worksheet.write(w_fila, 5, w_dato, cell_format_left)
-                w_dato = w_lead.x_studio_many2one_field_RmaJp.x_sun_abrv
                 worksheet.write(w_fila, 6, w_dato, cell_format_left)
-                w_dato = w_lead.partner_id.name
+                w_dato = w_lead.x_studio_many2one_field_RmaJp.x_sun_abrv
                 worksheet.write(w_fila, 7, w_dato, cell_format_left)
+                w_dato = w_lead.partner_id.name
+                worksheet.write(w_fila, 8, w_dato, cell_format_left)
                 
-                worksheet.write(w_fila, 8, w_lead.x_studio_moneda_simbolo, cell_format_cent)
+                worksheet.write(w_fila, 9, w_lead.x_studio_moneda_simbolo, cell_format_cent)
                 if (w_lead.x_studio_moneda_simbolo=="S/."):
-                    worksheet.write(w_fila, 9, w_lead.x_studio_monto_de_operacion_entero, cell_format_nume)
-                else:
                     worksheet.write(w_fila, 10, w_lead.x_studio_monto_de_operacion_entero, cell_format_nume)
-                    worksheet.write(w_fila, 11, w_lead.x_studio_tasa_cambiaria_dolares, cell_format_tcam)
-                worksheet.write(w_fila, 12, w_lead.x_studio_monto_ajustado_reporte, cell_format_nume)
-                worksheet.write(w_fila, 13, w_lead.x_studio_margen_utilidad, cell_format_xcen)
+                else:
+                    worksheet.write(w_fila, 11, w_lead.x_studio_monto_de_operacion_entero, cell_format_nume)
+                    worksheet.write(w_fila, 12, w_lead.x_studio_tasa_cambiaria_dolares, cell_format_tcam)
+                worksheet.write(w_fila, 13, w_lead.x_studio_monto_ajustado_reporte, cell_format_nume)
+                worksheet.write(w_fila, 14, w_lead.x_studio_margen_utilidad, cell_format_xcen)
                 w_utilidad_esperada = w_lead.x_studio_monto_ajustado_reporte * w_lead.x_studio_margen_utilidad
-                worksheet.write(w_fila, 14, w_utilidad_esperada, cell_format_nume) 
-                worksheet.write(w_fila, 15, w_lead.x_studio_proyecto, cell_format_left)
+                worksheet.write(w_fila, 15, w_utilidad_esperada, cell_format_nume) 
+                worksheet.write(w_fila, 16, w_lead.x_studio_proyecto, cell_format_left)
                 #-----
                 if (w_lead.x_studio_estado_oportunidad == "Ganada"):
                     lines  = w_lead.x_studio_proyectos_vinculados
@@ -344,12 +347,12 @@ class crm_lead_Custom(models.Model):
                             w_acum_codig += line.x_studio_referencia_telco.strip() 
                             if not (w_cont_regis==w_cant_regis):
                                 w_acum_codig += "\n"
-                    worksheet.write(w_fila, 16, w_acum_codig, cell_format_cent)
+                    worksheet.write(w_fila, 17, w_acum_codig, cell_format_cent)
                 else:
-                    worksheet.write(w_fila, 16, " ", cell_format_cent)
+                    worksheet.write(w_fila, 17, " ", cell_format_cent)
                 #-----
                 if w_lead.x_studio_proyectos_asignados_rpt:
-                    worksheet.write(w_fila, 17, w_lead.x_studio_proyectos_asignados_rpt, cell_format_left)
+                    worksheet.write(w_fila, 18, w_lead.x_studio_proyectos_asignados_rpt, cell_format_left)
                     w_cant = len(w_lead.x_studio_proyectos_vinculados)
                     if (w_cant > 1):                                        #-- INSERTA COMENTARIO EN CELDA
                         if w_lead.x_studio_proyectos_asignados_rpt2:
@@ -361,33 +364,33 @@ class crm_lead_Custom(models.Model):
                                                     'font_name': 'Arial'
                                         })
                 else:
-                    worksheet.write(w_fila, 17, " ")
+                    worksheet.write(w_fila, 18, " ")
 
                 #-----                                          DETERMINA Y PINTA - ESTADO OPORTUNIDAD
-                worksheet.write(w_fila, 18, w_lead.x_studio_porcentaje_de_probabilidad, cell_format_porc)
+                worksheet.write(w_fila, 19, w_lead.x_studio_porcentaje_de_probabilidad, cell_format_porc)
                 if (w_lead.x_studio_monto_de_operacion_entero>=0):
                     if (w_lead.x_studio_estado_oportunidad == "Ganada"):
-                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_verd)
+                        worksheet.write(w_fila, 20, w_lead.x_studio_estado_oportunidad, cell_format_verd)
                         w_acum_gana += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Abierto"):
-                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_amba)
+                        worksheet.write(w_fila, 20, w_lead.x_studio_estado_oportunidad, cell_format_amba)
                         w_acum_abie += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Anulada"):
-                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
-                        worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                        worksheet.write(w_fila, 20, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
+                        worksheet.write(w_fila, 23, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
                         w_acum_anul += w_lead.x_studio_monto_ajustado_reporte
                     elif (w_lead.x_studio_estado_oportunidad == "Perdida"):
-                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
-                        worksheet.write(w_fila, 22, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
+                        worksheet.write(w_fila, 20, w_lead.x_studio_estado_oportunidad, cell_format_rojo)
+                        worksheet.write(w_fila, 23, w_lead.x_studio_sustento_anulado_perdido, cell_format_perd)
                         w_acum_perd += w_lead.x_studio_monto_ajustado_reporte
                     else:
-                        worksheet.write(w_fila, 19, w_lead.x_studio_estado_oportunidad, cell_format_cent)
+                        worksheet.write(w_fila, 20, w_lead.x_studio_estado_oportunidad, cell_format_cent)
                 else:
-                    worksheet.write(w_fila, 19, "EXTORNO", cell_format_cent)
+                    worksheet.write(w_fila, 20, "EXTORNO", cell_format_cent)
                     w_acum_exto += w_lead.x_studio_monto_ajustado_reporte
 
-                worksheet.write(w_fila, 20, w_lead.x_studio_fecha_hora_ultimo_estado, cell_format_fech)
-                worksheet.write(w_fila, 21, w_lead.x_fecha_win_texto, cell_format_fech)
+                worksheet.write(w_fila, 21, w_lead.x_studio_fecha_hora_ultimo_estado, cell_format_fech)
+                worksheet.write(w_fila, 22, w_lead.x_fecha_win_texto, cell_format_fech)
                 w_fila += 1
 
             # ---------------------------------------------------------
