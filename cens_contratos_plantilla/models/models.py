@@ -15,14 +15,17 @@ class hr_contract_Custom(models.Model):
     # ---------------------------------------
     cens_user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     cens_imagen_contrato = fields.Binary(string="Imagen Contrato", related='company_id.x_studio_imagen_contrato_01')
+    cens_imagen_aviso_01 = fields.Binary(string="Primero Contrato", related='company_id.x_studio_aviso_primero_contrato')
     cens_fecha_actual = fields.Datetime(string='Fecha Actual:', readonly=True, existing_field=True)
     cens_barra_progreso = fields.Binary(string="Barra de Progreso", related='company_id.x_studio_barra_de_progreso')
     cens_barra_campo = fields.Float(string='Barra Progreso: ', default=0.0)
     cens_plantilla_seleccionada = fields.Many2one('hr.contract.plantilla_documento', string='Plantilla Seleccionada:')
+    cens_docume_filepdf  = fields.Char("PDF Generado:")
     cens_contrato_documento = fields.Text("CONTRATO:")
     cens_contrato_anexo1 = fields.Text("ANEXO-1:")
     cens_contrato_anexo2 = fields.Text("ANEXO-2:")
     cens_docume_creara = fields.Boolean(string="CREAR-0:", store=True, default=False)
+    cens_docume_aviso  = fields.Boolean(string="AVISO-0:", store=False, default=False)
     cens_docume_proces = fields.Boolean(string="PROCE-0:", store=True, default=False)
     cens_docume_editar = fields.Boolean(string="DOCUM-0:", store=True, default=False)
     cens_anexo1_editar = fields.Boolean(string="ANEXO-1:", store=True, default=False)
@@ -35,8 +38,10 @@ class hr_contract_Custom(models.Model):
         for record in self:
             if (record.cens_plantilla_seleccionada):
                 record.cens_docume_creara = True
+                record.cens_docume_aviso = False
             else:
                 record.cens_docume_creara = False
+                record.cens_docume_aviso = True
         pass
     
     # ----------------------------------------------

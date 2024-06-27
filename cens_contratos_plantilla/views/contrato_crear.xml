@@ -39,6 +39,7 @@
                         <group name="studio_group_qtAZB_left" string="DETALLE DEL DOCUMENTO">
                             <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                             <field name="cens_plantilla_seleccionada"/>
+                            <field name="cens_docume_filepdf"/>
                             <field name="cens_barra_campo" widget="progress_bar_widget"/>
                             <div>
                                 <button name="action_button_docum_editar" string="EDITAR" icon="fa-thumbs-up" type="object" class="oe_highlight" style="width: 300px;" attrs="{'invisible': [['cens_docume_creara','=',False]]}"/>
@@ -48,7 +49,8 @@
                             <div></div>
                         </group>
                         <group name="studio_group_qtAZB_right">
-                            <field name="cens_imagen_contrato" string="" options="{&quot;size&quot;:[450,600]}" widget="image"/>
+                            <field name="cens_imagen_contrato" string="" options="{&quot;size&quot;:[450,600]}" widget="image" attrs="{'invisible': [['cens_docume_aviso','=',True]]}"/>
+                            <field name="cens_imagen_aviso_01" string="" options="{&quot;size&quot;:[450,600]}" widget="image" attrs="{'invisible': [['cens_docume_aviso','=',False]]}"/>
                         </group>
                     </group>
                     <group name="studio_group_contrato" string="" invisible="0">
