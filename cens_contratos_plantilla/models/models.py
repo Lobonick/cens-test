@@ -42,7 +42,7 @@ class hr_contract_Custom(models.Model):
             else:
                 record.cens_docume_creara = False
                 record.cens_docume_aviso = True
-        pass
+        return record.cens_docume_aviso
     
     # ----------------------------------------------
     # PERMITE CREAR EL CONTRATO
