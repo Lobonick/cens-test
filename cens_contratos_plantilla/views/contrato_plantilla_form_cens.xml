@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="plantilla_documento_form" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_documento.form</field>
+            <field name="model">hr.contract.plantilla_documento</field>
+            <field name="arch" type="xml">
+                <form string="Plantilla Contrato">
+                    <header>
+                        <button name="confirmar_plantilla" string="Confirmar" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['posted', 'annul'])]}"/>
+                        <span class="oe_inline oe_separating_element"> </span>
+                        <button name="regresa_borrador" string="Regresar a Borrador" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['draft', 'borrador'])]}"/>
+                        <span class="oe_inline oe_separating_element"> </span>
+                        <button name="anula_plantilla" string="Anular" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['draft', 'annul'])]}"/>
+                        <field name="state" string="" widget="statusbar" class="oe_right" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <field name="cens_marcador_cabecera" class="oe_left" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <field name="cens_img_sello_anulado" class="oe_right" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{'invisible': [('state', 'in', ['draft', 'posted'])]}"/>
+                        <separator/>
+                        <div class="oe_title">
+                            <h1>
+                            <field class="text-break" name="name" placeholder="TIPO - Descripción del cargo..." options="{&quot;size&quot;:[0,190]}"/>
+                            </h1>
+                        </div>
+                        <group></group>
+                        <group>
+                            <group string="DATOS GENERALES">
+                                <field name="cens_contenido_titulo"/>
+                                <field name="company_id" widget="many2one"/>
+                                <field name="cens_regimen_laboral"/>
+                            </group>
+                            <group string="CAMPO A INSERTAR">
+                                <separator/>
+                                <field name="cens_campo_seleccionado" string="Campo Seleccionado"/> 
+                                <field name="cens_campo_insertag" string="Campo a Insertar"/>
+                                <field name="cens_campo_descripcion" string="Descripción del Campo"/>
+                                <!-- ... Asigna Acciones a los Botones ... -->
+                                <div></div>
+                                <div>
+                                    <button name="action_button_insertar" string="INSERTAR" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                                    <span class="oe_inline oe_separating_element"> </span>
+                                    <button name="action_button_limpia" string="LIMPIAR" icon="fa-check" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_contenido_generales">
+                            <field name="cens_contenido_generales"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_01_titulo">
+                            <field name="cens_clausula_01_titulo"/>
+                        </group>
+                        <group name="group_clausula_01_parrafo">
+                            <field name="cens_clausula_01_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_02_titulo">
+                            <field name="cens_clausula_02_titulo"/>
+                        </group>
+                        <group name="group_clausula_02_parrafo">
+                            <field name="cens_clausula_02_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_03_titulo">
+                            <field name="cens_clausula_03_titulo"/>
+                        </group>
+                        <group name="group_clausula_03_parrafo">
+                            <field name="cens_clausula_03_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_04_titulo">
+                            <field name="cens_clausula_04_titulo"/>
+                        </group>
+                        <group name="group_clausula_04_parrafo">
+                            <field name="cens_clausula_04_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_05_titulo">
+                            <field name="cens_clausula_05_titulo"/>
+                        </group>
+                        <group name="group_clausula_05_parrafo">
+                            <field name="cens_clausula_05_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_06_titulo">
+                            <field name="cens_clausula_06_titulo"/>
+                        </group>
+                        <group name="group_clausula_06_parrafo">
+                            <field name="cens_clausula_06_parrafo"/>
+                        </group>
+                        <field name="cens_separador_06" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <group name="group_clausula_07_titulo">
+                            <field name="cens_clausula_07_titulo"/>
+                        </group>
+                        <group name="group_clausula_07_parrafo">
+                            <field name="cens_clausula_07_parrafo"/>
+                        </group>
+                        
+                        <group>
+                            <separator/>
+                        </group>
+                    </sheet>
+
+                    <!--
+                        ********************** FUNCIÓN JAVASCRIPT *****************************
+                    
+                    <script type="text/javascript">
+                        function insertText() {
+                            var textarea = document.getElementById("cens_campo_descripcion");
+                            var insertValue = document.getElementById("cens_campo_insertag").value;
+                            var startPos = textarea.selectionStart;
+                            var endPos = textarea.selectionEnd;
+                            var text = textarea.value;
+                            var newText = text.substring(0, startPos) + insertValue + text.substring(endPos, text.length);
+                            textarea.value = newText;
+                            textarea.selectionStart = startPos + insertValue.length;
+                            textarea.selectionEnd = startPos + insertValue.length;
+                        }
+                    </script>
+                    -->
+                </form>    
+            </field>
+        </record>
+
+        <record id="plantilla_documento_tree" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_documento.tree</field>
+            <field name="model">hr.contract.plantilla_documento</field>
+            <field name="arch" type="xml">
+                <tree string="Plantillas" multi_edit="0" sample="1" edit="false" delete="true" duplicate="false" import="true" create="true" expand="1">
+                    <field name="name" string="Nombre Plantilla" readonly="1"/>
+                    <field name="cens_regimen_laboral" string="Régimen Laboral"/>
+                    <field name="cens_contenido_titulo" string="Título"/>
+                    <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-info="state == 'draft'" optional="show"/>
+                  </tree>
+            </field>
+        </record>
+
+        <record id="view_plantilla_documento_search" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_documento.search.pdv.view</field>
+            <field name="model">hr.contract.plantilla_documento</field>
+            <field name="arch" type="xml">
+                <search string="Plantilla Contrato">
+                    <field name="name" />
+                    <field name="cens_regimen_laboral"/>                 
+                </search>
+            </field>
+        </record>
+
+        <!--
+            UBICACION EN EL MENU
+        -->
+
+        <record id="plantilla_documento_action" model="ir.actions.act_window">
+            <field name="name">Plantilla Contrato</field>
+            <field name="res_model">hr.contract.plantilla_documento</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_plantilla_documento_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            action="plantilla_documento_action"
+            id="menu_human_resources_configuration_contract"
+            name="Plantilla Contrato"
+            parent="hr.menu_human_resources_configuration" sequence="170"
+        />
+
+        <!-- 
+        <template id="assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/cens_contratos_plantilla/static/src/js/insert_content.js"/>
+            </xpath>
+        </template>
+        -->
+
+    </data>
+</odoo>
+
+
+
+<!-- 
+
+
+
+onclick="insert_text()"
+
+                parent="hr.menu_human_resources_configuration" sequence="170"/>
+
+
+                <xpath expr="//header" position="inside">
+                </xpath>
+                
+                    <span class="oe_inline oe_separating_element"> </span>
+                    <button name="confirmar_plantilla_contrato" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button name="confirmar_plantilla_contrato" string=" Confirmar " icon="fa-thumbs-up" confirm="¿Está seguro de CONFIRMAR?" type="object" class="oe_highlight"/>
+    
+        <div class="oe_title oe_right" name="title_y" style="width: 400px;">
+            <h1><field name="fecha_texto"/></h1>
+        </div>
+        <group name="cens_group_1">
+            <group name="cens_group_1_left"/>
+            <group name="cens_group_1_right"/>
+        </group>
+
+        <xpath expr="//div[@class='o_field_tree']" position="after">
+            <button name="import_to_spreadsheet" string="Importar a hoja de cálculo" type="object"/>
+        </xpath>
+
+
+        <record model="ir.ui.view" id="custom_hr_leave_view_form">
+            <field name="name">hr.leave.view.form.custom</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.view_hr_leave_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+
+        <record model="ir.ui.view" id="view_crm_lead_inherit">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+ 
+-->

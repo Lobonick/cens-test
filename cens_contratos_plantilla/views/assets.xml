@@ -1,0 +1,15 @@
+<odoo>
+    <template id="assets_backend" name="highlight_text_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/cens_contratos_plantilla/static/src/js/highlight_text.js"/>
+        </xpath>
+    </template>
+</odoo>
+
+
+
+<!--
+
+<script type="text/javascript" src="cens_contratos_plantilla/static/src/js/highlight_text.js"></script>
+
+-->

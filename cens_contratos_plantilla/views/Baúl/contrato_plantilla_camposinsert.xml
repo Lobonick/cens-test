@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="plantilla_camposinsert_form" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_camposinsert.form</field>
+            <field name="model">hr.contract.plantilla_camposinsert</field>
+            <field name="arch" type="xml">
+                <form string="Campos a Insertar">
+                    <header>
+                        <button name="confirmar_camposinsert" string="Confirmar" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['posted', 'annul'])]}"/>
+                        <span class="oe_inline oe_separating_element"> </span>
+                        <button name="borrador_camposinsert" string="Regresar a Borrador" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['draft', 'borrador'])]}"/>
+                        <span class="oe_inline oe_separating_element"> </span>
+                        <button name="anula_camposinsert" string="Anular" type="object" class="btn-primary" attrs="{'invisible': [('state', 'in', ['draft', 'annul'])]}"/>
+                        <field name="state" string="" widget="statusbar" class="oe_right" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <field name="cens_marcador_cabecera" class="oe_left" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <field name="cens_img_insertag" class="oe_right" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <separator/>
+                        <div class="oe_title">
+                            <h1>
+                            <field class="text-break" name="name" placeholder="Nombre_del_campo" options="{&quot;size&quot;:[0,190]}"/>
+                            </h1>
+                        </div>
+                        <group></group>
+                        <group>
+                            <group string="DETALLE DE LA CONFIGURACIÓN">
+                                <field name="company_id" widget="many2one"/>
+                                <field name="cens_campo_modelo" widget="selection"/>
+                                <field name="cens_campo_filename"/>
+                                <field name="cens_campo_descripcion"/>
+                                <field name="cens_campo_tipo" widget="selection"/>
+                                <field name="cens_campo_tecnico" placeholder="cens_fieldName" />
+                            </group>
+                            <group>
+                                <field name="cens_img_decora" string="" class="oe_right" options="{&quot;size&quot;:[0,300]}" widget="image"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <separator/>
+                        </group>
+                    </sheet>
+                 </form>    
+            </field>
+        </record>
+
+        <record id="plantilla_camposinsert_tree" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_camposinsert.tree</field>
+            <field name="model">hr.contract.plantilla_camposinsert</field>
+            <field name="arch" type="xml">
+                <tree string="camposinsert" multi_edit="0" sample="1" edit="false" delete="true" duplicate="false" import="true" create="true" expand="1">
+                    <field name="name" string="Nombre Etiqueta" readonly="1"/>
+                    <field name="company_id" widget="many2one" invisible="1"/>
+                    <field name="cens_campo_modelo" widget="selection"/>
+                    <field name="cens_campo_filename"/>
+                    <field name="cens_campo_descripcion"/>
+                    <field name="cens_campo_tipo" widget="selection"/>
+                    <field name="cens_campo_tecnico"/>
+                    <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-info="state == 'draft'" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_plantilla_camposinsert_search" model="ir.ui.view">
+            <field name="name">hr.contract.plantilla_camposinsert.search.pdv.view</field>
+            <field name="model">hr.contract.plantilla_camposinsert</field>
+            <field name="arch" type="xml">
+                <search string="Campos a Insertar">
+                    <field name="name" />
+                    <field name="cens_campo_tecnico"/>
+                </search>
+            </field>
+        </record>
+
+        <!--
+            UBICACION EN EL MENU
+        -->
+
+        <record id="plantilla_camposinsert_action" model="ir.actions.act_window">
+            <field name="name">Campos a Insertar</field>
+            <field name="res_model">hr.contract.plantilla_camposinsert</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_plantilla_camposinsert_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            action="plantilla_camposinsert_action"
+            id="menu_human_resources_configuration_camposinsert"
+            name="Campos a Insertar"
+            parent="hr.menu_human_resources_configuration" sequence="171"/>
+
+    </data>
+</odoo>
+

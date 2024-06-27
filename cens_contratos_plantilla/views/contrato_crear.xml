@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_contract_form_inherit">
+            <field name="name">hr.contract.form.cens_inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_generar_contrato" 
+                            class="oe_highlight" 
+                            string="Generar Contrato" 
+                            icon="fa-thumbs-up" 
+                            confirm="¿Está seguro de GENERAR CONTRATO?" 
+                            type="object" 
+                            attrs="{'invisible': [['state', '!=', 'open']]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_generar_contrato']" position="attributes">
+                    <attribute name="effect">{"message":"Creación Ok!","img_url":"https://sisac-peru.com/CENS-LOGO%20-%20Baja%20-%20Transparente.png","fadeout":"fast"}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='hr_responsible_id']" position="after">
+                    <field name="x_studio_tipo_de_planilla" string="Tipo de Planilla:" widget="label_selection"/>
+                    <separator/>
+                </xpath>
+
+                <!-- ==================================================== -->
+                <!--  DETALLES DEL CONTRATO GENERADO                      -->
+                <!-- ==================================================== -->
+                <xpath expr="//group[@name='contract_details']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other']/group[1]" position="after">
+                    <field name="cens_docume_creara" invisible="1"/>
+                    <field name="cens_docume_proces" invisible="1"/>
+                    <field name="cens_docume_editar" invisible="1"/>
+
+                    <group name="studio_group_qtAZB">
+                        <group name="studio_group_qtAZB_left" string="DETALLE DEL DOCUMENTO">
+                            <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
+                            <field name="cens_plantilla_seleccionada"/>
+                            <field name="cens_barra_campo" widget="progress_bar_widget"/>
+                            <div>
+                                <button name="action_button_docum_editar" string="EDITAR" icon="fa-thumbs-up" type="object" class="oe_highlight" style="width: 300px;" attrs="{'invisible': [['cens_docume_creara','=',False]]}"/>
+                            </div>
+                            <div></div>
+                            <separator/>
+                            <div></div>
+                        </group>
+                        <group name="studio_group_qtAZB_right">
+                            <field name="cens_imagen_contrato" string="" options="{&quot;size&quot;:[450,600]}" widget="image"/>
+                        </group>
+                    </group>
+                    <group name="studio_group_contrato" string="" invisible="0">
+                        <field name="cens_contrato_documento" widget="pdf_viewer" string="CONTRATO:" attrs="{'invisible': [['cens_docume_editar','=',False]]}"/>
+                    </group>
+                    <group name="studio_group_anexo1" string="" invisible="1">
+                        <field widget="pdf_viewer" name="cens_contrato_anexo1" string="ANEXO-1:"/>
+                    </group>
+                    <group name="studio_group_anexo2" string="" invisible="1">
+                        <field widget="pdf_viewer" name="cens_contrato_anexo2" string="ANEXO-2:"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+<!--
+
+style="float: left; margin-right: 10px;"
+                            <field name="progress" string="PROCESANDO:" attrs="{'invisible': [['cens_docume_proces','=',False]]}"/>
+
+                            <div>
+                                <field name="cens_barra_progreso" string="" widget="image" options="{&quot;size&quot;:[90,150]}" attrs="{'invisible': [['cens_docume_proces','=',False]]}"/>
+                            </div>
+
+
+                                <button name="action_button_docun_creara" string="CREAR CONTRATO" icon="fa-thumbs-up" type="object" class="oe_highlight btn btn-primary btn-block" attrs="{'invisible': [['cens_docume_creara','=',True]]}"/>
+                                <button name="action_button_docun_editar" string="EDITAR" icon="fa-thumbs-up" type="object" class="oe_highlight btn btn-primary btn-block" attrs="{'invisible': [['cens_docume_creara','=',False]]}"/>
+
+
+                            attrs="{'invisible': [['cens_docume_creara','=',False]]}"
+                            <div></div>
+
+                                <span class="oe_inline oe_separating_element"> </span>
+                                <button name="action_button_docum_limpia" string="LIMPIAR" icon="fa-check" type="object" class="oe_highlight"/>
+
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" t-att-style="'width: %d%%;' % o.progress" t-att-aria-valuenow="o.progress" aria-valuemin="0" aria-valuemax="100">
+                                    <t t-esc="o.progress"/>%
+                                </div>
+                            </div>
+
+-->
+
