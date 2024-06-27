@@ -15,7 +15,7 @@ class hr_contract_Custom(models.Model):
     # ---------------------------------------
     cens_user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     cens_imagen_contrato = fields.Binary(string="Imagen Contrato", related='company_id.x_studio_imagen_contrato_01')
-    cens_imagen_aviso_01 = fields.Binary(string="Primero Contrato", related='company_id.x_studio_aviso_primero_contrato')
+    cens_imagen_aviso_01 = fields.Binary(string="Primero Contrato", related='company_id.x_studio_aviso_primero_plantilla')
     cens_fecha_actual = fields.Datetime(string='Fecha Actual:', readonly=True, existing_field=True)
     cens_barra_progreso = fields.Binary(string="Barra de Progreso", related='company_id.x_studio_barra_de_progreso')
     cens_barra_campo = fields.Float(string='Barra Progreso: ', default=0.0)
