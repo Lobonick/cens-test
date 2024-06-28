@@ -31,7 +31,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='other']/group[1]" position="after">
-                    <field name="cens_docume_aviso" invisible="0"/>
+                    <field name="cens_docume_aviso" invisible="1"/>
                     <field name="cens_docume_creara" invisible="1"/>
                     <field name="cens_docume_proces" invisible="1"/>
                     <field name="cens_docume_editar" invisible="1"/>
@@ -40,14 +40,12 @@
                         <group name="studio_group_qtAZB_left" string="DETALLE DEL DOCUMENTO">
                             <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                             <field name="cens_plantilla_seleccionada"/>
+                            <field name="cens_plantilla_titulo"/>
                             <field name="cens_docume_filepdf"/>
-                            <field name="cens_barra_campo" widget="progress_bar_widget"/>
+                            <!-- <field name="cens_barra_campo" widget="progress_bar_widget"/> -->
                             <div>
                                 <button name="action_button_docum_editar" string="EDITAR" icon="fa-thumbs-up" type="object" class="oe_highlight" style="width: 300px;" attrs="{'invisible': [['cens_docume_creara','=',False]]}"/>
                             </div>
-                            <div></div>
-                            <separator/>
-                            <div></div>
                         </group>
                         <group name="studio_group_qtAZB_right">
                             <field name="cens_imagen_contrato" string="" options="{&quot;size&quot;:[450,600]}" widget="image" attrs="{'invisible': [['cens_docume_aviso','=',True]]}"/>
@@ -72,7 +70,12 @@
 
 <!--
 
-style="float: left; margin-right: 10px;"
+                            <div></div>
+                            <separator/>
+                            <div></div>
+
+
+            style="float: left; margin-right: 10px;"
                             <field name="progress" string="PROCESANDO:" attrs="{'invisible': [['cens_docume_proces','=',False]]}"/>
 
                             <div>
