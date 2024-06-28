@@ -38,11 +38,11 @@
                     <field name="cens_docume_editar" invisible="1"/>
 
                     <group name="studio_group_qtAZB">
-                        <group name="studio_group_qtAZB_left" string="PLANTILLA BASE">
+                        <group name="studio_group_qtAZB_left" string="PLANTILLA BASE UTILIZADA">
                             <field name="cens_plantilla_seleccionada"/>
                             <field name="cens_plantilla_titulo"/>
                             <field name="cens_plantilla_observ"/> 
-                            <separator string="__________________________"/>
+                            <separator string="_______________________________________________________________________"/>
                             <field name="cens_docume_filepdf"/>
                             <!-- <field name="cens_barra_campo" widget="progress_bar_widget"/> -->
                             <div>
