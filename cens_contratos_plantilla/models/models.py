@@ -111,13 +111,13 @@ class hr_contract_Custom(models.Model):
             vals['cens_contrato_codigo'] = "CONT-"+("0000000"+str(vals.id))[-7:]
         return super(hr_contract_Custom, self).create(vals)
 
-    # @api.model
-    # def read(self, fields=None, load='_classic_read'):
+    @api.model
+    def read(self, fields=None, load='_classic_read'):
         # self.get_time_elapsed()
-    #    self.update_fecha_actual()
-    #    for record in self:
-    #        record.cens_fecha_texto = self.get_time_elapsed()
-    #    return super(hr_contract_Custom, self).read(fields=fields, load=load)
+        for record in self:
+            record.cens_contrato_codigo = "CONT-"+("0000000"+str(record.id))[-7:]
+            #record.cens_fecha_texto = self.get_time_elapsed()
+        return super(hr_contract_Custom, self).read(fields=fields, load=load)
 
 class CustomPlantilla(models.Model):
     _name = 'hr.contract.plantilla_documento'
