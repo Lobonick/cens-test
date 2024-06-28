@@ -25,12 +25,24 @@ class hr_contract_Custom(models.Model):
     cens_contrato_anexo1 = fields.Text("ANEXO-1:")
     cens_contrato_anexo2 = fields.Text("ANEXO-2:")
     cens_docume_creara = fields.Boolean(string="CREAR-0:", store=True, default=False)
-    cens_docume_aviso  = fields.Boolean(string="AVISO-0:", store=False, default=False)
+    cens_docume_aviso  = fields.Boolean(string="AVISO-0:", readonly=True, store=True, default=False, compute='_compute_activa_aviso')
     cens_docume_proces = fields.Boolean(string="PROCE-0:", store=True, default=False)
     cens_docume_editar = fields.Boolean(string="DOCUM-0:", store=True, default=False)
     cens_anexo1_editar = fields.Boolean(string="ANEXO-1:", store=True, default=False)
     cens_anexo2_editar = fields.Boolean(string="ANEXO-2:", store=True, default=False)
     
+    # ----------------------------------------------
+    # MÉTODO COMPUTADO - Activa Aviso
+    # ----------------------------------------------
+    @api.depends('cens_plantilla_seleccionada')
+    def _compute_activa_aviso(self):
+        for record in self:
+            if (record.cens_plantilla_seleccionada):
+                record.cens_docume_aviso = False
+            else:
+                record.cens_docume_aviso = True
+        pass
+
     # ----------------------------------------------
     # SOLICITA CREA EL CONTRATO SEGÚN PLANTILLA
     # ----------------------------------------------
@@ -38,11 +50,9 @@ class hr_contract_Custom(models.Model):
         for record in self:
             if (record.cens_plantilla_seleccionada):
                 record.cens_docume_creara = True
-                record.cens_docume_aviso = False
             else:
                 record.cens_docume_creara = False
-                record.cens_docume_aviso = True
-        return record.cens_docume_aviso
+        pass
     
     # ----------------------------------------------
     # PERMITE CREAR EL CONTRATO
