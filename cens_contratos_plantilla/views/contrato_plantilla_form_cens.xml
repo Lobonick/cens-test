@@ -29,6 +29,7 @@
                                 <field name="cens_contenido_titulo"/>
                                 <field name="company_id" widget="many2one"/>
                                 <field name="cens_regimen_laboral"/>
+                                <field name="cens_contenido_observ"/>                     
                             </group>
                             <group string="CAMPO A INSERTAR">
                                 <separator/>

@@ -20,6 +20,7 @@
                 </xpath>
                 <xpath expr="//field[@name='hr_responsible_id']" position="after">
                     <field name="x_studio_tipo_de_planilla" string="Tipo de Planilla:" widget="label_selection"/>
+                    <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                     <separator/>
                 </xpath>
 
@@ -37,10 +38,11 @@
                     <field name="cens_docume_editar" invisible="1"/>
 
                     <group name="studio_group_qtAZB">
-                        <group name="studio_group_qtAZB_left" string="DETALLE DEL DOCUMENTO">
-                            <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
+                        <group name="studio_group_qtAZB_left" string="PLANTILLA BASE">
                             <field name="cens_plantilla_seleccionada"/>
-                            <field name="cens_plantilla_titulo"/> 
+                            <field name="cens_plantilla_titulo"/>
+                            <field name="cens_plantilla_observ"/> 
+                            <separator string="__________________________"/>
                             <field name="cens_docume_filepdf"/>
                             <!-- <field name="cens_barra_campo" widget="progress_bar_widget"/> -->
                             <div>
