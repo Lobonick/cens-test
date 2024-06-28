@@ -23,6 +23,7 @@ class hr_contract_Custom(models.Model):
     cens_plantilla_titulo = fields.Char(string="Título Contrato: ", related='cens_plantilla_seleccionada.cens_contenido_titulo')
     cens_plantilla_observ = fields.Char(string="Observaciones: ", related='cens_plantilla_seleccionada.cens_contenido_observ')
     cens_docume_filepdf  = fields.Char("PDF Generado:")
+    cens_contrato_codigo = fields.Text("Código Contrato:", default="CONT-0000000")
     cens_contrato_documento = fields.Text("CONTRATO:")
     cens_contrato_anexo1 = fields.Text("ANEXO-1:")
     cens_contrato_anexo2 = fields.Text("ANEXO-2:")
@@ -52,7 +53,7 @@ class hr_contract_Custom(models.Model):
         for record in self:
             if (record.cens_plantilla_seleccionada):
                 record.cens_docume_creara = True
-                record.cens_docume_filepdf = ("CONT-"+("000000"+str(record.id))[-6:])
+                record.cens_docume_filepdf = ("CONT-"+("0000000"+str(record.id))[-7:])
             else:
                 record.cens_docume_creara = False
         pass
@@ -99,8 +100,24 @@ class hr_contract_Custom(models.Model):
     def action_button_docum_limpia(self):
         pass
 
+    # ----------------------------------------------
+    # INICIALIZA AL CREAR EL CONTRATO
+    # ----------------------------------------------
+    @api.model
+    def create(self, vals):
+        if 'cens_user_id' not in vals:
+            vals['cens_user_id'] = self.env.user.id
+        if 'cens_contrato_codigo' not in vals:
+            vals['cens_contrato_codigo'] = "CONT-"+("0000000"+str(vals.id))[-7:]
+        return super(hr_contract_Custom, self).create(vals)
 
-
+    # @api.model
+    # def read(self, fields=None, load='_classic_read'):
+        # self.get_time_elapsed()
+    #    self.update_fecha_actual()
+    #    for record in self:
+    #        record.cens_fecha_texto = self.get_time_elapsed()
+    #    return super(hr_contract_Custom, self).read(fields=fields, load=load)
 
 class CustomPlantilla(models.Model):
     _name = 'hr.contract.plantilla_documento'

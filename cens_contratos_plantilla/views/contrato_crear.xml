@@ -22,6 +22,7 @@
                     <field name="x_studio_tipo_de_planilla" string="Tipo de Planilla:" widget="label_selection"/>
                     <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
                     <separator/>
+                    <field name="cens_contrato_codigo" string="Código Contrato:"/>
                 </xpath>
 
                 <!-- ==================================================== -->
