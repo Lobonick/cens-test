@@ -41,7 +41,6 @@ class hr_contract_Custom(models.Model):
         for record in self:
             if (record.cens_plantilla_seleccionada):
                 record.cens_docume_aviso = False
-                record.cens_docume_filepdf = ("CONT-"+("000000"+str(record.id))[-6:])
             else:
                 record.cens_docume_aviso = True
         pass
@@ -53,6 +52,7 @@ class hr_contract_Custom(models.Model):
         for record in self:
             if (record.cens_plantilla_seleccionada):
                 record.cens_docume_creara = True
+                record.cens_docume_filepdf = ("CONT-"+("000000"+str(record.id))[-6:])
             else:
                 record.cens_docume_creara = False
         pass
