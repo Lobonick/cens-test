@@ -20,7 +20,7 @@ class hr_contract_Custom(models.Model):
     cens_barra_progreso = fields.Binary(string="Barra de Progreso", related='company_id.x_studio_barra_de_progreso')
     cens_barra_campo = fields.Float(string='Barra Progreso: ', default=0.0)
     cens_plantilla_seleccionada = fields.Many2one('hr.contract.plantilla_documento', string='Plantilla Seleccionada:')
-    cens_plantilla_titulo = fields.Char(string="Título Contrato: ", related='hr.contract.plantilla_documento.cens_contenido_titulo')
+    #cens_plantilla_titulo = fields.Char(string="Título Contrato: ", related='hr_contract_plantilla_documento.cens_contenido_titulo')
     cens_docume_filepdf  = fields.Char("PDF Generado:")
     cens_contrato_documento = fields.Text("CONTRATO:")
     cens_contrato_anexo1 = fields.Text("ANEXO-1:")
