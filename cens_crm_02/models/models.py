@@ -11,60 +11,40 @@ class CRMLead(models.Model):
     cens_control_01 = fields.Integer(string='Control 01:', readonly=True, default=0, existing_field=True)
     cens_control_02 = fields.Char("Control 02:")
 
-    # @api.model
-    # def create(self, vals):
-    #    res = super(CRMLead, self).create(vals)
-    #    return res
-
-    # def write(self, vals):
-    #    res = super(CRMLead, self).write(vals)
-    #    if 'message_ids' in vals:
-    #        self.send_lead_comment_email()
-    #    else:
-    #        for record in self:
-    #            record.cens_control_02 = "NO ENTRÓ: "
-    #    return res
-
-    # def send_lead_comment_email(self):
-    #    self.ensure_one()
-    #    email_to = 'ealcantara@cens.com.pe'
-    #    subject = f"Nuevo comentario en la oportunidad: {self.name}"
-    #    body = f"El usuario {self.env.user.name} ha agregado un nuevo comentario en la oportunidad: {self.name}"
-    #    self.env['mail.mail'].create({
-    #       'body_html': body,
-    #        'subject': subject,
-    #        'email_to': email_to,
-    #        'auto_delete': True
-    #    }).send()
-
-class MailLeadComment(models.Model):
-    _inherit = 'mail.message'
-
     @api.model
     def create(self, vals):
-        res = super(MailLeadComment, self).create(vals)
+        res = super(CRMLead, self).create(vals)
         if 'message_ids' in vals:
-            self.send_lead_comment_email()
+            self.envia_comentario_por_email()
+        else:
+            for record in self:
+                record.cens_control_02 = "NO ENTRÓ x CREATE: "
         return res
 
     def write(self, vals):
-        res = super(MailLeadComment, self).write(vals)
+        res = super(CRMLead, self).write(vals)
         if 'message_ids' in vals:
-            self.send_lead_comment_email()
+            self.envia_comentario_por_email()
+        else:
+            for record in self:
+                record.cens_control_02 = "NO ENTRÓ x WRITE"
         return res
 
-    def send_lead_comment_email(self):
+    def envia_comentario_por_email(self):
         self.ensure_one()
         email_to = 'ealcantara@cens.com.pe'
         subject = f"Nuevo comentario en la oportunidad: {self.name}"
-        body = f"El usuario {self.env.user.name} ha agregado un nuevo comentario en la oportunidad: {self.name}"
+        body = f"IMPORTANTE: El usuario {self.env.user.name} ha agregado un nuevo comentario en la oportunidad: {self.name}"
         self.env['mail.mail'].create({
-            'body_html': body,
+           'body_html': body,
             'subject': subject,
             'email_to': email_to,
             'auto_delete': True
         }).send()
 
+
+# class MailLeadComment(models.Model):
+#    _inherit = 'mail.message'
 
 #    @api.model
 #    def create(self, vals):
