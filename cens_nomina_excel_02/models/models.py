@@ -234,25 +234,105 @@ class HrPayslip(models.Model):
 
 
         # Definir campos a exportar
-        fields_to_export = [
-            'id', 'number', 'employee_id', 'x_studio_documento_identidad', 'x_studio_mes_calculado', 'date_from', 'date_to',
-            'contract_id', 'struct_id', 'state'
-        ]
+        # fields_to_export = [
+        #    'id', 'number', 'employee_id', 'x_studio_documento_identidad', 'x_studio_mes_calculado', 'date_from', 'date_to',
+        #    'contract_id', 'struct_id', 'state'
+        #]
 
         # Escribir encabezados
-        for col, field in enumerate(fields_to_export):
-            worksheet.write(7, col, field)
+        # for col, field in enumerate(fields_to_export):
+        #    worksheet.write(7, col, field)
 
         # Escribir datos
-        for row, record in enumerate(self, start=9):
-            for col, field in enumerate(fields_to_export):
-                value = record[field]
-                if field in ['employee_id', 'contract_id', 'struct_id']:
-                    value = value.name if value else ''
-                worksheet.write(row, col, str(value))
+        # for row, record in enumerate(self, start=9):
+        #    for col, field in enumerate(fields_to_export):
+        #        value = record[field]
+        #        if field in ['employee_id', 'contract_id', 'struct_id']:
+        #            value = value.name if value else ''
+        #        worksheet.write(row, col, str(value))
 
+        # workbook.close()
+
+        # -------------------------------------------------------------------------------------
+        # CUERPO PRINCIPAL DEL REPORTE - CENS DEVELOPMENT
+        # -------------------------------------------------------------------------------------
+        # w_lote = self.search(self._context.get('active_domain', []))  # Obtener registros según el dominio activo en la vista
+        w_lote = self.browse(self._context.get('active_ids', []))
+        w_dato = ""
+        w_fila = 7
+        w_acum_gana = 0
+        w_acum_abie = 0
+        w_acum_anul = 0
+        w_acum_perd = 0
+        w_acum_exto = 0
+
+        for w_boleta in w_lote:
+            # worksheet.write(w_fila, 0, w_fila-6, cell_format_cent)
+            worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
+            worksheet.write(w_fila, 1, w_boleta.number, cell_format_cent)
+            w_dato = w_boleta.employee_id.name
+            worksheet.write(w_fila, 2, w_dato, cell_format_left)
+            worksheet.write(w_fila, 3, w_boleta.x_studio_dni, cell_format_cent)
+
+            # w_dato = w_boleta.payslip_run_id.name
+            w_dato = ""
+            w_mes = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').month
+            w_dia = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').day
+            w_ano = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').year
+            w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
+            worksheet.write(w_fila, 4, w_dato, cell_format_cent)
+
+            worksheet.write(w_fila, 5, w_boleta.date_from, cell_format_fech)
+            worksheet.write(w_fila, 6, w_boleta.date_to, cell_format_fech)
+            w_dato = w_boleta.currency_id.name
+            worksheet.write(w_fila, 7, w_dato, cell_format_cent)
+            # ----------------------------
+            # -- INGRESOS --
+            # ----------------------------
+            worksheet.write(w_fila, 8, w_boleta.x_studio_dias_computados, cell_format_nume)
+            worksheet.write(w_fila, 9, w_boleta.x_studio_licencia_fallecimiento, cell_format_nume)
+            worksheet.write(w_fila, 10, w_boleta.x_studio_licencia_materpater, cell_format_nume)
+            worksheet.write(w_fila, 11, w_boleta.x_studio_dias_vacaciones, cell_format_nume)
+            worksheet.write(w_fila, 12, w_boleta.x_studio_dias_con_goce, cell_format_nume)
+            worksheet.write(w_fila, 13, w_boleta.x_studio_descanso_medico, cell_format_nume)
+
+            worksheet.write(w_fila, 14, w_boleta.x_studio_edit_feriados, cell_format_cent)
+            worksheet.write(w_fila, 15, w_boleta.x_studio_feriados_dias, cell_format_nume)
+            worksheet.write(w_fila, 16, w_boleta.x_studio_feriados_importe, cell_format_impo)
+
+            worksheet.write(w_fila, 17, w_boleta.x_studio_bonificacion_extraordinaria, cell_format_impo)
+            worksheet.write(w_fila, 18, w_boleta.x_studio_horas_extras_importe, cell_format_nume)
+            worksheet.write(w_fila, 19, w_boleta.x_studio_reembolso, cell_format_impo)
+            worksheet.write(w_fila, 20, w_boleta.x_studio_reembolso_movilidad, cell_format_impo)
+            worksheet.write(w_fila, 21, w_boleta.x_studio_reembolso_combustible, cell_format_impo)
+
+            worksheet.write(w_fila, 22, w_boleta.x_studio_movilidad, cell_format_impo)
+            worksheet.write(w_fila, 23, w_boleta.x_studio_vale_alimentos, cell_format_impo)
+            worksheet.write(w_fila, 24, w_boleta.x_studio_condiciones_laborales, cell_format_impo)
+            worksheet.write(w_fila, 25, w_boleta.x_studio_bonificacion_educacion, cell_format_impo)
+            worksheet.write(w_fila, 26, w_boleta.x_studio_utilidades_voluntarias, cell_format_impo)
+            worksheet.write(w_fila, 27, w_boleta.x_studio_adelanto_gratificacion, cell_format_impo)
+            # ----------------------------
+            # -- EGRESOS --
+            # ----------------------------
+            worksheet.write(w_fila, 28, w_boleta.x_studio_descuento_inasistencias, cell_format_nume)
+            worksheet.write(w_fila, 29, w_boleta.x_studio_dias_sin_goce, cell_format_nume)
+            worksheet.write(w_fila, 30, w_boleta.x_studio_adelanto_sueldo, cell_format_impo)
+            worksheet.write(w_fila, 31, w_boleta.x_studio_descuento_tardanzas_min, cell_format_nume)
+            worksheet.write(w_fila, 32, w_boleta.x_studio_retencion_judicial, cell_format_impo)
+            worksheet.write(w_fila, 33, w_boleta.x_studio_descuento_prestamos, cell_format_impo)
+            
+            # worksheet.write(w_fila, 13, w_boleta.basic_wage, cell_format_nume)
+            # worksheet.write(w_fila, 13, w_boleta.net_wage, cell_format_nume)
+            # worksheet.write(w_fila, 13, w_boleta.state, cell_format_nume)
+
+            w_fila += 1
+
+        # worksheet.activate()
         workbook.close()
-        
+
+        # ------------------------------------------------------------------
+
         # Crear adjunto
         xlsx_data = output.getvalue()
         attachment = self.env['ir.attachment'].create({
