@@ -357,3 +357,33 @@ class HrPayslip(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
+
+    def mes_literal(self, nmes):
+        w_mes = nmes
+        if (w_mes == 1):
+            w_mes_name = "ENE"
+        elif (w_mes == 2):
+            w_mes_name = "FEB"
+        elif (w_mes == 3):
+            w_mes_name = "MAR"
+        elif (w_mes == 4):
+            w_mes_name = "ABR"
+        elif (w_mes == 5):
+            w_mes_name = "MAY"
+        elif (w_mes == 6):
+            w_mes_name = "JUN"
+        elif (w_mes == 7):
+            w_mes_name = "JUL"
+        elif (w_mes == 8):
+            w_mes_name = "AGO"
+        elif (w_mes == 9):
+            w_mes_name = "SET"
+        elif (w_mes == 10):
+            w_mes_name = "OCT"
+        elif (w_mes == 11):
+            w_mes_name = "NOV"
+        elif (w_mes == 12):
+            w_mes_name = "DIC"
+        else:
+            w_mes_name = "ERR"
+        return w_mes_name
