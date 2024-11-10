@@ -13,7 +13,6 @@ class HrPayslip(models.Model):
         # Crear archivo Excel en memoria
         output = BytesIO()
         workbook = xlsxwriter.Workbook(output)
-        worksheet = workbook.add_worksheet('Nóminas')
 
         # -------------------------------------------------------------------------------------
         # CONFIGURACIÓN GENERAL DE LA WORKSHEET
@@ -28,7 +27,7 @@ class HrPayslip(models.Model):
                 'keywords': 'nómina, lote, worksheet',
                 'created':  datetime.now(),
                 'comments': 'Creado por: Área de Sistemas - CENS-PERÚ'})
-        worksheet = workbook.add_worksheet("DATA-CENS")
+        worksheet = workbook.add_worksheet('Nóminas')
         cell_format = workbook.add_format()
         cell_format_empr = workbook.add_format({'bold': True})
         cell_format_cabe = workbook.add_format()
@@ -242,10 +241,10 @@ class HrPayslip(models.Model):
 
         # Escribir encabezados
         for col, field in enumerate(fields_to_export):
-            worksheet.write(8, col, field)
+            worksheet.write(7, col, field)
 
         # Escribir datos
-        for row, record in enumerate(self, start=1):
+        for row, record in enumerate(self, start=9):
             for col, field in enumerate(fields_to_export):
                 value = record[field]
                 if field in ['employee_id', 'contract_id', 'struct_id']:
