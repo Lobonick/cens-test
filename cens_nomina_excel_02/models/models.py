@@ -235,8 +235,8 @@ class HrPayslip(models.Model):
 
         # Definir campos a exportar
         fields_to_export = [
-            'id', 'number', 'name', 'date_from', 'date_to',
-            'employee_id', 'contract_id', 'struct_id', 'state'
+            'id', 'number', 'employee_id', 'x_studio_documento_identidad', 'x_studio_mes_calculado', 'date_from', 'date_to',
+            'contract_id', 'struct_id', 'state'
         ]
 
         # Escribir encabezados
