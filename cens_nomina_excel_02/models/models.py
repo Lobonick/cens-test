@@ -270,7 +270,7 @@ class HrPayslip(models.Model):
             'x_studio_adelanto_sueldo',
             'x_studio_descuento_tardanzas_min',
             'x_studio_retencion_judicial',
-            'x_studio_descuento_prestamos',
+            'x_studio_descuento_prestamos'
         ]
 
         # Escribir encabezados
