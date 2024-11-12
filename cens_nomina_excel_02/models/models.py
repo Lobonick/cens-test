@@ -232,16 +232,50 @@ class HrPayslip(models.Model):
         worksheet.write('AN7', 'MO', cell_format_titu)         #-- 39
         worksheet.freeze_panes(7, 4)
 
-
+        # -------------------------------------------------------------------------------------
+        # INSERTA NOMBRE DE CAMPOS Y OCULTA FILA
+        # -------------------------------------------------------------------------------------
         # Definir campos a exportar
-        # fields_to_export = [
-        #    'id', 'number', 'employee_id', 'x_studio_documento_identidad', 'x_studio_mes_calculado', 'date_from', 'date_to',
-        #    'contract_id', 'struct_id', 'state'
-        #]
+        fields_to_export = [
+            'id', 
+            'number', 
+            'employee_id.name', 
+            'x_studio_documento_identidad', 
+            'x_studio_mes_calculado', 
+            'date_from', 
+            'date_to',
+            'currency_id.name',
+            'x_studio_dias_computados',
+            'x_studio_licencia_fallecimiento',
+            'x_tudio_licencia_materpater',
+            'x_studio_dias_vacaciones',
+            'x_studio_dias_con_goce',
+            'x_studio_descanso_medico',
+            'x_studio_edit_feriados',
+            'x_studio_feriados_dias',
+            'x_studio_feriados_importe',
+            'x_studio_bonificacion_extraordinaria',
+            'x_studio_horas_extras_importe',
+            'x_studio_reembolso',
+            'x_studio_reembolso_movilidad',
+            'x_studio_reembolso_combustible',
+            'x_studio_movilidad',
+            'x_studio_vale_alimentos',
+            'x_studio_condiciones_laborales',
+            'x_studio_bonificacion_educacion',
+            'x_studio_utilidades_voluntarias',
+            'x_studio_adelanto_gratificacion',
+            'x_studio_descuento_inasistencias',
+            'x_studio_dias_sin_goce',
+            'x_studio_adelanto_sueldo',
+            'x_studio_descuento_tardanzas_min',
+            'x_studio_retencion_judicial',
+            'x_studio_descuento_prestamos',
+        ]
 
         # Escribir encabezados
-        # for col, field in enumerate(fields_to_export):
-        #    worksheet.write(7, col, field)
+        for col, field in enumerate(fields_to_export):
+            worksheet.write(8, col, field)
 
         # Escribir datos
         # for row, record in enumerate(self, start=9):
@@ -259,7 +293,7 @@ class HrPayslip(models.Model):
         # w_lote = self.search(self._context.get('active_domain', []))  # Obtener registros según el dominio activo en la vista
         w_lote = self.browse(self._context.get('active_ids', []))
         w_dato = ""
-        w_fila = 7
+        w_fila = 8
         w_acum_gana = 0
         w_acum_abie = 0
         w_acum_anul = 0
