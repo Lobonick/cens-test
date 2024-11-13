@@ -275,7 +275,7 @@ class HrPayslip(models.Model):
 
         # Escribir encabezados
         for col, field in enumerate(fields_to_export):
-            worksheet.write(8, col, field)
+            worksheet.write(7, col, field)
 
         # Escribir datos
         # for row, record in enumerate(self, start=9):
