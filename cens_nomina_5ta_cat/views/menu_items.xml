@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú de Renta 5ta Categoría bajo Gestión Planillas -->
+    <menuitem 
+        id="menu_renta_quinta_category"
+        name="Renta 5ta Categoría"
+        parent="hr_payroll.menu_hr_payroll_payslips"
+        sequence="100"/>
+        <!-- parent="hr_payroll.menu_hr_payroll_payslips" -->
+
+    <!-- Submenú para Control Anual de Renta -->
+    <menuitem 
+        id="menu_renta_quinta_control"
+        name="Control Anual de Renta"
+        parent="menu_renta_quinta_category"
+        action="action_renta_quinta_control"
+        sequence="10"/>
+</odoo>
