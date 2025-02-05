@@ -284,8 +284,11 @@ class renta_quinta_Custom(models.Model):
     def carga_rellena_datos(self):
         for record in self:
             w_sueldo_basico = record.contract_wage
-            # w_asigna_famili = record.cens_sueldo_minimo * 0.10
-            w_asigna_famili = record.cens_sminim_proces * 0.10
+            w_extrae_asigfam = record.employee_id.x_studio_asignacin_familiar_1
+            if w_extrae_asigfam:
+                w_asigna_famili = w_sueldo_basico * (w_extrae_asigfam/100) if w_sueldo_basico>0 else 0.00      #--- Calcula Asignación Familiar
+            else:
+                w_asigna_famili = 0.00
             w_importe_uit   = record.cens_uit_procesado
             w_Ingres = record.contract_date_ingreso
             w_AñoEje = int(record.cens_anio_ejercicio) if record.cens_anio_ejercicio else 2025
