@@ -8,11 +8,11 @@ _logger = logging.getLogger(__name__)
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
-
+    cens_nano_ejercicio  = fields.Integer(string="Año Ejercicios", default=lambda self: self.env.date_from.year)
     cens_renta_quinta_id = fields.Many2one('hr.payslip.renta_quinta', 
         string='5taCat',
-        domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', x_anio)]", 
-        context="{'record.date_from.year': x_anio}"
+        domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]", 
+        context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"
     )
     cens_tiene_renta5ta = fields.Boolean(
         string='¿Tiene Renta 5ta.Cat.?', 
@@ -70,13 +70,14 @@ class renta_quinta_Custom(models.Model):
                                             ("2025", "Ejercicio 2025"), 
                                             ("2026", "Ejercicio 2026"), 
                                             ("2027", "Ejercicio 2027")],
-                                            default="2025", index=True)
-    cens_suel_basico   = fields.Float("Sueldo Básico")
-    cens_observaciones = fields.Char("Observaciones")
+                                            default="2025")
+    cens_nano_ejercicio = fields.Intenger("Año Ejercicio", default=2025, index=True) 
+    cens_suel_basico    = fields.Float("Sueldo Básico")
+    cens_observaciones  = fields.Char("Observaciones")
     cens_unidad_impositiva_tributaria = fields.Float(string="UIT", related='company_id.x_studio_unidad_impositiva_tributaria')
-    cens_uit_procesado = fields.Float(string="UIT Procesado", default=0.00)
-    cens_sueldo_minimo = fields.Float(string="Sueldo Mínimo", related='company_id.x_studio_sueldo_minimo')
-    cens_sminim_proces = fields.Float(string="Sueldo Mínimo Procesado", default=0.00)
+    cens_uit_procesado  = fields.Float(string="UIT Procesado", default=0.00)
+    cens_sueldo_minimo  = fields.Float(string="Sueldo Mínimo", related='company_id.x_studio_sueldo_minimo')
+    cens_sminim_proces  = fields.Float(string="Sueldo Mínimo Procesado", default=0.00)
     cens_tiene_renta5ta = fields.Boolean(string='¿Tiene Renta 5ta.Cat.?', default=True)
 
 
@@ -112,7 +113,7 @@ class renta_quinta_Custom(models.Model):
     @api.onchange('cens_anio_ejercicio')
     def _onchange_cens_anio_ejercicio(self):
         for record in self:
-            record.write({'cens_observaciones': record.cens_anio_ejercicio}) 
+            record.write({'cens_nano_ejercicio': int(record.cens_anio_ejercicio)}) 
 
     @api.model_create_multi
     def create(self, vals_list):
