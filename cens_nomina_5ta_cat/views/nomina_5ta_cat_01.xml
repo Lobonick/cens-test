@@ -160,10 +160,11 @@
         <field name="priority" eval="90"/>
         <field name="arch" type="xml">
             <notebook>
-                <page string="Renta 5ta.Cat.">
+                <page name="cens_page_renta_1" string="Renta 5ta.Cat." attrs="{'invisible': [['x_studio_renta_5ta','=',True]]}">
                     <group name="group_01">
                         <group name="group_01_left">
                             <field name="cens_tiene_renta5ta"/>
+                            
                         </group>
                         <group name="group_01_right">
                             
@@ -172,12 +173,8 @@
 
                 </page>
             </notebook>
-
         </field>
     </record>
-
-
-
 
 
 </odoo>
