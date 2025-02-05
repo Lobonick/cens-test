@@ -287,7 +287,7 @@ class renta_quinta_Custom(models.Model):
             w_sueldo_basico = record.contract_wage
             w_extrae_asigfam = record.employee_id.x_studio_asignacin_familiar_1
             if (w_extrae_asigfam and (w_extrae_asigfam > 0)):
-                w_asigna_famili = w_basico_oficia * (w_extrae_asigfam/100) if w_basico_oficia>0 else 0.00      #--- Calcula Asignación Familiar
+                w_asigna_famili = w_basico_oficia * w_extrae_asigfam if w_basico_oficia>0 else 0.00      #--- Calcula Asignación Familiar
             else:
                 w_asigna_famili = 0.00
             w_importe_uit   = record.cens_uit_procesado 
