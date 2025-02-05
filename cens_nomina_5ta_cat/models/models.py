@@ -71,7 +71,7 @@ class renta_quinta_Custom(models.Model):
                                             ("2026", "Ejercicio 2026"), 
                                             ("2027", "Ejercicio 2027")],
                                             default="2025")
-    cens_nano_ejercicio = fields.Intenger("Año Ejercicio", default=2025, index=True) 
+    cens_nano_ejercicio = fields.Integer("Año Ejercicio", default=2025, index=True) 
     cens_suel_basico    = fields.Float("Sueldo Básico")
     cens_observaciones  = fields.Char("Observaciones")
     cens_unidad_impositiva_tributaria = fields.Float(string="UIT", related='company_id.x_studio_unidad_impositiva_tributaria')
