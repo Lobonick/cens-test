@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
-    cens_nano_ejercicio  = fields.Integer(string="Año Ejercicios", default=lambda self: self.date_from.year)
+    cens_nano_ejercicio  = fields.Integer(string="Año Ejercicios", default=2025)
     cens_renta_quinta_id = fields.Many2one('hr.payslip.renta_quinta', 
         string='5taCat',
         domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]", 
