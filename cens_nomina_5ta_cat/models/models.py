@@ -16,7 +16,7 @@ class HrPayslip(models.Model):
     )
     cens_tiene_renta5ta = fields.Boolean(
         string='¿Tiene Renta 5ta.Cat.?', 
-        related='cens_renta_quinta.cens_tiene_renta5ta', 
+        related='cens_renta_quinta_id.cens_tiene_renta5ta', 
         store=True
     )
 
