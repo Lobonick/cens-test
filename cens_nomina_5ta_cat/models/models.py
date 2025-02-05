@@ -29,9 +29,9 @@ class HrPayslip(models.Model):
             ], limit=1)
             
             if renta_quinta:
-                self.cens_renta_quinta = renta_quinta.id
+                self.cens_renta_quinta_id = renta_quinta.id
             else:
-                self.cens_renta_quinta = False
+                self.cens_renta_quinta_id = False
     
 
 
