@@ -17,20 +17,18 @@ class HrPayslip(models.Model):
         store=True
     )
 
-    #@api.onchange('employee_id', 'date_from')
-    #def _onchange_employee_renta_quinta(self):
-    #    if self.employee_id and self.date_from:
-    #        renta_quinta = self.env['hr.payslip.renta_quinta'].search([
-    #            ('employee_id', '=', self.employee_id.id),
-    #            ('cens_anio_ejercicio', '=', str(self.date_from.year))
-    #        ], limit=1)
-    #        
-    #        if renta_quinta:
-    #            self.cens_renta_quinta_id = renta_quinta.id
-    #        else:
-    #            self.cens_renta_quinta_id = False
-
-    # domain="[['x_subsun_uneg.id','=',x_studio_id_unidad_negocio]]" context="{'record.x_studio_id_unidad_negocio': x_studio_id_unidad_negocio}"
+    @api.onchange('employee_id', 'date_from')
+    def _onchange_employee_renta_quinta(self):
+        if self.employee_id and self.date_from:
+            renta_quinta = self.env['hr.payslip.renta_quinta'].search([
+                ('employee_id', '=', self.employee_id.id),
+                ('cens_anio_ejercicio', '=', str(self.date_from.year))
+            ], limit=1)
+            
+            if renta_quinta:
+                self.cens_renta_quinta_id = renta_quinta.id
+            else:
+                self.cens_renta_quinta_id = False
 
 
 class renta_quinta_Custom(models.Model):
@@ -39,7 +37,7 @@ class renta_quinta_Custom(models.Model):
     # ---------------------------------------
     # AGREGA CAMPOS AL MODELO RENTA QUINTA
     # ---------------------------------------
-    name = fields.Char("Descripción")
+    name = fields.Char("Descripción", default="RENTA" )
     user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company.id)
     state = fields.Selection([("draft", "Borrador"), ("posted", "Confirmado"), ("annul", "Anulado")], default="draft")
@@ -110,6 +108,7 @@ class renta_quinta_Custom(models.Model):
     @api.onchange('cens_anio_ejercicio')
     def _onchange_cens_anio_ejercicio(self):
         for record in self:
+            record.write({'name': "RENTA " + record.cens_anio_ejercicio + " - 5TA CAT"})
             record.write({'cens_nano_ejercicio': int(record.cens_anio_ejercicio)}) 
 
     @api.model_create_multi
@@ -119,12 +118,15 @@ class renta_quinta_Custom(models.Model):
                 vals['user_id'] = self.env.user.id
             if 'company_id' not in vals:
                 vals['company_id'] = self.env.company.id
+            if 'name' not in vals:
+                vals['name'] = "RENTA " + self.cens_anio_ejercicio + " - 5TA CAT"
             if vals.get('cens_uit_procesado', 0.00) == 0.00:
                 vals['cens_uit_procesado'] = self.env.company.x_studio_unidad_impositiva_tributaria
             if vals.get('cens_sminim_proces', 0.00) == 0.00:
                 vals['cens_sminim_proces'] = self.env.company.x_studio_sueldo_minimo
             if 'cens_fech_registro' not in vals:
                 vals['cens_fech_registro'] = fields.Date.context_today(self)
+
         return super(renta_quinta_Custom, self).create(vals_list)
 
     # ------------------------------
