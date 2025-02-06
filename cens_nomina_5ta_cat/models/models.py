@@ -17,18 +17,28 @@ class HrPayslip(models.Model):
         store=True
     )
 
-    @api.onchange('employee_id', 'date_from')
-    def _onchange_employee_renta_quinta(self):
-        if self.employee_id and self.date_from:
-            renta_quinta = self.env['hr.payslip.renta_quinta'].search([
+    @api.model
+    def create(self, vals):
+        # Lógica para establecer el último registro
+        if 'cens_renta_quinta_id' not in vals:
+            last_record = self.env['hr.payslip.renta_quinta'].search([
+                ('employee_id', '=', vals.get('employee_id')),
+                ('cens_anio_ejercicio', '=', self.cens_nano_ejercicio),
+            ], limit=1, order='id desc')
+            if last_record:
+                vals['cens_renta_quinta_id'] = last_record.id
+        return super(HrPayslip, self).create(vals)
+
+    @api.onchange('employee_id', 'cens_nano_ejercicio')
+    def _onchange_employee_nano_ejercicio(self):
+        if self.employee_id and self.cens_nano_ejercicio:
+            last_record = self.env['hr.payslip.renta_quinta'].search([
                 ('employee_id', '=', self.employee_id.id),
-                ('cens_anio_ejercicio', '=', str(self.date_from.year))
-            ], limit=1)
-            
-            if renta_quinta:
-                self.cens_renta_quinta_id = renta_quinta.id
-            else:
-                self.cens_renta_quinta_id = False
+                ('cens_anio_ejercicio', '=', self.cens_nano_ejercicio),
+            ], limit=1, order='id desc')
+            if last_record:
+                self.cens_renta_quinta_id = last_record.id
+
 
 
 class renta_quinta_Custom(models.Model):
