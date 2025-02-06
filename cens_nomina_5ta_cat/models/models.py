@@ -20,7 +20,7 @@ class HrPayslip(models.Model):
     @api.model
     def create(self, vals):
         # Lógica para establecer el último registro
-        if 'cens_renta_quinta_id' not in vals:
+        if 'cens_renta_quinta_id' in vals:
             last_record = self.env['hr.payslip.renta_quinta'].search([
                 ('employee_id', '=', vals.get('employee_id')),
                 ('cens_anio_ejercicio', '=', self.cens_nano_ejercicio),
@@ -28,6 +28,7 @@ class HrPayslip(models.Model):
             if last_record:
                 vals['cens_renta_quinta_id'] = last_record.id
         return super(HrPayslip, self).create(vals)
+    
 
     @api.onchange('employee_id', 'cens_nano_ejercicio')
     def _onchange_employee_nano_ejercicio(self):
@@ -38,7 +39,6 @@ class HrPayslip(models.Model):
             ], limit=1, order='id desc')
             if last_record:
                 self.cens_renta_quinta_id = last_record.id
-
 
 
 class renta_quinta_Custom(models.Model):
