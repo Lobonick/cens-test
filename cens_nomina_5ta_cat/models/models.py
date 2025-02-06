@@ -39,6 +39,8 @@ class HrPayslip(models.Model):
             ], limit=1, order='id desc')
             if last_record:
                 self.cens_renta_quinta_id = last_record.id
+            else:
+                self.cens_renta_quinta_id = False  # Limpiar el campo si no hay registro activo
 
 
 class renta_quinta_Custom(models.Model):
