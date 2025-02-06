@@ -9,11 +9,8 @@ _logger = logging.getLogger(__name__)
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
     cens_nano_ejercicio  = fields.Integer(string="Año Ejercicios", default=2025)
-    cens_renta_quinta_id = fields.Many2one('hr.payslip.renta_quinta', 
-        string='5taCat',
-        domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]" 
-    )
-    
+    cens_renta_quinta_id = fields.Many2one('hr.payslip.renta_quinta', string='5taCat')
+
     cens_tiene_renta5ta = fields.Boolean(
         string='¿Tiene Renta 5ta.Cat.?', 
         related='cens_renta_quinta_id.cens_tiene_renta5ta', 
@@ -32,8 +29,7 @@ class HrPayslip(models.Model):
     #            self.cens_renta_quinta_id = renta_quinta.id
     #        else:
     #            self.cens_renta_quinta_id = False
-    
-    # context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"
+
     # domain="[['x_subsun_uneg.id','=',x_studio_id_unidad_negocio]]" context="{'record.x_studio_id_unidad_negocio': x_studio_id_unidad_negocio}"
 
 
