@@ -11,28 +11,29 @@ class HrPayslip(models.Model):
     cens_nano_ejercicio  = fields.Integer(string="Año Ejercicios", default=2025)
     cens_renta_quinta_id = fields.Many2one('hr.payslip.renta_quinta', 
         string='5taCat',
-        domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]", 
-        context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"
+        domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]" 
     )
+    
     cens_tiene_renta5ta = fields.Boolean(
         string='¿Tiene Renta 5ta.Cat.?', 
         related='cens_renta_quinta_id.cens_tiene_renta5ta', 
         store=True
     )
 
-    @api.onchange('employee_id', 'date_from')
-    def _onchange_employee_renta_quinta(self):
-        if self.employee_id and self.date_from:
-            renta_quinta = self.env['hr.payslip.renta_quinta'].search([
-                ('employee_id', '=', self.employee_id.id),
-                ('cens_anio_ejercicio', '=', str(self.date_from.year))
-            ], limit=1)
-            
-            if renta_quinta:
-                self.cens_renta_quinta_id = renta_quinta.id
-            else:
-                self.cens_renta_quinta_id = False
+    #@api.onchange('employee_id', 'date_from')
+    #def _onchange_employee_renta_quinta(self):
+    #    if self.employee_id and self.date_from:
+    #        renta_quinta = self.env['hr.payslip.renta_quinta'].search([
+    #            ('employee_id', '=', self.employee_id.id),
+    #            ('cens_anio_ejercicio', '=', str(self.date_from.year))
+    #        ], limit=1)
+    #        
+    #        if renta_quinta:
+    #            self.cens_renta_quinta_id = renta_quinta.id
+    #        else:
+    #            self.cens_renta_quinta_id = False
     
+    # context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"
     # domain="[['x_subsun_uneg.id','=',x_studio_id_unidad_negocio]]" context="{'record.x_studio_id_unidad_negocio': x_studio_id_unidad_negocio}"
 
 
