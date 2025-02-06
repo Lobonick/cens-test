@@ -166,7 +166,7 @@
                             <field name="cens_nano_ejercicio" string="Ejercicio actual:"/>
                             <field name="cens_renta_quinta_id" 
                                  string="Configuración Renta 5ta.Cat" 
-                                 domain="['&', ('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]"/>
+                                 domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]"/>
                             <field name="cens_tiene_renta5ta"/>
 
                         </group>
