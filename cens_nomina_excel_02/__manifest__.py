@@ -1,8 +1,8 @@
 {
-	'name': "Nómina - Edita Excel - CENS",
+    'name': "Nómina - Edita Excel 02 - CENS",
 
 	'summary': """
-		Permite Importar/Exportar Excel los datos de la Nómina""",
+		Permite Importar/Exportar WORKSHEET de Excel de los datos de la Nómina.""",
 
     'description': """
 		Permite generar una WorkSheet Excel con los datos de LOTE Nómina y permite actualizar
@@ -12,13 +12,13 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources/Payroll',
- 	'version': '16.0.3.01',
+ 	'version': '16.0.3.02',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
     ],
 
-    'depends': ['hr_payroll', 'base', 'web'],
+    'depends': ['hr_payroll', 'base', 'web', 'cens_nomina_excel_01'],
     'assets': {
         'web.assets_backend': [
             'cens_nomina_excel_02/static/src/scss/custom_notebook.scss',

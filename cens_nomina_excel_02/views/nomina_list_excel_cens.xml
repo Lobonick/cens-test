@@ -4,18 +4,17 @@
         <field name="name">hr.payslip.tree.inherit.xlsx</field>
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="priority">20</field> 
         <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <header>
-                    <button name="export_to_xlsx" 
-                            string="WorkSeet_Export" 
-                            type="object" 
-                            class="btn-primary"/>
-                    <button name="import_from_xlsx" 
-                            string="WorkSheet_Import" 
-                            type="object" 
-                            class="btn-secondary"/>
-                </header>
+            <xpath expr="//header" position="inside">
+                <button name="export_to_xlsx" 
+                        string="Worksheet_Export" 
+                        type="object" 
+                        class="btn-primary"/>
+                <button name="import_from_xlsx" 
+                        string="Worksheet_Import" 
+                        type="object" 
+                        class="btn-secondary"/>
             </xpath>
         </field>
     </record>
