@@ -241,6 +241,11 @@ class HrPayslip(models.Model):
             worksheet.set_column(73, 73, 12)    #--     PROVISIONES
             worksheet.set_column(74, 74, 12)    #--
             worksheet.set_column(75, 75, 12)    #--
+            worksheet.set_column(76, 76, 12)    #--
+
+            worksheet.set_column(77, 77, 5)     #--      (Seperador)
+
+            worksheet.set_column(78, 78, 12)    #--     COSTO MENSUAL
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -292,8 +297,11 @@ class HrPayslip(models.Model):
             worksheet.merge_range('BT7:BU7', 'Merged Cells', merge_format)
             worksheet.write('BT7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('BV7:BX7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BV7:BY7', 'Merged Cells', merge_format)
             worksheet.write('BV7', 'PROVISIONES', cell_format_sup5)
+
+            worksheet.merge_range('CA7:CA7', 'Merged Cells', merge_format)
+            worksheet.write('CA7', 'COSTO', cell_format_sup5)
 
 
 
@@ -610,11 +618,14 @@ class HrPayslip(models.Model):
             worksheet.write('BQ8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 58
             worksheet.write('BR8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
 
-            worksheet.write('BT8', 'ESSALUD', cell_format_tit6)                 #-- 62      APORTES
-            worksheet.write('BU8', 'EPS', cell_format_tit6)                     #-- 63      
-            worksheet.write('BV8', 'CTS', cell_format_tit7)                     #-- 64      PROVISIONES
-            worksheet.write('BW8', 'VACACIONES', cell_format_tit7)              #-- 65
-            worksheet.write('BX8', 'GRATIFICAC', cell_format_tit7)              #-- 66
+            worksheet.write('BT8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
+            worksheet.write('BU8', 'EPS', cell_format_tit6)                     #-- 62      
+            worksheet.write('BV8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
+            worksheet.write('BW8', 'VACACIONES', cell_format_tit7)              #-- 64
+            worksheet.write('BX8', 'GRATIFICAC', cell_format_tit7)              #-- 65
+            worksheet.write('BY8', 'BONIFIC GRATIFIC', cell_format_tit7)              #-- 66
+
+            worksheet.write('CA8', 'COSTO MENSUAL', cell_format_tit5)              #-- 68
 
             #----------------------------------------------------------------
             worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
@@ -687,6 +698,9 @@ class HrPayslip(models.Model):
             worksheet.write('BV9', '(Empr)', cell_format_sub7)         #-- 72      PROVISIONES
             worksheet.write('BW9', '(Empr)', cell_format_sub7)         #-- 73
             worksheet.write('BX9', '(Empr)', cell_format_sub7)         #-- 74
+            worksheet.write('BY9', '(Empr)', cell_format_sub7)         #-- 75
+
+            worksheet.write('CA9', '(Empr)', cell_format_sub5)         #-- 75      COSTO MENSUAL
 
             #-----
             worksheet.freeze_panes(9, 4)
@@ -873,7 +887,13 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 73, w_boleta.x_studio_en_provision_cts, cell_format_impo)
                 worksheet.write(w_fila, 74, w_boleta.x_studio_en_provision_vacaciones, cell_format_impo)
                 worksheet.write(w_fila, 75, w_boleta.x_studio_en_provision_gratificacion, cell_format_impo)
+                worksheet.write(w_fila, 76, w_boleta.x_studio_en_provision_bonigrati, cell_format_impo)
+                # -----------------------------------------
+                # COSTO DEL MES
+                # -----------------------------------------
+                worksheet.write(w_fila, 78, w_boleta.x_studio_en_total_extraordinario, cell_format_impo)
                 
+
                 w_fila += 1
 
 
