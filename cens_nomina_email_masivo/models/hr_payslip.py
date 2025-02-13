@@ -9,63 +9,88 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     def action_send_payslip_email(self):
-        """Método para enviar las boletas por correo electrónico"""
+        # -------------------------------------------------------
+        # Método para enviar las boletas por correo electrónico
+        # -------------------------------------------------------
         payslips_to_send = self.filtered(lambda p: p.state in ['draft', 'done', 'paid'])
         if not payslips_to_send:
             raise UserError('Solo se pueden enviar boletas en estado Realizado o Pagado')
 
-        # Programar el envío masivo
-        self.env['ir.cron'].sudo().create({
-            'name': 'Envío masivo de boletas de pago',
-            'model_id': self.env['ir.model'].search([('model', '=', 'hr.payslip')]).id,
-            'state': 'code',
-            'code': 'model._process_payslip_emails(%s)' % payslips_to_send.ids,
-            'user_id': self.env.user.id,
-            'interval_number': 1,
-            'interval_type': 'minutes',
-            'numbercall': 1,
-            'doall': True,
-        })
+        # Llamar directamente al método de procesamiento
+        self.with_context(async_send=True)._process_payslip_emails(payslips_to_send.ids)
         
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': 'Proceso iniciado',
-                'message': f'Se programó el envío de {len(payslips_to_send)} boleta(s) de pago',
+                'message': f'Se inició el envío de {len(payslips_to_send)} boleta(s) de pago',
                 'type': 'success',
                 'sticky': False,
             }
         }
 
+    @api.model
     def _process_payslip_emails(self, payslip_ids):
-        """Método que procesa el envío de correos programado"""
+        """Método que procesa el envío de correos"""
+        _logger.info(f'Iniciando proceso de envío para {len(payslip_ids)} boletas')
         payslips = self.browse(payslip_ids)
-        mail_template = self.env.ref('hr_payroll.mail_template_payslip')
+        
+        # Obtener la plantilla de correo
+        mail_template = self.env.ref('hr_payroll.mail_template_payslip', raise_if_not_found=False)
+        if not mail_template:
+            _logger.error('No se encontró la plantilla de correo para boletas')
+            return False
 
         for payslip in payslips:
             try:
+                _logger.info(f'Procesando boleta {payslip.number} para empleado {payslip.employee_id.name}')
+                
+                # Verificar que el empleado tenga correo
+                if not payslip.employee_id.work_email:
+                    _logger.warning(f'Empleado {payslip.employee_id.name} no tiene correo configurado')
+                    continue
+
                 # Generar PDF
-                report = self.env.ref('hr_payroll.action_report_payslip')
+                report = self.env.ref('hr_payroll.action_report_payslip', raise_if_not_found=False)
+                if not report:
+                    _logger.error('No se encontró el reporte de boleta de pago')
+                    continue
+
+                _logger.info('Generando PDF de la boleta')
                 pdf_content, _ = report._render_qweb_pdf([payslip.id])
                 
+                if not pdf_content:
+                    _logger.error(f'No se pudo generar el PDF para la boleta {payslip.number}')
+                    continue
+
                 # Preparar adjunto
+                attachment_name = f'Boleta_de_Pago_{payslip.number}.pdf'
                 attachment = self.env['ir.attachment'].create({
-                    'name': f'Boleta_{payslip.number}.pdf',
+                    'name': attachment_name,
                     'type': 'binary',
                     'datas': base64.b64encode(pdf_content),
                     'res_model': 'hr.payslip',
                     'res_id': payslip.id,
+                    'mimetype': 'application/pdf'
                 })
 
+                _logger.info(f'Adjunto creado: {attachment_name}')
+
                 # Enviar correo
-                mail_template.send_mail(
+                email_values = {
+                    'email_to': payslip.employee_id.work_email,
+                    'attachment_ids': [(4, attachment.id)],
+                }
+
+                _logger.info(f'Enviando correo a {payslip.employee_id.work_email}')
+                
+                mail_template.with_context(force_send=True).send_mail(
                     payslip.id,
-                    force_send=True,
-                    email_values={'attachment_ids': [attachment.id]}
+                    email_values=email_values
                 )
                 
-                _logger.info(f'Boleta enviada exitosamente: {payslip.number}')
+                _logger.info(f'Correo enviado exitosamente para boleta {payslip.number}')
                 
             except Exception as e:
-                _logger.error(f'Error al enviar boleta {payslip.number}: {str(e)}')
+                _logger.error(f'Error al procesar boleta {payslip.number}: {str(e)}')
