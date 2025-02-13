@@ -12,13 +12,13 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources',
- 	'version': '16.0.1.01',
+ 	'version': '16.0.1.02',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
     ],
 
-    'depends': ['base', 'hr', 'hr_payroll', 'web', 'base_setup'],
+    'depends': ['base', 'hr', 'hr_payroll', 'web', 'base_setup', 'cens_nomina_excel_01'],
 
     'data': [
         'security/ir.model.access.csv',
