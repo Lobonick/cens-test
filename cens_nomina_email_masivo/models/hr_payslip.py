@@ -43,9 +43,11 @@ class HrPayslip(models.Model):
         if not mail_template:
             _logger.error('No se encontró la plantilla de correo para boletas')
             return False
+        else:
+            _logger.info('ENCONTRÓ PLANTILLA de Boletas')
 
         payslips = self.browse(self._context.get('active_ids', []))
-
+        _logger.info(f'Encontró {len(payslip)} boletas MARCADAS.')
         for payslip in payslips:
             try:
                 _logger.info(f'Procesando boleta {payslip.number} para empleado {payslip.employee_id.name}')
