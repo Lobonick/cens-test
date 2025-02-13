@@ -10,7 +10,7 @@ class HrPayslip(models.Model):
 
     def action_send_payslip_email(self):
         """Método para enviar las boletas por correo electrónico"""
-        payslips_to_send = self.filtered(lambda p: p.state in ['done', 'paid'])
+        payslips_to_send = self.filtered(lambda p: p.state in ['draft', 'done', 'paid'])
         if not payslips_to_send:
             raise UserError('Solo se pueden enviar boletas en estado Realizado o Pagado')
 
