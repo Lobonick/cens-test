@@ -38,8 +38,9 @@ class HrPayslip(models.Model):
         
         # Obtener la plantilla de correo
         # mail_template = self.env.ref('hr_payroll.mail_template_payslip', raise_if_not_found=False)
-        mail_template = self.env.ref('mail.template.studio_customization.alerta_boleta_pago_d_69e41922-85d6-4e98-8b8c-4457ba31ad07', raise_if_not_found=False)
-        
+        # mail_template = self.env.ref('mail.template.studio_customization.alerta_boleta_pago_d_69e41922-85d6-4e98-8b8c-4457ba31ad07', raise_if_not_found=False)
+        mail_template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
+
         if not mail_template:
             _logger.error('No se encontró la plantilla de correo para boletas')
             return False
