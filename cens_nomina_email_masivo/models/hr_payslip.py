@@ -32,24 +32,18 @@ class HrPayslip(models.Model):
 
     @api.model
     def _process_payslip_emails(self, payslip_ids):
-        """Método que procesa el envío de correos"""
+        #
+        # Método que procesa el envío de correos
+        #
         _logger.info(f'Iniciando proceso de envío para {len(payslip_ids)} boletas')
         payslips = self.browse(payslip_ids)
         
         # Obtener la plantilla de correo
-        # mail_template = self.env.ref('hr_payroll.mail_template_payslip', raise_if_not_found=False)
-        # mail_template = self.env.ref('mail.template.studio_customization.alerta_boleta_pago_d_69e41922-85d6-4e98-8b8c-4457ba31ad07', raise_if_not_found=False)
         mail_template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
 
         if not mail_template:
             _logger.error('No se encontró la plantilla de correo para boletas')
             return False
-        else:
-            _logger.info('ENCONTRÓ PLANTILLA de Boletas')
-
-        payslips = self.browse(self._context.get('active_ids', []))
-
-        _logger.info(f'Encontró {len(payslips)} boletas MARCADAS.')
         
         for payslip in payslips:
             try:

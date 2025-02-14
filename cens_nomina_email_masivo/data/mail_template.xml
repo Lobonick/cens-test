@@ -4,24 +4,33 @@
         <record id="email_template_payslip_mass_send" model="mail.template">
             <field name="name">Plantilla Boleta de Pago</field>
             <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
-            <field name="subject">Boleta de Pago - ${object.employee_id.name}</field>
-            <field name="email_from">${object.company_id.email}</field>
-            <field name="email_to">${object.employee_id.work_email}</field>
+            <field name="subject">BOLETA DE PAGO - {{ object.payslip_run_id.name }} - {{ object.employee_id.name }}</field>
+            <field name="email_from">CENS-Gestión_Humana</field>
+            <field name="email_to">{{ object.employee_id.work_email }}</field>
+            <field name="email_cc">ealcantara@cens.com.pe, gestionhumana@cens.com.pe</field>
+            <field name="reply_to">gestionhumana@cens.com.pe</field>
             <field name="body_html" type="html">
-                <div style="margin: 0px; padding: 0px;">
-                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Estimado/a ${object.employee_id.name},
-                        <br/><br/>
-                        Adjunto encontrará su boleta de pago correspondiente al período ${object.date_from} al ${object.date_to}.
-                        <br/><br/>
-                        Saludos cordiales,
-                        <br/>
-                        ${object.company_id.name}
-                    </p>
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin-bottom: 0px;">&nbsp;
+                    <img src="/web/image/113536-85de4c55/CENS-LOGO_izquierda%20-%20TINY.png?access_token=62426e11-6419-4824-a13e-2b8c1c9cb4ba" class="img img-fluid o_we_custom_image" style="width: 20%;"><br></p>
+                    <p></p>
+                    <table border="0" cellpadding="0" cellspacing="0" style="width: 1172.07px; margin: 0px auto 0px 7.8889px;">
+                    <tbody>
+                        <tr><td valign="top" style="text-align: left; font-size: 14px; width: 1172.07px;">
+                            Estimado(a) <b><t t-esc="object.employee_id.name"></t> </b>: <br><br>
+                            Hay un nuevo recibo de nómina disponible para usted, del período ${object.date_from} al ${object.date_to}, el cual adjuntamos a la presente. Adicionalmente<br> 
+                            le informamos que pronto también podrá acceder a su Boleta de Pago desde nuestro Aplicativo.<br><br>
+                            Tenga un buen día,<br><br>
+                            <b>EQUIPO DE GESTIÓN HUMANA</b><br>
+                            CENS-PERÚ
+                        </td></tr>
+                    </tbody>
                 </div>
             </field>
-            <field name="lang">${object.employee_id.lang}</field>
+            <field name="lang"></field>
             <field name="auto_delete" eval="True"/>
+            <field name="report_template">Recibo de nómina</field>
+            <field name="report_name">BOLETA DE PAGO - {{ object.payslip_run_id.name }} - {{ object.employee_id.name }}</field>
         </record>
     </data>
 </odoo>
