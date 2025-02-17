@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_payslip_tree_inherit">
+            <field name="name">hr.payslip.tree.cens_inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="priority">10</field> 
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="export_to_spreadsheet" class="btn btn-primary" string="Planilla_General" type="object"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
