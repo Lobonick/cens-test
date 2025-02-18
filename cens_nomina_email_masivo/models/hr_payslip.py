@@ -35,86 +35,90 @@ class HrPayslip(models.Model):
         #
         # Método que procesa el envío de correos
         #
-        _logger.info(f'Iniciando proceso de envío para {len(payslip_ids)} boletas')
-        payslips = self.browse(payslip_ids)
-        
-        # Obtener la plantilla de correo
-        mail_template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
+        try:
+            _logger.info(f'Iniciando proceso de envío para {len(payslip_ids)} boletas')
+            payslips = self.browse(payslip_ids)
+            
+            # Obtener la plantilla de correo
+            mail_template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
 
-        #if not mail_template:
-        #    _logger.error('No se encontró la plantilla de correo para boletas')
-        #    return False
-        
-        # Verificamos si se encontró la plantilla
-        if not mail_template:
-            _logger.error('No se encontró la plantilla de correo con ID XML: cens_nomina_email_masivo.email_template_payslip_mass_send')
-            return False
+            #if not mail_template:
+            #    _logger.error('No se encontró la plantilla de correo para boletas')
+            #    return False
+            
+            # Verificamos si se encontró la plantilla
+            if not mail_template:
+                _logger.error('No se encontró la plantilla de correo con ID XML: cens_nomina_email_masivo.email_template_payslip_mass_send')
+                return False
 
-        # Imprimimos información de la plantilla para verificar
-        _logger.info(f"""
-        Información de la plantilla encontrada:
-        - ID: {mail_template.id}
-        - Nombre: {mail_template.name}
-        - Modelo: {mail_template.model_id.model}
-        - Subject: {mail_template.subject}
-        """)
+            # Imprimimos información de la plantilla para verificar
+            _logger.info(f"""
+            Información de la plantilla encontrada:
+            - ID: {mail_template.id}
+            - Nombre: {mail_template.name}
+            - Modelo: {mail_template.model_id.model}
+            - Subject: {mail_template.subject}
+            """)
 
-        # También puedes buscar todas las plantillas disponibles para el modelo hr.payslip
-        all_templates = self.env['mail.template'].search([('model_id.model', '=', 'hr.payslip')])
-        _logger.info(f"""
-        Plantillas disponibles para hr.payslip:
-        {[(t.id, t.name) for t in all_templates]}
-        """)
+            # También puedes buscar todas las plantillas disponibles para el modelo hr.payslip
+            all_templates = self.env['mail.template'].search([('model_id.model', '=', 'hr.payslip')])
+            _logger.info(f"""
+            Plantillas disponibles para hr.payslip:
+            {[(t.id, t.name) for t in all_templates]}
+            """)
 
-        for payslip in payslips:
-            try:
-                _logger.info(f'Procesando boleta {payslip.number} para empleado {payslip.employee_id.name}')
-                
-                # Verificar que el empleado tenga correo
-                if not payslip.employee_id.work_email:
-                    _logger.warning(f'Empleado {payslip.employee_id.name} no tiene correo configurado')
-                    continue
+            for payslip in payslips:
+                try:
+                    _logger.info(f'Procesando boleta {payslip.number} para empleado {payslip.employee_id.name}')
+                    
+                    # Verificar que el empleado tenga correo
+                    if not payslip.employee_id.work_email:
+                        _logger.warning(f'Empleado {payslip.employee_id.name} no tiene correo configurado')
+                        continue
 
-                # Generar PDF
-                report = self.env.ref('hr_payroll.action_report_payslip', raise_if_not_found=False)
-                if not report:
-                    _logger.error('No se encontró el reporte de boleta de pago')
-                    continue
+                    # Generar PDF
+                    report = self.env.ref('hr_payroll.action_report_payslip', raise_if_not_found=False)
+                    if not report:
+                        _logger.error('No se encontró el reporte de boleta de pago')
+                        continue
 
-                _logger.info('Generando PDF de la boleta')
-                pdf_content, _ = report._render_qweb_pdf([payslip.id])
-                
-                if not pdf_content:
-                    _logger.error(f'No se pudo generar el PDF para la boleta {payslip.number}')
-                    continue
+                    _logger.info('Generando PDF de la boleta')
+                    pdf_content, _ = report._render_qweb_pdf([payslip.id])
+                    
+                    if not pdf_content:
+                        _logger.error(f'No se pudo generar el PDF para la boleta {payslip.number}')
+                        continue
 
-                # Preparar adjunto
-                attachment_name = f'Boleta_de_Pago_{payslip.number}.pdf'
-                attachment = self.env['ir.attachment'].create({
-                    'name': attachment_name,
-                    'type': 'binary',
-                    'datas': base64.b64encode(pdf_content),
-                    'res_model': 'hr.payslip',
-                    'res_id': payslip.id,
-                    'mimetype': 'application/pdf'
-                })
+                    # Preparar adjunto
+                    attachment_name = f'Boleta_de_Pago_{payslip.number}.pdf'
+                    attachment = self.env['ir.attachment'].create({
+                        'name': attachment_name,
+                        'type': 'binary',
+                        'datas': base64.b64encode(pdf_content),
+                        'res_model': 'hr.payslip',
+                        'res_id': payslip.id,
+                        'mimetype': 'application/pdf'
+                    })
 
-                _logger.info(f'Adjunto creado: {attachment_name}')
+                    _logger.info(f'Adjunto creado: {attachment_name}')
 
-                # Enviar correo
-                email_values = {
-                    'email_to': payslip.employee_id.work_email,
-                    'attachment_ids': [(4, attachment.id)],
-                }
+                    # Enviar correo
+                    email_values = {
+                        'email_to': payslip.employee_id.work_email,
+                        'attachment_ids': [(4, attachment.id)],
+                    }
 
-                _logger.info(f'Enviando correo a {payslip.employee_id.work_email}')
-                
-                mail_template.with_context(force_send=True).send_mail(
-                    payslip.id,
-                    email_values=email_values
-                )
-                
-                _logger.info(f'Correo enviado exitosamente para boleta {payslip.number}')
-                
-            except Exception as e:
-                _logger.error(f'Error al procesar boleta {payslip.number}: {str(e)}')
+                    _logger.info(f'Enviando correo a {payslip.employee_id.work_email}')
+                    
+                    mail_template.with_context(force_send=True).send_mail(
+                        payslip.id,
+                        email_values=email_values
+                    )
+                    
+                    _logger.info(f'Correo enviado exitosamente para boleta {payslip.number}')
+                    
+                except Exception as e:
+                    _logger.error(f'Error al procesar boleta {payslip.number}: {str(e)}')
+
+        except Exception as d:
+            _logger.error(f'SALTÓ Error al procesar PLANTILLA: {str(d)}')
