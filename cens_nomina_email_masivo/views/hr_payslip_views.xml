@@ -10,7 +10,7 @@
                 <button name="action_send_payslip_email" 
                         string="EMAIL_MASIVO" 
                         type="object" 
-                        class="oe_highlight"
+                        class="oe_highlight" 
                         icon="fa-envelope"/>
             </xpath>
         </field>

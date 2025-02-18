@@ -9,12 +9,12 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     def action_send_payslip_email(self):
-        # -------------------------------------------------------
+        # ---------------------------------------------------------------
         # Método para enviar las boletas por correo electrónico
         # Genera los PDFs de las boletas de pago y los envía por correo.
-        # -------------------------------------------------------
+        # ---------------------------------------------------------------
 
-        template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
+        template = self.env.ref('hr_payroll.mail_template_payslip', raise_if_not_found=False)
 
         if not template:
             raise ValueError("No se encontró la plantilla de correo para boletas de pago.")
@@ -35,7 +35,7 @@ class HrPayslip(models.Model):
 
             email_values = {
                 'email_to': payslip.employee_id.work_email,
-                'email_from': self.env.user.email or 'no-reply@empresa.com',
+                'email_from': self.env.user.email or 'no-reply@cens.com.pe.com',
                 'attachment_ids': [(4, attachment.id)]
             }
             template.send_mail(payslip.id, email_values=email_values, force_send=True)
