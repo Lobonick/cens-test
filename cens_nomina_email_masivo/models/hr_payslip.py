@@ -41,10 +41,31 @@ class HrPayslip(models.Model):
         # Obtener la plantilla de correo
         mail_template = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
 
-        if not mail_template:
-            _logger.error('No se encontró la plantilla de correo para boletas')
-            return False
+        #if not mail_template:
+        #    _logger.error('No se encontró la plantilla de correo para boletas')
+        #    return False
         
+        # Verificamos si se encontró la plantilla
+        if not mail_template:
+            _logger.error('No se encontró la plantilla de correo con ID XML: cens_nomina_email_masivo.email_template_payslip_mass_send')
+            return False
+
+        # Imprimimos información de la plantilla para verificar
+        _logger.info(f"""
+        Información de la plantilla encontrada:
+        - ID: {mail_template.id}
+        - Nombre: {mail_template.name}
+        - Modelo: {mail_template.model_id.model}
+        - Subject: {mail_template.subject}
+        """)
+
+        # También puedes buscar todas las plantillas disponibles para el modelo hr.payslip
+        all_templates = self.env['mail.template'].search([('model_id.model', '=', 'hr.payslip')])
+        _logger.info(f"""
+        Plantillas disponibles para hr.payslip:
+        {[(t.id, t.name) for t in all_templates]}
+        """)
+
         for payslip in payslips:
             try:
                 _logger.info(f'Procesando boleta {payslip.number} para empleado {payslip.employee_id.name}')
