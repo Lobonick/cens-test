@@ -14,10 +14,10 @@ class HrPayslip(models.Model):
         # Genera los PDFs de las boletas de pago y los envía por correo.
         # ---------------------------------------------------------------
 
-        template = self.env.ref('hr_payroll.mail_template_payslip', raise_if_not_found=False)
+        template = self.env.ref('email_template_payslip_mass_send', raise_if_not_found=False)
 
         if not template:
-            raise ValueError("No se encontró la plantilla de correo para boletas de pago.")
+            _logger.error("No se encontró la plantilla de correo para boletas de pago.")
 
         w_lote = self.browse(self._context.get('active_ids', []))
 
