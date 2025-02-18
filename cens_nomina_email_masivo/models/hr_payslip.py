@@ -16,11 +16,11 @@ class HrPayslip(models.Model):
         if not payslips_to_send:
             raise UserError('Solo se pueden enviar boletas en estado Realizado o Pagado')
 
+        _logger.info(f'ALERTA: Encontró {len(payslips_to_send)} registros a procesar')
+
         # Llamar directamente al método de procesamiento
         self.with_context(async_send=True)._process_payslip_emails(payslips_to_send.ids)
         
-        _logger.info(f'ALERTA: Encontró {len(payslips_to_send)} registros a procesar')
-
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
