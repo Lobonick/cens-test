@@ -19,7 +19,9 @@ class HrPayslip(models.Model):
         if not template:
             raise ValueError("No se encontró la plantilla de correo para boletas de pago.")
 
-        for payslip in self:
+        w_lote = self.browse(self._context.get('active_ids', []))
+
+        for payslip in w_lote:
             pdf_content, _ = self.env.ref('hr_payroll.action_report_payslip')._render_qweb_pdf([payslip.id])
 
             attachment = self.env['ir.attachment'].create({
