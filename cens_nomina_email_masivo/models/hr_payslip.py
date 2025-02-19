@@ -43,7 +43,7 @@ class HrPayslip(models.Model):
             payslips = self.browse(payslip_ids)
             
             # Obtener la plantilla de correo
-            plantilla_email = self.env.ref('email_template_payslip_mass_send', raise_if_not_found=False)
+            plantilla_email = self.env.ref('cens_nomina_email_masivo.email_template_payslip_mass_send', raise_if_not_found=False)
 
             if not plantilla_email:
                 _logger.error('No se encontró la plantilla de correo para boletas')
