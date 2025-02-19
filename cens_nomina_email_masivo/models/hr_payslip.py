@@ -59,7 +59,7 @@ class HrPayslip(models.Model):
                         continue
 
                     # Generar PDF
-                    report = self.env.ref('hr_payroll.action_report_payslip', raise_if_not_found=False)
+                    report = self.env.ref('hr_payroll_report.action_report_payslip', raise_if_not_found=False)
                     if not report:
                         _logger.error('No se encontró el reporte de boleta de pago')
                         continue
