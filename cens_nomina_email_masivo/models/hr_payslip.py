@@ -65,7 +65,8 @@ class HrPayslip(models.Model):
                         continue
 
                     _logger.info('Generando PDF de la boleta')
-                    pdf_content, _ = report._render_qweb_pdf([payslip.id])
+                    # pdf_content, _ = report._render_qweb_pdf([payslip.id])
+                    pdf_content, _ = report._render_qweb_pdf([payslip.name])
                     
                     if not pdf_content:
                         _logger.error(f'No se pudo generar el PDF para la boleta {payslip.number}')
