@@ -1,0 +1,14 @@
+<odoo>
+    <template id="cens_nomina_5ta_cat_assets" name="cens_nomina_5ta_cat assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="cens_nomina_5ta_cat/static/src/css/styles.css"/>
+        </xpath>
+    </template>
+</odoo>
+
+<!--
+
+ name="cens_nomina_5ta_cat assets"
+            <link rel="stylesheet" type="text/css" href="/cens_nomina_5ta_cat/static/src/css/styles.css"/>
+            <script type="text/javascript" src="cens_nomina_5ta_cat/static/src/js/wide_column.js"/>
+-->

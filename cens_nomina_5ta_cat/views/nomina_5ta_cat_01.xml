@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_payslip_renta_quinta_form" model="ir.ui.view"> 
+        <field name="name">payslip.renta.quinta.form</field>
+        <field name="model">hr.payslip.renta_quinta</field>
+        <field name="arch" type="xml">
+            <form string="Control Anual de Renta">
+                <sheet>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted,annul"/>
+                    </header>
+                    <field name="company_id" invisible="1"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <div class="oe_title" name="title">
+                        <field name="cens_foto_empleado" class="oe_left" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <field name="cens_marcador_cabecera" class="oe_left" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+                        <separator/>
+                        <separator/>
+                        <separator/>
+                        <separator/>
+                        <h1><field name="employee_id" placeholder="Employee" class="oe_left"/></h1>
+                    </div>
+                    <group name="group_01">
+                        <group name="group_01_left" string="DATOS GENERALES">
+                            <field name="name"/>
+                            <field name="cens_fech_registro" string="Fecha Registro:"/>
+                            <field name="cens_anio_ejercicio" string="Periodo:"/>
+                            <field name="currency_id"/>
+                            <field name="cens_unidad_impositiva_tributaria" string="Unidad Impositiva Tributaria: (UIT)" widget="monetary" attrs="{'invisible': True}"/>
+                            <field name="cens_uit_procesado" string="UIT a Procesar:" widget="monetary"/>
+                            <field name="cens_sueldo_minimo" string="Sueldo Mínimo:" widget="monetary" attrs="{'invisible': True}"/>
+                            <field name="cens_sminim_proces" string="Sueldo Mínimo a Procesar:" widget="monetary"/>
+                        </group>
+                        <group name="group_01_right" string="DATOS CONTRATO ACTIVO">
+                            <field name="contract_name"/>
+                            <field name="contract_date_start"/>
+                            <field name="contract_date_end"/>
+                            <field name="contract_date_ingreso"/>
+                            <field name="contract_date_cese"/>
+                            <field name="contract_wage"/>
+                        </group>
+                    </group>
+                    <group name="group_02">
+                        <group name="group_02_left"/>
+                        <group name="group_02_right">
+                            <field name="cens_observaciones"/>
+                        </group>
+                    </group>
+                    <div>
+                        <button name="action_rellena_datos" string="Recalcular Renta" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                        <span class="oe_inline oe_separating_element"> </span>
+                        <button name="action_retirar_datos" string="Retirar Datos " icon="fa-check" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                    </div>
+                    <notebook>
+                        <page string="Editor de cálculo">
+                            <separator string="CONCEPTOS NO REMUNERATIVOS"/>
+                            <div class="o_list_container">
+                                <field name="nremu_detail_ids" widget="one2many">
+                                    <tree editable="bottom" create="true" edit="true" 
+                                        decoration-bf="name in ('REMUNERACIÓN PROYECTADA', 'RENTA ANUAL PROYECTADA', 'IMPUESTO ANUAL', 'IMPUESTO A PAGAR', 'RETENCIÓN MENSUAL')" 
+                                        decoration-warning="name == 'REMUNERACIÓN PROYECTADA'" 
+                                        decoration-danger="name in ('RENTA ANUAL PROYECTADA', 'IMPUESTO ANUAL', 'IMPUESTO A PAGAR', 'RETENCIÓN MENSUAL')">
+                                        <field name="name" 
+                                            string="DETALLE" 
+                                            class="wide_column" 
+                                            width="600"
+                                            readonly="1"/>
+                                        <field name="enero" string="ENE" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="febrero" string="FEB" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="marzo" string="MAR" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="abril" string="ABR" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="mayo" string="MAY" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="junio" string="JUN" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="julio" string="JUL" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="agosto" string="AGO" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="setiembre" string="SET" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="octubre" string="OCT" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="noviembre" string="NOV" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                        <field name="diciembre" string="DIC" class="o_field_cell o_list_number" options="{'no_sort': True}" widget="float" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </div>     
+                            <div>
+                                <button name="action_traslada_datos" string="Traslada Datos" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                            </div>                       
+                            <separator/>
+                            <separator string="PROYECCIÓN EJECUTADA - CÁLCULO RENTA 5TA.CATEGORÍA"/>
+                            <div class="o_list_container">
+                                <field name="renta_detail_ids" widget="one2many">
+                                    <tree editable="bottom" create="true" edit="true" 
+                                        decoration-bf="name in ('REMUNERACIÓN PROYECTADA', 'RENTA ANUAL PROYECTADA', 'IMPUESTO ANUAL', 'IMPUESTO A PAGAR', 'RETENCIÓN MENSUAL')" 
+                                        decoration-warning="name == 'REMUNERACIÓN PROYECTADA'" 
+                                        decoration-danger="name in ('RENTA ANUAL PROYECTADA', 'IMPUESTO ANUAL', 'IMPUESTO A PAGAR', 'RETENCIÓN MENSUAL')">
+                                        <field name="name" 
+                                            string="DETALLE" 
+                                            class="wide_column" 
+                                            width="600"
+                                            readonly="1"/>
+                                        <field name="enero" string="ENE" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="febrero" string="FEB" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="marzo" string="MAR" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="abril" string="ABR" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="mayo" string="MAY" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="junio" string="JUN" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="julio" string="JUL" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="agosto" string="AGO" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="setiembre" string="SET" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="octubre" string="OCT" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="noviembre" string="NOV" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                        <field name="diciembre" string="DIC" class="o_field_cell o_list_number" options="{'no_sort': True}"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para Control Anual de Renta -->
+    <record id="view_payslip_renta_quinta_tree" model="ir.ui.view">
+        <field name="name">payslip_renta.quinta.tree</field>
+        <field name="model">hr.payslip.renta_quinta</field>
+        <field name="arch" type="xml">
+            <tree string="Control Anual de Renta">
+                <field name="name" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+                <field name="user_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <!--  <field name="employee_id" widget="many2one_avatar_employee" options="{&quot;size&quot;:[0,280]}" class="wide-column" readonly="1"/>  -->
+                <field name="employee_id" widget="many2one_avatar_employee" options="{&quot;size&quot;:[0,280]}" domain="[('x_studio_sujeto_a_renta_5cat', '=', True)]"/>
+                <field name="name"/>
+                <field name="cens_fech_registro"/>
+                <field name="cens_anio_ejercicio"/>
+                <field name="currency_id"/>
+                <field name="contract_name"/>
+                <field name="contract_date_start"/>
+                <field name="contract_date_end"/>
+                <field name="contract_wage"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción para el Control Anual de Renta -->
+    <record id="action_renta_quinta_control" model="ir.actions.act_window">
+        <field name="name">Control Anual de Renta</field>
+        <field name="res_model">hr.payslip.renta_quinta</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <!--
+        <field name="domain">[('contract_id.state', '=', 'open'), ('x_studio_sujeto_a_renta_5cat', '=', True)]</field>
+        -->
+    </record>
+
+    <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="priority" eval="90"/>
+        <field name="arch" type="xml">
+            <notebook>
+                <page name="cens_page_renta_1" string="Renta 5ta.Cat." attrs="{'invisible': [['x_studio_renta_5ta','=',False]]}">
+                    <group name="group_01">
+                        <group name="group_01_left">
+                            <separator string="Parámetros Considerados"/>
+                            <field name="cens_nano_ejercicio" string="Ejercicio actual:"/>
+                            <field name="cens_renta_quinta_id" 
+                                 string="Configuración Renta 5ta.Cat" 
+                                 domain="[('employee_id', '=', employee_id), ('cens_anio_ejercicio', '=', cens_nano_ejercicio)]"/>
+                            <field name="cens_tiene_renta5ta"/>
+                            <field name="cens_sueldo_minimo"/>
+                            <field name="cens_uit_importe"/>
+                            <separator/>
+                            <field name="cens_logo_sunat" options="{&quot;size&quot;:[0,270]}" widget="image" />
+                        </group>
+                        <!--
+                        <group name="group_01_right">
+                            <separator string="Proyectado de Retenciones"/>
+                            <field name="cens_reten_ene" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'ENERO'"/>
+                            <field name="cens_reten_feb" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'FEBRERO'"/>
+                            <field name="cens_reten_mar" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'MARZO'"/>
+                            <field name="cens_reten_abr" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'ABRIL'"/>
+                            <field name="cens_reten_may" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'MAYO'"/>
+                            <field name="cens_reten_jun" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'JUNIO'"/>
+                            <field name="cens_reten_jul" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'JULIO'"/>
+                            <field name="cens_reten_ago" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'AGOSTO'"/>
+                            <field name="cens_reten_set" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'SETIEMBRE'"/>
+                            <field name="cens_reten_oct" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'OCTUBRE'"/>
+                            <field name="cens_reten_nov" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'NOVIEMBRE'"/>
+                            <field name="cens_reten_dic" readonly="1" class="text-right" decoration-danger="x_studio_mes_calculado == 'DICIEMBRE'"/>
+                            <separator string="_"/>
+                        </group>
+                        -->
+                    </group>
+                    <group name="group_02">
+                        <group name="group_02_left">
+
+                        </group>
+                        <group name="group_02_right">
+                            
+                        </group>
+                    </group>
+
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+
+</odoo>
+
+
+
+
+
+<!--
+
+             
+   context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"                         
+                  
+
+-->
