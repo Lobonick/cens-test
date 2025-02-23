@@ -88,6 +88,7 @@
                             </div>     
                             <div>
                                 <button name="action_traslada_boletas" string="Datos desde Boletas Emitidas" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                                <span class="oe_inline oe_separating_element"> </span>
                                 <button name="action_traslada_datos" string="Traslada Datos al proyectado" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
                             </div>                       
                             <separator/>
