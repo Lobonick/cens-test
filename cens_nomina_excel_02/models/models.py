@@ -318,7 +318,6 @@ class HrPayslip(models.Model):
         #-----
         worksheet.freeze_panes(9, 4)
 
-
         # -------------------------------------------------------------------------------------
         # INSERTA NOMBRE DE CAMPOS Y OCULTA FILA
         # -------------------------------------------------------------------------------------
@@ -338,9 +337,7 @@ class HrPayslip(models.Model):
             'x_studio_dias_vacaciones',
             'x_studio_dias_con_goce',
             'x_studio_descanso_medico',
-            'x_studio_edit_feriados',
             'x_studio_feriados_dias',
-            'x_studio_feriados_importe',
             'x_studio_bonificacion_extraordinaria',
             'x_studio_horas_extras_importe',
             'x_studio_reembolso',
