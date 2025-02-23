@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--
+        ========================================================================
+        OBJETIVO: Vista FORM principal para CÁLCULO RENTA 5ta.
+        ========================================================================
+    -->
     <record id="view_payslip_renta_quinta_form" model="ir.ui.view"> 
         <field name="name">payslip.renta.quinta.form</field>
         <field name="model">hr.payslip.renta_quinta</field>
@@ -82,7 +87,8 @@
                                 </field>
                             </div>     
                             <div>
-                                <button name="action_traslada_datos" string="Traslada Datos" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                                <button name="action_traslada_boletas" string="Datos desde Boletas Emitidas" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
+                                <button name="action_traslada_datos" string="Traslada Datos al proyectado" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
                             </div>                       
                             <separator/>
                             <separator string="PROYECCIÓN EJECUTADA - CÁLCULO RENTA 5TA.CATEGORÍA"/>
@@ -155,6 +161,11 @@
         -->
     </record>
 
+    <!--
+        ========================================================================
+        OBJETIVO: Agrega Pestaña la BOLETA DE PAGO con Datos cálculo Renta 5ta.
+        ========================================================================
+    -->
     <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
         <field name="name">hr.payslip.form.inherit</field>
         <field name="model">hr.payslip</field>
