@@ -182,6 +182,13 @@ class renta_quinta_Custom(models.Model):
         self.pasa_noremurativo_datos()
         self.carga_rellena_datos()
 
+    # -----------------------------------------------
+    # ACCION PARA TRASLADA DATOS DESDE BOLETAS
+    # -----------------------------------------------
+    def action_traslada_boletas(self):
+        self.pasa_noremurativo_datos()
+
+
     # ----------------------------------
     # ACCION PARA EL BOTÓN RELLENAR NR
     # ----------------------------------
