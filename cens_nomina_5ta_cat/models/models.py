@@ -101,7 +101,6 @@ class renta_quinta_Custom(models.Model):
     cens_reten_nov = fields.Float('Noviembre', default=0.00)
     cens_reten_dic = fields.Float('Diciembre', default=0.00)
 
-
     @api.depends('employee_id')
     def _compute_contract_info(self):
         for record in self:
@@ -166,8 +165,6 @@ class renta_quinta_Custom(models.Model):
                     retencion_mesual[x_mes-1] = valor_retencion 
                     # setattr(line, w_nombre_campo, resultado)     Guardamos el resultado en la línea actual
         
-
-
     # ------------------------------
     # ACCION PARA EL BOTÓN RELLENAR
     # ------------------------------
@@ -186,7 +183,84 @@ class renta_quinta_Custom(models.Model):
     # ACCION PARA TRASLADA DATOS DESDE BOLETAS
     # -----------------------------------------------
     def action_traslada_boletas(self):
-        self.pasa_noremurativo_datos()
+        self.carga_datos_desde_boletas()
+
+    # -----------------------------------------------
+    # EXTRAE DATOS DESDE LAS BOLETAS DE CADA MES
+    # -----------------------------------------------
+    def carga_datos_desde_boletas(self):
+        for record in self:
+            w_Ingres = record.contract_date_ingreso
+            w_AñoEje = int(record.cens_anio_ejercicio) if record.cens_anio_ejercicio else 2025
+            año_ingreso = w_Ingres.year     #-- Obtener el año y mes de ingreso
+            mes_ingreso = w_Ingres.month
+
+        # ----------------------------------------------------------
+        # EXTRACCIÓN DE LOS VALORES DE LOS CAMPOS DE LAS BOLETAS
+        # Crea un diccionario patra cada campo extraido.
+        # ----------------------------------------------------------
+        # Buscar las boletas del empleado para el año especificado
+        domain = [
+            ('employee_id', '=', record.employee_id.id),
+            ('date_from', '>=', f'{w_AñoEje}-01-01'),
+            ('date_to', '<=', f'{w_AñoEje}-12-31'),
+            ('state', 'in', ['done', 'paid'])
+        ]
+        
+        # Obtener todas las boletas del año (InMemory)
+        payslips = self.env['hr.payslip'].search(domain)
+        
+        # Crear un diccionario para almacenar los valores por mes
+        essalud_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        horas_extras_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        
+        # Procesar cada boleta y extraer la información
+        for payslip in payslips:
+            # Determinar el mes de la boleta
+            mes_boleta = payslip.date_from.month
+            
+            # Extraer información de EsSalud
+            essalud_valor = payslip.x_studio_aporte_a_essalud or 0.00
+            essalud_por_mes[mes_boleta] += essalud_valor
+            
+            # Extraer información de Horas Extras
+            horas_extras_valor = payslip.x_studio_en_horas_extras or 0.00
+            horas_extras_por_mes[mes_boleta] += horas_extras_valor
+
+        # ----------------------------------------------------------
+        # POSICIONA EL LOS DATOS ENCONTRADOS EN NUESTRA MATRIX
+        # ----------------------------------------------------------
+        lines  = self.nremu_detail_ids  #---- Habilita tabla NO REMUNERATIVOS (nremu)
+        for line in lines:
+            if (line.name == 'ESSALUD'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = essalud_por_mes[x_mes] #-- Asigna Dato 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Horas Extras'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower()
+                    w_conten_campo = horas_extras_por_mes[x_mes]
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso: 
+                            w_importe_dato = 0
+                        else:        
+                            w_importe_dato = w_conten_campo
+                    else:    
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
 
 
     # ----------------------------------
@@ -204,7 +278,7 @@ class renta_quinta_Custom(models.Model):
             año_ingreso = w_Ingres.year     #-- Obtener el año y mes de ingreso
             mes_ingreso = w_Ingres.month
 
-        lines  = self.nremu_detail_ids
+        lines  = self.nremu_detail_ids      #-- Habilita tabla NO REMUNERATIVOS (nremu)
         for line in lines:
             if (line.name == 'Movilidad'):
                 for x_mes in range(1, 13):
@@ -851,7 +925,6 @@ class HrPayslipRentaQuinta(models.Model):
             'Alimentación',
             'Bonific. x Educación',
             'Utilidades Voluntarias',
-            'AFP',
             'ESSALUD',
             'Horas Extras'
         ]
