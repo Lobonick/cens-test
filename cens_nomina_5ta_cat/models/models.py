@@ -214,11 +214,13 @@ class renta_quinta_Custom(models.Model):
         essalud_por_mes = {mes: 0.00 for mes in range(1, 13)}
         horas_extras_por_mes = {mes: 0.00 for mes in range(1, 13)}
         
+        _logger.info('INGRESANDO A CREAR DICCIONARIOS')
         # Procesar cada boleta y extraer la información
         for payslip in payslips:
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
-            
+            _logger.info(f'Boleta Mes: {mes_boleta} ')
+
             # Extraer información de EsSalud
             essalud_valor = payslip.x_studio_aporte_a_essalud or 0.00
             essalud_por_mes[mes_boleta] += essalud_valor
@@ -235,7 +237,8 @@ class renta_quinta_Custom(models.Model):
             if (line.name == 'ESSALUD'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower() 
-                    w_conten_campo = essalud_por_mes[x_mes] #-- Asigna Dato 
+                    w_conten_campo = essalud_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'ESSALUD Mes: {x_mes} Importe: {w_conten_campo} ') 
                     if año_ingreso < w_AñoEje: 
                         w_importe_dato = w_conten_campo
                     elif año_ingreso == w_AñoEje: 
@@ -251,6 +254,7 @@ class renta_quinta_Custom(models.Model):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower()
                     w_conten_campo = horas_extras_por_mes[x_mes]
+                    _logger.info(f'Horas Extras Mes: {x_mes} Importe: {w_conten_campo} ')
                     if año_ingreso < w_AñoEje: 
                         w_importe_dato = w_conten_campo
                     elif año_ingreso == w_AñoEje: 
