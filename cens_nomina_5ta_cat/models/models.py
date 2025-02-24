@@ -204,7 +204,7 @@ class renta_quinta_Custom(models.Model):
             ('employee_id', '=', record.employee_id.id),
             ('date_from', '>=', f'{w_AñoEje}-01-01'),
             ('date_to', '<=', f'{w_AñoEje}-12-31'),
-            ('state', 'in', ['draft', 'done', 'paid'])
+            ('state', 'in', ['draft', 'verify', 'done', 'paid'])
         ]
         
         # Obtener todas las boletas del año (InMemory)
