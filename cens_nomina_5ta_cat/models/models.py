@@ -55,7 +55,11 @@ class renta_quinta_Custom(models.Model):
     user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company.id)
     state = fields.Selection([("draft", "Borrador"), ("posted", "Confirmado"), ("annul", "Anulado")], default="draft")
-    employee_id = fields.Many2one('hr.employee', string='Empleado', required=True, index=True)
+    #employee_id = fields.Many2one('hr.employee', string='Empleado', required=True, index=True)
+    employee_id = fields.Many2one('hr.employee', string='Empleado', 
+                                                required=True, 
+                                                index=True,
+                                                domain="[('x_studio_sujeto_a_renta_5cat', '=', True), ('x_studio_estado_contrato', '=', 'open')]")
     currency_id = fields.Many2one('res.currency', string='Moneda', 
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'PEN')], limit=1).id,
                                   required=True)
