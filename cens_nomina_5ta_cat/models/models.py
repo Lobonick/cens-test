@@ -204,7 +204,7 @@ class renta_quinta_Custom(models.Model):
             ('employee_id', '=', record.employee_id.id),
             ('date_from', '>=', f'{w_AñoEje}-01-01'),
             ('date_to', '<=', f'{w_AñoEje}-12-31'),
-            ('state', 'in', ['done', 'paid'])
+            ('state', 'in', ['draft', 'done', 'paid'])
         ]
         
         # Obtener todas las boletas del año (InMemory)
@@ -219,7 +219,7 @@ class renta_quinta_Custom(models.Model):
         for payslip in payslips:
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
-            _logger.info(f'Boleta Mes: {mes_boleta} ')
+            _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
 
             # Extraer información de EsSalud
             essalud_valor = payslip.x_studio_aporte_a_essalud or 0.00
