@@ -132,11 +132,7 @@
         <field name="model">hr.payslip.renta_quinta</field>
         <field name="arch" type="xml">
             <tree string="Control Anual de Renta">
-                <button name="action_genera_con_check_renta" 
-                        string="Generar a Empleados con Check" 
-                        type="object" 
-                        class="btn-primary"
-                        icon="fa-cogs"/>
+                
                 <field name="name" invisible="1"/>
                 <field name="company_id" invisible="1"/>
                 <field name="user_id" invisible="1"/>
@@ -161,11 +157,35 @@
         <field name="name">Control Anual de Renta</field>
         <field name="res_model">hr.payslip.renta_quinta</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'create': 1}</field>
+        <field name="view_id" ref="view_payslip_renta_quinta_tree"/>
         <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer control anual de renta
+            </p>
+        </field>
         <!--
         <field name="domain">[('contract_id.state', '=', 'open'), ('x_studio_sujeto_a_renta_5cat', '=', True)]</field>
         -->
     </record>
+
+
+    <record id="action_genera_con_check_renta" model="ir.actions.server">
+        <field name="name">Generar a Empleados con Check</field>
+        <field name="model_id" ref="model_hr_payslip_renta_quinta"/>
+        <field name="binding_model_id" ref="model_hr_payslip_renta_quinta"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_genera_con_check_renta()
+        </field>
+    </record>
+
+
+
+
+
 
     <!--
         ========================================================================
@@ -234,6 +254,13 @@
 
 
 <!--
+
+        <button name="action_genera_con_check_renta" 
+                        string="Generar a Empleados con Check" 
+                        type="object" 
+                        class="btn-primary"
+                        icon="fa-cogs"/>
+
 
              
    context="{'record.cens_nano_ejercicio': cens_nano_ejercicio}"                         
