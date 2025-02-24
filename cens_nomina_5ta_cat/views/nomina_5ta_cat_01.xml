@@ -167,11 +167,15 @@
         <field name="view_id" ref="view_payslip_renta_quinta_tree"/>
         <field name="domain">[]</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Crea tu primer control anual de renta
-                <img src="/web/image/113536-85de4c55/CENS-LOGO_izquierda%20-%20TINY.png?access_token=62426e11-6419-4824-a13e-2b8c1c9cb4ba" class="img img-fluid o_we_custom_image" style="width: 20%;"/>
+            <div class="text-center">
+                <p class="o_view_nocontent_smiling_face">
+                    Crea tu primer control anual de renta
+                </p>
+                <p class="text-muted">
+                    Este módulo te permitirá gestionar fácilmente el control anual de renta de quinta categoría.
+                </p>
                 <img src="/cens_nomina_5ta_cat/static/description/logo-modulos.png" alt="CENS" width="150" height="150"/>
-            </p>
+            </div>
         </field>
         <!--
         <field name="domain">[('contract_id.state', '=', 'open'), ('x_studio_sujeto_a_renta_5cat', '=', True)]</field>
