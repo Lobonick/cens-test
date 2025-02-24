@@ -132,7 +132,13 @@
         <field name="model">hr.payslip.renta_quinta</field>
         <field name="arch" type="xml">
             <tree string="Control Anual de Renta">
-                
+                <span class="oe_inline oe_separating_element"> </span>
+                <button name="action_genera_con_check_renta" 
+                        string=" Generar a Empleados con Check" 
+                        type="object" 
+                        class="btn-primary"
+                        icon="fa-cogs"/>
+   
                 <field name="name" invisible="1"/>
                 <field name="company_id" invisible="1"/>
                 <field name="user_id" invisible="1"/>
