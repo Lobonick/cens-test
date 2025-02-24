@@ -186,6 +186,14 @@ class renta_quinta_Custom(models.Model):
         self.carga_datos_desde_boletas()
 
     # -----------------------------------------------
+    # ACCION PARA GENERAR PROYECTADO DE 5TA A 
+    #        LOS EMPLEADOS MARCADOS CON CHECK
+    # -----------------------------------------------
+    def action_genera_con_check_renta(self):
+        self.carga_datos_desde_boletas()
+
+
+    # -----------------------------------------------
     # EXTRAE DATOS DESDE LAS BOLETAS DE CADA MES
     # -----------------------------------------------
     def carga_datos_desde_boletas(self):
