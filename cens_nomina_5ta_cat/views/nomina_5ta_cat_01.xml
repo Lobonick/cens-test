@@ -59,7 +59,7 @@
                     </div>
                     <notebook>
                         <page string="Editor de cálculo">
-                            <separator string="CONCEPTOS NO REMUNERATIVOS"/>
+                            <separator string="CONCEPTOS ADICIONALES AFECTOS A RENTA DE 5TA.CAT."/>
                             <div class="o_list_container">
                                 <field name="nremu_detail_ids" widget="one2many">
                                     <tree editable="bottom" create="true" edit="true" 
@@ -135,6 +135,7 @@
                 <header>
                     <button name="action_genera_con_check_renta" 
                             string=" Generar a Empleados con Check" 
+                            confirm="¿Está seguro de CARGA MASIVA?"
                             type="object" 
                             class="btn-primary"
                             icon="fa-cogs"/>

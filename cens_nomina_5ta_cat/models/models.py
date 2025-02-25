@@ -282,7 +282,12 @@ class renta_quinta_Custom(models.Model):
         payslips = self.env['hr.payslip'].search(domain)
         
         # Crear un diccionario para almacenar los valores por mes
-        essalud_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        congocehaber_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        lic_fallecim_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        lic_paternid_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        bonif_cumpli_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        descans_medi_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        bonif_feriad_por_mes = {mes: 0.00 for mes in range(1, 13)}
         horas_extras_por_mes = {mes: 0.00 for mes in range(1, 13)}
         
         _logger.info('INGRESANDO A CREAR DICCIONARIOS')
@@ -292,9 +297,29 @@ class renta_quinta_Custom(models.Model):
             mes_boleta = payslip.date_from.month
             _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
 
-            # Extraer información de EsSalud
-            essalud_valor = payslip.x_studio_aporte_a_essalud or 0.00
-            essalud_por_mes[mes_boleta] += essalud_valor
+            # Extraer información de Con Goce Haber
+            congocehaber_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            congocehaber_por_mes[mes_boleta] += congocehaber_valor
+
+            # Extraer información de Licencia Fallecimiento
+            lic_fallecim_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            lic_fallecim_por_mes[mes_boleta] += lic_fallecim_valor
+
+            # Extraer información de Licencia x Paternidad
+            lic_paternid_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            lic_paternid_por_mes[mes_boleta] += lic_paternid_valor
+
+            # Extraer información de Bonificación x Cumplimiento
+            bonif_cumpli_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            bonif_cumpli_por_mes[mes_boleta] += bonif_cumpli_valor
+
+            # Extraer información de Dencanso Médico
+            descans_medi_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            descans_medi_por_mes[mes_boleta] += descans_medi_valor
+
+            # Extraer información de Bonific. x Feriados
+            bonif_feriad_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
+            bonif_feriad_por_mes[mes_boleta] += bonif_feriad_valor
             
             # Extraer información de Horas Extras
             horas_extras_valor = payslip.x_studio_en_horas_extras or 0.00
@@ -305,11 +330,91 @@ class renta_quinta_Custom(models.Model):
         # ----------------------------------------------------------
         lines  = self.nremu_detail_ids  #---- Habilita tabla NO REMUNERATIVOS (nremu)
         for line in lines:
-            if (line.name == 'ESSALUD'):
+            if (line.name == 'Lic.con Goce Haber'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower() 
-                    w_conten_campo = essalud_por_mes[x_mes] #-- Asigna Dato
-                    _logger.info(f'ESSALUD Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    w_conten_campo = congocehaber_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Lic.con Goce Haber Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Lic.x Fallecimiento'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = lic_fallecim_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Lic.x Fallecimiento Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Lic.x Paternidad'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = lic_paternid_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Lic.x Paternidad Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Bonific.x Cumplimiento'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = bonif_cumpli_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Bonific.x Cumplimiento Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Descanso Médico'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = descans_medi_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Deccanso Médico Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Feriados'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = bonif_feriad_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Feriados Importe: {w_conten_campo} ') 
                     if año_ingreso < w_AñoEje: 
                         w_importe_dato = w_conten_campo
                     elif año_ingreso == w_AñoEje: 
@@ -1000,7 +1105,12 @@ class HrPayslipRentaQuinta(models.Model):
             'Alimentación',
             'Bonific. x Educación',
             'Utilidades Voluntarias',
-            'ESSALUD',
+            'Lic.con Goce Haber',
+            'Lic.x Fallecimiento',
+            'Lic.x Paternidad',
+            'Bonific.x Cumplimiento',
+            'Descanso Médico',
+            'Feriados',
             'Horas Extras'
         ]
         for line in default_lines1:
