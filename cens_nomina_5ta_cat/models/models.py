@@ -219,7 +219,7 @@ class renta_quinta_Custom(models.Model):
             if not existing_record:
                 # Preparar valores para el nuevo registro
                 vals = {
-                    'name': f"RENTA {w_AñoEje} - 5TA CAT ",
+                    'name': f"RENTA {w_AñoEje} - 5TA CAT - {empleado.name}",
                     'employee_id': empleado.id,
                     'cens_anio_ejercicio': record.cens_anio_ejercicio,
                     'cens_nano_ejercicio': w_AñoEje,
