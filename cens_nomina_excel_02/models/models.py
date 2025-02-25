@@ -487,13 +487,13 @@ class HrPayslip(models.Model):
         worksheet2.write('E8', 'LOTE', cell_format_titu)                         #-- 04
         worksheet2.write('F8', 'ID OCURREN', cell_format_titu)
         worksheet2.write('G8', 'FECHA OCURREN', cell_format_titu)                #-- 05
-        worksheet2.write('H8', 'CANTIDAD DE HORAS', cell_format_titu)                  #-- 06
+        worksheet2.write('H8', 'NÚMERO DE HORAS', cell_format_titu)                  #-- 06
         worksheet2.write('I8', '¿NO LABORABLE?', cell_format_titu)                       #-- 07
         worksheet2.write('J8', 'DESCRIPCIÓN', cell_format_titu)              #-- 08
         #-----
         worksheet2.write('F9', 'No Edit', cell_format_tut5)
         worksheet2.write('G9', 'dd/mm/aaaa', cell_format_tut5)                
-        worksheet2.write('H9', 'hh:mm', cell_format_tut5)                
+        worksheet2.write('H9', 'HH (Sin Fracción)', cell_format_tut5)                
         worksheet2.write('I9', 'SI o NO', cell_format_tut5)                
         worksheet2.write('J9', 'Breve observación', cell_format_tut5)                
         #-----
