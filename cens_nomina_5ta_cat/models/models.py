@@ -219,7 +219,7 @@ class renta_quinta_Custom(models.Model):
             if not existing_record:
                 # Preparar valores para el nuevo registro
                 vals = {
-                    'name': f"RENTA 5TA {empleado.name} - {w_AñoEje}",
+                    'name': f"RENTA {w_AñoEje} - 5TA CAT ",
                     'employee_id': empleado.id,
                     'cens_anio_ejercicio': record.cens_anio_ejercicio,
                     'cens_nano_ejercicio': w_AñoEje,
@@ -242,6 +242,10 @@ class renta_quinta_Custom(models.Model):
                 # Por ejemplo, si tienes un método para calcular valores iniciales:
                 # new_record._compute_contract_info()
                 # new_record._calculate_initial_values()
+                new_record.action_rellena_datos()
+                new_record.action_traslada_boletas()
+                new_record.action_traslada_datos()
+                new_record.action_rellena_datos()
             else:
                 _logger.info(f'Ya existe registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
 
