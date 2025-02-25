@@ -183,19 +183,74 @@ class renta_quinta_Custom(models.Model):
         self.pasa_noremurativo_datos()
         self.carga_rellena_datos()
 
-    # -----------------------------------------------
-    # ACCION PARA TRASLADA DATOS DESDE BOLETAS
-    # -----------------------------------------------
-    def action_traslada_boletas(self):
-        self.carga_datos_desde_boletas()
 
     # -----------------------------------------------
     # ACCION PARA GENERAR PROYECTADO DE 5TA A 
     #        LOS EMPLEADOS MARCADOS CON CHECK
     # -----------------------------------------------
     def action_genera_con_check_renta(self):
-        self.carga_datos_desde_boletas()
+        for record in self:
+            w_Ingres = record.contract_date_ingreso
+            w_AñoEje = int(record.cens_anio_ejercicio) if record.cens_anio_ejercicio else 2025
+            año_ingreso = w_Ingres.year     #-- Obtener el año y mes de ingreso
+            mes_ingreso = w_Ingres.month
 
+        # Buscar los Empleado con el check 5ta activado
+        domain = [
+            ('x_studio_estado_contrato', '=', 'open'),
+            ('x_studio_sujeto_a_renta_5cat', '=', True)
+        ]
+        
+        # Obtener todas los Empleados con 5ta (InMemory)
+        personal = self.env['hr.employee'].search(domain)
+        
+        _logger.info('INGRESANDO A CREAR DICCIONARIOS')
+        w_fila = 0
+        # Procesar cada boleta y extraer la información
+        for empleado in personal:
+            w_fila += 1
+            # Verificar si ya existe un registro para este empleado en el año ejercicio
+            existing_record = self.env['hr.payslip.renta_quinta'].search([
+                ('employee_id', '=', empleado.id),
+                ('cens_nano_ejercicio', '=', w_AñoEje)
+            ], limit=1)
+            
+            # Si no existe un registro, crear uno nuevo
+            if not existing_record:
+                # Preparar valores para el nuevo registro
+                vals = {
+                    'name': f"RENTA 5TA {empleado.name} - {w_AñoEje}",
+                    'employee_id': empleado.id,
+                    'cens_anio_ejercicio': record.cens_anio_ejercicio,
+                    'cens_nano_ejercicio': w_AñoEje,
+                    'cens_fech_registro': fields.Date.context_today(self),
+                    'cens_suel_basico': empleado.contract_id.wage if empleado.contract_id else 0.0,
+                    'cens_uit_procesado': self.env.company.x_studio_unidad_impositiva_tributaria,
+                    'cens_sminim_proces': self.env.company.x_studio_sueldo_minimo,
+                    'state': 'draft',
+                    'cens_tiene_renta5ta': True,
+                    'cens_observaciones': f"Creado automáticamente desde proceso masivo el {fields.Date.to_string(fields.Date.context_today(self))}"
+                }
+                
+                # Crear el nuevo registro
+                new_record = self.env['hr.payslip.renta_quinta'].create(vals)
+                
+                # Log para depuración
+                _logger.info(f'Creado registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
+                
+                # Opcional: Desencadenar métodos adicionales si es necesario
+                # Por ejemplo, si tienes un método para calcular valores iniciales:
+                # new_record._compute_contract_info()
+                # new_record._calculate_initial_values()
+            else:
+                _logger.info(f'Ya existe registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
+
+
+    # -----------------------------------------------
+    # ACCION PARA TRASLADA DATOS DESDE BOLETAS
+    # -----------------------------------------------
+    def action_traslada_boletas(self):
+        self.carga_datos_desde_boletas()
 
     # -----------------------------------------------
     # EXTRAE DATOS DESDE LAS BOLETAS DE CADA MES
