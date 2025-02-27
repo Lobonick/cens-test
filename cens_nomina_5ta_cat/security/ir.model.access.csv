@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payslip_renta_quinta,access.hr.payslip.renta.quinta,model_hr_payslip_renta_quinta,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payslip_renta_quinta_detail,access.hr.payslip.renta.quinta.detail,model_hr_payslip_renta_quinta_detail,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payslip_renta_quinta_detanr,access.hr.payslip.renta.quinta.detanr,model_hr_payslip_renta_quinta_detanr,hr_payroll.group_hr_payroll_user,1,1,1,1
