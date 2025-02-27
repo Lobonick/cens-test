@@ -771,25 +771,54 @@ class renta_quinta_Custom(models.Model):
                 año_ingreso = w_Ingres.year     #-- Obtener el año y mes de ingreso
                 mes_ingreso = w_Ingres.month
             else:
-                año_ingreso = 2025     #-- Obtener el año y mes de ingreso
+                año_ingreso = 2025     #-- Obtener el año y mes de ingreso QUIQUE
                 mes_ingreso = 1
+
+        # ----------------------------------------------------------------
+        domain = [
+            ('employee_id', '=', record.employee_id.id),
+            ('date_from', '>=', f'{w_AñoEje}-01-01'),
+            ('date_to', '<=', f'{w_AñoEje}-12-31'),
+            ('state', 'in', ['draft', 'verify', 'done', 'paid'])
+        ]
+        
+        # Obtener todas las boletas del año (InMemory)
+        payslips = self.env['hr.payslip'].search(domain)
+        
+        # Crear un diccionario para almacenar los valores por mes
+        sueldobasico_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        
+        for payslip in payslips:
+            # Determinar el mes de la boleta
+            mes_boleta = payslip.date_from.month
+            _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
+
+            # Extraer información de SUELDO BÁSICO del mes
+            sueldobasico_valor = payslip.x_studio_en_basico or 0.00
+            sueldobasico_por_mes[mes_boleta] += sueldobasico_valor
+        # ----------------------------------------------------------------
 
         lines  = self.renta_detail_ids
         for line in lines:
             if (line.name == 'Sueldo Básico del mes'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower()
+                    w_conten_campo = sueldobasico_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Sueldo Básico del Mes: {x_mes} Importe: {w_conten_campo} ') 
                     if año_ingreso < w_AñoEje: 
-                        w_importe_dato = w_sueldo_basico
+                        w_importe_dato = w_conten_campo
                     elif año_ingreso == w_AñoEje: 
                         if x_mes < mes_ingreso:         
                             w_importe_dato = 0
                         else:                           
-                            w_importe_dato = w_sueldo_basico
+                            w_importe_dato = w_conten_campo
                     else:                               
                         w_importe_dato = 0
-                    setattr(line, w_nombre_campo, w_importe_dato)
-
+                    if (sueldobasico_por_mes[x_mes] > 0):
+                        setattr(line, w_nombre_campo, w_importe_dato)
+                    else: 
+                        setattr(line, w_nombre_campo, w_sueldo_basico)
+        
             if (line.name == 'Asignación Famiiar'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower()  
