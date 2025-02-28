@@ -797,10 +797,9 @@ class HrPayslip(models.Model):
                 #x_hr.employee.udn
                 w_dato = w_boleta.employee_id.x_studio_negocio_unidad
                 worksheet.write(w_fila, 6, w_dato, cell_format_cent)
-                
-                w_dato = w_boleta.employee_id.x_studio_negocio_unidad.x_name if w_boleta.employee_id.x_studio_negocio_unidad else ''
+                               
+                w_dato = getattr(w_boleta.employee_id.x_studio_negocio_unidad, 'x_name', '')
                 worksheet.write(w_fila, 6, w_dato, cell_format_cent)
-
                 
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 7, w_dato, cell_format_cent)
