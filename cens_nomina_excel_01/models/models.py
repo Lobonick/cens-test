@@ -784,7 +784,7 @@ class HrPayslip(models.Model):
                     worksheet.write('AT5', 'PLANILLA GENERAL DE SUELDOS - EMPLEADOS CENS - ' + w_dato, cell_format_cabe)
                     w_switch = 1
                 
-                w_dato = w_boleta.employee_id.first_contact_date
+                w_dato = w_boleta.employee_id.first_contract_date
                 worksheet.write(w_fila, 5, w_dato, cell_format_fech)
 
                 w_dato = w_boleta.employee_id.x_studio_negocio_unidad
