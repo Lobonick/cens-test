@@ -912,8 +912,8 @@ class HrPayslip(models.Model):
                 # -----------------------------------------
                 # COSTO DEL MES
                 # -----------------------------------------
-                w_dato = w_boleta.employee_id.x_studio_entidad_financiera
-                worksheet.write(w_fila, 81, w_dato, cell_format_imp2)
+               # w_dato = w_boleta.employee_id.x_studio_entidad_financiera.id
+               # worksheet.write(w_fila, 81, w_dato, cell_format_imp2)
 
                 w_dato = w_boleta.employee_id.x_studio_numero_cuenta
                 worksheet.write(w_fila, 82, w_dato, cell_format_imp2)
