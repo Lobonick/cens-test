@@ -290,22 +290,22 @@ class HrPayslip(models.Model):
             worksheet.write('AU7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
 
             worksheet.merge_range('BA7:BI7', 'Merged Cells', merge_format)
-            worksheet.write('AZ7', 'D E S C U E N T O S', cell_format_sup3)
+            worksheet.write('BA7', 'D E S C U E N T O S', cell_format_sup3)
 
             worksheet.merge_range('BJ7:BM7', 'Merged Cells', merge_format)
-            worksheet.write('BI7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
+            worksheet.write('BJ7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
 
             worksheet.merge_range('BO7:BS7', 'Merged Cells', merge_format)
-            worksheet.write('BN7', 'RESUMEN TOTALIZADO', cell_format_sup5)
+            worksheet.write('BO7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
             worksheet.merge_range('BU7:BV7', 'Merged Cells', merge_format)
-            worksheet.write('BT7', 'APORTES', cell_format_sup5)
+            worksheet.write('BU7', 'APORTES', cell_format_sup5)
 
             worksheet.merge_range('BW7:BZ7', 'Merged Cells', merge_format)
-            worksheet.write('BV7', 'PROVISIONES', cell_format_sup5)
+            worksheet.write('BW7', 'PROVISIONES', cell_format_sup5)
 
             worksheet.merge_range('CB7:CB7', 'Merged Cells', merge_format)
-            worksheet.write('CA7', 'COSTO', cell_format_sup5)
+            worksheet.write('CB7', 'COSTO', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
