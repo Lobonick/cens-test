@@ -791,6 +791,7 @@ class renta_quinta_Custom(models.Model):
         for payslip in payslips:
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
+            Tip_Emplea = payslip.x_studio_tipo_planilla
             _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
 
             # Extraer información de SUELDO BÁSICO del mes
@@ -814,9 +815,12 @@ class renta_quinta_Custom(models.Model):
                             w_importe_dato = w_conten_campo
                     else:                               
                         w_importe_dato = 0
-                    if (sueldobasico_por_mes[x_mes] > 0):
-                        setattr(line, w_nombre_campo, w_importe_dato)
-                    else: 
+                    if (Tip_Emplea == "INTE"):
+                        if (sueldobasico_por_mes[x_mes] > 0):
+                            setattr(line, w_nombre_campo, w_importe_dato)
+                        else: 
+                            setattr(line, w_nombre_campo, w_sueldo_basico)
+                    else:
                         setattr(line, w_nombre_campo, w_sueldo_basico)
         
             if (line.name == 'Asignación Famiiar'):
@@ -871,7 +875,8 @@ class renta_quinta_Custom(models.Model):
                     valor_asignacion = getattr(asignacion_familiar_line, w_nombre_campo, 0)
                     
                     # Calculamos: (Sueldo + Asignación)
-                    resultado = (valor_sueldo + valor_asignacion)
+                    #resultado = (valor_sueldo + valor_asignacion)
+                    resultado = (w_sueldo_basico + valor_asignacion)
                     
                     # Guardamos el resultado en la línea actual
                     setattr(line, w_nombre_campo, resultado)
@@ -889,7 +894,8 @@ class renta_quinta_Custom(models.Model):
                     valor_asignacion = getattr(asignacion_familiar_line, w_nombre_campo, 0)
                     
                     # Calculamos: (Sueldo + Asignación)
-                    resultado = (valor_sueldo + valor_asignacion)
+                    #resultado = (valor_sueldo + valor_asignacion)
+                    resultado = (w_sueldo_basico + valor_asignacion)
                     
                     # Guardamos el resultado en la línea actual
                     setattr(line, w_nombre_campo, resultado)
