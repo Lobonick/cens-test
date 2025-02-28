@@ -247,6 +247,10 @@ class HrPayslip(models.Model):
 
             worksheet.set_column(78, 78, 12)    #--     COSTO MENSUAL
 
+            worksheet.set_column(80, 80, 15)
+            worksheet.set_column(81, 81, 15)
+            worksheet.set_column(82, 82, 20)
+
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
             worksheet.set_zoom(85)          # %-Zoom
@@ -628,6 +632,10 @@ class HrPayslip(models.Model):
 
             worksheet.write('CB8', 'COSTO EMPLEADO', cell_format_tit5)              #-- 68
 
+            worksheet.write('CD8', 'BANCO', cell_format_tit7)              #-- 64
+            worksheet.write('CE8', 'CUENTA', cell_format_tit7)              #-- 65
+            worksheet.write('CF8', 'CCI', cell_format_tit7)              #-- 66
+
             #----------------------------------------------------------------
             worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
             worksheet.write('K9', 'DIAS', cell_format_tut3)                 #-- 10
@@ -787,8 +795,9 @@ class HrPayslip(models.Model):
                 w_dato = w_boleta.employee_id.first_contract_date
                 worksheet.write(w_fila, 5, w_dato, cell_format_fech)
 
-                w_dato = w_boleta.employee_id.x_studio_negocio_unidad
-                worksheet.write(w_fila, 6, w_dato, cell_format_cent)
+                #x_hr.employee.udn
+                #w_dato = w_boleta.employee_id.x_studio_negocio_unidad
+                #worksheet.write(w_fila, 6, w_dato, cell_format_cent)
                 
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 7, w_dato, cell_format_cent)
@@ -899,6 +908,18 @@ class HrPayslip(models.Model):
                 # COSTO DEL MES
                 # -----------------------------------------
                 worksheet.write(w_fila, 79, w_boleta.x_studio_en_total_extraordinario, cell_format_imp2)
+
+                # -----------------------------------------
+                # COSTO DEL MES
+                # -----------------------------------------
+                w_dato = w_boleta.employee_id.x_studio_entidad_financiera
+                worksheet.write(w_fila, 81, w_dato, cell_format_imp2)
+
+                w_dato = w_boleta.employee_id.x_studio_numero_cuenta
+                worksheet.write(w_fila, 82, w_dato, cell_format_imp2)
+
+                w_dato = w_boleta.employee_id.x_studio_cci
+                worksheet.write(w_fila, 83, w_dato, cell_format_imp2)
                 
                 w_fila += 1
 
