@@ -161,8 +161,8 @@ class HrPayslip(models.Model):
             worksheet.set_column(2, 2, 33)      #-- Npombre del Empleado
             worksheet.set_column(3, 3, 13)      #-- DNI
             worksheet.set_column(4, 4, 11)      #-- LOTE
-            worksheet.set_column(5, 5, 13)      #-- FECHA INICIAL
-            worksheet.set_column(6, 6, 13)      #-- FECHA GINAL
+            worksheet.set_column(5, 5, 13)      #-- FECHA INGRESO
+            worksheet.set_column(6, 6, 20)      #-- UNIDAD DE NEGOCIO
             worksheet.set_column(7, 7, 8)       #-- MONEDA
             worksheet.set_column(8, 8, 11)      #-- 
             worksheet.set_column(9, 9, 10)      #--
@@ -279,11 +279,11 @@ class HrPayslip(models.Model):
             worksheet.merge_range('AC7:AH7', 'Merged Cells', merge_format)
             worksheet.write('AC7', 'E  G  R  E  S  O  S', cell_format_tuti)
 
-            worksheet.merge_range('AJ7:AS7', 'Merged Cells', merge_format)
+            worksheet.merge_range('AJ7:AT7', 'Merged Cells', merge_format)
             worksheet.write('AJ7', 'I  N  G  R  E  S  O  S', cell_format_sup1)
             
-            worksheet.merge_range('AT7:AY7', 'Merged Cells', merge_format)
-            worksheet.write('AT7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
+            worksheet.merge_range('AU7:AY7', 'Merged Cells', merge_format)
+            worksheet.write('AU7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
 
             worksheet.merge_range('AZ7:BH7', 'Merged Cells', merge_format)
             worksheet.write('AZ7', 'D E S C U E N T O S', cell_format_sup3)
@@ -546,9 +546,9 @@ class HrPayslip(models.Model):
             worksheet.merge_range('E8:E9', 'Merged Cells', merge_format)
             worksheet.write('E8', 'LOTE', cell_format_titu)                         #-- 04
             worksheet.merge_range('F8:F9', 'Merged Cells', merge_format)
-            worksheet.write('F8', 'FECHA INICIAL', cell_format_titu)                #-- 05
+            worksheet.write('F8', 'FECHA INGRESO', cell_format_titu)                #-- 05
             worksheet.merge_range('G8:G9', 'Merged Cells', merge_format)
-            worksheet.write('G8', 'FECHA FINAL', cell_format_titu)                  #-- 06
+            worksheet.write('G8', 'UNIDAD NEGOCIO', cell_format_titu)                  #-- 06
             worksheet.merge_range('H8:H9', 'Merged Cells', merge_format)
             worksheet.write('H8', 'MONEDA', cell_format_titu)                       #-- 07
             worksheet.merge_range('I8:I9', 'Merged Cells', merge_format)
@@ -589,43 +589,44 @@ class HrPayslip(models.Model):
             worksheet.write('AQ8', 'FERIADOS', cell_format_tit1)                #-- 41
             worksheet.write('AR8', 'HORAS EXTRAS', cell_format_tit1)            #-- 42
             worksheet.write('AS8', 'VACACIONES', cell_format_tit1)              #-- 43
+            worksheet.write('AT8', 'DESCANSO VACACIONAL', cell_format_tit1)              #-- 43
 
-            worksheet.write('AT8', 'ALIMENTACIÓN', cell_format_tit2)            #-- 44
-            worksheet.write('AU8', 'MOVILIDAD', cell_format_tit2)               #-- 45
-            worksheet.write('AV8', 'CONDIC LABORLS', cell_format_tit2)          #-- 46      NO REMUNERATIVOS
-            worksheet.write('AW8', 'BONIFICAC. x EDUC', cell_format_tit2)         #-- 47
-            worksheet.write('AX8', 'UTILIDAD VOLUNT', cell_format_tit2)         #-- 48
-            worksheet.write('AY8', 'REEMB COMBUST', cell_format_tit2)           #-- 49
+            worksheet.write('AU8', 'ALIMENTACIÓN', cell_format_tit2)            #-- 44
+            worksheet.write('AV8', 'MOVILIDAD', cell_format_tit2)               #-- 45
+            worksheet.write('AW8', 'CONDIC LABORLS', cell_format_tit2)          #-- 46      NO REMUNERATIVOS
+            worksheet.write('AX8', 'BONIFICAC. x EDUC', cell_format_tit2)         #-- 47
+            worksheet.write('AY8', 'UTILIDAD VOLUNT', cell_format_tit2)         #-- 48
+            worksheet.write('AZ8', 'REEMB COMBUST', cell_format_tit2)           #-- 49
 
-            worksheet.write('AZ8', 'LICEN SIN GOCE:', cell_format_tit3)         #-- 44
-            worksheet.write('BA8', 'ADELANTO SUELDO', cell_format_tit3)         #-- 45
-            worksheet.write('BB8', 'AFP / ONP', cell_format_tit3)               #-- 46      DESCUENTOS
-            worksheet.write('BC8', 'INASISTENCIAS', cell_format_tit3)           #-- 47
-            worksheet.write('BD8', 'TARDANZAS', cell_format_tit3)               #-- 48
-            worksheet.write('BE8', 'RENTA 5TA.CAT', cell_format_tit3)           #-- 49
-            worksheet.write('BF8', 'RETEN JUDIC (Alimentos)', cell_format_tit3) #-- 47
-            worksheet.write('BG8', 'DESCTO NO DEDUCIBLE', cell_format_tit3)     #-- 48
-            worksheet.write('BH8', 'APORTES EPS', cell_format_tit3)             #-- 49
+            worksheet.write('BA8', 'LICEN SIN GOCE:', cell_format_tit3)         #-- 44
+            worksheet.write('BB8', 'ADELANTO SUELDO', cell_format_tit3)         #-- 45
+            worksheet.write('BC8', 'AFP / ONP', cell_format_tit3)               #-- 46      DESCUENTOS
+            worksheet.write('BD8', 'INASISTENCIAS', cell_format_tit3)           #-- 47
+            worksheet.write('BE8', 'TARDANZAS', cell_format_tit3)               #-- 48
+            worksheet.write('BF8', 'RENTA 5TA.CAT', cell_format_tit3)           #-- 49
+            worksheet.write('BG8', 'RETEN JUDIC (Alimentos)', cell_format_tit3) #-- 47
+            worksheet.write('BH8', 'DESCTO NO DEDUCIBLE', cell_format_tit3)     #-- 48
+            worksheet.write('BI8', 'APORTES EPS', cell_format_tit3)             #-- 49
 
-            worksheet.write('BI8', 'REEMBOLSO', cell_format_tit4)               #-- 50
-            worksheet.write('BJ8', 'REMMB MOVILIDAD', cell_format_tit4)         #-- 51      INCREMENTOS DIRECTOS
-            worksheet.write('BK8', 'ADELANTO GRATIFIC', cell_format_tit4)       #-- 52
-            worksheet.write('BL8', 'ESPECIAL AC', cell_format_tit4)             #-- 53
+            worksheet.write('BJ8', 'REEMBOLSO', cell_format_tit4)               #-- 50
+            worksheet.write('BK8', 'REMMB MOVILIDAD', cell_format_tit4)         #-- 51      INCREMENTOS DIRECTOS
+            worksheet.write('BL8', 'ADELANTO GRATIFIC', cell_format_tit4)       #-- 52
+            worksheet.write('BM8', 'ESPECIAL AC', cell_format_tit4)             #-- 53
 
-            worksheet.write('BN8', 'TOTAL INGRESOS', cell_format_tit5)         #-- 55
-            worksheet.write('BO8', 'TOTAL C-N-R', cell_format_tit5)             #-- 56      
-            worksheet.write('BP8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 57      RESUMEN
-            worksheet.write('BQ8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 58
+            worksheet.write('BO8', 'TOTAL INGRESOS', cell_format_tit5)         #-- 55
+            worksheet.write('BP8', 'TOTAL C-N-R', cell_format_tit5)             #-- 56      
+            worksheet.write('BQ8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 57      RESUMEN
+            worksheet.write('BR8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 58
             worksheet.write('BR8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
 
-            worksheet.write('BT8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
-            worksheet.write('BU8', 'EPS', cell_format_tit6)                     #-- 62      
-            worksheet.write('BV8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
-            worksheet.write('BW8', 'VACACIONES', cell_format_tit7)              #-- 64
-            worksheet.write('BX8', 'GRATIFICAC', cell_format_tit7)              #-- 65
-            worksheet.write('BY8', 'BONIFIC GRATIFIC', cell_format_tit7)              #-- 66
+            worksheet.write('BU8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
+            worksheet.write('BV8', 'EPS', cell_format_tit6)                     #-- 62      
+            worksheet.write('BW8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
+            worksheet.write('BX8', 'VACACIONES', cell_format_tit7)              #-- 64
+            worksheet.write('BY8', 'GRATIFICAC', cell_format_tit7)              #-- 65
+            worksheet.write('CA8', 'BONIFIC GRATIFIC', cell_format_tit7)              #-- 66
 
-            worksheet.write('CA8', 'COSTO MENSUAL', cell_format_tit5)              #-- 68
+            worksheet.write('CB8', 'COSTO EMPLEADO', cell_format_tit5)              #-- 68
 
             #----------------------------------------------------------------
             worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
@@ -664,43 +665,44 @@ class HrPayslip(models.Model):
             worksheet.write('AQ9', '(+)', cell_format_sub1)         #-- 41
             worksheet.write('AR9', '(+)', cell_format_sub1)         #-- 42
             worksheet.write('AS9', '(+)', cell_format_sub1)         #-- 43
+            worksheet.write('AT9', '(+)', cell_format_sub1)         #-- 43
 
-            worksheet.write('AT9', '(n)', cell_format_sub2)         #-- 44
-            worksheet.write('AU9', '(n)', cell_format_sub2)         #-- 45
-            worksheet.write('AV9', '(n)', cell_format_sub2)         #-- 46      NO REMUNERAIVOS
-            worksheet.write('AW9', '(n)', cell_format_sub2)         #-- 47
-            worksheet.write('AX9', '(n)', cell_format_sub2)         #-- 48
-            worksheet.write('AY9', '(n)', cell_format_sub2)         #-- 49
+            worksheet.write('AU9', '(n)', cell_format_sub2)         #-- 44
+            worksheet.write('AV9', '(n)', cell_format_sub2)         #-- 45
+            worksheet.write('AW9', '(n)', cell_format_sub2)         #-- 46      NO REMUNERAIVOS
+            worksheet.write('AX9', '(n)', cell_format_sub2)         #-- 47
+            worksheet.write('AY9', '(n)', cell_format_sub2)         #-- 48
+            worksheet.write('AZ9', '(n)', cell_format_sub2)         #-- 49
 
-            worksheet.write('AZ9', '(-)', cell_format_sub3)         #-- 50
-            worksheet.write('BA9', '(-)', cell_format_sub3)         #-- 51
-            worksheet.write('BB9', '(-)', cell_format_sub3)         #-- 52      
-            worksheet.write('BC9', '(-)', cell_format_sub3)         #-- 53
-            worksheet.write('BD9', '(-)', cell_format_sub3)         #-- 54      DESCUENTOS
-            worksheet.write('BE9', '(-)', cell_format_sub3)         #-- 55
-            worksheet.write('BF9', '(-)', cell_format_sub3)         #-- 56      
-            worksheet.write('BG9', '(-)', cell_format_sub3)         #-- 57
-            worksheet.write('BH9', '(-)', cell_format_sub3)         #-- 58
+            worksheet.write('BA9', '(-)', cell_format_sub3)         #-- 50
+            worksheet.write('BB9', '(-)', cell_format_sub3)         #-- 51
+            worksheet.write('BC9', '(-)', cell_format_sub3)         #-- 52      
+            worksheet.write('BD9', '(-)', cell_format_sub3)         #-- 53
+            worksheet.write('BE9', '(-)', cell_format_sub3)         #-- 54      DESCUENTOS
+            worksheet.write('BF9', '(-)', cell_format_sub3)         #-- 55
+            worksheet.write('BG9', '(-)', cell_format_sub3)         #-- 56      
+            worksheet.write('BH9', '(-)', cell_format_sub3)         #-- 57
+            worksheet.write('BI9', '(-)', cell_format_sub3)         #-- 58
 
-            worksheet.write('BI9', '(d)', cell_format_sub4)         #-- 59
-            worksheet.write('BJ9', '(d)', cell_format_sub4)         #-- 60      INCREMENTOS DIRECTOS
-            worksheet.write('BK9', '(d)', cell_format_sub4)         #-- 61
-            worksheet.write('BL9', '(0)', cell_format_sub4)         #-- 62
+            worksheet.write('BJ9', '(d)', cell_format_sub4)         #-- 59
+            worksheet.write('BK9', '(d)', cell_format_sub4)         #-- 60      INCREMENTOS DIRECTOS
+            worksheet.write('BL9', '(d)', cell_format_sub4)         #-- 61
+            worksheet.write('BM9', '(0)', cell_format_sub4)         #-- 62
 
-            worksheet.write('BN9', '(Acum)', cell_format_tit1)         #-- 64
-            worksheet.write('BO9', '(Acum)', cell_format_tit2)         #-- 65      RESUMEN TOTALIZADO
-            worksheet.write('BP9', '(Acum)', cell_format_tit3)         #-- 66
-            worksheet.write('BQ9', '(Acum)', cell_format_tit4)         #-- 67
-            worksheet.write('BR9', '(Acum)', cell_format_sub5)         #-- 68
+            worksheet.write('BO9', '(Acum)', cell_format_tit1)         #-- 64
+            worksheet.write('BP9', '(Acum)', cell_format_tit2)         #-- 65      RESUMEN TOTALIZADO
+            worksheet.write('BQ9', '(Acum)', cell_format_tit3)         #-- 66
+            worksheet.write('BR9', '(Acum)', cell_format_tit4)         #-- 67
+            worksheet.write('BS9', '(Acum)', cell_format_sub5)         #-- 68
 
-            worksheet.write('BT9', '(Empr)', cell_format_sub6)         #-- 70      APORTES
-            worksheet.write('BU9', '(Empr)', cell_format_sub6)         #-- 71      
-            worksheet.write('BV9', '(Empr)', cell_format_sub7)         #-- 72      PROVISIONES
-            worksheet.write('BW9', '(Empr)', cell_format_sub7)         #-- 73
-            worksheet.write('BX9', '(Empr)', cell_format_sub7)         #-- 74
-            worksheet.write('BY9', '(Empr)', cell_format_sub7)         #-- 75
+            worksheet.write('BU9', '(Empr)', cell_format_sub6)         #-- 70      APORTES
+            worksheet.write('BV9', '(Empr)', cell_format_sub6)         #-- 71      
+            worksheet.write('BW9', '(Empr)', cell_format_sub7)         #-- 72      PROVISIONES
+            worksheet.write('BX9', '(Empr)', cell_format_sub7)         #-- 73
+            worksheet.write('BY9', '(Empr)', cell_format_sub7)         #-- 74
+            worksheet.write('BZ9', '(Empr)', cell_format_sub7)         #-- 75
 
-            worksheet.write('CA9', '(Empr)', cell_format_sub5)         #-- 75      COSTO MENSUAL
+            worksheet.write('CB9', '(Mensual)', cell_format_sub5)         #-- 75      COSTO MENSUAL
 
             #-----
             worksheet.freeze_panes(9, 4)
@@ -781,9 +783,13 @@ class HrPayslip(models.Model):
                     worksheet.write('H5', 'PLANILLA GENERAL DE SUELDOS - EMPLEADOS CENS - ' + w_dato, cell_format_cabe)
                     worksheet.write('AT5', 'PLANILLA GENERAL DE SUELDOS - EMPLEADOS CENS - ' + w_dato, cell_format_cabe)
                     w_switch = 1
-                    
-                worksheet.write(w_fila, 5, w_boleta.date_from, cell_format_fech)
-                worksheet.write(w_fila, 6, w_boleta.date_to, cell_format_fech)
+                
+                w_dato = w_boleta.employee_id.first_contact_date
+                worksheet.write(w_fila, 5, w_dato, cell_format_fech)
+
+                w_dato = w_boleta.employee_id.x_studio_negocio_unidad
+                worksheet.write(w_fila, 6, w_dato, cell_format_cent)
+                
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 7, w_dato, cell_format_cent)
                 # ----------------------------
@@ -839,61 +845,61 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 42, w_boleta.x_studio_en_feriados, cell_format_impo)
                 worksheet.write(w_fila, 43, w_boleta.x_studio_en_horas_extras, cell_format_impo)
                 worksheet.write(w_fila, 44, w_boleta.x_studio_en_vacaciones, cell_format_impo)
+                worksheet.write(w_fila, 45, w_boleta.x_studio_en_descanso_vacacional, cell_format_impo)
                 # -----------------------------------------
                 # BOLETA PAGO - CONCEPTOS NO REMUNERATIVOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 45, w_boleta.x_studio_en_vale_alimentacion, cell_format_impo)
-                worksheet.write(w_fila, 46, w_boleta.x_studio_en_vale_movilidad, cell_format_impo)
-                worksheet.write(w_fila, 47, w_boleta.x_studio_en_condiciones_laborales, cell_format_impo)
-                worksheet.write(w_fila, 48, w_boleta.x_studio_en_bonificacion_educacion, cell_format_impo)
-                worksheet.write(w_fila, 49, w_boleta.x_studio_en_utilidades_voluntarias, cell_format_impo)
-                worksheet.write(w_fila, 50, w_boleta.x_studio_en_reembolso_combustible, cell_format_impo)
+                worksheet.write(w_fila, 46, w_boleta.x_studio_en_vale_alimentacion, cell_format_impo)
+                worksheet.write(w_fila, 47, w_boleta.x_studio_en_vale_movilidad, cell_format_impo)
+                worksheet.write(w_fila, 48, w_boleta.x_studio_en_condiciones_laborales, cell_format_impo)
+                worksheet.write(w_fila, 49, w_boleta.x_studio_en_bonificacion_educacion, cell_format_impo)
+                worksheet.write(w_fila, 50, w_boleta.x_studio_en_utilidades_voluntarias, cell_format_impo)
+                worksheet.write(w_fila, 51, w_boleta.x_studio_en_reembolso_combustible, cell_format_impo)
                 # -----------------------------------------
                 # BOLETA PAGO - DESCUENTOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 51, w_boleta.x_studio_en_licencia_sin_ghaber, cell_format_impo)
-                worksheet.write(w_fila, 52, w_boleta.x_studio_en_adelanto_sueldo, cell_format_impo)
-                worksheet.write(w_fila, 53, w_boleta.x_studio_en_afp_onp, cell_format_impo)
-                worksheet.write(w_fila, 54, w_boleta.x_studio_en_inasistencias, cell_format_impo)
-                worksheet.write(w_fila, 55, w_boleta.x_studio_en_tardanzas, cell_format_impo)
-                worksheet.write(w_fila, 56, w_boleta.x_studio_en_renta_5ta, cell_format_impo)
-                worksheet.write(w_fila, 57, w_boleta.x_studio_en_retencion_judicial, cell_format_impo)
-                worksheet.write(w_fila, 58, w_boleta.x_studio_en_descuento_prestamos, cell_format_impo)
-                worksheet.write(w_fila, 59, w_boleta.x_studio_aporte_eps_2, cell_format_impo)
+                worksheet.write(w_fila, 52, w_boleta.x_studio_en_licencia_sin_ghaber, cell_format_impo)
+                worksheet.write(w_fila, 53, w_boleta.x_studio_en_adelanto_sueldo, cell_format_impo)
+                worksheet.write(w_fila, 54, w_boleta.x_studio_en_afp_onp, cell_format_impo)
+                worksheet.write(w_fila, 55, w_boleta.x_studio_en_inasistencias, cell_format_impo)
+                worksheet.write(w_fila, 56, w_boleta.x_studio_en_tardanzas, cell_format_impo)
+                worksheet.write(w_fila, 57, w_boleta.x_studio_en_renta_5ta, cell_format_impo)
+                worksheet.write(w_fila, 58, w_boleta.x_studio_en_retencion_judicial, cell_format_impo)
+                worksheet.write(w_fila, 59, w_boleta.x_studio_en_descuento_prestamos, cell_format_impo)
+                worksheet.write(w_fila, 60, w_boleta.x_studio_aporte_eps_2, cell_format_impo)
                 # -----------------------------------------
                 # BOLETA PAGO - INCREMENTOS DIRECTOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 60, w_boleta.x_studio_en_reembolso, cell_format_impo)
-                worksheet.write(w_fila, 61, w_boleta.x_studio_en_reembolso_movilidad, cell_format_impo)
-                worksheet.write(w_fila, 62, w_boleta.x_studio_en_adelanto_gratificacion, cell_format_impo)
-                worksheet.write(w_fila, 63, w_boleta.x_studio_especial_ac, cell_format_impo)
+                worksheet.write(w_fila, 61, w_boleta.x_studio_en_reembolso, cell_format_impo)
+                worksheet.write(w_fila, 62, w_boleta.x_studio_en_reembolso_movilidad, cell_format_impo)
+                worksheet.write(w_fila, 63, w_boleta.x_studio_en_adelanto_gratificacion, cell_format_impo)
+                worksheet.write(w_fila, 64, w_boleta.x_studio_especial_ac, cell_format_impo)
                 # -----------------------------------------
                 # BOLETA PAGO - TOTALIZADO RESUMEN
                 # -----------------------------------------
-                worksheet.write(w_fila, 65, w_boleta.x_studio_en_gross, cell_format_impo)
-                worksheet.write(w_fila, 66, w_boleta.x_studio_en_total_remuneracion_bruta, cell_format_impo)
-                worksheet.write(w_fila, 67, -w_boleta.x_studio_total_descuentos, cell_format_impo)
-                worksheet.write(w_fila, 68, w_boleta.x_studio_sub_total_incremespeciales, cell_format_impo)
-                worksheet.write(w_fila, 69, w_boleta.x_studio_en_total_remuneracion, cell_format_imp2)
+                worksheet.write(w_fila, 66, w_boleta.x_studio_en_gross, cell_format_impo)
+                worksheet.write(w_fila, 67, w_boleta.x_studio_en_total_remuneracion_bruta, cell_format_impo)
+                worksheet.write(w_fila, 68, -w_boleta.x_studio_total_descuentos, cell_format_impo)
+                worksheet.write(w_fila, 69, w_boleta.x_studio_sub_total_incremespeciales, cell_format_impo)
+                worksheet.write(w_fila, 70, w_boleta.x_studio_en_total_remuneracion, cell_format_imp2)
 
                 # -----------------------------------------
                 # APORTES
                 # -----------------------------------------
-                worksheet.write(w_fila, 71, w_boleta.x_studio_aporte_a_essalud, cell_format_impo)
-                worksheet.write(w_fila, 72, w_boleta.x_studio_en_aportes_eps, cell_format_impo)
+                worksheet.write(w_fila, 72, w_boleta.x_studio_aporte_a_essalud, cell_format_impo)
+                worksheet.write(w_fila, 73, w_boleta.x_studio_en_aportes_eps, cell_format_impo)
                 # -----------------------------------------
                 # PROVISIONES
                 # -----------------------------------------
-                worksheet.write(w_fila, 73, w_boleta.x_studio_en_provision_cts, cell_format_impo)
-                worksheet.write(w_fila, 74, w_boleta.x_studio_en_provision_vacaciones, cell_format_impo)
-                worksheet.write(w_fila, 75, w_boleta.x_studio_en_provision_gratificacion, cell_format_impo)
-                worksheet.write(w_fila, 76, w_boleta.x_studio_en_provision_bonigrati, cell_format_impo)
+                worksheet.write(w_fila, 74, w_boleta.x_studio_en_provision_cts, cell_format_impo)
+                worksheet.write(w_fila, 75, w_boleta.x_studio_en_provision_vacaciones, cell_format_impo)
+                worksheet.write(w_fila, 76, w_boleta.x_studio_en_provision_gratificacion, cell_format_impo)
+                worksheet.write(w_fila, 77, w_boleta.x_studio_en_provision_bonigrati, cell_format_impo)
                 # -----------------------------------------
                 # COSTO DEL MES
                 # -----------------------------------------
-                worksheet.write(w_fila, 78, w_boleta.x_studio_en_total_extraordinario, cell_format_impo)
+                worksheet.write(w_fila, 79, w_boleta.x_studio_en_total_extraordinario, cell_format_imp2)
                 
-
                 w_fila += 1
 
 
