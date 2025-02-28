@@ -791,7 +791,7 @@ class renta_quinta_Custom(models.Model):
         for payslip in payslips:
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
-            tip_emplea = payslip.x_studio_tipo_planilla
+            self.tip_emplea = payslip.x_studio_tipo_planilla or "XX"
             _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
 
             # Extraer información de SUELDO BÁSICO del mes
@@ -815,7 +815,7 @@ class renta_quinta_Custom(models.Model):
                             w_importe_dato = w_conten_campo
                     else:                               
                         w_importe_dato = 0
-                    if (tip_emplea == "INTE"):
+                    if (self.tip_emplea == "INTE"):
                         if (sueldobasico_por_mes[x_mes] > 0):
                             setattr(line, w_nombre_campo, w_importe_dato)
                         else: 
