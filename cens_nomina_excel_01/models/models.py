@@ -286,27 +286,26 @@ class HrPayslip(models.Model):
             worksheet.merge_range('AJ7:AT7', 'Merged Cells', merge_format)
             worksheet.write('AJ7', 'I  N  G  R  E  S  O  S', cell_format_sup1)
             
-            worksheet.merge_range('AU7:AY7', 'Merged Cells', merge_format)
+            worksheet.merge_range('AU7:AZ7', 'Merged Cells', merge_format)
             worksheet.write('AU7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
 
-            worksheet.merge_range('AZ7:BH7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BA7:BI7', 'Merged Cells', merge_format)
             worksheet.write('AZ7', 'D E S C U E N T O S', cell_format_sup3)
 
-            worksheet.merge_range('BI7:BL7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BJ7:BM7', 'Merged Cells', merge_format)
             worksheet.write('BI7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
 
-            worksheet.merge_range('BN7:BR7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BO7:BS7', 'Merged Cells', merge_format)
             worksheet.write('BN7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BT7:BU7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BU7:BV7', 'Merged Cells', merge_format)
             worksheet.write('BT7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('BV7:BY7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BW7:BZ7', 'Merged Cells', merge_format)
             worksheet.write('BV7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('CA7:CA7', 'Merged Cells', merge_format)
+            worksheet.merge_range('CB7:CB7', 'Merged Cells', merge_format)
             worksheet.write('CA7', 'COSTO', cell_format_sup5)
-
 
 
             # -------------------------------------------------------------------------------------
@@ -796,8 +795,12 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 5, w_dato, cell_format_fech)
 
                 #x_hr.employee.udn
-                #w_dato = w_boleta.employee_id.x_studio_negocio_unidad
-                #worksheet.write(w_fila, 6, w_dato, cell_format_cent)
+                w_dato = w_boleta.employee_id.x_studio_negocio_unidad
+                worksheet.write(w_fila, 6, w_dato, cell_format_cent)
+                
+                w_dato = w_boleta.employee_id.x_studio_negocio_unidad.x_name if w_boleta.employee_id.x_studio_negocio_unidad else ''
+                worksheet.write(w_fila, 6, w_dato, cell_format_cent)
+
                 
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 7, w_dato, cell_format_cent)
