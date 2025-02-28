@@ -220,36 +220,39 @@ class HrPayslip(models.Model):
             worksheet.set_column(57, 57, 12)    #--
             worksheet.set_column(58, 58, 12)    #--
             worksheet.set_column(59, 59, 12)    #--
-
             worksheet.set_column(60, 60, 12)    #--
+
             worksheet.set_column(61, 61, 12)    #--     INCREMENTOS DIRECTOS
             worksheet.set_column(62, 62, 12)    #--
             worksheet.set_column(63, 63, 12)    #--
+            worksheet.set_column(64, 64, 12)    #--      
 
-            worksheet.set_column(64, 64, 5)    #--      (Seperador)
+            worksheet.set_column(65, 65, 5)    #--     (Seperador)
 
-            worksheet.set_column(65, 65, 12)    #--     
             worksheet.set_column(66, 66, 12)    #--     
             worksheet.set_column(67, 67, 12)    #--     RESUMEN
             worksheet.set_column(68, 68, 12)    #--
             worksheet.set_column(69, 69, 12)    #--
+            worksheet.set_column(70, 70, 12)     #--      
 
-            worksheet.set_column(70, 70, 5)     #--      (Seperador)
+            worksheet.set_column(71, 71, 5)    #--     Seperador)    
 
-            worksheet.set_column(71, 71, 12)    #--     APORTES     
-            worksheet.set_column(72, 72, 12)    #--     
-            worksheet.set_column(73, 73, 12)    #--     PROVISIONES
+            worksheet.set_column(72, 72, 12)    #--     APORTES
+            worksheet.set_column(73, 73, 12)    #--     
             worksheet.set_column(74, 74, 12)    #--
-            worksheet.set_column(75, 75, 12)    #--
+            worksheet.set_column(75, 75, 12)    #--     PROVISIONES
             worksheet.set_column(76, 76, 12)    #--
+            worksheet.set_column(77, 77, 12)     #--     
 
-            worksheet.set_column(77, 77, 5)     #--      (Seperador)
+            worksheet.set_column(78, 78, 5)    #        (Seperador)
 
-            worksheet.set_column(78, 78, 12)    #--     COSTO MENSUAL
+            worksheet.set_column(80, 80, 15)    #   --   COSTO MENSUAL
+            
+            worksheet.set_column(81, 81, 5)
 
-            worksheet.set_column(80, 80, 15)
-            worksheet.set_column(81, 81, 15)
             worksheet.set_column(82, 82, 20)
+            worksheet.set_column(83, 83, 20)    #  BANCOS
+            worksheet.set_column(84, 84, 30)
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -620,14 +623,14 @@ class HrPayslip(models.Model):
             worksheet.write('BP8', 'TOTAL C-N-R', cell_format_tit5)             #-- 56      
             worksheet.write('BQ8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 57      RESUMEN
             worksheet.write('BR8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 58
-            worksheet.write('BR8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
+            worksheet.write('BS8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
 
             worksheet.write('BU8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
             worksheet.write('BV8', 'EPS', cell_format_tit6)                     #-- 62      
             worksheet.write('BW8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
             worksheet.write('BX8', 'VACACIONES', cell_format_tit7)              #-- 64
             worksheet.write('BY8', 'GRATIFICAC', cell_format_tit7)              #-- 65
-            worksheet.write('CA8', 'BONIFIC GRATIFIC', cell_format_tit7)              #-- 66
+            worksheet.write('BZ8', 'BONIFIC GRATIFIC', cell_format_tit7)              #-- 66
 
             worksheet.write('CB8', 'COSTO EMPLEADO', cell_format_tit5)              #-- 68
 
