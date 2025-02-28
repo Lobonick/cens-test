@@ -327,6 +327,12 @@ class renta_quinta_Custom(models.Model):
         payslips = self.env['hr.payslip'].search(domain)
         
         # Crear un diccionario para almacenar los valores por mes
+        sueldobasico_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        impmovilidad_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        impalimentac_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        impeducacion_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        imputilidade_por_mes = {mes: 0.00 for mes in range(1, 13)}
+
         congocehaber_por_mes = {mes: 0.00 for mes in range(1, 13)}
         lic_fallecim_por_mes = {mes: 0.00 for mes in range(1, 13)}
         lic_paternid_por_mes = {mes: 0.00 for mes in range(1, 13)}
@@ -341,6 +347,28 @@ class renta_quinta_Custom(models.Model):
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
             _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
+
+            # Extraer información de SUELDO BÁSICO del mes
+            sueldobasico_valor = payslip.x_studio_en_basico or 0.00
+            sueldobasico_por_mes[mes_boleta] += sueldobasico_valor
+
+            # Extraer información de MOVILIDAD del mes
+            impmovilidad_valor = payslip.x_studio_en_vale_movilidad or 0.00
+            impmovilidad_por_mes[mes_boleta] += impmovilidad_valor
+
+            # Extraer información de ALIMENTACION del mes
+            impalimentac_valor = payslip.x_studio_en_vale_alimentacion or 0.00
+            impalimentac_por_mes[mes_boleta] += impalimentac_valor
+
+            # Extraer información de EDUCACION del mes
+            impeducacion_valor = payslip.x_studio_en_bonificacion_educacion or 0.00
+            impeducacion_por_mes[mes_boleta] += impeducacion_valor
+
+            # Extraer información de UTILIDADES del mes
+            imputilidade_valor = payslip.x_studio_en_utilidades_voluntarias or 0.00
+            imputilidade_por_mes[mes_boleta] += imputilidade_valor
+
+            #-----------------------------------------------------------------
 
             # Extraer información de Con Goce Haber
             congocehaber_valor = payslip.x_studio_en_licencia_con_ghaber or 0.00
@@ -373,8 +401,97 @@ class renta_quinta_Custom(models.Model):
         # ----------------------------------------------------------
         # POSICIONA EL LOS DATOS ENCONTRADOS EN NUESTRA MATRIX
         # ----------------------------------------------------------
+        #lines  = self.renta_detail_ids
+        #for line in lines:
+        #    if (line.name == 'Sueldo Básico del mes'):
+        #        for x_mes in range(1, 13):
+        #            w_nombre_campo = self.mes_literal(x_mes).lower() 
+        #            w_conten_campo = sueldobasico_por_mes[x_mes] #-- Asigna Dato
+        #            _logger.info(f'Sueldo Básico del Mes: {x_mes} Importe: {w_conten_campo} ') 
+        #            if año_ingreso < w_AñoEje: 
+        #                w_importe_dato = w_conten_campo
+        #            elif año_ingreso == w_AñoEje: 
+        #                if x_mes < mes_ingreso:         
+        #                    w_importe_dato = 0
+        #                else:                           
+        #                    w_importe_dato = w_conten_campo
+        #            else:                               
+        #                w_importe_dato = 0
+        #            if (sueldobasico_por_mes[x_mes] > 0):
+        #                setattr(line, w_nombre_campo, w_importe_dato)
+
         lines  = self.nremu_detail_ids  #---- Habilita tabla NO REMUNERATIVOS (nremu)
         for line in lines:
+            if (line.name == 'Movilidad'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = impmovilidad_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Movilidad del Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    if (impmovilidad_por_mes[x_mes] > 0):
+                        setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Alimentación'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = impalimentac_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Alimentación del Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    if (impalimentac_por_mes[x_mes] > 0):
+                        setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Bonific. x Educación'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = impeducacion_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Educación del Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    if (impeducacion_por_mes[x_mes] > 0):
+                        setattr(line, w_nombre_campo, w_importe_dato)
+
+            if (line.name == 'Utilidades Voluntarias'):
+                for x_mes in range(1, 13):
+                    w_nombre_campo = self.mes_literal(x_mes).lower() 
+                    w_conten_campo = imputilidade_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Utilidades del Mes: {x_mes} Importe: {w_conten_campo} ') 
+                    if año_ingreso < w_AñoEje: 
+                        w_importe_dato = w_conten_campo
+                    elif año_ingreso == w_AñoEje: 
+                        if x_mes < mes_ingreso:         
+                            w_importe_dato = 0
+                        else:                           
+                            w_importe_dato = w_conten_campo
+                    else:                               
+                        w_importe_dato = 0
+                    if (imputilidade_por_mes[x_mes] > 0):
+                        setattr(line, w_nombre_campo, w_importe_dato)
+
+            # ----------------------------------------------------------
+
             if (line.name == 'Lic.con Goce Haber'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower() 
@@ -654,25 +771,59 @@ class renta_quinta_Custom(models.Model):
                 año_ingreso = w_Ingres.year     #-- Obtener el año y mes de ingreso
                 mes_ingreso = w_Ingres.month
             else:
-                año_ingreso = 2025     #-- Obtener el año y mes de ingreso
+                año_ingreso = 2025     #-- Obtener el año y mes de ingreso QUIQUE
                 mes_ingreso = 1
+
+        # ----------------------------------------------------------------
+        domain = [
+            ('employee_id', '=', record.employee_id.id),
+            ('date_from', '>=', f'{w_AñoEje}-01-01'),
+            ('date_to', '<=', f'{w_AñoEje}-12-31'),
+            ('state', 'in', ['draft', 'verify', 'done', 'paid'])
+        ]
+        
+        # Obtener todas las boletas del año (InMemory)
+        payslips = self.env['hr.payslip'].search(domain)
+        
+        # Crear un diccionario para almacenar los valores por mes
+        sueldobasico_por_mes = {mes: 0.00 for mes in range(1, 13)}
+        w_tipo_empleado = "NONE"
+        
+        for payslip in payslips:
+            # Determinar el mes de la boleta
+            mes_boleta = payslip.date_from.month
+            w_tipo_empleado = payslip.x_studio_tipo_planilla
+            _logger.info(f'EXTRAE VALOR de Boleta Mes: {mes_boleta} ')
+
+            # Extraer información de SUELDO BÁSICO del mes
+            sueldobasico_valor = payslip.x_studio_en_basico or 0.00
+            sueldobasico_por_mes[mes_boleta] += sueldobasico_valor
+        # ----------------------------------------------------------------
 
         lines  = self.renta_detail_ids
         for line in lines:
             if (line.name == 'Sueldo Básico del mes'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower()
+                    w_conten_campo = sueldobasico_por_mes[x_mes] #-- Asigna Dato
+                    _logger.info(f'Sueldo Básico del Mes: {x_mes} Importe: {w_conten_campo} ') 
                     if año_ingreso < w_AñoEje: 
-                        w_importe_dato = w_sueldo_basico
+                        w_importe_dato = w_conten_campo
                     elif año_ingreso == w_AñoEje: 
                         if x_mes < mes_ingreso:         
                             w_importe_dato = 0
                         else:                           
-                            w_importe_dato = w_sueldo_basico
+                            w_importe_dato = w_conten_campo
                     else:                               
                         w_importe_dato = 0
-                    setattr(line, w_nombre_campo, w_importe_dato)
-
+                    if (w_tipo_empleado == 'INTE'):
+                        if (sueldobasico_por_mes[x_mes] > 0):
+                            setattr(line, w_nombre_campo, w_importe_dato)
+                        else: 
+                            setattr(line, w_nombre_campo, w_sueldo_basico)
+                    else:
+                        setattr(line, w_nombre_campo, w_sueldo_basico)
+        
             if (line.name == 'Asignación Famiiar'):
                 for x_mes in range(1, 13):
                     w_nombre_campo = self.mes_literal(x_mes).lower()  
@@ -725,7 +876,8 @@ class renta_quinta_Custom(models.Model):
                     valor_asignacion = getattr(asignacion_familiar_line, w_nombre_campo, 0)
                     
                     # Calculamos: (Sueldo + Asignación)
-                    resultado = (valor_sueldo + valor_asignacion)
+                    #resultado = (valor_sueldo + valor_asignacion)
+                    resultado = (w_sueldo_basico + valor_asignacion)
                     
                     # Guardamos el resultado en la línea actual
                     setattr(line, w_nombre_campo, resultado)
@@ -743,7 +895,8 @@ class renta_quinta_Custom(models.Model):
                     valor_asignacion = getattr(asignacion_familiar_line, w_nombre_campo, 0)
                     
                     # Calculamos: (Sueldo + Asignación)
-                    resultado = (valor_sueldo + valor_asignacion)
+                    #resultado = (valor_sueldo + valor_asignacion)
+                    resultado = (w_sueldo_basico + valor_asignacion)
                     
                     # Guardamos el resultado en la línea actual
                     setattr(line, w_nombre_campo, resultado)
