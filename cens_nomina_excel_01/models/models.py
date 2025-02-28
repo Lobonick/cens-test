@@ -793,11 +793,7 @@ class HrPayslip(models.Model):
                 
                 w_dato = w_boleta.employee_id.first_contract_date
                 worksheet.write(w_fila, 5, w_dato, cell_format_fech)
-
-                #x_hr.employee.udn
-                w_dato = w_boleta.employee_id.x_studio_negocio_unidad
-                worksheet.write(w_fila, 6, w_dato, cell_format_cent)
-                               
+              
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
                 worksheet.write(w_fila, 6, w_dato, cell_format_cent)
                 
