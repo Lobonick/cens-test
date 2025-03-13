@@ -30,7 +30,7 @@
 	],
 	'assets': {
 		'web.report_assets_common': [
-			'/solse_fercor/static/src/css/reportes.css',
+			'/solse_pe_cpe_e/static/src/css/reportes.css',
 		],
 	},
 	'installable': True,

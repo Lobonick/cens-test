@@ -499,12 +499,12 @@
 		<field name="dpi">90</field>
 	</record>
 
-	<record id="solse_pe_cpe_e.report_cpe_sunat_plantilla_2" model="ir.actions.report">
+	<record id="account.account_invoices" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe_e.paperformat_factura_n1"/>
 	</record>
-	<!--<record id="account.account_invoices_without_payment" model="ir.actions.report">
+	<record id="account.account_invoices_without_payment" model="ir.actions.report">
 		<field name="paperformat_id" ref="solse_pe_cpe_e.paperformat_factura_n1"/>
-	</record>-->
+	</record>
 
 </data>
 </odoo>
