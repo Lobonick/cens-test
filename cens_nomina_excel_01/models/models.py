@@ -257,10 +257,10 @@ class HrPayslip(models.Model):
 
             worksheet.set_column(78, 78, 5)     #--    (Seperador)
 
-            worksheet.set_column(79, 79, 25)    #   
+            worksheet.set_column(79, 79, 12)    #   
             worksheet.set_column(80, 80, 12)    
             worksheet.set_column(81, 81, 12)    
-            worksheet.set_column(82, 82, 25)    #  
+            worksheet.set_column(82, 82, 10)    #  
             worksheet.set_column(83, 83, 12)    
             worksheet.set_column(84, 84, 12)    #--   
             worksheet.set_column(85, 85, 12)    #-
@@ -695,12 +695,16 @@ class HrPayslip(models.Model):
             worksheet.write('CB8', 'COMPAÑIA', cell_format_tit7)                #-- 79
             worksheet.write('CC8', 'IMPORTE OBLIGATORIO', cell_format_tit7)     #-- 80
             worksheet.write('CD8', 'PRIMA SEGURO', cell_format_tit7)            #-- 81      DESAGREGADO AFP
-            worksheet.write('CE8', 'TIPO COMISIÓN', cell_format_tit7)           #-- 82
-            worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
-            worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
+            worksheet.merge_range('CE8:CG8', 'Merged Cells', merge_format)
+            worksheet.write('CE8', 'COMISIÓN', cell_format_tit31)
+            # worksheet.write('CE8', 'TIPO COMISIÓN', cell_format_tit7)           #-- 82
+            # worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
+            # worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
 
-            worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
-            worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
+            worksheet.merge_range('CH8:CI8', 'Merged Cells', merge_format)
+            worksheet.write('CE8', 'TOTALES', cell_format_tit31)
+            # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
+            # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
 
             #----------------------------------------------------------------
@@ -774,7 +778,13 @@ class HrPayslip(models.Model):
             worksheet.write('BS9', '(Empr)', cell_format_sub7)         #-- 74
             worksheet.write('BT9', '(Empr)', cell_format_sub7)         #-- 75
 
-            worksheet.write('BV9', '(Mensual)', cell_format_sub5)         #-- 75      COSTO MENSUAL
+            worksheet.write('BV9', '(Mensual)', cell_format_sub5)      #-- 75      COSTO MENSUAL
+
+            worksheet.write('CE9', 'TIPO', cell_format_sub6)         #-- 70      COMISIÓN
+            worksheet.write('CF9', 'MIXTA', cell_format_sub6)         #-- 71      
+            worksheet.write('CG9', 'FLUJO', cell_format_sub6)         #-- 72      
+            worksheet.write('CH9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
+            worksheet.write('CI9', 'ONP', cell_format_sub7)         #-- 74
 
             #-----
             worksheet.freeze_panes(9, 4)
