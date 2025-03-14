@@ -693,11 +693,14 @@ class HrPayslip(models.Model):
             worksheet.write('BY8', 'CUENTA', cell_format_tit7)                  #-- 65      DETALLE CTAS BANCARIAS
             worksheet.write('BZ8', 'CCI', cell_format_tit7)                     #-- 66
 
+            worksheet.merge_range('CB8:CB9', 'Merged Cells', merge_format)
             worksheet.write('CB8', 'COMPAÑIA', cell_format_tit7)                #-- 79
+            worksheet.merge_range('CC8:CC9', 'Merged Cells', merge_format)
             worksheet.write('CC8', 'IMPORTE OBLIGATORIO', cell_format_tit7)     #-- 80
+            worksheet.merge_range('CD8:CD9', 'Merged Cells', merge_format)
             worksheet.write('CD8', 'PRIMA SEGURO', cell_format_tit7)            #-- 81      DESAGREGADO AFP
             worksheet.merge_range('CE8:CG8', 'Merged Cells', merge_format)
-            worksheet.write('CE8', 'COMISIÓN', cell_format_tit31)
+            worksheet.write('CE8', 'COMISIÓN', cell_format_tit6)
             # worksheet.write('CE8', 'TIPO COMISIÓN', cell_format_tit7)           #-- 82
             # worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
             # worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
