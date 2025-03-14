@@ -15,7 +15,8 @@ class HrPayslip(models.Model):
         #workbook = xlsxwriter.Workbook(output)
         try:
             # Crear el workbook en el buffer
-            workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+            #workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+            workbook = xlsxwriter.Workbook(output)
             # worksheet = workbook.add_worksheet('Hoja1')
 
             # -------------------------------------------------------------------------------------
@@ -1021,10 +1022,7 @@ class HrPayslip(models.Model):
                             worksheet.write(w_fila, 84, w_boleta.x_studio_en_comision_flujo, cell_format_impo)
 
                         worksheet.write(w_fila, 85, w_boleta.x_studio_en_afp_onp, cell_format_impo)
-                
-
                 w_fila += 1
-
 
             worksheet.activate()
             workbook.close()
