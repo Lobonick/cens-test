@@ -313,13 +313,13 @@ class HrPayslip(models.Model):
             worksheet.write('BH7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
             worksheet.merge_range('BO7:BP7', 'Merged Cells', merge_format)
-            worksheet.write('BU7', 'APORTES', cell_format_sup5)
+            worksheet.write('BO7', 'APORTES', cell_format_sup5)
 
             worksheet.merge_range('BQ7:BT7', 'Merged Cells', merge_format)
-            worksheet.write('BW7', 'PROVISIONES', cell_format_sup5)
+            worksheet.write('BQ7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('BV:BV7', 'Merged Cells', merge_format)
-            worksheet.write('CB7', 'COSTO', cell_format_sup5)
+            worksheet.merge_range('BV7:BV7', 'Merged Cells', merge_format)
+            worksheet.write('BV7', 'COSTO', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -940,9 +940,9 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 60, w_boleta.x_studio_en_total_remuneracion_bruta, cell_format_impo)
                 worksheet.write(w_fila, 61, -w_boleta.x_studio_total_descuentos, cell_format_impo)
                 worksheet.write(w_fila, 62, w_boleta.x_studio_sub_total_incremespeciales, cell_format_impo)
-                worksheet.write(w_fila, 63, w_tota_lbs, cell_format_impo)
-                w_tota_gen = w_boleta.x_studio_en_total_remuneracion + w_tota_lbs
-                worksheet.write(w_fila, 64, w_tota_gen, cell_format_imp2)
+                #worksheet.write(w_fila, 63, w_tota_lbs, cell_format_impo)
+                #w_tota_gen = w_boleta.x_studio_en_total_remuneracion + w_tota_lbs
+                #worksheet.write(w_fila, 64, w_tota_gen, cell_format_imp2)
 
                 # -----------------------------------------
                 # APORTES
