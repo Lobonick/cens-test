@@ -702,7 +702,7 @@ class HrPayslip(models.Model):
             # worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
 
             worksheet.merge_range('CH8:CI8', 'Merged Cells', merge_format)
-            worksheet.write('CE8', 'TOTALES', cell_format_tit31)
+            worksheet.write('CH8', 'TOTALES', cell_format_tit31)
             # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
             # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
@@ -1014,7 +1014,7 @@ class HrPayslip(models.Model):
                         worksheet.write(w_fila, 80, w_boleta.x_studio_en_afp_aporte_obligatorio, cell_format_impo)
                         worksheet.write(w_fila, 81, w_boleta.x_studio_en_afp_prima_seguro, cell_format_impo)
                         # w_boleta.x_studio_en_tipo_comision
-                        worksheet.write(w_fila, 82, w_boleta.x_studio_en_tipo_comision, cell_format_impo)
+                        worksheet.write(w_fila, 82, w_boleta.x_studio_en_tipo_comision, cell_format_cent)
                         if (w_boleta.x_studio_en_tipo_comision == 'MIX'):
                             worksheet.write(w_fila, 83, w_boleta.x_studio_en_comision_mixta, cell_format_impo)
                         if (w_boleta.x_studio_en_tipo_comision == 'FLU'):
