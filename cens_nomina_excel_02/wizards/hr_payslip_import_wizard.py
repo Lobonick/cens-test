@@ -4,6 +4,7 @@ from datetime import datetime
 import base64
 import xlrd
 import xlsxwriter
+import math
 from io import BytesIO
 import logging
 _logging = logging.getLogger(__name__)
@@ -122,10 +123,11 @@ class HrPayslipImportWizard(models.TransientModel):
                             fecha_python = datetime.strptime(fecha_excel, '%Y-%m-%d')
 
                         # Preparar valores para el registro
+                        # 'x_studio_he_total_horas_extras': float(round(sheet_horas.cell_value(row, 7))),
                         valores = {
                             'x_name': descr_excel, 
                             'x_studio_he_fecha_trabajo': fecha_python.strftime('%Y-%m-%d'),
-                            'x_studio_he_total_horas_extras': float(sheet_horas.cell_value(row, 7)),
+                            'x_studio_he_total_horas_extras': float(math.ceil(sheet_horas.cell_value(row, 7))),
                             'x_studio_he_dia_libre': bool(dfree_excel=='SI'),
                             'x_hr_payslip_id': w_record_id
                         }
