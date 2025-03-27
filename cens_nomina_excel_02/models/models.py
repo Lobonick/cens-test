@@ -251,7 +251,7 @@ class HrPayslip(models.Model):
         #worksheet.set_row(7, 7) 2A7486
         #worksheet.set_column('A:M', 7)
         worksheet.merge_range('A8:A9', 'Merged Cells', merge_format)
-        worksheet.write('A8', 'ORD', cell_format_titu)                           #-- 00
+        worksheet.write('A8', 'ID', cell_format_titu)                           #-- 00
         worksheet.merge_range('B8:B9', 'Merged Cells', merge_format)
         worksheet.write('B8', 'BOLETA', cell_format_titu)                       #-- 01
         worksheet.merge_range('C8:C9', 'Merged Cells', merge_format)
@@ -376,14 +376,14 @@ class HrPayslip(models.Model):
         w_acum_exto = 0
 
         for w_boleta in w_lote:
-            if w_boleta.x_studio_cesado:
-                worksheet.write(w_fila, 0, 'CESADO', cell_format_rojo)
-            else:
-                worksheet.write(w_fila, 0, w_fila-8, cell_format_cent)
-            #worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
-            worksheet.write(w_fila, 1, w_boleta.number, cell_format_cent)
             w_dato = w_boleta.employee_id.name
-            worksheet.write(w_fila, 2, w_dato, cell_format_left)
+            if w_boleta.x_studio_cesado:
+                worksheet.write(w_fila, 0, w_boleta.id, cell_format_rojo)
+                worksheet.write(w_fila, 2, w_dato, cell_format_rojo)
+            else:
+                worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)
+                worksheet.write(w_fila, 2, w_dato, cell_format_left)   
+            worksheet.write(w_fila, 1, w_boleta.number, cell_format_cent)
             worksheet.write(w_fila, 3, w_boleta.x_studio_dni, cell_format_cent)
 
             # w_dato = w_boleta.payslip_run_id.name
