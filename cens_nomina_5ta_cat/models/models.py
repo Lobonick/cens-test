@@ -1226,6 +1226,7 @@ class renta_quinta_Custom(models.Model):
                         if (x_mes>2):
                             boleta = self.env['hr.payslip'].search([
                                             ('employee_id', '=', record.employee_id.id),
+                                            ('date_from', '=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),
                                             ('state', 'in', ['draft', 'verify'])  # Boletas en borrador o verificadas
                                         ], limit=1)
 
