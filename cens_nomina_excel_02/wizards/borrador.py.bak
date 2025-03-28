@@ -1,0 +1,36 @@
+
+
+            for row in range(9, sheet_nomina.nrows):
+                record_id = int(sheet_nomina.cell_value(row, headers_nomina.index('id')))
+                payslip = self.env['hr.payslip'].browse(record_id)        
+                
+                if not payslip.exists():
+                    raise UserError(_('No se encontró la nómina con ID: %s') % record_id)
+
+                # Preparar valores a actualizar
+                values = {}
+                for col, header in enumerate(headers_nomina):
+                    if header != 'id' and header in payslip._fields:
+                        value = sheet_nomina.cell_value(row, col)
+                        field_type = payslip._fields[header].type
+                        
+                        # Convertir tipos de datos según el campo
+                        if field_type == 'many2one':
+                            # Buscar el registro relacionado por nombre
+                            related_model = payslip._fields[header].comodel_name
+                            related_record = self.env[related_model].search(
+                                [('name', '=', value)], limit=1
+                            )
+                            if related_record:
+                                value = related_record.id
+                        elif field_type == 'date':
+                            # Convertir fecha de Excel a formato Odoo
+                            value = xlrd.xldate.xldate_as_datetime(
+                                value, book.datemode
+                            ).date()
+                        
+                        values[header] = value
+
+                # Actualizar registro
+                payslip.write(values)
+            

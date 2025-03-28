@@ -276,7 +276,7 @@ class HrPayslip(models.Model):
         worksheet.write('O8', 'DIAS FERIADOS', cell_format_titu)                #-- 14
         worksheet.write('P8', 'BONIFIC. EXTRAORD.', cell_format_titu)           #-- 15
         worksheet.write('Q8', 'IMPORTE H.EXTRAS', cell_format_titu)             #-- 16
-        worksheet.write('R8', 'REEMBOLSO', cell_format_titu)                    #-- 17
+        worksheet.write('R8', 'DESCANSO VACACIONAL', cell_format_titu)                    #-- 17
         worksheet.write('S8', 'REEMBOLSO MOVILIDAD', cell_format_titu)          #-- 18
         worksheet.write('T8', 'REEMBOLSO COMBUSTIB', cell_format_titu)          #-- 19
         worksheet.write('U8', 'MOVILIDAD', cell_format_titu)                    #-- 20
@@ -340,7 +340,7 @@ class HrPayslip(models.Model):
             'x_studio_feriados_dias',
             'x_studio_bonificacion_extraordinaria',
             'x_studio_horas_extras_importe',
-            'x_studio_reembolso',
+            'x_studio_descanso_vacacional',
             'x_studio_reembolso_movilidad',
             'x_studio_reembolso_combustible',
             'x_studio_movilidad',

@@ -61,29 +61,40 @@ class HrPayslipImportWizard(models.TransientModel):
                 values = {}
                 for col, header in enumerate(headers_nomina):
                     if header != 'id' and header in payslip._fields:
-                        value = sheet_nomina.cell_value(row, col)
+                        cell_value = sheet_nomina.cell_value(row, col)
                         field_type = payslip._fields[header].type
-                        
                         # Convertir tipos de datos según el campo
                         if field_type == 'many2one':
-                            # Buscar el registro relacionado por nombre
                             related_model = payslip._fields[header].comodel_name
                             related_record = self.env[related_model].search(
-                                [('name', '=', value)], limit=1
+                                [('name', '=', cell_value)], limit=1
                             )
                             if related_record:
-                                value = related_record.id
-                        elif field_type == 'date':
-                            # Convertir fecha de Excel a formato Odoo
-                            value = xlrd.xldate.xldate_as_datetime(
-                                value, book.datemode
+                                values[header] = related_record.id
+                        elif field_type == 'date' and isinstance(cell_value, float):
+                            values[header] = xlrd.xldate.xldate_as_datetime(
+                                cell_value, book.datemode
                             ).date()
-                        
-                        values[header] = value
+                        elif field_type == 'boolean':
+                            # Manejar conversiones booleanas
+                            values[header] = bool(cell_value)
+                        elif field_type == 'float':
+                            values[header] = float(cell_value)
+                        elif field_type == 'integer':
+                            values[header] = int(cell_value)
+                        else:
+                            values[header] = cell_value
 
                 # Actualizar registro
-                payslip.write(values)
+                # payslip.write(values)
             
+                # Registrar valores para depuración
+                _logging.info(f"QUIQUE, actualiza regist ID: {record_id} en fila: {row} con valores: {values}")
+                
+                # Actualizar registro usando método write con commit inmediato
+                payslip.write(values)
+                self.env.cr.commit()
+
             # =============================================================================
             # WorkSheet: HORAS EXTRAS
             # =============================================================================
