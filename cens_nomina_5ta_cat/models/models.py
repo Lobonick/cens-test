@@ -68,11 +68,11 @@ class renta_quinta_Custom(models.Model):
     user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company.id)
     state = fields.Selection([("draft", "Borrador"), ("posted", "Confirmado"), ("annul", "Anulado")], default="draft")
-    #employee_id = fields.Many2one('hr.employee', string='Empleado', required=True, index=True)
-    employee_id = fields.Many2one('hr.employee', string='Empleado', 
-                                                required=True, 
-                                                index=True,
-                                                domain="[('x_studio_sujeto_a_renta_5cat', '=', True), ('x_studio_estado_contrato', '=', 'open')]")
+    employee_id = fields.Many2one('hr.employee', string='Empleado', required=True, index=True)
+    #employee_id = fields.Many2one('hr.employee', string='Empleado', 
+    #                                            required=True, 
+    #                                            index=True,
+    #                                            domain="[('x_studio_sujeto_a_renta_5cat', '=', True), ('x_studio_estado_contrato', '=', 'open')]")
     currency_id = fields.Many2one('res.currency', string='Moneda', 
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'PEN')], limit=1).id,
                                   required=True)
@@ -1223,14 +1223,16 @@ class renta_quinta_Custom(models.Model):
                         # BUSCA LA BOLETA DEL MES Y ACTUALIZA RENTA 
                         # Verifica primero que el mes esté disponible
                         # --------------------------------------------
-                        if (x_mes>1):
+                        if (x_mes>2):
                             boleta = self.env['hr.payslip'].search([
                                             ('employee_id', '=', record.employee_id.id),
-                                            ('date_from', '>=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),
-                                            ('date_to', '<=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-28"),
+                                            ('date_from', '=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),
                                             ('state', 'in', ['draft', 'verify'])  # Boletas en borrador o verificadas
                                         ], limit=1)
-                                        
+
+                                           # ('date_from', '>=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),
+                                           # ('date_to', '<=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-28"),
+
                             # Si encontramos la boleta, actualizamos el campo de renta 5ta
                             if boleta:
                                 boleta.write({'x_studio_importe_renta_5ta': w_importe_dato})
