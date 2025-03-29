@@ -678,7 +678,7 @@ class HrPayslip(models.Model):
             worksheet.write('AE8', 'VACACIONES', cell_format_tit1)              #-- 30
             worksheet.write('AF8', 'DESCANSO VACACIONAL', cell_format_tit1)     #-- 31
 
-            worksheet.write('AG8', 'SUELDO BÁSICO', cell_format_tit2)            #-- 32
+            worksheet.write('AG8', 'SALARIO MENSUAL', cell_format_tit2)            #-- 32
             worksheet.write('AH8', 'ALIMENTACIÓN', cell_format_tit2)            #-- 32
             worksheet.write('AI8', 'MOVILIDAD', cell_format_tit2)               #-- 33
             worksheet.write('AJ8', 'CONDIC LABORLS', cell_format_tit2)          #-- 34      NO REMUNERATIVOS
@@ -772,7 +772,7 @@ class HrPayslip(models.Model):
             worksheet.write('AE9', '(+)', cell_format_sub1)         #-- 32
             worksheet.write('AF9', '(+)', cell_format_sub1)         #-- 33
 
-            worksheet.write('AG9', '(n)', cell_format_sub2)         #-- 34
+            worksheet.write('AG9', '(Contrato)', cell_format_sub2)         #-- 34
             worksheet.write('AH9', '(n)', cell_format_sub2)         #-- 34
             worksheet.write('AI9', '(n)', cell_format_sub2)         #-- 35
             worksheet.write('AJ9', '(n)', cell_format_sub2)         #-- 36      NO REMUNERAIVOS
