@@ -660,7 +660,7 @@ class HrPayslip(models.Model):
             worksheet.write('N8', 'BONIFIC. EDUCACIÓN', cell_format_titu)          #-- 12
             worksheet.write('O8', 'UTILIDAD. VOLUNTARS', cell_format_titu)         #-- 13
 
-            worksheet.write('P8', 'DCTO INASISTEN', cell_format_titu)              #-- 14
+            worksheet.write('P8', 'DESCTO INASISTEN', cell_format_titu)              #-- 14
             worksheet.write('Q8', 'DIAS SIN GOCE', cell_format_titu)               #-- 15
             worksheet.write('R8', 'ADELANTO SUELDO', cell_format_titu)             #-- 16   REGISTRO EGRESOS
             worksheet.write('S8', 'MINUTOS TARDANZA', cell_format_titu)            #-- 17
@@ -932,21 +932,21 @@ class HrPayslip(models.Model):
                 # -- REGISTRO INGRESOS --
                 # ----------------------------
                 worksheet.write(w_fila, 8, w_boleta.x_studio_dias_computados, current_format_nume)
-
-                worksheet.write(w_fila, 9, w_boleta.x_studio_movilidad, current_format_impo)
-                worksheet.write(w_fila, 10, w_boleta.x_studio_vale_alimentos, current_format_impo)
-                worksheet.write(w_fila, 11, w_boleta.x_studio_condiciones_laborales, current_format_impo)
-                worksheet.write(w_fila, 12, w_boleta.x_studio_bonificacion_educacion, current_format_impo)
-                worksheet.write(w_fila, 13, w_boleta.x_studio_utilidades_voluntarias, current_format_impo)
+                worksheet.write(w_fila, 9, w_boleta.x_studio_en_basico, current_format_impo)
+                worksheet.write(w_fila, 10, w_boleta.x_studio_movilidad, current_format_impo)
+                worksheet.write(w_fila, 11, w_boleta.x_studio_vale_alimentos, current_format_impo)
+                worksheet.write(w_fila, 12, w_boleta.x_studio_condiciones_laborales, current_format_impo)
+                worksheet.write(w_fila, 13, w_boleta.x_studio_bonificacion_educacion, current_format_impo)
+                worksheet.write(w_fila, 14, w_boleta.x_studio_utilidades_voluntarias, current_format_impo)
                 # ----------------------------
                 # -- REGISTRO EGRESOS --
                 # ----------------------------
-                worksheet.write(w_fila, 14, w_boleta.x_studio_descuento_inasistencias, current_format_impo)
-                worksheet.write(w_fila, 15, w_boleta.x_studio_dias_sin_goce, current_format_impo)
-                worksheet.write(w_fila, 16, w_boleta.x_studio_adelanto_sueldo, current_format_impo)
-                worksheet.write(w_fila, 17, w_boleta.x_studio_descuento_tardanzas_min, current_format_impo)
-                worksheet.write(w_fila, 18, w_boleta.x_studio_retencion_judicial, current_format_impo)
-                worksheet.write(w_fila, 19, w_boleta.x_studio_descuento_prestamos, current_format_impo)
+                worksheet.write(w_fila, 15, w_boleta.x_studio_descuento_inasistencias, current_format_impo)
+                worksheet.write(w_fila, 16, w_boleta.x_studio_dias_sin_goce, current_format_impo)
+                worksheet.write(w_fila, 17, w_boleta.x_studio_adelanto_sueldo, current_format_impo)
+                worksheet.write(w_fila, 18, w_boleta.x_studio_descuento_tardanzas_min, current_format_impo)
+                worksheet.write(w_fila, 19, w_boleta.x_studio_retencion_judicial, current_format_impo)
+                worksheet.write(w_fila, 20, w_boleta.x_studio_descuento_prestamos, current_format_impo)
                 
                 # ----------------------------------------------------------------------------------------
                 # -- DATOS CALCULADOS FINALES PLANILLA -- DATOS QUE INGRESAN A LA BOLETA DE PAGO
@@ -955,7 +955,6 @@ class HrPayslip(models.Model):
                 # -----------------------------------------
                 # BOLETA PAGO - INGRESOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 21, w_boleta.x_studio_en_basico, current_format_impo)
                 worksheet.write(w_fila, 22, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
                 worksheet.write(w_fila, 23, w_boleta.x_studio_en_licencia_con_ghaber, current_format_impo)
                 worksheet.write(w_fila, 24, w_boleta.x_studio_en_licencia_fallecimiento, current_format_impo)
