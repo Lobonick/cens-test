@@ -308,7 +308,8 @@ class HrPayslip(models.Model):
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
             worksheet.insert_image('A2', 'src/user/cens_nomina_excel_01/static/description/logo-tiny_96.png')
-            worksheet.insert_image('CH2', 'src/user/cens_nomina_excel_01/static/description/Logo-Odoo-tiny.png')
+            worksheet.insert_image('CH2', 'src/user/cens_nomina_excel_01/static/description/Logo-Odoo-tiny.png', 
+                                         {'x_scale': 0.7, 'y_scale': 0.7})
             worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
