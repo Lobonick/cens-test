@@ -841,13 +841,13 @@ class HrPayslip(models.Model):
             worksheet.write('CJ9', 'ONP', cell_format_sub7)         #-- 74
 
             #-----
-            worksheet.autofilter(8, 2, 8, 8)    #--- Coloca FILTROS en datos generales
-            worksheet.autofilter(8, 22, 8, 32)  #--- Coloca FILTROS en Ingresos
-            worksheet.autofilter(8, 33, 8, 38)  #--- Coloca FILTROS en Conceptos No Remunerativos
-            worksheet.autofilter(8, 39, 8, 42)  #--- Coloca FILTROS en Liquidación
-            worksheet.autofilter(8, 43, 8, 52)  #--- Coloca FILTROS en Descuentos
-            worksheet.autofilter(8, 53, 8, 57)  #--- Coloca FILTROS en Incrementos Indirectos   
-            worksheet.autofilter(8, 58, 8, 63)  #--- Coloca FILTROS en RESUMEN 
+            #worksheet.autofilter(8, 2, 8, 8)    #--- Coloca FILTROS en datos generales
+            #worksheet.autofilter(8, 22, 8, 32)  #--- Coloca FILTROS en Ingresos
+            #worksheet.autofilter(8, 33, 8, 38)  #--- Coloca FILTROS en Conceptos No Remunerativos
+            #worksheet.autofilter(8, 39, 8, 42)  #--- Coloca FILTROS en Liquidación
+            #worksheet.autofilter(8, 43, 8, 52)  #--- Coloca FILTROS en Descuentos
+            #worksheet.autofilter(8, 53, 8, 57)  #--- Coloca FILTROS en Incrementos Indirectos   
+            worksheet.autofilter(8, 60, 8, 65)  #--- Coloca FILTROS en RESUMEN 
             #-----
             worksheet.freeze_panes(9, 4)    #--- Inmoviliza Paneles
 
@@ -1100,8 +1100,8 @@ class HrPayslip(models.Model):
                         worksheet.write(w_fila, 86, w_boleta.x_studio_en_afp_onp, current_format_impo)
                 w_fila += 1
 
-            worksheet.write(5, 64, "TOTAL GENERAL:", cell_format_tota)
-            worksheet.write(5, 65, w_acum_tota_1, cell_format_tota)
+            worksheet.write(5, 64, "TOTAL GENERAL:", cell_format_left)
+            worksheet.write(5, 65, w_acum_tota_1, cell_format_impo)
 
             worksheet.activate()
             workbook.close()

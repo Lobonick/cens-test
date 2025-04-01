@@ -12,7 +12,7 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources',
- 	'version': '16.0.3.46',
+ 	'version': '16.0.3.47',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
