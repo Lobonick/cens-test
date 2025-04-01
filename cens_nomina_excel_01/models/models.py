@@ -334,35 +334,35 @@ class HrPayslip(models.Model):
             worksheet.merge_range('W7:AG7', 'Merged Cells', merge_format)
             worksheet.write('W7', 'I  N  G  R  E  S  O  S', cell_format_sup1)
             
-            worksheet.merge_range('AH7:AN7', 'Merged Cells', merge_format)
+            worksheet.merge_range('AH7:AM7', 'Merged Cells', merge_format)
             worksheet.write('AH7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
 
-            worksheet.merge_range('AO7:AR7', 'Merged Cells', merge_format)
-            worksheet.write('AO7', 'CONCEPTOS LIQUIDACIÓN', cell_format_sup8)
+            worksheet.merge_range('AN7:AQ7', 'Merged Cells', merge_format)
+            worksheet.write('AN7', 'CONCEPTOS LIQUIDACIÓN', cell_format_sup8)
 
-            worksheet.merge_range('AS7:BC7', 'Merged Cells', merge_format)
-            worksheet.write('AS7', 'D E S C U E N T O S', cell_format_sup3)
+            worksheet.merge_range('AR7:BB7', 'Merged Cells', merge_format)
+            worksheet.write('AR7', 'D E S C U E N T O S', cell_format_sup3)
 
-            worksheet.merge_range('BD7:BH7', 'Merged Cells', merge_format)
-            worksheet.write('BD7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
+            worksheet.merge_range('BC7:BG7', 'Merged Cells', merge_format)
+            worksheet.write('BC7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
 
-            worksheet.merge_range('BJ7:BO7', 'Merged Cells', merge_format)
-            worksheet.write('BJ7', 'RESUMEN TOTALIZADO', cell_format_sup5)
+            worksheet.merge_range('BI7:BN7', 'Merged Cells', merge_format)
+            worksheet.write('BI7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BQ7:BR7', 'Merged Cells', merge_format)
-            worksheet.write('BQ7', 'APORTES', cell_format_sup5)
+            worksheet.merge_range('BP7:BQ7', 'Merged Cells', merge_format)
+            worksheet.write('BP7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('BS7:BV7', 'Merged Cells', merge_format)
-            worksheet.write('BS7', 'PROVISIONES', cell_format_sup5)
+            worksheet.merge_range('BR7:BU7', 'Merged Cells', merge_format)
+            worksheet.write('BR7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('BX7:BX7', 'Merged Cells', merge_format)
-            worksheet.write('BX7', 'COSTO', cell_format_sup5)
+            worksheet.merge_range('BW7:BW7', 'Merged Cells', merge_format)
+            worksheet.write('BW7', 'COSTO', cell_format_sup5)
 
-            worksheet.merge_range('BZ7:CB7', 'Merged Cells', merge_format)
-            worksheet.write('BZ7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
+            worksheet.merge_range('BY7:CA7', 'Merged Cells', merge_format)
+            worksheet.write('BY7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
 
-            worksheet.merge_range('CD7:CK7', 'Merged Cells', merge_format)
-            worksheet.write('CD7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CC7:CJ7', 'Merged Cells', merge_format)
+            worksheet.write('CC7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -932,7 +932,7 @@ class HrPayslip(models.Model):
                 # -- REGISTRO INGRESOS --
                 # ----------------------------
                 worksheet.write(w_fila, 8, w_boleta.x_studio_dias_computados, current_format_nume)
-                worksheet.write(w_fila, 9, w_boleta.x_studio_en_basico, current_format_impo)
+                worksheet.write(w_fila, 9, w_boleta.x_studio_salario_mensual, current_format_impo)
                 worksheet.write(w_fila, 10, w_boleta.x_studio_movilidad, current_format_impo)
                 worksheet.write(w_fila, 11, w_boleta.x_studio_vale_alimentos, current_format_impo)
                 worksheet.write(w_fila, 12, w_boleta.x_studio_condiciones_laborales, current_format_impo)
@@ -955,20 +955,20 @@ class HrPayslip(models.Model):
                 # -----------------------------------------
                 # BOLETA PAGO - INGRESOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 22, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
-                worksheet.write(w_fila, 23, w_boleta.x_studio_en_licencia_con_ghaber, current_format_impo)
-                worksheet.write(w_fila, 24, w_boleta.x_studio_en_licencia_fallecimiento, current_format_impo)
-                worksheet.write(w_fila, 25, w_boleta.x_studio_en_licencia_materpater, current_format_impo)
-                worksheet.write(w_fila, 26, w_boleta.x_studio_en_bonificacion_cumplimiento, current_format_impo)
-                worksheet.write(w_fila, 27, w_boleta.x_studio_en_descanso_medico, current_format_impo)
-                worksheet.write(w_fila, 28, w_boleta.x_studio_en_feriados, current_format_impo)
-                worksheet.write(w_fila, 29, w_boleta.x_studio_en_horas_extras, current_format_impo)
-                worksheet.write(w_fila, 30, w_boleta.x_studio_en_vacaciones, current_format_impo)
-                worksheet.write(w_fila, 31, w_boleta.x_studio_en_descanso_vacacional, current_format_impo)
+                worksheet.write(w_fila, 22, w_boleta.x_studio_en_basico, current_format_impo)
+                worksheet.write(w_fila, 23, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
+                worksheet.write(w_fila, 24, w_boleta.x_studio_en_licencia_con_ghaber, current_format_impo)
+                worksheet.write(w_fila, 25, w_boleta.x_studio_en_licencia_fallecimiento, current_format_impo)
+                worksheet.write(w_fila, 26, w_boleta.x_studio_en_licencia_materpater, current_format_impo)
+                worksheet.write(w_fila, 27, w_boleta.x_studio_en_bonificacion_cumplimiento, current_format_impo)
+                worksheet.write(w_fila, 28, w_boleta.x_studio_en_descanso_medico, current_format_impo)
+                worksheet.write(w_fila, 29, w_boleta.x_studio_en_feriados, current_format_impo)
+                worksheet.write(w_fila, 30, w_boleta.x_studio_en_horas_extras, current_format_impo)
+                worksheet.write(w_fila, 31, w_boleta.x_studio_en_vacaciones, current_format_impo)
+                worksheet.write(w_fila, 32, w_boleta.x_studio_en_descanso_vacacional, current_format_impo)
                 # -----------------------------------------
                 # BOLETA PAGO - CONCEPTOS NO REMUNERATIVOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 32, w_boleta.x_studio_salario_mensual, current_format_impo)
                 worksheet.write(w_fila, 33, w_boleta.x_studio_en_vale_alimentacion, current_format_impo)
                 worksheet.write(w_fila, 34, w_boleta.x_studio_en_vale_movilidad, current_format_impo)
                 worksheet.write(w_fila, 35, w_boleta.x_studio_en_condiciones_laborales, current_format_impo)
