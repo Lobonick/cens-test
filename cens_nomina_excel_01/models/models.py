@@ -83,6 +83,7 @@ class HrPayslip(models.Model):
             cell_format_sub6 = workbook.add_format()
             cell_format_sub7 = workbook.add_format()
             cell_format_sub8 = workbook.add_format()
+            cell_format_tota = workbook.add_format()
             # ------
             cell_format_nume = workbook.add_format()
             cell_format_nume.set_num_format('#,##0')
@@ -370,6 +371,13 @@ class HrPayslip(models.Model):
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
             # -------------------------------------------------------------------------------------
+            cell_format_tota.set_font_name('Arial Black')
+            cell_format_tota.set_font_color('black')
+            cell_format_tota.set_font_size(12)
+            cell_format_tota.set_text_wrap()                 # FORMATO TOTALES - TOTALIZADO
+            cell_format_tota.set_align('right')
+            cell_format_tota.set_align('vcenter')
+            #-----
             cell_format_tuti.set_font_name('Arial Black')
             cell_format_tuti.set_font_color('black')
             cell_format_tuti.set_font_size(8)
@@ -833,7 +841,9 @@ class HrPayslip(models.Model):
             worksheet.write('CJ9', 'ONP', cell_format_sub7)         #-- 74
 
             #-----
-            worksheet.freeze_panes(9, 4)
+            worksheet.autofilter(8, 22, 8, 32)  #---Coloca FILTROS
+            #-----
+            worksheet.freeze_panes(9, 4)    #--- Inmoviliza Paneles
 
 
             # -------------------------------------------------------------------------------------
@@ -890,6 +900,7 @@ class HrPayslip(models.Model):
             w_dato = ""
             w_fila = 9
             w_switch = 0
+            w_acum_tota_1 = 0
  
             for w_boleta in w_lote:
                 current_format_cent = cell_format_cesado_cent if w_boleta.x_studio_cesado else cell_format_cent
@@ -1031,6 +1042,7 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 64, w_tota_lbs, current_format_impo)
                 w_tota_gen = w_boleta.x_studio_en_total_remuneracion + w_tota_lbs
                 worksheet.write(w_fila, 65, w_tota_gen, current_format_imp2)
+                w_acum_tota_1 += w_tota_gen
 
                 # -----------------------------------------
                 # APORTES
@@ -1081,6 +1093,9 @@ class HrPayslip(models.Model):
 
                         worksheet.write(w_fila, 86, w_boleta.x_studio_en_afp_onp, current_format_impo)
                 w_fila += 1
+
+            worksheet.write(6, 64, "TOTAL GENERAL:", cell_format_tota)
+            worksheet.write(6, 65, w_acum_tota_1, cell_format_tota)
 
             worksheet.activate()
             workbook.close()
