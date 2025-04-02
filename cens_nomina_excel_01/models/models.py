@@ -918,6 +918,38 @@ class HrPayslip(models.Model):
        
                 if w_boleta.x_studio_cesado:
                     worksheet.write(w_fila, 0, 'CESADO', cell_format_rojo)
+                    #-----
+                    w_titu  = 'DETALLES CESE'+'\n'+'---------------------------------------'+'\n'
+                    w_comen = ''
+                    # Formatear fecha de cese (DATE)
+                    cese_fecha = w_boleta.x_studio_cese_fecha
+                    cese_fecha_str = cese_fecha.strftime('%d/%m/%Y') if cese_fecha else ''
+                    w_comen += 'F.CESE: '+ cese_fecha_str +'\n'
+
+                    # Obtener nombre del motivo (many2one)
+                    # cese_motivo = w_boleta.x_studio_cese_motivo.name if w_boleta.x_studio_cese_motivo else ''
+                    cese_motivo = w_boleta.x_studio_cese_motivo
+                    w_comen += 'MOIVO : '+ cese_motivo +'\n'
+
+                    # Campo CHAR (verificar si es None o False)
+                    observaciones = w_boleta.x_studio_cese_observaciones or ''
+                    w_comen += 'OBSERV: '+ observaciones +'\n'
+
+                    # Formatear fecha de ingreso (DATE)
+                    fecha_ingreso = w_boleta.x_studio_fecha_ingreso_laboral
+                    fecha_ingreso_str = fecha_ingreso.strftime('%d/%m/%Y') if fecha_ingreso else ''
+                    w_comen += 'F.INGR: '+ fecha_ingreso_str +'\n'
+
+                    # Campo TEXT (verificar si es None o False)
+                    comentarios = w_boleta.x_studio_cese_comentarios or ''
+                    w_comen += 'COMENT: '+ comentarios +'\n'
+
+                    worksheet.write_comment(w_fila, 0, w_titu + w_comen, {
+                                            'author': 'CENS-PERÚ',
+                                            'width': 400,  # pixels
+                                            'color': '#f5e69b',
+                                            'font_name': 'Arial'
+                                })
                 else:
                     worksheet.write(w_fila, 0, w_fila-8, cell_format_cent)
                 # worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
