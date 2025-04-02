@@ -919,7 +919,7 @@ class HrPayslip(models.Model):
                 if w_boleta.x_studio_cesado:
                     worksheet.write(w_fila, 0, 'CESADO', cell_format_rojo)
                     #-----
-                    w_titu  = 'DETALLES DEL CESE'+'\n'+'---------------------------------------'+'\n' +'\n'
+                    w_titu  = 'DETALLES DEL CESE'+'\n'+'---------------------------------------'+'\n'
                     w_comen = ''
                     # Formatear fecha de cese (DATE)
                     cese_fecha = w_boleta.x_studio_cese_fecha
@@ -929,7 +929,7 @@ class HrPayslip(models.Model):
                     # Obtener nombre del motivo (many2one)
                     # cese_motivo = w_boleta.x_studio_cese_motivo.name if w_boleta.x_studio_cese_motivo else ''
                     cese_motivo = w_boleta.x_studio_cese_motivo
-                    w_comen += 'MOIVO :  '+ cese_motivo +'\n'
+                    w_comen += 'MOTIVO:  '+ cese_motivo +'\n'
 
                     # Campo CHAR (verificar si es None o False)
                     observaciones = w_boleta.x_studio_cese_observaciones or ''
