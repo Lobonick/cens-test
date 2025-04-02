@@ -919,7 +919,7 @@ class HrPayslip(models.Model):
                 if w_boleta.x_studio_cesado:
                     worksheet.write(w_fila, 0, 'CESADO', cell_format_rojo)
                     #-----
-                    w_titu  = 'DETALLES CESE'+'\n'+'---------------------------------------'+'\n'
+                    w_titu  = 'DETALLES DEL CESE'+'\n'+'---------------------------------------'+'\n'
                     w_comen = ''
                     # Formatear fecha de cese (DATE)
                     cese_fecha = w_boleta.x_studio_cese_fecha
@@ -947,6 +947,7 @@ class HrPayslip(models.Model):
                     worksheet.write_comment(w_fila, 0, w_titu + w_comen, {
                                             'author': 'CENS-PERÚ',
                                             'width': 400,  # pixels
+                                            'height': 300,
                                             'color': '#f5e69b',
                                             'font_name': 'Arial'
                                 })
