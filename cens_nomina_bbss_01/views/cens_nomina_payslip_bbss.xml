@@ -14,10 +14,7 @@
                     <button name="action_recalcula_en_datos" string="Recalcula" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
                 </div>
             </xpath>
-            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[1]" position="attributes">
-                <attribute name="attrs">{}</attribute>
-                <attribute name="invisible">1</attribute>
-            </xpath>
+            
         </field>
     </record>
 </odoo>
@@ -32,6 +29,11 @@
                             type="object" 
                             class="btn-danger oe_button"/>
 
+
+            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[1]" position="attributes">
+                <attribute name="attrs">{}</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
 
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
 
