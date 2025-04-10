@@ -9,8 +9,7 @@
             <!-- ============================== -->
             <!--  INSERTA BOTÓN DE CÁLCULO      -->
             <!-- ============================== -->
-            <field name="x_studio_cesado" invisible="1"/>
-            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[1]" position="after">
+            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[3]" position="after">
                 <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
                     <button name="action_recalcula_en_datos" 
                             string="Recalcula" 
@@ -24,8 +23,7 @@
                             icon="fa-thumbs-up" 
                             type="object" 
                             class="btn-danger oe_button"
-                            style="flex: 1; max-width: 150px;"
-                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}"
+                            style="max-width: 150px;"
                             confirm="¿Está seguro de calcular Beneficios Sociales?"/>
                 </div>
                 <div> </div>
@@ -46,6 +44,7 @@
                             icon="fa-thumbs-up" 
                             type="object" 
                             class="btn-danger oe_button"
+                            style="flex: 1; max-width: 150px;"
                             attrs="{'invisible': [('x_studio_cesado', '!=', True)]}" />
                 </div>
 
