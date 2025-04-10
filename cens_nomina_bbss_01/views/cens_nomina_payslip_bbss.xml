@@ -24,7 +24,6 @@
                             type="object" 
                             class="btn-danger oe_button"
                             style="flex: 1; max-width: 150px;"
-                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}"
                             confirm="¿Está seguro de calcular Beneficios Sociales?"/>
                 </div>
                 <div> </div>
@@ -44,7 +43,8 @@
                             string="Beneficios Sociales" 
                             icon="fa-thumbs-up" 
                             type="object" 
-                            class="btn-danger oe_button"/>
+                            class="btn-danger oe_button"
+                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}" />
                 </div>
 
 
