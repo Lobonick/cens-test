@@ -4,13 +4,13 @@
         <field name="name">hr.payslip.form.bbss.inherit</field>
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
-        <field name="priority" eval="95"/>
+        <field name="priority" eval="42"/>
         <field name="arch" type="xml">
             <!-- ============================== -->
             <!--  INSERTA BOTÓN DE CÁLCULO      -->
             <!-- ============================== -->
             <field name="x_studio_cesado" invisible="1"/>
-            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[3]" position="after">
+            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[3]" position="after">
                 <div> </div>
                 <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
                     <button name="action_recalcula_en_datos" 
