@@ -10,23 +10,23 @@
             <!--  INSERTA BOTÓN DE CÁLCULO      -->
             <!-- ============================== -->
             <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[3]" position="after">
+                <div> </div>
                 <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
                     <button name="action_recalcula_en_datos" 
                             string="Recalcula" 
                             icon="fa-thumbs-up" 
                             type="object" 
-                            class="oe_highlight oe_button"
+                            class="oe_highlight oe_button oe_right"
                             style="flex: 1; max-width: 120px;"/>
                     
                     <button name="action_recalcula_bbss" 
                             string="Beneficios Sociales" 
                             icon="fa-thumbs-up" 
                             type="object" 
-                            class="btn-danger oe_button"
-                            style="max-width: 150px;"
+                            class="btn-danger oe_button oe_right"
+                            style="flex: 1; max-width: 150px;"
                             confirm="¿Está seguro de calcular Beneficios Sociales?"/>
                 </div>
-                <div> </div>
             </xpath>
             
         </field>
