@@ -26,8 +26,8 @@
                             type="object" 
                             class="btn-danger oe_button"
                             style="flex: 1; max-width: 150px;"
-                            confirm="¿Está seguro de calcular Beneficios Sociales?"
-                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}" />
+                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}"
+                            confirm="¿Está seguro de calcular Beneficios Sociales?"/>
                 </div>
             </xpath>
             
