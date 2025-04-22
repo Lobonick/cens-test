@@ -5,14 +5,17 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='message_ids']" position="before">
-                <field name="message_ids" context="{'default_model':'crm.lead', 'default_res_id': active_id}"/>
-            </xpath>
             <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
-                    <field name="cens_user_id" string="Usuario ActualX:"/>
-                    <field name="cens_control_01"/>
-                    <field name="cens_control_02"/>
+                <field name="cens_usuario_activo_id" string="Usuario Actual:" readonly="1"/>
+                <field name="cens_control_01" invisible="1"/>
+                <field name="cens_control_02" invisible="1"/>
             </xpath>
         </field>
     </record>
 </odoo>
+
+<!--
+    <xpath expr="//field[@name='message_ids']" position="before">
+        <field name="message_ids" context="{'default_model':'crm.lead', 'default_res_id': active_id}"/>
+    </xpath>
+-->
