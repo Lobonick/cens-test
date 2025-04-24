@@ -1,4 +1,4 @@
-from odoo import models, fields, _
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from datetime import datetime
 import base64
@@ -8,6 +8,30 @@ from io import BytesIO
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
+
+    @api.model
+    def create(self, vals):
+        """
+        Sobreescribe el método create para inicializar 
+        campos personalizados cuando se crea un nuevo registro
+        """
+        # Inicializar campos de proyectos si no están presentes
+        for field in [
+            'x_cens_proy1_codig', 'x_cens_proy2_codig', 'x_cens_proy3_codig',
+            'x_cens_proy4_codig', 'x_cens_proy5_codig', 'x_cens_proyt_total'
+        ]:
+            if field not in vals:
+                vals[field] = ''
+        
+        for field in [
+            'x_cens_proy1_parti', 'x_cens_proy2_parti', 'x_cens_proy3_parti',
+            'x_cens_proy4_parti', 'x_cens_proy5_parti'
+        ]:
+            if field not in vals:
+                vals[field] = 0.00
+        
+        return super(HrPayslip, self).create(vals)
+
 
     def export_to_xlsx(self):
         # Crear archivo Excel en memoria
@@ -157,7 +181,23 @@ class HrPayslip(models.Model):
         worksheet.set_column(28, 28, 10)    #--
         worksheet.set_column(29, 29, 10)    #--
         worksheet.set_column(30, 30, 10)    #--
-        worksheet.set_column(31, 31, 10)    #-- 
+        worksheet.set_column(31, 31, 10)    #--
+
+        worksheet.set_column(32, 32, 5)    #--
+
+        worksheet.set_column(33, 33, 10)    #-- CodiProy - 1
+        worksheet.set_column(34, 34, 7)     #-- %
+        worksheet.set_column(35, 35, 10)    #-- CodiProy - 2
+        worksheet.set_column(36, 36, 7)     #-- %
+        worksheet.set_column(37, 37, 10)    #-- CodiProy - 3   DISTRIBUCIÓN DE COSTOS
+        worksheet.set_column(38, 38, 7)     #-- %
+        worksheet.set_column(39, 39, 10)    #-- CodiProy - 4
+        worksheet.set_column(40, 40, 7)     #-- %
+        worksheet.set_column(41, 41, 10)    #-- CodiProy - 5
+        worksheet.set_column(42, 42, 7)     #-- %
+        worksheet.set_column(43, 43, 7)     #-- TOTAL 100%
+
+
         # ------
         worksheet.set_row(7, 27)        # (Fila,Altura)
         worksheet.set_zoom(85)          # %-Zoom
@@ -189,6 +229,9 @@ class HrPayslip(models.Model):
 
         worksheet.merge_range('AA7:AF7', 'Merged Cells', merge_format)
         worksheet.write('AA7', 'E  G  R  E  S  O  S', cell_format_tuti)
+
+        worksheet.merge_range('AH7:AQ7', 'Merged Cells', merge_format)
+        worksheet.write('AH7', 'DISTRIBUCIÓN DE COSTOS', cell_format_tuti)
         # -------------------------------------------------------------------------------------
         # BARRA DE TITULOS
         # -------------------------------------------------------------------------------------
@@ -291,6 +334,20 @@ class HrPayslip(models.Model):
         worksheet.write('AD8', 'MINUTOS TARDANZA', cell_format_titu)            #-- 29
         worksheet.write('AE8', 'RETENCIÓN JUDICIAL', cell_format_titu)          #-- 30
         worksheet.write('AF8', 'DSCTO. PRÉSTAMOS', cell_format_titu)            #-- 31
+
+        worksheet.merge_range('AH8:AI8', 'Merged Cells', merge_format)
+        worksheet.write('AH8', 'PROYECT-1', cell_format_titu)
+        worksheet.merge_range('AJ8:AK8', 'Merged Cells', merge_format)
+        worksheet.write('AJ8', 'PROYECT-2', cell_format_titu)
+        worksheet.merge_range('AL8:AM8', 'Merged Cells', merge_format)
+        worksheet.write('AL8', 'PROYECT-3', cell_format_titu)
+        worksheet.merge_range('AN8:AO8', 'Merged Cells', merge_format)
+        worksheet.write('AN8', 'PROYECT-4', cell_format_titu)
+        worksheet.merge_range('AP8:AQ8', 'Merged Cells', merge_format)
+        worksheet.write('AP8', 'PROYECT-5', cell_format_titu)
+        worksheet.merge_range('AR8:AR9', 'Merged Cells', merge_format)
+        worksheet.write('AR8', 'TOTAL', cell_format_tut5)
+
         #-----
         worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
         worksheet.write('K9', 'DIAS', cell_format_tut3)                 #-- 10
@@ -315,6 +372,17 @@ class HrPayslip(models.Model):
         # worksheet.write('AF9', 'MINUTOS TARDANZA', cell_format_titu)  #-- 29
         worksheet.write('AE9', 'S/.', cell_format_tut4)                 #-- 30
         worksheet.write('AF9', 'S/.', cell_format_tut4)                 #-- 31
+
+        worksheet.write('AH9', 'Código', cell_format_tut4)                 #-- 33
+        worksheet.write('AI9', 'Partic %', cell_format_tut4)                 #-- 34
+        worksheet.write('AJ9', 'Código', cell_format_tut4)                 #-- 35
+        worksheet.write('AK9', 'Partic %', cell_format_tut4)                 #-- 36
+        worksheet.write('AL9', 'Código', cell_format_tut4)                 #-- 37
+        worksheet.write('AM9', 'Partic %', cell_format_tut4)                 #-- 38
+        worksheet.write('AN9', 'Código', cell_format_tut4)                 #-- 39
+        worksheet.write('AO9', 'Partic %', cell_format_tut4)                 #-- 40
+        worksheet.write('AP9', 'Código', cell_format_tut4)                 #-- 41
+        worksheet.write('AQ9', 'Partic %', cell_format_tut4)                 #-- 42
         #-----
         worksheet.freeze_panes(9, 4)
 
@@ -354,7 +422,18 @@ class HrPayslip(models.Model):
             'x_studio_adelanto_sueldo',
             'x_studio_descuento_tardanzas_min',
             'x_studio_retencion_judicial',
-            'x_studio_descuento_prestamos'
+            'x_studio_descuento_prestamos',
+            'x_cens_proy1_codig',
+            'x_cens_proy1_parti',
+            'x_cens_proy2_codig',
+            'x_cens_proy2_parti',
+            'x_cens_proy3_codig',
+            'x_cens_proy3_parti',
+            'x_cens_proy4_codig',
+            'x_cens_proy4_parti',
+            'x_cens_proy5_codig',
+            'x_cens_proy5_parti',
+            'x_cens_proyt_total'
         ]
 
         # Escribir encabezados
@@ -379,12 +458,14 @@ class HrPayslip(models.Model):
             w_dato = w_boleta.employee_id.name
             if w_boleta.x_studio_cesado:
                 worksheet.write(w_fila, 0, w_boleta.id, cell_format_rojo)
+                worksheet.write(w_fila, 1, w_boleta.number, cell_format_rojo)
                 worksheet.write(w_fila, 2, w_dato, cell_format_rojo)
+                worksheet.write(w_fila, 3, w_boleta.x_studio_dni, cell_format_rojo)
             else:
                 worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)
+                worksheet.write(w_fila, 1, w_boleta.number, cell_format_cent)
                 worksheet.write(w_fila, 2, w_dato, cell_format_left)   
-            worksheet.write(w_fila, 1, w_boleta.number, cell_format_cent)
-            worksheet.write(w_fila, 3, w_boleta.x_studio_dni, cell_format_cent)
+                worksheet.write(w_fila, 3, w_boleta.x_studio_dni, cell_format_cent)
 
             # w_dato = w_boleta.payslip_run_id.name
             w_dato = ""
@@ -431,6 +512,23 @@ class HrPayslip(models.Model):
             worksheet.write(w_fila, 29, w_boleta.x_studio_descuento_tardanzas_min, cell_format_nume)
             worksheet.write(w_fila, 30, w_boleta.x_studio_retencion_judicial, cell_format_impo)
             worksheet.write(w_fila, 31, w_boleta.x_studio_descuento_prestamos, cell_format_impo)
+
+            # ----------------------------
+            # -- DISTRIBUCIÓN DE COSTOS --
+            # ----------------------------
+            worksheet.write(w_fila, 33, w_boleta.x_cens_proy1_codig, cell_format_cent)
+            worksheet.write(w_fila, 34, w_boleta.x_cens_proy1_parti, cell_format_porc)
+            worksheet.write(w_fila, 35, w_boleta.x_cens_proy2_codig, cell_format_cent)
+            worksheet.write(w_fila, 36, w_boleta.x_cens_proy2_parti, cell_format_porc)
+            worksheet.write(w_fila, 37, w_boleta.x_cens_proy3_codig, cell_format_cent)
+            worksheet.write(w_fila, 38, w_boleta.x_cens_proy3_parti, cell_format_porc)
+            worksheet.write(w_fila, 39, w_boleta.x_cens_proy4_codig, cell_format_cent)
+            worksheet.write(w_fila, 40, w_boleta.x_cens_proy4_parti, cell_format_porc)
+            worksheet.write(w_fila, 41, w_boleta.x_cens_proy5_codig, cell_format_cent)
+            worksheet.write(w_fila, 42, w_boleta.x_cens_proy5_parti, cell_format_porc)
+            #w_fil2 = w_fila + 1
+            #w_dato = "=AI"+str(w_fil2)+"+AK"+str(w_fil2)+"+AM"+str(w_fil2)+"+AO"+str(w_fil2)+"+AQ"+str(w_fil2)
+            #worksheet.write(w_fila, 43, w_dato, cell_format_porc)
             
             w_fila += 1
 
@@ -586,7 +684,7 @@ class HrPayslip(models.Model):
         # Crear adjunto
         xlsx_data = output.getvalue()
         attachment = self.env['ir.attachment'].create({
-            'name': 'nominas_export.xlsx',
+            'name': 'worksheet_export.xlsx',
             'type': 'binary',
             'datas': base64.b64encode(xlsx_data),
         })
@@ -637,6 +735,3 @@ class HrPayslip(models.Model):
         else:
             w_mes_name = "ERR"
         return w_mes_name
-
-
-
