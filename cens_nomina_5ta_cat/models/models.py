@@ -279,7 +279,7 @@ class renta_quinta_Custom(models.Model):
                 new_record.action_rellena_datos()
                 new_record.action_traslada_boletas()
                 new_record.action_traslada_datos()
-                new_record.action_rellena_datos()
+                #new_record.action_rellena_datos()
             else:
                 _logger.info(f'Ya existe registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
         return {
@@ -1223,7 +1223,7 @@ class renta_quinta_Custom(models.Model):
                         # BUSCA LA BOLETA DEL MES Y ACTUALIZA RENTA 
                         # Verifica primero que el mes esté disponible
                         # --------------------------------------------
-                        if (x_mes>2):
+                        if (x_mes>3):
                             boleta = self.env['hr.payslip'].search([
                                             ('employee_id', '=', record.employee_id.id),
                                             ('date_from', '=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),

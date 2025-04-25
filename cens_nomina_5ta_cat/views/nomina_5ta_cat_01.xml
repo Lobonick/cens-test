@@ -210,7 +210,7 @@
         <field name="name">hr.payslip.form.inherit</field>
         <field name="model">hr.payslip</field>
         <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
-        <field name="priority" eval="90"/>
+        <field name="priority" eval="39"/>
         <field name="arch" type="xml">
             <notebook>
                 <page name="cens_page_renta_1" string="Renta 5ta.Cat." attrs="{'invisible': [['x_studio_renta_5ta','=',False]]}">
