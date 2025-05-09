@@ -1,0 +1,29 @@
+
+
+
+
+
+            w_cant_dia_ini = (30 - w_dia_ing) + 1
+            w_cant_dia_fin = w_fecha_cese.day
+
+            w_mess_partmes = ((12 - w_mes_ing) + (w_mes_ces-1))         #--- (12-MES(D6)) + (MES(D7)-1)
+            w_dias_partmes = (w_mess_partmes * 30) + w_cant_dia_fin     #--- (E7*30) + DIA(D7)
+            w_cant_dia_fin = (w_dias_partmes % 30)                      #--- RESIDUO(F7;30) 
+
+            _logger.info(f'Conteo: - Días inicial = {w_cant_dia_ini} ')
+            _logger.info(f'        - Dias medio   = {w_dias_partmes} ')
+            _logger.info(f'        - Días final   = {w_cant_dia_fin} ')
+            _logger.info(f'------------------------------------------')
+            _logger.info(f'Cantidad meses = {w_mess_partmes} ')
+            _logger.info(f'Cantidad días  = {w_dias_partmes} ')
+
+            w_tota_mes = int(w_dias_partmes / 30)            #--- Total rango meses
+            w_tota_dia = (w_dias_partmes % 30) + w_cant_dia_ini                 #--- Total rango días
+            w_tota_ddd = w_cant_dia_ini + w_dias_partmes + w_cant_dia_fin       #--- Total tiempo en días
+            w_tota_ano = int(w_tota_ddd/360) if w_tota_ddd >= 360 else 0        #--- Total rango años
+
+            _logger.info(f'------------------------------------------')
+            _logger.info(f'TOTALIZADO: año = {w_tota_ano} ')
+            _logger.info(f'            mes = {w_tota_mes} ')
+            _logger.info(f'            dia = {w_tota_dia} ')
+            _logger.info(f'            ddd = {w_tota_ddd} ')
