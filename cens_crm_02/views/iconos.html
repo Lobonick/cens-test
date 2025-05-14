@@ -1,0 +1,120 @@
+Referencia de Íconos Font Awesome para Odoo
+Íconos por Categoría
+Acciones Comunes
+
+fa-check - ✓ Aprobar, confirmar, completado
+fa-times - ✗ Cancelar, rechazar
+fa-trash - 🗑️ Eliminar, borrar
+fa-pencil - ✏️ Editar, modificar
+fa-plus - ➕ Añadir, crear nuevo
+fa-minus - ➖ Quitar, reducir
+fa-refresh - 🔄 Actualizar, recargar
+fa-clone - 📋 Duplicar, clonar
+
+Comunicación
+
+fa-envelope - ✉️ Email, correo
+fa-comment - 💬 Comentario, mensaje
+fa-comments - 💬💬 Comentarios, discusión
+fa-phone - 📞 Teléfono, llamada
+fa-bell - 🔔 Notificación, alerta
+fa-paper-plane - 📨 Enviar, transmitir
+fa-share - 🔄 Compartir
+
+Documentos y Archivos
+
+fa-file - 📄 Documento genérico
+fa-file-text - 📝 Documento de texto
+fa-file-pdf-o - 📕 Documento PDF
+fa-file-excel-o - 📗 Documento Excel
+fa-file-word-o - 📘 Documento Word
+fa-file-image-o - 🖼️ Imagen
+fa-file-zip-o - 📦 Archivo comprimido
+fa-paperclip - 📎 Adjunto, anexo
+fa-print - 🖨️ Imprimir
+fa-download - ⬇️ Descargar
+fa-upload - ⬆️ Subir, cargar
+
+Finanzas y Comercio
+
+fa-money - 💵 Dinero, efectivo
+fa-credit-card - 💳 Tarjeta, pagos
+fa-bank - 🏦 Banco, institución
+fa-cart-plus - 🛒 Carrito, compra
+fa-calculator - 🧮 Calculadora, presupuesto
+fa-percent - % Porcentaje, descuento
+fa-euro - € Euro
+fa-dollar - $ Dólar
+fa-shopping-cart - 🛒 Carrito de compras
+fa-tag - 🏷️ Etiqueta, precio
+fa-tags - 🏷️🏷️ Etiquetas, categorías
+
+Estados y Flujos de Trabajo
+
+fa-check-circle - ⭕✓ Completado, verificado
+fa-check-square-o - ☑️ Marcado, aprobado
+fa-spinner - 🔄 En proceso, cargando
+fa-clock-o - 🕒 Pendiente, esperando
+fa-ban - 🚫 Prohibido, bloqueado
+fa-lock - 🔒 Bloqueado, cerrado
+fa-unlock - 🔓 Desbloqueado, abierto
+fa-star - ⭐ Destacado, favorito
+fa-flag - 🚩 Marcado, destacado
+
+Visualización de Datos
+
+fa-line-chart - 📈 Gráfico lineal, tendencia
+fa-bar-chart - 📊 Gráfico de barras, estadísticas
+fa-pie-chart - 🥧 Gráfico circular, distribución
+fa-area-chart - 📉 Gráfico de área
+fa-list - 📋 Lista, items
+fa-table - 🏢 Tabla, matriz
+fa-filter - 🔍 Filtrar, buscar
+
+Específicos de CRM
+
+fa-user - 👤 Usuario, persona
+fa-users - 👥 Usuarios, equipo
+fa-handshake-o - 🤝 Acuerdo, trato
+fa-trophy - 🏆 Ganador, éxito
+fa-thumbs-up - 👍 Aprobado, me gusta
+fa-thumbs-down - 👎 Rechazado, no me gusta
+fa-bullseye - 🎯 Objetivo, meta
+fa-sitemap - 🌐 Estructura, jerarquía
+
+Iconos de Sistema
+
+fa-cog - ⚙️ Configuración, ajustes
+fa-wrench - 🔧 Herramientas, ajustes
+fa-search - 🔍 Buscar
+fa-info-circle - ℹ️ Información
+fa-question-circle - ❓ Ayuda, pregunta
+fa-exclamation-triangle - ⚠️ Advertencia, alerta
+
+Nota sobre la implementación
+Para utilizar estos íconos en las vistas de Odoo:
+xml
+<button name="action_method" 
+        string="Texto del Botón" 
+        type="object" 
+        class="oe_stat_button" 
+        icon="fa-nombre-del-icono" 
+        help="Texto de ayuda" />
+Si necesita personalizar más los íconos o utilizar versiones más recientes de Font Awesome, considere añadir assets adicionales a su módulo.
+
+
+<!-- BOTÓN A INSERTAR EN EL CUTOMISIZING DEL MÓDULO DE CRM-->
+
+
+      <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_ffe34c">
+        <button name="enviar_correo_solicita_ganada" 
+                string=" Solicitar a GANADA" 
+                icon="fa-envelope" 
+                type="object" 
+                class="btn-danger oe_button" 
+                style="flex: 1; max-width: 120px;" 
+                confirm="¿Está seguro de ENVIAR la solicitud?" 
+                attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_porcentaje_probabilidad&quot;,&quot;!=&quot;,&quot;100&quot;], [&quot;x_studio_estado_seleccionado&quot;,&quot;=&quot;,&quot;Ganada&quot;]]}" 
+                effect="{&quot;message&quot;:&quot;Ya te respondemos!&quot;,&quot;img_url&quot;:&quot;/web/content/384221&quot;,&quot;fadeout&quot;:&quot;medium&quot;}"/>
+      </div>
+

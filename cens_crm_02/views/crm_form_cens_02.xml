@@ -4,15 +4,9 @@
         <field name="name">crm.lead.form.view.inherit</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="priority">99</field>
         <field name="arch" type="xml">
-
-            <!-- Agregar botón para adjuntar imagen en una ubicación visible -->
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="agregar_imagen_como_mensaje" string="Adjuntar Aviso" 
-                        type="object" class="oe_stat_button" icon="fa-paperclip"
-                        help="Adjuntar imagen de aviso al historial de mensajes"/>
-            </xpath>
-
+            
             <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
                 <field name="cens_usuario_activo_id" string="Usuario Actual:" readonly="1"/>
                 <field name="cens_control_01" invisible="1"/>
@@ -23,7 +17,21 @@
 </odoo>
 
 <!--
+
+    <xpath expr="//form[1]/sheet[1]/group[1]/group[6]" position="inside">
+
     <xpath expr="//field[@name='message_ids']" position="before">
         <field name="message_ids" context="{'default_model':'crm.lead', 'default_res_id': active_id}"/>
     </xpath>
+
+
+                    <button name="enviar_correo_solicita_ganada" string="Solicitar GANADA" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-paperclip"
+                        help="Envía email solicitando cambio de STATUS a GANADA."/>
+
+                        class="btn-danger oe_button"
+                        class="oe_highlight oe_button"
+
 -->

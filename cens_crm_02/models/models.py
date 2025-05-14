@@ -106,6 +106,24 @@ class CRMLead(models.Model):
                 }
             }
     
+    # ------------------------------
+    # ENVIAR CORREO DE ALERTA
+    # ------------------------------
+    def enviar_correo_solicita_ganada(self):
+        self.ensure_one()
+        template_id = self.env.ref('studio_customization.alerta_solicita_opor_ac464d32-6b47-4809-9432-b0fba3a7ebf4')
+        if not template_id:
+            _logger.error('No se encontró la plantilla de correo con ID XML: studio_customization.alerta_solicita_opor_ac464d32-6b47-4809-9432-b0fba3a7ebf4')
+            return False
+            
+        # Enviar correo usando la plantilla
+        try:
+            template_id.send_mail(self.id, force_send=True)
+            _logger.info('Correo de SOLICITUD CAMBIO DE ESTADO fue enviado correctamente  (ID: %s)', self.id)
+            return True
+        except Exception as e:
+            _logger.error('Error al enviar correo de SOLICITUD: %s', str(e))
+            return False
 
     # ------------------------------
     # ENVIAR CORREO DE ALERTA
