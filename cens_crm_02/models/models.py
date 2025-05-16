@@ -16,6 +16,7 @@ class CRMLead(models.Model):
     cens_control_02 = fields.Char("Control 02:")
     cens_usuario_activo_id = fields.Integer(
         string='Usuario Activo', 
+        default=0,
         compute='_compute_usuario_activo_id',
         store=False  # No almacenar en la BD
     )
@@ -27,6 +28,15 @@ class CRMLead(models.Model):
         for record in self:
             record.cens_usuario_activo_id = self.env.user.id
             record.x_studio_usuario_activo_id = self.env.user.id
+
+    # ------------------------------
+    # MARCA LEADS EXTEMPORÁNEOS
+    # ------------------------------
+    def action_marca_extemporaneos(self):
+        for record in self:
+            # record.cens_usuario_activo_id = self.env.user.id
+            # record.x_studio_usuario_activo_id = self.env.user.id
+            record.cens_control_01 = 0 
 
     # ------------------------------
     # CARGA IMAGEN DESDE URL
