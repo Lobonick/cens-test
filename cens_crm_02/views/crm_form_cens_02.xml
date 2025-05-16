@@ -14,7 +14,12 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="crm_lead_tree_cens_inherit">
+ 
+</odoo>
+
+<!--
+
+   <record model="ir.ui.view" id="crm_lead_tree_cens_inherit">
         <field name="name">crm.lead.tree.opportunity.cens_inherit</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
@@ -26,10 +31,6 @@
 
         </field>
     </record>
-</odoo>
-
-<!--
-
             <xpath expr="//header" position="inside">
                 <button name="action_marca_extemporaneos" 
                         class="oe_highlight" 
