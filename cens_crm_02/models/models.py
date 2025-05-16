@@ -33,10 +33,44 @@ class CRMLead(models.Model):
     # MARCA LEADS EXTEMPORÁNEOS
     # ------------------------------
     def action_marca_extemporaneos(self):
-        for record in self:
-            # record.cens_usuario_activo_id = self.env.user.id
-            # record.x_studio_usuario_activo_id = self.env.user.id
-            record.cens_control_01 = 0 
+        # Verificar acceso de usuario directamente sin usar campos computados
+        if self.env.user.id not in [2, 8]:
+            raise UserError(_('No tiene permisos para realizar esta acción.'))
+        
+        # Buscar todas las oportunidades que cumplan con los criterios
+        # - Estado seleccionado = "Abierto"
+        # - Fecha de oportunidad < 2025
+        domain = [
+            ('x_studio_estado_seleccionado', '=', 'Abierto'),
+            ('x_studio_fecha_de_oportunidad', '<', '2025-01-01')
+        ]
+        
+        # Obtener los registros que cumplen con el criterio
+        leads_to_mark = self.env['crm.lead'].search(domain)
+        
+        # Contador para estadísticas
+        count_updated = 0
+        
+        # Marcar como extemporáneas
+        for lead in leads_to_mark:
+            lead.write({'x_cens_on_extemporanea': True})
+            count_updated += 1
+            
+        # Log para fines de auditoría
+        _logger.info('Usuario %s (ID: %s) marcó %s oportunidades como extemporáneas', 
+                    self.env.user.name, self.env.user.id, count_updated)
+        
+        # Notificación al usuario
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Éxito'),
+                'message': _('%s registros marcados como extemporáneos correctamente.') % count_updated,
+                'sticky': False,
+                'type': 'success',
+            }
+        }
 
     # ------------------------------
     # CARGA IMAGEN DESDE URL
