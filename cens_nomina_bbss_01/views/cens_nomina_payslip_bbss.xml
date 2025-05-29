@@ -48,14 +48,14 @@
                 <div> </div>
                 <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
                     <button name="action_recalcula_en_datos" 
-                            string="Recalcula" 
-                            icon="fa-calculator" 
+                            string="Desactiva" 
+                            icon="fa-wrench" 
                             type="object" 
                             class="oe_highlight oe_button"
                             style="flex: 1; max-width: 120px;"/>
                     
                     <button name="action_recalcula_bbss" 
-                            string="Beneficios Sociales" 
+                            string="Beneficios Truncos" 
                             icon="fa-calculator"
                             type="object" 
                             class="btn-danger oe_button"
