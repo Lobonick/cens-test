@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payslip_tree_inherit_bbss" model="ir.ui.view">
+        <field name="name">hr.payslip.tree.inherit.bbss</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="priority">40</field> 
+        <field name="arch" type="xml">
+            <!-- ============================== -->
+            <!--  GENERA REPORTE CALCULO CTS    -->
+            <!-- ============================== -->
+            <xpath expr="//header" position="inside">
+                <button name="action_listado_calculo_cts_intermitentes"
+                        string="CTS Intermitentes"
+                        type="object" 
+                        icon="fa-list"
+                        class="oe_highlight oe_button"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+<!--
+
+    <record id="view_hr_payslip_form_bbss_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.bbss.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="priority">95</field>
+        <field name="arch" type="xml">
+            <!-- ============================== -->
+            <!--  INSERTA BOTÓN DE CÁLCULO      -->
+            <!-- ============================== -->
+            <field name="x_studio_cesado" invisible="1"/>
+            <!-- <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[@name='studio_group_cese']" position="after">  -->
+            <!-- <xpath expr="//field[@name='x_studio_cese_motivo']" position="after"> -->
+    
+        </field>
+    </record>
+         
+ 
+-->
