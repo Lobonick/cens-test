@@ -124,7 +124,7 @@ class HrPayslip(models.Model):
                 'x_studio_cese_grati_trunca': w_trunco_gra,
                 'x_studio_cese_bonif_grati_trunca': w_trunco_bon,
                 'x_studio_cese_comentarios': w_comentario,
-                'x_studio_cesado': True
+                'x_studio_cesado': False
             })  
         self.recompute()
         pass
