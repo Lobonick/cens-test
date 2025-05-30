@@ -10,7 +10,7 @@
             <!--  GENERA REPORTE CALCULO CTS    -->
             <!-- ============================== -->
             <xpath expr="//header" position="inside">
-                <button name="action_listado_calculo_cts_intermitentes"
+                <button name="action_listado_cts_intermit"
                         string="CTS Intermitentes"
                         type="object" 
                         icon="fa-list"

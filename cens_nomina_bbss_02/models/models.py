@@ -230,7 +230,7 @@ class HrPayslip(models.Model):
         return date(fecha.year, fecha.month, ultimo_dia)
     
 
-    def action_listado_calculo_cts(self):
+    def action_listado_cts_intermit(self):
         # Crear archivo Excel en memoria
         output = BytesIO()
         #workbook = xlsxwriter.Workbook(output)
@@ -253,7 +253,7 @@ class HrPayslip(models.Model):
                     'keywords': 'nómina, lote, cts',
                     'created':  datetime.now(),
                     'comments': 'Creado por: Área de Sistemas - CENS-PERÚ'})
-            worksheet = workbook.add_worksheet('CÁLCULO CTS 2025-A')
+            worksheet = workbook.add_worksheet('CÁLCULO CTS 2025-B')
             w_formato_hora  = workbook.add_format({
                 'num_format': 'hh:mm',
                 'align'     : 'center',  
@@ -462,7 +462,7 @@ class HrPayslip(models.Model):
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H5', 'COMPENSACIÓN POR TIEMPO DE SERVICIOS - CÁLCULO CTS', cell_format_cabe)
+            worksheet.write('H5', 'COMPENSACIÓN POR TIEMPO DE SERVICIOS - CÁLCULO CTS - MODALIDAD INTERMITENTE', cell_format_cabe)
             # ------
             worksheet.write('A6', 'FECHA:')
             worksheet.write('B6', datetime.now(), cell_format_fech)
@@ -798,21 +798,21 @@ class HrPayslip(models.Model):
 
             worksheet.write('J8', 'SUELDO BÁSICO', cell_format_titu)                #-- 08
             worksheet.write('K8', 'ASIGNACIÓN FAMILIAR', cell_format_titu)          #-- 
-            worksheet.write('L8', 'SEXTO GRATIFIC', cell_format_titu)          #-- 11
-            worksheet.write('M8', 'TOTAL REMUNERACIÓN', cell_format_tit2)                   #-- 09
+            worksheet.write('L8', 'SEXTO GRATIFIC', cell_format_titu)               #-- 11
+            worksheet.write('M8', 'TOTAL REMUNERACIÓN', cell_format_tit2)           #-- 09
 
-            worksheet.write('N8', 'AÑOS', cell_format_tito)              #-- 10
-            worksheet.write('O8', 'MESES', cell_format_tito)         #-- 13
+            worksheet.write('N8', 'AÑOS', cell_format_tito)                         #-- 10
+            worksheet.write('O8', 'MESES', cell_format_tito)                        #-- 13
             worksheet.write('P8', 'DÍAS', cell_format_tito)
 
-            worksheet.write('Q8', 'AÑOS', cell_format_titu)          #-- 12
-            worksheet.write('R8', 'MESES', cell_format_titu)         #-- 13
-            worksheet.write('S8', 'DÍAS', cell_format_titu)              #-- 14
+            worksheet.write('Q8', 'AÑOS', cell_format_titu)                         #-- 12
+            worksheet.write('R8', 'MESES', cell_format_titu)                        #-- 13
+            worksheet.write('S8', 'DÍAS', cell_format_titu)                         #-- 14
 
-            worksheet.write('T8', 'INICIO', cell_format_tito)               #-- 15
-            worksheet.write('U8', 'FINAL', cell_format_tito)               #-- 16
-            worksheet.write('V8', 'IMPORTE CTS', cell_format_tit2)             #-- 17   REGISTRO EGRESOS
-            worksheet.write('W8', 'OBSERVACIONES', cell_format_titu)            #-- 18
+            worksheet.write('T8', 'INICIO', cell_format_tito)                       #-- 15
+            worksheet.write('U8', 'FINAL', cell_format_tito)                        #-- 16
+            worksheet.write('V8', 'IMPORTE CTS', cell_format_tit2)                  #-- 17   REGISTRO EGRESOS
+            worksheet.write('W8', 'OBSERVACIONES', cell_format_titu)                #-- 18
 
             worksheet.write('Y8', 'VACACIONES TRUNCAS', cell_format_tit8)       #-- 38
             worksheet.write('Z8', 'CTS TRUNCO', cell_format_tit8)               #-- 39
