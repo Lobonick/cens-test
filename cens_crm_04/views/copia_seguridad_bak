@@ -77,3 +77,54 @@
 
     </data>
 </odoo>
+
+
+<!-- ________________________________________________________________________________________________ -->
+<!-- ÚLTIMO CÓDIGO         -->
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Acción para mostrar el wizard antes del CRM -->
+        <record id="action_crm_lead_with_auth" model="ir.actions.act_window">
+            <field name="name">INICIO DE SESIÓN - CENS-PERÚ</field>
+            <field name="res_model">cens_crm_04.employee.auth.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'dialog_size': 'medium'}</field>
+        </record>
+        
+        <!-- Menú que reemplaza el acceso directo al CRM -->
+        <menuitem 
+            id="menu_crm_lead_with_auth"
+            name="Login_User"
+            parent="crm.crm_menu_root"
+            action="action_crm_lead_with_auth"
+            sequence="1"/>
+ 
+        <!-- Herencia de la vista tree de crm.lead -->
+        <record id="crm_case_tree_view_oppor_inherit_cens" model="ir.ui.view">
+            <field name="name">crm.lead.tree.inherit.cens</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cens_empleado_activo_id" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Herencia de la vista form de crm.lead -->
+        <record id="crm_lead_form_view_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.view.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="priority">42</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cens_empleado_activo_id" attrs="{'readonly': [('stage_id', '!=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Acción para mostrar el wizard antes del CRM -->
-        <record id="action_crm_lead_with_auth" model="ir.actions.act_window">
-            <field name="name">INICIO DE SESIÓN - CENS-PERÚ</field>
-            <field name="res_model">cens_crm_04.employee.auth.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-            <field name="context">{'dialog_size': 'medium'}</field>
+        <!-- Acción filtrada que no muestra registros inicialmente -->
+        <record id="action_crm_lead_filtered" model="ir.actions.act_window">
+            <field name="name">CRM - Vista Filtrada</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('cens_user_filter_id', '=', 0)]</field> <!-- Filtro que no muestra nada inicialmente -->
+            <field name="context">{
+                'search_default_filter_user': 1,
+                'default_cens_user_filter_id': uid
+            }</field>
         </record>
         
-        <!-- Menú que reemplaza el acceso directo al CRM -->
-        <menuitem 
-            id="menu_crm_lead_with_auth"
-            name="Login_User"
-            parent="crm.crm_menu_root"
-            action="action_crm_lead_with_auth"
-            sequence="1"/>
- 
-        <!-- Herencia de la vista tree de crm.lead -->
+        <!-- Vista TREE heredada con el campo de empleado -->
         <record id="crm_case_tree_view_oppor_inherit_cens" model="ir.ui.view">
             <field name="name">crm.lead.tree.inherit.cens</field>
             <field name="model">crm.lead</field>
@@ -26,21 +21,50 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="cens_empleado_activo_id" optional="show"/>
+                    <field name="cens_user_filter_id" optional="hide"/>
                 </xpath>
             </field>
         </record>
         
-        <!-- Herencia de la vista form de crm.lead -->
-        <record id="crm_lead_form_view_inherit" model="ir.ui.view">
-            <field name="name">crm.lead.form.view.inherit</field>
+        <!-- Vista de búsqueda con filtro por usuario -->
+        <record id="crm_lead_search_inherit_cens" model="ir.ui.view">
+            <field name="name">crm.lead.search.inherit.cens</field>
             <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-            <field name="priority">42</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads_filter"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="cens_empleado_activo_id" attrs="{'readonly': [('stage_id', '!=', False)]}"/>
+                <xpath expr="//search" position="inside">
+                    <filter name="filter_user" 
+                            string="Mis Registros" 
+                            domain="[('cens_user_filter_id', '=', uid)]"/>
+                    <separator/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Empleado Activo" 
+                                name="group_employee" 
+                                context="{'group_by': 'cens_empleado_activo_id'}"/>
+                    </group>
                 </xpath>
             </field>
         </record>
+        
+        <!-- Acción para mostrar registros por usuario específico -->
+        <record id="action_crm_lead_by_user" model="ir.actions.act_window">
+            <field name="name">🔐 CRM Por Usuario</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('cens_user_filter_id', '=', uid)]</field>
+            <field name="context">{
+                'default_cens_user_filter_id': uid,
+                'search_default_filter_user': 1
+            }</field>
+        </record>
+        
+        <!-- Menú principal filtrado -->
+        <menuitem 
+            id="menu_crm_filtered"
+            name="🔐 CRM Filtrado"
+            parent="crm.crm_menu_root"
+            action="action_crm_lead_by_user"
+            sequence="1"/>
+
     </data>
 </odoo>

@@ -9,9 +9,15 @@ class CrmLead(models.Model):
         string='Empleado Activo',
         help='Empleado que está utilizando el CRM'
     )
+    cens_user_filter_id = fields.Many2one(
+        'res.users',
+        string='Filtro de Usuario',
+        help='Campo para filtrar registros por usuario'
+    )
     
     @api.model
     def check_employee_authentication(self):
         """Verifica si hay un empleado autenticado en la sesión"""
         # Verificar en la sesión del usuario si hay un empleado autenticado
         return self.env.context.get('cens_empleado_autenticado', False)
+
