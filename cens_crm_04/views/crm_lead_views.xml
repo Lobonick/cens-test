@@ -30,7 +30,7 @@
         <record id="crm_lead_search_inherit_cens" model="ir.ui.view">
             <field name="name">crm.lead.search.inherit.cens</field>
             <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_case_form_view_leads_filter"/>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <filter name="filter_user" 
