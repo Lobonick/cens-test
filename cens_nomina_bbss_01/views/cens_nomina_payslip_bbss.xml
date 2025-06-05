@@ -12,27 +12,7 @@
             <field name="x_studio_cesado" invisible="1"/>
             <!-- <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[@name='studio_group_cese']" position="after">  -->
             <!-- <xpath expr="//field[@name='x_studio_cese_motivo']" position="after"> -->
-            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[3]" position="after">
-                <div> </div>
-                <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
-                    <button name="action_recalcula_en_datos" 
-                            string="Recalcula" 
-                            icon="fa-calculator" 
-                            type="object" 
-                            class="oe_highlight oe_button"
-                            style="flex: 1; max-width: 120px;"/>
-                    
-                    <button name="action_recalcula_bbss" 
-                            string="Beneficios Sociales" 
-                            icon="fa-dollar-sign" 
-                            type="object" 
-                            class="btn-danger oe_button"
-                            style="flex: 1; max-width: 150px;"
-                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}"
-                            confirm="¿Está seguro de calcular Beneficios Sociales?"/>
-                </div>
-            </xpath>
-            
+    
         </field>
     </record>
 
@@ -50,66 +30,42 @@
                         string="Listado_CTS"
                         type="object" 
                         icon="fa-list"
-                        class="btn btn-primary"/>
+                        class="oe_highlight oe_button"/>
             </xpath>
         </field>
     </record>
-
     
 </odoo>
 
 
 <!--
 
-
-            <xpath expr="//form/header" position="after">
-                <div class="oe_button_box" style="margin-top: 10px; text-align: right;">
-                    <button name="action_listado_calculo_cts" 
-                            string="Listado CTS"
+         
+            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[3]" position="after">
+                * =====================================================
+                * ESTA PARTE INSERTAR MANUALMENTE
+                * =====================================================
+                <div> </div>
+                <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;">
+                    <button name="action_recalcula_en_datos" 
+                            string="Desactiva Cese" 
+                            icon="fa-wrench" 
                             type="object" 
-                            icon="fa-list"
-                            class="btn-primary"/>
-                </div>
-            </xpath>
-
-                <div>
-                    <button name="action_recalcula_en_datos" string="Recalcula" icon="fa-thumbs-up" type="object" class="oe_highlight oe_button oe_highlighted"/>
-                    <span class="oe_inline oe_separating_element"> </span>
+                            class="oe_highlight oe_button"
+                            style="flex: 1; max-width: 120px;"
+                            confirm="¿Está seguro de DESACTIVAR los Beneficios Truncos para esta Boleta?"/>
                     <button name="action_recalcula_bbss" 
-                            string="Beneficios Sociales" 
-                            icon="fa-thumbs-up" 
+                            string="Beneficios Truncos" 
+                            icon="fa-calculator"
                             type="object" 
                             class="btn-danger oe_button"
                             style="flex: 1; max-width: 150px;"
-                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}" />
+                            attrs="{'invisible': [('x_studio_cesado', '!=', True)]}"
+                            confirm="¿Está seguro de calcular Beneficios Truncos?"/>
                 </div>
-
-
-                    <span class="oe_inline oe_separating_element"> </span>
-                    <button name="action_recalcula_bbss" 
-                            string="Beneficios Sociales" 
-                            icon="fa-thumbs-up" 
-                            type="object" 
-                            class="btn-danger oe_button"/>
-
-
-            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[1]/group[2]/field[1]" position="attributes">
-                <attribute name="attrs">{}</attribute>
-                <attribute name="invisible">1</attribute>
             </xpath>
+        
 
-        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
-
-        group name="studio_group_cese"
-                    <span class="oe_inline oe_separating_element"> </span>
-                    <button name="action_retirar_datos" string="Retirar Datos " icon="fa-check" type="object" class="oe_highlight oe_button oe_highlighted"/>
-
-        <group name="studio_group_cese_left" string="REGISTRO DEL CESE" attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
-          <field name="x_studio_cese_aplicara" string="¿Aplicará Cese?"/>
-          <field name="x_studio_cese_fecha" string="Fecha de Cese"/>
-          <field name="x_studio_cese_motivo" string="Motivo de Salida"/>
-          <field name="x_studio_cese_observaciones" string="Observaciones"/>
-        </group>
 
 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="after">
 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[2]/group[2]/field[1]" position="after">

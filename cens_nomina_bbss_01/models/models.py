@@ -19,7 +19,7 @@ class HrPayslip(models.Model):
         - CTS Truncas
         - Gratificaciones Truncas
         - Bonific. Gratificaciones
-
+             w_dia_fini = fecha_inicial.day
         """
         w_fecha = datetime.now().date()
         if self.x_studio_cesado:
@@ -31,7 +31,7 @@ class HrPayslip(models.Model):
             # --------------------------------------------------
             #  CALCULA VACACIONES TRUNCAS
             # --------------------------------------------------
-            w_period_vac = self.desglosa_periodo(w_fecha_ingr, w_fecha_cese)
+            w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
             if (w_period_vac.get('anios', 0) > 0):
                 w_trunco_vac = 0.00
             else:    
@@ -43,12 +43,13 @@ class HrPayslip(models.Model):
             #  CALCULA CTS TRUNCOS
             # --------------------------------------------------
             w_fecha_tope = self.determina_periodo(w_fecha_ingr, w_fecha_cese)
-            w_period_cts = self.desglosa_periodo(w_fecha_tope, w_fecha_cese)
+            w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_cese)
             w_trunco_cts = 0.00
             w_trunco_cts += ((w_total_remu/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
             w_trunco_cts += (((w_total_remu/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
             #if (w_trunco_vac > 0.00):
             #    w_trunco_cts += w_trunco_vac/6 if w_tota_mes>6 else 0.00    #--- Por el SEXTO de
+
 
             # --------------------------------------------------
             #  CALCULA GRATIFICACIONES TRUNCAS
@@ -100,7 +101,32 @@ class HrPayslip(models.Model):
         #for rec in self:
         #    rec.write({'x_studio_en_recalcular': not rec.x_studio_en_recalcular})      #----- Para funciona en creación individual
         #    rec.recompute()
-        w_fecha = datetime.now().date()
+        if self.x_studio_fecha_ingreso_laboral:
+            w_fecha = self.x_studio_fecha_ingreso_laboral
+        else:
+            w_fecha = datetime.now().date()                     #--- Igual la Fecha Ingreso Cálculo = Histórico 
+        if self.x_studio_cese_fecha_ingreso:
+            w_fecha = self.x_studio_cese_fecha_ingreso
+            
+        w_trunco_vac = 0.00
+        w_trunco_cts = 0.00
+        w_trunco_gra = 0.00
+        w_trunco_bon = 0.00
+        w_comentario = ""
+        # --------------------------------------------------
+        #  BLANQUEA CAMPOS
+        # --------------------------------------------------
+        self.ensure_one()
+        self.write({
+                'x_studio_cese_fecha_ingreso': w_fecha,
+                'x_studio_cese_vaca_trunca': w_trunco_vac,
+                'x_studio_cese_cts_trunco': w_trunco_cts,
+                'x_studio_cese_grati_trunca': w_trunco_gra,
+                'x_studio_cese_bonif_grati_trunca': w_trunco_bon,
+                'x_studio_cese_comentarios': w_comentario,
+                'x_studio_cesado': False
+            })  
+        self.recompute()
         pass
 
     def determina_periodo(self, fecha_inicial, fecha_final):
@@ -116,8 +142,13 @@ class HrPayslip(models.Model):
             ajus_anio = ajus_fecha_tope.year 
             top1_param = date(ajus_anio, 5, 1)
             top2_param = date(ajus_anio, 11, 1)
-            
+            #if ((ajus_fecha_tope.month==cese_fecha.month) and (ajus_fecha_tope.month==cese_fecha.month)):
+            #    w_salto = True
+            #else:
+            #    w_salto = False
+
             if (ajus_fecha_tope == top1_param) or (ajus_fecha_tope == top2_param):
+                #if not w_salto: 
                 break
 
         if (ingr_fecha >= ajus_fecha_tope):
@@ -126,13 +157,14 @@ class HrPayslip(models.Model):
         return ajus_fecha_tope
 
 
-    def desglosa_periodo(self, fecha_inicial, fecha_final):
+    def desglosa_periodo(self, cproceso, fecha_inicial, fecha_final):
         #
         # Activa y desactiva el RECÁLCULO
         #
         # --------------------------------------------------
         #  CALCULA RANGOS DE TIEMPO (días, meses, años)
         # --------------------------------------------------
+        w_cproceso  = cproceso.upper()
         w_dia_fini = fecha_inicial.day
         w_mes_fini = fecha_inicial.month
         w_ano_fini = fecha_inicial.year
@@ -160,17 +192,22 @@ class HrPayslip(models.Model):
         w_total_mese = 0 if (w_total_dias-(w_total_anos*360))<30 else int((w_total_dias - (w_total_anos*360))/30)
         w_total_dias = w_total_dias - ((w_total_anos*360)+(w_total_mese*30))
 
+        w_total_anio = (w_ano_ffin - w_ano_fini) - 1
+        w_total_anio = 0 if w_total_anio<=0 else w_total_anio 
+
+        _logger.info(f'PROCESO:  {w_cproceso}')
+        _logger.info(f'------------------------------------------')
         _logger.info(f'Tramos: - inicial = {w_tramo_inic} dias')
         _logger.info(f'        - medio   = {w_tramo_medi} meses')
         _logger.info(f'        - final   = {w_tramo_fini} dias')
         _logger.info(f'        - Total   = {w_total_dias} dias')
         _logger.info(f'------------------------------------------')
-        _logger.info(f'RESULTADO:  año = {w_total_anos} ')
+        _logger.info(f'RESULTADO:  año = {w_total_anio} ')
         _logger.info(f'            mes = {w_total_mese} ')
         _logger.info(f'            dia = {w_total_dias} ')
 
         return {
-            'anios': w_total_anos,
+            'anios': w_total_anio,
             'meses': w_total_mese,
             'dias': w_total_dias
         }
@@ -913,7 +950,7 @@ class HrPayslip(models.Model):
                 #  CALCULA CTS TRUNCOS
                 # --------------------------------------------------
                 w_fecha_tope = self.determina_periodo(w_fecha_ingr, w_fecha_fiin)
-                w_period_cts = self.desglosa_periodo(w_fecha_tope, w_fecha_fiin)
+                w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_fiin)
                 w_desgl_anio = w_period_cts.get('anios', 0)
                 w_desgl_mess = w_period_cts.get('meses', 0)
                 w_desgl_dias = w_period_cts.get('dias', 0)
