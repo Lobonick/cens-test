@@ -66,5 +66,13 @@
             action="action_crm_lead_by_user"
             sequence="1"/>
 
+        <!-- Menú que reemplaza el acceso directo al CRM -->
+        <menuitem 
+            id="menu_crm_lead_with_auth"
+            name="🔑 Login_User"
+            parent="crm.crm_menu_root"
+            action="action_crm_lead_with_auth"
+            sequence="1"/>
+
     </data>
 </odoo>
