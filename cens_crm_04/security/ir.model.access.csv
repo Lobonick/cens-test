@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_auth_wizard,cens_crm_04.employee.auth.wizard,model_cens_crm_04_employee_auth_wizard,base.group_user,1,1,1,1

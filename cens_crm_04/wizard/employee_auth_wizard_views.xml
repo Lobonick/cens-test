@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista del wizard de autenticación -->
+        <record id="view_employee_auth_wizard_form" model="ir.ui.view">
+            <field name="name">cens_crm_04.employee.auth.wizard.form</field>
+            <field name="model">cens_crm_04.employee.auth.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Autenticación de Empleado">
+                    <!-- CSS personalizado para ajustar el tamaño del wizard -->
+                    <style>
+                        .o_dialog {
+                            width: 450px !important;
+                            min-height: 600px !important;
+                        }
+                        .employee_photo {
+                            text-align: center;
+                            margin: 20px 0;
+                        }
+                        .employee_photo .o_field_image {
+                            border-radius: 50%;
+                            border: 3px solid #007b8a;
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                        }
+                        .auth_header {
+                            text-align: center;
+                            margin-bottom: 30px;
+                        }
+                        .form_container {
+                            padding: 20px;
+                        }
+                        .employee_info {
+                            text-align: center;
+                            margin: 10px 0;
+                            color: #007b8a;
+                            font-weight: bold;
+                        }
+                        .placeholder_photo {
+                            width: 150px; 
+                            height: 150px; 
+                            border: 2px dashed #ccc; 
+                            border-radius: 50%; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            margin: 0 auto;
+                            background-color: #f8f9fa;
+                        }
+                    </style>
+                    
+                    <div class="form_container">
+                        <!-- Encabezado -->
+                        <div class="auth_header">
+                            <h2 style="color: #007b8a; margin-bottom: 10px;">🔐 Autenticación de Usuario</h2>
+                            <p style="color: #666; font-size: 14px;">Seleccione un empleado e ingrese su password</p>
+                        </div>
+                        
+                        <div class="employee_photo">
+                            <!-- CSS específico para redondear la imagen del empleado -->
+                            <style>
+                                .employee_photo .o_field_image img {
+                                    border-radius: 50% !important;
+                                    object-fit: cover !important;
+                                    border: 3px solid #007b8a !important;
+                                    box-shadow: 0 6px 8px rgba(0,0,0,0.2) !important;
+                                    width: 150px !important;
+                                    height: 150px !important;
+                                }
+                                .employee_photo .o_field_image {
+                                    border-radius: 50% !important;
+                                    overflow: hidden;
+                                }
+                            </style>
+                            
+                            <!-- Mostrar imagen cuando hay empleado seleccionado -->
+                            <field name="employee_foto" 
+                                widget="image" 
+                                relation_field="avatar_128"
+                                options="{'size': [150, 150]}"
+                                nolabel="1"
+                                attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                            
+                            <div class="placeholder_photo" attrs="{'invisible': [('employee_id', '!=', False)]}">
+                                <img src="/cens_crm_04/static/description/logo-modulos.png" 
+                                    style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #007b8a; box-shadow: 0 6px 8px rgba(0,0,0,0.2);" 
+                                    alt="Logo Módulos"/>
+                            </div>
+                        </div>
+                        
+                        <!-- Información del empleado seleccionado -->
+                        <div class="employee_info" attrs="{'invisible': [('employee_id', '=', False)]}">
+                            <field name="employee_id" readonly="1" nolabel="1" 
+                                   options="{'no_open': True}" 
+                                   style="font-size: 16px; font-weight: bold; color: #007b8a; text-align: center;"/>
+                        </div>
+                        
+                        <!-- Campos del formulario -->
+                        <div class="text-center" style="width: 100%; max-width: 300px; margin: 0 auto;">
+                            <div style="margin-bottom: 10px;">
+                                <separator string="EMPLEADO" style="text-align: center; font-weight: bold; color: #007b8a;" attrs="{'invisible': [('employee_id', '!=', False)]}"/>
+                                <field name="employee_id" 
+                                    string=""
+                                    placeholder="Seleccione un empleado..." 
+                                    options="{'no_create': True, 'no_create_edit': True}"
+                                    style="font-size: 18px; padding: 10px; width: 100%; text-align: center;"
+                                    attrs="{'invisible': [('employee_id', '!=', False)]}"
+                                    domain="[('cens_user_check', '=', True)]"/>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <separator string="PASSWORD" style="text-align: center; font-weight: bold; color: #007b8a;" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                                <field name="password" 
+                                    password="True" 
+                                    string=""
+                                    placeholder="Ingrese el password..."
+                                    style="font-size: 18px; padding: 10px; width: 100%; text-align: center; margin-top: 0px;"
+                                    attrs="{'required': [('employee_id', '!=', False)], 'invisible': [('employee_id', '=', False)]}"/>
+                            </div>
+                        </div>
+                        
+                        <!-- Botón para cambiar empleado -->
+                        <div style="text-align: center; margin: 20px 0;" 
+                             attrs="{'invisible': [('employee_id', '=', False)]}">
+                            <button string="🔄 Cambiar Empleado" 
+                                    name="action_reset_employee" 
+                                    type="object" 
+                                    class="btn btn-secondary"
+                                    style="padding: 8px 16px; font-size: 12px;"/>
+                        </div>
+                        
+                        <!-- Espacio adicional -->
+                        <div style="height: 20px;"/>
+                        
+                        <!-- Información adicional -->
+                        <div style="text-align: center; color: #666; font-size: 12px; margin-top: 20px;">
+                            <p><i class="fa fa-info-circle"/> Asegúrese de ingresar las credenciales correctas</p>
+                        </div>
+                    </div>
+
+                    <footer style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <!-- Contenedor de botones a la izquierda -->
+                        <div>
+                            <button string="🚀 Autenticar" 
+                                    name="action_authenticate" 
+                                    type="object" 
+                                    class="oe_highlight" 
+                                    default_focus="1"
+                                    style="padding: 10px 20px; font-size: 14px; font-weight: bold;"
+                                    attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                            <button string="❌ Cancelar" 
+                                    name="action_cancel" 
+                                    type="object" 
+                                    class="oe_link"
+                                    style="padding: 10px 20px; font-size: 14px;"/>
+                        </div>
+                        <!-- Imagen fija a la derecha -->
+                        <div>
+                            <img src="/cens_crm_04/static/description/logo-odoo-tiny.png" 
+                                style="width: 80px; height: 40px; object-fit: contain; border: 0px;" 
+                                alt="Logo Odoo"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+

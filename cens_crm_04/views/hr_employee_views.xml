@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Herencia de la vista form de hr.employee -->
+        <record id="view_employee_form_inherit_cens_crm_04" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit.cens.crm.04</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Usuario CENS" name="crm_access">
+                        <group>
+                            <field name="cens_user_check" />
+                            <field name="cens_user_passw" password="True" attrs="{'invisible': [['cens_user_check','!=',True]]}"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
