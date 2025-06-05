@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- Acción para mostrar el wizard antes del CRM -->
+        <record id="action_crm_lead_with_auth" model="ir.actions.act_window">
+            <field name="name">INICIO DE SESIÓN - CENS-PERÚ</field>
+            <field name="res_model">cens_crm_04.employee.auth.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'dialog_size': 'medium'}</field>
+        </record>
+
         <!-- Acción filtrada que no muestra registros inicialmente -->
         <record id="action_crm_lead_filtered" model="ir.actions.act_window">
             <field name="name">CRM - Vista Filtrada</field>
