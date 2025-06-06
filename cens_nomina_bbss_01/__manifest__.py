@@ -1,5 +1,5 @@
 {
-	'name': "Nómina-bbss-liquidaciones",
+	'name': "Nómina-bbss-liquidac-01",
 
 	'summary': """
 		Upgrade en las Boletas de Pago de la Nómina con el registro de Liquidaciones""",
@@ -13,7 +13,7 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources',
- 	'version': '16.0.1.40',
+ 	'version': '16.0.1.51',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
