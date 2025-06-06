@@ -32,12 +32,10 @@ class HrPayslip(models.Model):
             #  CALCULA VACACIONES TRUNCAS
             # --------------------------------------------------
             w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
-            if (w_period_vac.get('anios', 0) > 0):
-                w_trunco_vac = 0.00
-            else:    
-                w_trunco_vac = 0.00
-                w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)           #--- Por el rango meses
-                w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
+            w_trunco_vac = 0.00
+            w_trunco_vac += w_total_remu * w_period_vac.get('anios', 0)               #--- Por el rango Anios
+            w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)          #--- Por el rango meses
+            w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
 
             # --------------------------------------------------
             #  CALCULA CTS TRUNCOS
