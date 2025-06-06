@@ -174,42 +174,44 @@ class HrPayslip(models.Model):
 
         # ============================================================================================================
 
-        w_difer_anos = (w_ano_ffin-w_ano_fini)-1
+        w_tramo_1    = 1 if w_dia_fini>=30 else int((30 - w_dia_fini) + 1) 
+        w_tramo_1_dd = 30 if w_tramo_1>=30 else w_tramo_1
+        w_tramo_1_mm = 12 - w_mes_fini
 
-        w_tramo_inic = int((30-w_dia_fini)+1)   ##--- el +1 ES EL AJUSTE a los 30 o 31 días del mes
-        w_tramo_medi = 0
-        if (w_difer_anos>0):
-            w_tramo_medi = ((w_difer_anos*360)/30) + (w_mes_ffin+w_mes_fini-2)
-        elif (w_ano_ffin==w_ano_fini):
-            w_tramo_medi = (w_mes_ffin-w_mes_fini)-1
-        else:
-            w_tramo_medi = (w_mes_ffin+(12-w_mes_fini))-1
+        w_tramo_2    = int(30 if w_dia_ffin==31 else w_dia_ffin )
+        w_tramo_2_dd = w_tramo_2
+        w_tramo_2_mm = w_mes_ffin - 1
 
-        w_tramo_fini = 30 if w_dia_ffin==31 else w_dia_ffin
-        w_total_dias = w_tramo_inic + (w_tramo_medi*30) + w_tramo_fini
+        w_calcu_aa_1 = (w_ano_ffin - w_ano_fini) - 1
 
-        w_total_anos = int(w_total_dias/360) if w_total_dias>=360 else 0
-        w_total_mese = 0 if (w_total_dias-(w_total_anos*360))<30 else int((w_total_dias - (w_total_anos*360))/30)
-        w_total_dias = w_total_dias - ((w_total_anos*360)+(w_total_mese*30))
+        w_calcu_mm_1 = ((w_mes_ffin-w_mes_fini)-1 if w_calcu_aa_1<0 else w_tramo_1_mm + w_tramo_2_mm ) + int((w_tramo_1_dd + w_tramo_2_dd)/30)
 
-        w_total_anio = (w_ano_ffin - w_ano_fini) - 1
-        w_total_anio = 0 if w_total_anio<=0 else w_total_anio 
+        w_calcu_aa_2 = (0 if w_calcu_aa_1<=0 else w_calcu_aa_1) + (int(w_calcu_aa_1 % 12) if w_calcu_mm_1>=12 else 0)  
 
-        _logger.info(f'PROCESO:  {w_cproceso}')
+        w_calcu_mm_2 = int(w_calcu_mm_1 % 12) if w_calcu_mm_1>12 else w_calcu_mm_1  
+
+        w_calcu_dd_1 = int((w_tramo_1_dd + w_tramo_2_dd) % 30)
+
+        w_calcu_dd_2 = w_calcu_dd_1
+
+        # ============================================================================================================
+
+        w_total_anos = w_calcu_aa_2
+        w_total_mese = w_calcu_mm_2
+        w_total_dias = w_calcu_dd_2
+
         _logger.info(f'------------------------------------------')
-        _logger.info(f'Tramos: - inicial = {w_tramo_inic} dias')
-        _logger.info(f'        - medio   = {w_tramo_medi} meses')
-        _logger.info(f'        - final   = {w_tramo_fini} dias')
-        _logger.info(f'        - Total   = {w_total_dias} dias')
+        _logger.info(f'PROCESO:  {w_cproceso}')
         _logger.info(f'------------------------------------------')
         _logger.info(f'          F.Fin = {w_ano_ffin} ')
         _logger.info(f'          F.Ini = {w_ano_fini} ')
-        _logger.info(f'RESULTADO:  año = {w_total_anio} ')
+        _logger.info(f'RESULTADO:  año = {w_total_anos} ')
         _logger.info(f'            mes = {w_total_mese} ')
         _logger.info(f'            dia = {w_total_dias} ')
+        _logger.info(f'------------------------------------------')
 
         return {
-            'anios': w_total_anio,
+            'anios': w_total_anos,
             'meses': w_total_mese,
             'dias': w_total_dias
         }
