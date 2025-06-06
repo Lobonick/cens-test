@@ -52,29 +52,23 @@ class HrPayslip(models.Model):
             # --------------------------------------------------
             #  CALCULA GRATIFICACIONES TRUNCAS
             # --------------------------------------------------
-            w_inicio_ano = date(2025, 1, 1)
-            w_ultimo_dia = self.ultimo_dia_del_mes(w_fecha_cese).day
-            if (w_fecha_ingr >= w_inicio_ano):
-                w_inicio_ano = w_fecha_ingr
-            w_meses_habiles = w_fecha_cese.month    
-            w_meses_habiles = w_meses_habiles if w_fecha_cese.month <= 6 else w_meses_habiles - 6 
-            w_meses_habiles = w_meses_habiles if w_inicio_ano.day==1 else w_meses_habiles - 1
-            w_meses_habiles = w_meses_habiles if not w_ultimo_dia in [30,31] else w_meses_habiles - 1
-            w_trunco_gra = 0.00
-            w_trunco_gra += ((w_total_remu/6) * w_meses_habiles)                 #--- Por el rango meses
+            w_inicio_grati = date(2025, 1, 1)
+            w_period_grati = self.desglosa_periodo("GRATIFICACIONES TRUNCAS", w_inicio_grati, w_fecha_cese)
+            w_trunco_grati = 0.00
+            w_trunco_grati += ((w_total_remu/6) * w_period_grati.get('meses', 0) )    #--- Por el rango meses
 
             # --------------------------------------------------
             #  CALCULA BONIFICACIÓN DE GRATIF TRUNCAS
             # --------------------------------------------------
-            w_trunco_bon = 0.00
-            w_trunco_bon += w_trunco_gra * 0.09                             #--- Por el rango meses
+            w_trunco_bonif = 0.00
+            w_trunco_bonif += w_trunco_grati * 0.09                             #--- Por el rango meses
 
 
         else:
             w_trunco_vac = 0.00
             w_trunco_cts = 0.00
-            w_trunco_gra = 0.00
-            w_trunco_bon = 0.00
+            w_trunco_grati = 0.00
+            w_trunco_bonif = 0.00
             w_comentario = ""
 
         # --------------------------------------------------
@@ -84,8 +78,8 @@ class HrPayslip(models.Model):
         self.write({
                 'x_studio_cese_vaca_trunca': w_trunco_vac,
                 'x_studio_cese_cts_trunco': w_trunco_cts,
-                'x_studio_cese_grati_trunca': w_trunco_gra,
-                'x_studio_cese_bonif_grati_trunca': w_trunco_bon,
+                'x_studio_cese_grati_trunca': w_trunco_grati,
+                'x_studio_cese_bonif_grati_trunca': w_trunco_bonif,
                 'x_studio_cese_comentarios': w_comentario
             })  
         self.recompute()
