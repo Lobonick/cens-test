@@ -40,29 +40,41 @@ class HrPayslip(models.Model):
             # --------------------------------------------------
             #  CALCULA CTS TRUNCOS
             # --------------------------------------------------
+            w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_ingr, w_fecha_cese)
+            w_tota_meses = w_period_cts.get('meses', 0) + (w_period_cts.get('anios', 0) * 12)   #-- Determina Meses Trabajando
+            if (w_tota_meses > 6):
+                w_remu_cts = w_total_remu + (w_total_remu/6 if w_total_remu > 0 else 0.00)
+            else:
+                w_remu_cts = w_total_remu
+
             w_fecha_tope = self.determina_periodo(w_fecha_ingr, w_fecha_cese)
             w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_cese)
             w_trunco_cts = 0.00
-            w_trunco_cts += ((w_total_remu/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
-            w_trunco_cts += (((w_total_remu/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
-            #if (w_trunco_vac > 0.00):
-            #    w_trunco_cts += w_trunco_vac/6 if w_tota_mes>6 else 0.00    #--- Por el SEXTO de
-
+            w_trunco_cts += ((w_remu_cts/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
+            w_trunco_cts += (((w_remu_cts/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días         
 
             # --------------------------------------------------
             #  CALCULA GRATIFICACIONES TRUNCAS
             # --------------------------------------------------
-            w_inicio_grati = date(2025, 1, 1)
+            w_inicio_anio  = date(2025, 1, 1)
+            if (w_fecha_ingr >= w_inicio_anio):
+                w_inicio_grati = w_fecha_ingr
+            else:
+                w_inicio_grati = w_inicio_anio
             w_period_grati = self.desglosa_periodo("GRATIFICACIONES TRUNCAS", w_inicio_grati, w_fecha_cese)
+            # w_tramo_dd1  = w_period_grati.get('tramo_dd1', 0)
+            # w_tramo_dd2  = w_period_grati.get('tramo_dd2', 0)
+            # w_tramo_dd3  = w_period_grati.get('tramo_dd3', 0)
+            # w_total_dias = (w_tramo_dd1 if w_tramo_dd1<30 else 0) + w_tramo_dd2 + (w_tramo_dd3 if w_tramo_dd3<30 else 0)
+
             w_trunco_grati = 0.00
-            w_trunco_grati += ((w_total_remu/6) * w_period_grati.get('meses', 0) )    #--- Por el rango meses
+            w_trunco_grati += ((w_total_remu/6) * w_period_grati.get('meses', 0))    #--- Por el rango MESES
 
             # --------------------------------------------------
             #  CALCULA BONIFICACIÓN DE GRATIF TRUNCAS
             # --------------------------------------------------
             w_trunco_bonif = 0.00
             w_trunco_bonif += w_trunco_grati * 0.09                             #--- Por el rango meses
-
 
         else:
             w_trunco_vac = 0.00
@@ -150,9 +162,6 @@ class HrPayslip(models.Model):
 
 
     def desglosa_periodo(self, cproceso, fecha_inicial, fecha_final):
-        #
-        # Activa y desactiva el RECÁLCULO
-        #
         # --------------------------------------------------
         #  CALCULA RANGOS DE TIEMPO (días, meses, años)
         # --------------------------------------------------
@@ -178,7 +187,8 @@ class HrPayslip(models.Model):
 
         w_calcu_mm_1 = ((w_mes_ffin-w_mes_fini)-1 if w_calcu_aa_1<0 else w_tramo_1_mm + w_tramo_2_mm ) + int((w_tramo_1_dd + w_tramo_2_dd)/30)
 
-        w_calcu_aa_2 = (0 if w_calcu_aa_1<=0 else w_calcu_aa_1) + (int(w_calcu_aa_1 % 12) if w_calcu_mm_1>=12 else 0)  
+        w_calcu_aa_2 = (0 if w_calcu_aa_1<=0 else w_calcu_aa_1) + (int(w_calcu_mm_1 / 12) if w_calcu_mm_1>=12 else 0)  
+                        # =SI(D14<=0;0;D14) + SI(D15>=12;ENTERO(D15/12);0)
 
         w_calcu_mm_2 = int(w_calcu_mm_1 % 12) if w_calcu_mm_1>12 else w_calcu_mm_1  
 
@@ -191,22 +201,33 @@ class HrPayslip(models.Model):
         w_total_anos = w_calcu_aa_2
         w_total_mese = w_calcu_mm_2
         w_total_dias = w_calcu_dd_2
+        w_total_dd1  = w_tramo_1_dd
+        w_total_dd2  = w_total_anos * 360 
+        w_total_dd3  = w_tramo_2_dd
 
         _logger.info(f'------------------------------------------')
         _logger.info(f'PROCESO:  {w_cproceso}')
         _logger.info(f'------------------------------------------')
-        _logger.info(f'          F.Fin = {w_ano_ffin} ')
-        _logger.info(f'          F.Ini = {w_ano_fini} ')
+        _logger.info(f'          F.Fin = {fecha_inicial} ')
+        _logger.info(f'          F.Ini = {fecha_final} ')
         _logger.info(f'RESULTADO:  año = {w_total_anos} ')
         _logger.info(f'            mes = {w_total_mese} ')
         _logger.info(f'            dia = {w_total_dias} ')
+        _logger.info(f'------------------------------------------')
+        _logger.info(f'TRAMO DÍAS: Ini = {w_total_dd1} ')
+        _logger.info(f'            Med = {w_total_dd2} ')
+        _logger.info(f'            Fin = {w_total_dd3} ')
         _logger.info(f'------------------------------------------')
 
         return {
             'anios': w_total_anos,
             'meses': w_total_mese,
-            'dias': w_total_dias
+            'dias': w_total_dias,
+            'tramo_dd1': w_total_dd1,
+            'tramo_dd2': w_total_dd2,
+            'tramo_dd3': w_total_dd3
         }
+    
         
     def ultimo_dia_del_mes(self, fecha):
         #primer_dia_del_mes = fecha.replace(day=1)
