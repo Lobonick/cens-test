@@ -31,11 +31,33 @@ class HrPayslip(models.Model):
             # --------------------------------------------------
             #  CALCULA VACACIONES TRUNCAS
             # --------------------------------------------------
+            # Buscar registros de vacaciones gozadas en hr.leave
+            w_canti_goza = 0
+            domain_vacaciones = [
+                ('holiday_status_id', '=', 8),  # ID específico para vacaciones
+                ('employee_id', '=', self.employee_id),  # Empleado específico
+                ('state', '=', 'validate'),  # Solo vacaciones aprobadas/validadas
+                # Opcional: filtrar por rango de fechas si es necesario
+                # ('request_date_from', '>=', w_fecha_ingr),
+                # ('request_date_to', '<=', w_fecha_cese),
+            ]
+            # Ejecutar búsqueda en el modelo hr.leave
+            vacaciones_gozadas = self.env['hr.leave'].search(domain_vacaciones)
+            
+            # Acumular los días gozados
+            w_canti_goza = sum(vacacion.number_of_days_display for vacacion in vacaciones_gozadas)
+
             w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
-            w_trunco_vac = 0.00
-            w_trunco_vac += w_total_remu * w_period_vac.get('anios', 0)               #--- Por el rango Anios
-            w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)          #--- Por el rango meses
-            w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
+            w_canti_anio = w_period_vac.get('anios', 0)
+            w_canti_mese = (w_canti_anio*12) + w_period_vac.get('meses', 0)
+            w_canti_dias = w_total_mese * 2.5
+            w_total_dias = w_canti_dias - w_canti_goza
+            w_trunco_vac = (w_total_remu/30) * w_total_dias
+
+            # w_trunco_vac = 0.00
+            # w_trunco_vac += w_total_remu * w_period_vac.get('anios', 0)               #--- Por el rango Anios
+            # w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)          #--- Por el rango meses
+            # w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
 
             # --------------------------------------------------
             #  CALCULA CTS TRUNCOS
