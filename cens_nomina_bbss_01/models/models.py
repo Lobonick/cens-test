@@ -225,15 +225,19 @@ class HrPayslip(models.Model):
         w_total_anos = w_calcu_aa_2
         w_total_mese = w_calcu_mm_2
         w_total_dias = w_calcu_dd_2
+        
+        w_total_dd0  = (w_total_anos * 360) + (w_total_mese * 30) + w_total_dias
+                    #= (F14*360) + (F15*30) + F16
         w_total_dd1  = w_tramo_1_dd
-        w_total_dd2  = w_total_anos * 360 
+        w_total_dd2  = w_total_dd0 - ((0 if w_tramo_1_dd >= 30 else w_tramo_1_dd) + (0 if w_tramo_2_dd >= 30 else w_tramo_2_dd) ) 
+                    #= D22-(SI(H7>=30;0;H7)+SI(H9>=30;0;H9))
         w_total_dd3  = w_tramo_2_dd
 
         _logger.info(f'------------------------------------------')
         _logger.info(f'PROCESO:  {w_cproceso}')
         _logger.info(f'------------------------------------------')
-        _logger.info(f'          F.Fin = {fecha_inicial} ')
-        _logger.info(f'          F.Ini = {fecha_final} ')
+        _logger.info(f'          F.Ini = {fecha_inicial} ')
+        _logger.info(f'          F.Fin = {fecha_final} ')
         _logger.info(f'RESULTADO:  año = {w_total_anos} ')
         _logger.info(f'            mes = {w_total_mese} ')
         _logger.info(f'            dia = {w_total_dias} ')
