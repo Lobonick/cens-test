@@ -35,7 +35,7 @@ class HrPayslip(models.Model):
             w_canti_goza = 0
             domain_vacaciones = [
                 ('holiday_status_id', '=', 8),  # ID específico para vacaciones
-                ('employee_id', '=', self.employee_id),  # Empleado específico
+                ('employee_id', '=', self.employee_id.id),  # Empleado específico
                 ('state', '=', 'validate'),  # Solo vacaciones aprobadas/validadas
                 # Opcional: filtrar por rango de fechas si es necesario
                 # ('request_date_from', '>=', w_fecha_ingr),
