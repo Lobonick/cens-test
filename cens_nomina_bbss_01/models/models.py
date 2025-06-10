@@ -50,7 +50,7 @@ class HrPayslip(models.Model):
             w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
             w_canti_anio = w_period_vac.get('anios', 0)
             w_canti_mese = (w_canti_anio*12) + w_period_vac.get('meses', 0)
-            w_canti_dias = w_total_mese * 2.5
+            w_canti_dias = w_canti_mese * 2.5
             w_total_dias = w_canti_dias - w_canti_goza
             w_trunco_vac = (w_total_remu/30) * w_total_dias
 
