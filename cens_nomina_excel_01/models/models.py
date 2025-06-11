@@ -309,7 +309,7 @@ class HrPayslip(models.Model):
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
             worksheet.insert_image('A2', 'src/user/cens_nomina_excel_01/static/description/logo-tiny_96.png')
-            worksheet.insert_image('CH2', 'src/user/cens_nomina_excel_01/static/description/Logo-Odoo-tiny.png', 
+            worksheet.insert_image('CH2', 'src/user/cens_nomina_excel_01/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.7, 'y_scale': 0.7})
             worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -1099,7 +1099,45 @@ class HrPayslip(models.Model):
                 # -----------------------------------------
                 # COSTO DEL MES
                 # -----------------------------------------
-                worksheet.write(w_fila, 74, w_boleta.x_studio_en_total_extraordinario, current_format_imp2)
+                # CÁLCULO: Para obtener el Costo del mes
+                #  
+                # - Sueldo Básico                   x_studio_en_basico
+                # - Asignación Familiar             x_studio_en_asignacion_familiar
+                # - Lic. con Goce Haber             x_studio_en_licencia_con_ghaber
+                # - Lic. x Fallecimiento            x_studio_en_licencia_fallecimiento
+                # - Bonific.x Cumplimiento          x_studio_en_bonificacion_cumplimiento
+                # - Descanso Médico                 x_studio_en_descanso_medico
+                # - Feriados                        x_studio_en_feriados
+                # - Horas Extras                    x_studio_en_horas_extras
+                # - Reembolso x Movilidad           x_studio_en_reembolso_movilidad
+                # - Indemnización x Despido         x_studio_en_indemniza_despido_arbitrario
+                # - TOTAL No remunerativos (NR)     x_studio_en_total_remuneracion_bruta
+                # - Aporte ESSALUD                  x_studio_aporte_a_essalud
+                # - Aporte EPS                      x_studio_en_aportes_eps
+                # - Provisión CTS                   x_studio_en_provision_cts
+                # - Provisión Vacaciones            x_studio_en_provision_vacaciones
+                # - Provisión Gratificacaión        x_studio_en_provision_gratificacion
+                # - Provisión Bonific.Gratific.     x_studio_en_provision_bonigrati
+                # - 
+                w_total_costo = 0.00
+                w_total_costo += w_boleta.x_studio_en_basico
+                w_total_costo += w_boleta.x_studio_en_asignacion_familiar
+                w_total_costo += w_boleta.x_studio_en_licencia_con_ghaber
+                w_total_costo += w_boleta.x_studio_en_licencia_fallecimiento
+                w_total_costo += w_boleta.x_studio_en_bonificacion_cumplimiento
+                w_total_costo += w_boleta.x_studio_en_descanso_medico
+                w_total_costo += w_boleta.x_studio_en_feriados
+                w_total_costo += w_boleta.x_studio_en_horas_extras
+                w_total_costo += w_boleta.x_studio_en_reembolso_movilidad
+                w_total_costo += w_boleta.x_studio_en_indemniza_despido_arbitrario
+                w_total_costo += w_boleta.x_studio_en_total_remuneracion_bruta
+                w_total_costo += w_boleta.x_studio_aporte_a_essalud
+                w_total_costo += w_boleta.x_studio_en_aportes_eps
+                w_total_costo += w_boleta.x_studio_en_provision_cts
+                w_total_costo += w_boleta.x_studio_en_provision_vacaciones
+                w_total_costo += w_boleta.x_studio_en_provision_gratificacion
+                w_total_costo += w_boleta.x_studio_en_provision_bonigrati
+                worksheet.write(w_fila, 74, w_total_costo, current_format_imp2)
 
                 # -----------------------------------------
                 # DETALLE CUENTA BANCARIA

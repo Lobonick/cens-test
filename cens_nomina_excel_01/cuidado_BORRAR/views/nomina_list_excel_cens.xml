@@ -8,12 +8,7 @@
             <field name="priority">10</field> 
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="export_to_spreadsheet" 
-                            string="Planilla_General"
-                            type="object"
-                            class="oe_stat_button" 
-                            icon="fa-file-excel-o" 
-                            help="Genera XLSX de la Planilla General." />
+                    <button name="export_to_spreadsheet" class="btn btn-primary" string="Planilla_General" type="object"/>
                 </xpath>
             </field>
         </record>

@@ -1,0 +1,589 @@
+<data>
+  <xpath expr="//button[@name='action_print_payslip']" position="attributes">
+    <attribute name="effect">False</attribute>
+  </xpath>
+  <xpath expr="//div[@name='button_box']" position="after">
+    <!--  ****************** INSERTA MARCADOR EN CABECERA ********************   -->
+    <field name="x_studio_related_field_yyhat" class="oe_right" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+    <field name="x_studio_related_field_SiAh0" class="oe_right" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{'invisible': [['x_studio_cesado','=',True]]}"/>
+    <field name="x_studio_imagen_remuneraciones_cesado" string="" class="oe_right" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{'invisible': [['x_studio_cesado','!=',True]]}"/>
+  </xpath>
+  <xpath expr="//field[@name='number']" position="attributes">
+    <attribute name="attrs">{"readonly": [["state","in",["draft","verify"]]]}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/group[1]/field[@name='contract_id']" position="after">
+    <field name="x_studio_estado_contrato" string="Estado Contrato:"/>
+  </xpath>
+  <xpath expr="//field[@name='payslip_run_id']" position="after">
+    <field name="x_studio_documento_identidad" string="Documento Identidad:"/>
+  </xpath>
+  <xpath expr="//field[@name='struct_id']" position="after">
+    <field name="job_id"/>
+    <field name="struct_type_id"/>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+    <separator string="CAPTURA DE DATOS" class="o_horizontal_separator" style="color: #875A7B; font-weight: bold; font-size: 20px; background-color: #f0f0f0; padding: 8px;"/>
+    <group name="studio_group_wPPQR">
+      <group name="studio_group_wPPQR_left" string="PARÁMETROS DEL MES" attrs="{&quot;invisible&quot;: [[&quot;struct_id&quot;,&quot;=&quot;,11]]}">
+        <field name="x_studio_mes_calculado" string="MES:" widget="badge" decoration-danger="x_studio_mes_calculado in ['JULIO','DICIEMBRE']"/>
+        <field name="x_studio_dias_computados"/>
+        <field name="x_studio_licencia_fallecimiento" string="Licencia Fallecimiento:" help="Ingrese días." attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_licencia_materpater" string="Licencia Mater./Pater." attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_dias_vacaciones" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_dias_con_goce" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_descanso_medico" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_edit_feriados" widget="selection" string="Calcular Feriados por:" attrs="{}" invisible="1"/>
+        <field name="x_studio_feriados_dias" attrs="{&quot;invisible&quot;: [[&quot;x_studio_edit_feriados&quot;,&quot;!=&quot;,&quot;DIAS&quot;]]}"/>
+        <field name="x_studio_feriados_importe" attrs="{&quot;invisible&quot;: [[&quot;x_studio_edit_feriados&quot;,&quot;!=&quot;,&quot;IMPO&quot;]]}"/>
+        <field name="x_studio_bonificacion_extraordinaria"/>
+        <field name="x_studio_habilitar_horas_extras" string="Habilitar Horas Extras:"/>
+        <field name="x_studio_horas_extras_importe" string="Horas Extras: (Importe)" widget="monetary" attrs="{&quot;invisible&quot;: [[&quot;x_studio_habilitar_horas_extras&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_reembolso" string="Adelanto de Sueldo:"/>
+        <field name="x_studio_reembolso_movilidad" string="Reembolso Movilidad:"/>
+        <field name="x_studio_reembolso_combustible" string="Reembolso Combustible" attrs="{}" invisible="1"/>
+        <field name="x_studio_descanso_vacacional" string="Descanso Vacacional"/>
+        <field name="x_studio_related_field_LoTZz" widget="image" options="{&quot;size&quot;:[0,90]}"/>
+        <field name="x_studio_movilidad"/>
+        <field name="x_studio_vale_alimentos" string="Alimentación:"/>
+        <field name="x_studio_condiciones_laborales" string="Condiciones Laborales" widget="monetary"/>
+        <field name="x_studio_bonificacion_educacion" string="Bonificación x Educación"/>
+        <field name="x_studio_utilidades_voluntarias" string="Utilidades Voluntarias:"/>
+        <field name="x_studio_adelanto_gratificacion" string="Adelanto de Gratificación:"/>
+        <field name="x_studio_related_field_LoTZz" widget="image" options="{&quot;size&quot;:[0,90]}"/>
+        <field name="x_studio_descuento_inasistencias"/>
+        <field name="x_studio_dias_sin_goce" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_adelanto_sueldo"/>
+        <field name="x_studio_descuento_tardanzas_min" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_retencion_judicial"/>
+        <field name="x_studio_descuento_prestamos" string="Descuento Préstamos:"/>
+        <!-- PARA JULIO Y DOCIEMBRE-->
+        <field name="x_studio_related_field_LoTZz" widget="image" options="{&quot;size&quot;:[0,90]}" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;JULIO&quot;],[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;DICIEMBRE&quot;]]}"/>
+        <field name="x_studio_gratificacion" string="Gratificación:" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;JULIO&quot;],[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;DICIEMBRE&quot;]]}"/>
+        <field name="x_studio_bonificacion_extraordinaria_9" string="Bonificación extraordinaria del 9 %" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;JULIO&quot;],[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;DICIEMBRE&quot;]]}"/>
+      </group>
+      <group name="studio_group_wPPQR_right" string="PARÁMETROS GLOBALES">
+        <field name="x_studio_tipo_planilla"/>
+        <field name="x_studio_salario_mensual"/>
+        <field name="x_studio_aplica_retencion" string="Aplica Retención: (8%)" attrs="{}" invisible="1"/>
+        <field name="x_studio_renta_5ta" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_asignacin_familiar_1" string="Asignación Familiar:" widget="percentage" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_le_toca_vacaciones_en" string="Le toca vacaciones en:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_le_toca_vacaciones_en&quot;,&quot;=&quot;,False]]}"/>
+        <field name="x_studio_valor_renta_5ta" attrs="{&quot;invisible&quot;: [&quot;|&quot;,&quot;|&quot;,[&quot;x_studio_renta_5ta&quot;,&quot;=&quot;,False],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;struct_id&quot;,&quot;=&quot;,11]]}"/>
+        <field name="x_studio_importe_renta_5ta" attrs="{&quot;invisible&quot;: [&quot;|&quot;,&quot;|&quot;,[&quot;x_studio_renta_5ta&quot;,&quot;=&quot;,False],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;struct_id&quot;,&quot;=&quot;,11]]}"/>
+        <field name="x_studio_aporte_eps" attrs="{}" invisible="1"/>
+        <field name="x_studio_related_field_Wi1TR" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_afiliado_a_eps" string="Afiliado a EPS:"/>
+        <field name="x_studio_nro_dependientes" string="Nro. Dependientes:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_nro_hijos_18" string="Nro. Hijos &gt;18" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_eps_descuento_cens" string="EPS Descuento CENS:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_resumen_cobertura_eps" string="Resumen Cobertura EPS:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_tipo_aporte_eps" string="Tipo Aporte EPS:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_importe_eps" string="Importe EPS:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_afiliado_a_eps&quot;,&quot;!=&quot;,True]]}"/>
+        <field name="x_studio_related_field_Wi1TR" options="{&quot;size&quot;:[0,90]}" widget="image" attrs="{}"/>
+        <field name="x_studio_movilidad_texto" string="¿Tiene Movilidad Supeditada a Asistencia?:" force_save="True" attrs="{}" readonly="1"/>
+        <field name="x_studio_alimentacion_texto" string="¿Tiene Alimentación?"/>
+        <field name="x_studio_condiciones_laborales_texto" string="¿Tiene Condiciones Laborales?:" force_save="True" attrs="{}" readonly="1"/>
+        <field name="x_studio_bonificacion_educacion_texto" string="¿Tiene Bonificación x Educación?:"/>
+        <field name="x_studio_utilidades_voluntarias_texto" string="¿Tiene Utilidades Voluntarias?"/>
+        <field name="x_studio_condiciones_laborales_1" string="Condiciones Laborales:" attrs="{}" invisible="1"/>
+        <field name="x_studio_movilidad_mensual" string="Movilidad" attrs="{}" invisible="1"/>
+        <field name="x_studio_alimentacion_contrato" string="Alimentación:" attrs="{}" invisible="1"/>
+        <field name="x_studio_educacion_contrato" string="Educación" attrs="{}" invisible="1"/>
+        <field name="x_studio_utilidades_contrato" string="Utilidades" attrs="{}" invisible="1"/>
+        <field name="x_studio_related_field_Wi1TR" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+        <!-- ******************************************************************* -->
+        <!--  MANEJO DE AFP / ONP          -->
+        <!-- ******************************************************************* -->
+        <field name="x_studio_compania_afp" string="COMPAÑÍA AFP/ONP" widget="many2one"/>
+        <field name="x_studio_logo_compania" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+        <field name="x_studio_default_parametros" string="Default Parámetros" attrs="{}" invisible="1"/>
+        <field name="x_studio_many2one_field_zv5n6" domain="[[&quot;x_compania_afp.id&quot;,&quot;=&quot;,x_studio_compania_afp]]" context="{'record.x_studio_compania_afp.id': x_studio_compania_afp}" options="{&quot;no_edit&quot;:true,&quot;no_create&quot;:true,&quot;no_open&quot;:true}" force_save="True" attrs="{}"/>
+        <field name="x_studio_afp" widget="selection" attrs="{}" invisible="1"/>
+        <field name="x_studio_aporte_obligatorio" widget="percentage" attrs="{}" invisible="1"/>
+        <field name="x_studio_aporte_obligatorio_2" string="Aporte Obligatorio:" widget="percentage"/>
+        <field name="x_studio_prima_seguro" widget="percentage" attrs="{}" invisible="1"/>
+        <field name="x_studio_prima_seguro_2" string="Prima Seguro:" widget="percentage" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+        <field name="x_studio_tipo_comision" attrs="{&quot;invisible&quot;: [&quot;|&quot;,&quot;|&quot;,[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False],[&quot;struct_id&quot;,&quot;=&quot;,11]]}"/>
+        <field name="x_studio_comision_mixta" attrs="{}" widget="percentage" invisible="1"/>
+        <field name="x_studio_comision_mixta_2" string="Comisión Mixta:" widget="percentage" attrs="{&quot;invisible&quot;: [&quot;|&quot;,&quot;|&quot;,[&quot;x_studio_tipo_comision&quot;,&quot;!=&quot;,&quot;MIX&quot;],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False]]}"/>
+        <field name="x_studio_comision_flujo" attrs="{}" widget="percentage" invisible="1"/>
+        <field name="x_studio_comision_flujo_2" string="Comisión de Flujo" widget="percentage" attrs="{&quot;invisible&quot;: [&quot;|&quot;,&quot;|&quot;,[&quot;x_studio_tipo_comision&quot;,&quot;!=&quot;,&quot;FLU&quot;],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False]]}"/>
+        <field name="x_studio_related_field_JCfTk" options="{&quot;size&quot;:[0,270]}" widget="image"/>
+        <field name="x_studio_related_field_Zn57E" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+        <field name="x_studio_pago_cts" string="Pago CTS:" widget="monetary"/>
+      </group>
+    </group>
+    <group name="studio_group_fLSLy">
+      <group name="studio_group_fLSLy_left"/>
+      <group name="studio_group_fLSLy_right" string="SUSTENTO:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;!=&quot;,&quot;LOCA&quot;]]}">
+        <field name="x_studio_adjunta_rh_sunat"/>
+        <field name="x_studio_subir_rh_sunat"/>
+      </group>
+    </group>
+  </xpath>
+  <xpath expr="//page[@name='worked_days_input']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+  </xpath>
+  <xpath expr="//field[@name='input_line_ids']" position="after">
+    <group name="studio_group_Vo8sI">
+      <group name="studio_group_Vo8sI_left" string="IMPORTES DESAGREGADOS">
+        <field name="x_studio_importe_asistencia" string="Asistencia Regular"/>
+        <field name="x_studio_importe_t_generico" string="Tiempo Genérico"/>
+        <field name="x_studio_importe_t_compensatorio" string="Tiempo Compensatorio"/>
+        <field name="x_studio_importe_trabajo_casa" string="Trabajo Casa"/>
+        <field name="x_studio_importe_impagada" string="Impagadas"/>
+        <field name="x_studio_importe_ausencia_enfermedad" string="Ausencia por Enfermedad"/>
+        <field name="x_studio_importe_permisos_legales" string="Permisos Legales"/>
+        <field name="x_studio_importe_fuera_contrato" string="Fuera de Contrato"/>
+        <field name="x_studio_importe_sin_control_horario" string="Sin Control Horario"/>
+        <field name="x_studio_importe_tiempo_extraordinario" string="Horario de Tiempo Extraordinario"/>
+        <field name="x_studio_importe_vacaciones" string="Periodo Vacacional"/>
+        <field name="x_studio_licencia_maternidad" string="Licencia Maternidad"/>
+        <field name="x_studio_licencia_paternidad" string="Licencia Paternidad"/>
+        <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+        <field name="x_studio_total_desagregado" string="TOTAL DESAGREGADO:"/>
+        <field name="x_studio_recalcular_2" string="Recalcular 2"/>
+      </group>
+      <group name="studio_group_Vo8sI_right" string="PERIODO VACACIONAL VINCULADO" attrs="{&quot;invisible&quot;: [[&quot;x_studio_registra_vacaciones&quot;,&quot;!=&quot;,True]]}">
+        <field name="x_studio_registra_vacaciones" string="¿Registra Vacaciones?" force_save="True" attrs="{}" readonly="1"/>
+        <field name="x_studio_ausencias_employee_id" domain="[[&quot;employee_id&quot;,&quot;=&quot;,employee_id]]" context="{'record.employee_id': employee_id}"/>
+        <field name="x_studio_vaca_estado" string="Estado"/>
+        <field name="x_studio_vaca_fecha_inicial" string="Fecha Inicial"/>
+        <field name="x_studio_vaca_fecha_final" string="Fecha Final"/>
+        <field name="x_studio_vaca_duracion_dias_laborables" string="Duración en Días Laborables"/>
+        <field name="x_studio_vaca_duracion_dias_totales" string="Duración Días Totales"/>
+        <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+      </group>
+    </group>
+  </xpath>
+  <xpath expr="//page[@name='salary_computation']" position="attributes">
+    <attribute name="attrs">{"invisible": [["x_studio_ver_calculo_salario","!=",True]]}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='account_info']/group[1]" position="after">
+    <group name="studio_group_55WTd">
+      <group name="studio_group_55WTd_left" string="AJUSTE DIAS COMPUTADOS">
+        <field name="x_studio_porcentaje_computado" attrs="{}" invisible="1"/>
+        <field name="x_studio_ajustar_dias_computados" string="Días NO Computados:"/>
+        <field name="x_studio_ver_calculo_salario" string="Ver pestaña Cálculo Salario"/>
+      </group>
+      <group name="studio_group_55WTd_right">
+        <field name="x_studio_mes_boleta_sueldo" string="Mes Boleta"/>
+      </group>
+    </group>
+    <group name="studio_group_u4YXW">
+      <group name="studio_group_u4YXW_left" string="DESACTIVAR CÁLCULO DE CAMPOS">
+        <field name="x_studio_desactivar_calculo_movilidad" string="Desactivar Cálculo Movilidad:"/>
+        <field name="x_studio_desactivar_calculo_alimentacion" string="Desactivar Cálculo Alimentación:"/>
+        <field name="x_studio_desactivar_calculo_condlaborales" string="Desactivar Cálculo Cond.Laborales"/>
+        <field name="x_studio_desactivar_calculo_bonificeducacion" string="Desactivar Cálculo Bonific.Educación:"/>
+        <field name="x_studio_desactivar_calculo_utilvoluntarias" string="Desactivar Cálculo Util.Voluntarias"/>
+        <field name="x_studio_editar_asigfamiliar" string="Editar Asig.Familiar?" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+      </group>
+      <group name="studio_group_u4YXW_right" string="UNIDADES OFICIALES">
+        <field name="x_studio_unidad_impositiva_tributaria" string="Unidad Impositiva Tributaria: (UIT)" widget="monetary"/>
+        <field name="x_studio_unidad_referencia_procesal" string="Unidad de Referencia Procesal (URP):" widget="monetary"/>
+        <field name="x_studio_sueldo_minimo" string="Sueldo Mínimo:" widget="monetary"/>
+      </group>
+    </group>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+    <page string="Cálculos" name="studio_page_7tQSW">
+      <!--  ***************************************************************************   -->
+      <!--  ****************** PÁGINA DE CÁLCULO-CENS DE LA NÓMINA ********************   -->
+      <!--  ***************************************************************************   -->
+      <separator string="PARA LA BOLETA DE PAGO" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+      <group name="studio_group_7tQSW">
+        <group name="studio_group_7tQSW_left" string="DEL BÁSICO" attrs="{&quot;invisible&quot;: [[&quot;struct_id&quot;,&quot;=&quot;,11]]}">
+          <field name="x_studio_en_basico"/>
+        </group>
+        <group name="studio_group_7tQSW_right">
+          <field name="x_studio_en_recalcular"/>
+          <field name="x_studio_related_field_4I5MV" string="" widget="image" options="{&quot;size&quot;:[0,270]}" groups="base.group_multi_company" attrs="{'invisible': [('x_studio_cesado', '=', True)]}"/>
+          <field name="x_studio_imagen_calcular_03" string="" widget="image" options="{&quot;size&quot;:[0,270]}" groups="base.group_multi_company" attrs="{'invisible': [('x_studio_cesado', '=', False)]}"/>
+        </group>
+      </group>
+      <group name="studio_group_PplD4">
+        <group name="studio_group_PplD4_left" string="DE LOS INGRESOS" attrs="{&quot;invisible&quot;: [[&quot;struct_id&quot;,&quot;=&quot;,11]]}">
+          <field name="x_studio_en_licencia_con_ghaber" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(+) Licencia con G.Haber:"/>
+          <field name="x_studio_en_licencia_fallecimiento" attrs="{}" string="(+) Licencia x Fallecimiento:"/>
+          <field name="x_studio_en_licencia_materpater" string="(+) Licencia Paternidad:"/>
+          <field name="x_studio_en_asignacion_familiar" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;x_studio_editar_asigfamiliar&quot;,&quot;=&quot;,True]]}" string="(+) Asignación Familiar:"/>
+          <field name="x_studio_en_editar_asigfamiliar" string="(Edit) Asign.Fam.:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_editar_asigfamiliar&quot;,&quot;!=&quot;,True]]}"/>
+          <field name="x_studio_en_bonificacion_cumplimiento" string="(+) Bonificación x Cumplimiento:"/>
+          <field name="x_studio_en_descanso_medico" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(+) Descanso Médico:"/>
+          <field name="x_studio_en_feriados" string="(+) Feriados:"/>
+          <field name="x_studio_en_horas_extras" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(+) Horas Extras:"/>
+          <field name="x_studio_en_vacaciones" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(+) Vacaciones:"/>
+          <field name="x_studio_en_descanso_vacacional" string="(+) Descanso Vacacional"/>
+          <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_en_gross" string="(+) SUB-TOTAL REMUNERACIONES"/>
+        </group>
+        <group name="studio_group_PplD4_right" string="DE LOS DESCUENTOS" attrs="{&quot;invisible&quot;: [[&quot;struct_id&quot;,&quot;=&quot;,11]]}">
+          <field name="x_studio_en_licencia_sin_ghaber" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(-) Licencia sin G.Haber:"/>
+          <field name="x_studio_en_adelanto_sueldo" string="(-) Adelanto de Sueldo:"/>
+          <field name="x_studio_en_afp_onp" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(-) AFP / ONP:"/>
+          <field name="x_studio_en_inasistencias" string="(-) Inasistencias:"/>
+          <field name="x_studio_en_tardanzas" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(-) Tardanzas:"/>
+          <field name="x_studio_en_renta_5ta" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}" string="(-) Renta de 5ta. Cat.:"/>
+          <field name="x_studio_en_retencion_judicial" string="(-) Retención Judicial: (Alimentos)"/>
+          <field name="x_studio_en_descuento_prestamos" string="(-) Descuento No Deducible:" widget="monetary"/>
+          <field name="x_studio_aporte_eps_2" string="(-) Aporte EPS.:" widget="monetary"/>
+          <field name="x_studio_retencion_8porcent" string="Retención 8%:" attrs="{&quot;invisible&quot;: [[&quot;x_studio_aplica_retencion&quot;,&quot;!=&quot;,True]]}"/>
+          <field name="x_studio_related_field_uAef6" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_total_descuentos" string="SUB-TOTAL DESCUENTOS:"/>
+          <!--
+          <field name="x_studio_en_total_remuneracion" widget="monetary" class="oe_title"/>
+          attrs="{'decoration-info': 'True', 'decoration-warning': 'True', 'decoration-success': 'True'}"
+          -->
+        </group>
+      </group>
+      <group name="studio_group_lpqOf">
+        <group name="studio_group_lpqOf_left" string="CONCEPTOS NO REMUNERATIVOS">
+          <field name="x_studio_en_vale_alimentacion" string="(n) Alimentación:"/>
+          <field name="x_studio_en_vale_movilidad" string="(n) Movilidad Supeditada a Asistencia:"/>
+          <field name="x_studio_en_condiciones_laborales" string="(n) Condic.Laborales:"/>
+          <field name="x_studio_en_bonificacion_educacion" string="(n) Bonific. x Educ.:"/>
+          <field name="x_studio_en_utilidades_voluntarias" string="(n) Utilid.Voluntarias:"/>
+          <field name="x_studio_en_reembolso_combustible" string="(n) Reembolso Combustible:" attrs="{}" invisible="1"/>
+          <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_sub_total_no_remunerativos" string="SUB-TOTAL NO REMUNERATIVOS:"/>
+          <field name="x_studio_en_total_remuneracion_bruta" string="SUB-TOTAL NO REMUNERATIVOS:" attrs="{}" invisible="1"/>
+        </group>
+        <group name="studio_group_lpqOf_right" string="RESUMEN FINAL:">
+          <field name="x_studio_en_gross" string="(+) Sub-Total Remuneraciones"/>
+          <field name="x_studio_en_total_remuneracion_bruta" string="(n) Sub-Total NO Remunerativos"/>
+          <field name="x_studio_sub_total_incremespeciales" string="(d) Sub-Total Incremt.Directos:" widget="monetary"/>
+          <field name="x_studio_total_descuentos" string="(-) Sub-Total Descuentos"/>
+          <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <div class="oe_title oe_right" name="title_x">
+            <h1>Total Remuneración:<field name="x_studio_en_total_remuneracion" widget="monetary"/>
+            </h1>
+          </div>
+        </group>
+      </group>
+      <group name="studio_group_69KiA">
+        <group name="studio_group_69KiA_left" string="INCREMENTOS DIRECTOS">
+          <field name="x_studio_en_reembolso" string="(d) Adelanto Sueldo"/>
+          <field name="x_studio_en_reembolso_movilidad" string="(d) Reembolso Movilidad:"/>
+          <field name="x_studio_en_adelanto_gratificacion" string="(d) Adelanto Gratific.:"/>
+          <field name="x_studio_especial_ac" string="(d) Devol. Dcto. Indebido:" attrs="{}"/>
+          <field name="x_studio_en_gratificacion" string="(d) Gratificación:" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;JULIO&quot;],[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;DICIEMBRE&quot;]]}"/>
+          <field name="x_studio_en_bonificacion_extraordinaria_9" string="(d) Bonificación extraordinaria 9%" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;JULIO&quot;],[&quot;x_studio_mes_calculado&quot;,&quot;!=&quot;,&quot;DICIEMBRE&quot;]]}"/>
+          <field name="x_studio_related_field_JLoj0" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_sub_total_incremespeciales" string="SUB-TOTAL INCREM.ESPECIALES:" widget="monetary"/>
+        </group>
+        <group name="studio_group_69KiA_right" string=".">
+          <field name="x_studio_en_leyenda" string="LEYENDA: "/>
+        </group>
+      </group>
+      <group name="studio_group_m0Gkb">
+        <group name="studio_group_m0Gkb_left">
+          <field name="x_studio_total_ingresos_1" attrs="{}" invisible="1"/>
+        </group>
+        <group name="studio_group_m0Gkb_right"/>
+      </group>
+      <field name="x_studio_related_field_LoTZz" widget="image" options="{&quot;size&quot;:[0,90]}"/>
+      <separator string="DETALLES LIQUIDACIÓN DE CESE" style="color: #875A7B; font-weight: bold; font-size: 16px;" attrs="{'invisible': [('x_studio_cesado', '=', False)]}"/>
+      <group name="studio_group_cese">
+        <group name="studio_group_cese_left" string="REGISTRO DEL CESE" attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
+          <field name="x_studio_cese_aplicara" string="¿Aplicará Cese?"/>
+          <field name="x_studio_cese_fecha" string="Fecha de Cese"/>
+          <field name="x_studio_cese_motivo" string="Motivo de Salida"/>
+          <field name="x_studio_cese_observaciones" string="Observaciones"/>
+        </group>
+        <group name="studio_group_cese_right" string="BENEFICIOS TRUNCOS" attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
+          <field name="x_studio_cese_vaca_trunca" string="Vacaciones Truncas"/>
+          <field name="x_studio_cese_cts_trunco" string="CTS Trunco"/>
+          <field name="x_studio_cese_grati_trunca" string="Gratificaciones Truncas"/>
+          <field name="x_studio_cese_bonif_grati_trunca" string="Bonificación Gratificación Trunca"/>
+          <field name="x_studio_cese_comentarios" string="COMENTARIOS:" placeholder="Este comentario podría mostrarse en la liquidación."/>
+        </group>
+      </group>
+      <separator string="PARA LA EMPRESA" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+      <group name="studio_group_fhn9u">
+        <group name="studio_group_fhn9u_left" string="DE LOS APORTES" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;],[&quot;struct_id&quot;,&quot;=&quot;,11]]}">
+          <field name="x_studio_aporte_a_essalud" widget="monetary"/>
+          <field name="x_studio_en_aportes_eps" widget="monetary"/>
+        </group>
+        <group name="studio_group_fhn9u_right" string="DESAGREGADO FONDO DE PENSIONES" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}">
+          <field name="x_studio_en_administradora_fondo" widget="selection" invisible="1"/>
+          <field name="x_studio_compania_afp" string="- COMPAÑÍA AFP/ONP" widget="many2one"/>
+          <field name="x_studio_en_afp_aporte_obligatorio" widget="monetary" attrs="{&quot;invisible&quot;: [[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False]]}" string="- Aporte Obligatorio:"/>
+          <field name="x_studio_en_afp_prima_seguro" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False],[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,&quot;ONP&quot;]]}" string="- Prima Seguro:"/>
+          <field name="x_studio_en_tipo_comision" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,False],[&quot;x_studio_compania_afp&quot;,&quot;=&quot;,&quot;ONP&quot;]]}" string="- TIPO COMISIÓN:"/>
+          <field name="x_studio_en_comision_mixta" attrs="{&quot;invisible&quot;: [[&quot;x_studio_en_tipo_comision&quot;,&quot;!=&quot;,&quot;MIX&quot;]]}" widget="monetary"/>
+          <field name="x_studio_en_comision_flujo" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_en_tipo_comision&quot;,&quot;!=&quot;,&quot;FLU&quot;],[&quot;x_studio_en_administradora_fondo&quot;,&quot;=&quot;,&quot;SIN&quot;]]}" string="- Comisión Flujo:"/>
+        </group>
+      </group>
+      <group name="studio_group_tlRfl">
+        <group name="studio_group_tlRfl_left" string="DE LAS PROVISIONES" attrs="{&quot;invisible&quot;: [&quot;&amp;&quot;,[&quot;x_studio_tipo_planilla&quot;,&quot;!=&quot;,&quot;GENE&quot;],[&quot;x_studio_tipo_planilla&quot;,&quot;!=&quot;,&quot;INTE&quot;]]}">
+          <field name="x_studio_en_provision_cts"/>
+          <field name="x_studio_en_provision_vacaciones" string="Vacaciones:"/>
+          <field name="x_studio_en_provision_gratificacion"/>
+          <field name="x_studio_en_provision_bonigrati" string="Bonificación Gratificación:"/>
+          <field name="x_studio_related_field_fsvgW" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_en_provision_total"/>
+        </group>
+        <group name="studio_group_tlRfl_right" string="CÁLCULO COSTO MENSUAL DEL PERSONAL" attrs="{}">
+          <field name="x_studio_en_provision_total" string="SubTotal Provisiones"/>
+          <field name="x_studio_sub_total_no_remunerativos" string="SubTotal NoRemunerativos"/>
+          <field name="x_studio_en_reembolso_movilidad" string="Reembolso x Movilidad"/>
+          <field name="x_studio_en_subtotal_remunerativos"/>
+          <field name="x_studio_aporte_a_essalud" widget="monetary"/>
+          <field name="x_studio_en_aportes_eps" widget="monetary"/>
+          <field name="x_studio_related_field_k7Ewt" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_en_total_extraordinario" string="TOTAL COSTO DEL MES:" widget="monetary"/>
+        </group>
+      </group>
+      <field name="x_studio_related_field_LoTZz" widget="image" options="{&quot;size&quot;:[0,90]}"/>
+      <group name="studio_group_rYT0m">
+        <group name="studio_group_rYT0m_left" string="DATO PARA FORMATO Y ENVÍO">
+          <field name="x_studio_literal_fecha" string="Literal de última fecha del mes:"/>
+          <field name="x_studio_literal_fecha_titulo" string="Literal Fecha Título"/>
+          <field name="x_studio_en_correo_envio" string="E-mail de envío:" widget="email"/>
+          <field name="x_studio_ajusta_dato_envio" string="Ajusta Dato Envío"/>
+          <field name="x_studio_enviar_x_email" string="Enviar x Email:" attrs="{}" invisible="1"/>
+        </group>
+        <group name="studio_group_rYT0m_right" string="FECHAS RELACIONADAS" attrs="{}" invisible="1">
+          <field name="x_studio_primera_fecha_de_contrato" string="Primera fecha de contrato:"/>
+          <field name="x_studio_contrato_actual" string="Contrato Actual:"/>
+          <field name="x_studio_fecha_de_inicio" string="Fecha de Inicio:"/>
+          <field name="x_studio_fecha_de_finalizacin" string="Fecha de Finalización:"/>
+          <field name="x_studio_related_field_dBalj" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+          <field name="x_studio_en_cts_fecha_inicial" string="CTS - Fecha Inicial:"/>
+          <field name="x_studio_en_cts_fecha_final" string="CTS - Fecha Final:"/>
+          <field name="x_studio_fecha_de_ingreso" string="Fecha de Ingreso:" attrs="{}" invisible="1"/>
+          <field name="x_studio_fecha_de_cese" string="Fecha de Cese:" attrs="{}" invisible="1"/>
+        </group>
+      </group>
+    </page>
+    <page string="Proyectos" name="studio_page_BBfHo">
+      <group name="studio_group_BBfHo">
+        <field name="x_studio_related_field_jHzSN" options="{&quot;size&quot;:[0,90]}" widget="image"/>
+      </group>
+      <group name="studio_group_hYiYW">
+        <group name="studio_group_hYiYW_left"/>
+        <group name="studio_group_hYiYW_right">
+          <field name="x_studio_moneda" string="Moneda"/>
+          <field name="x_studio_remuneracin_mensual" string="Remuneración Mensual:"/>
+          <field name="basic_wage"/>
+        </group>
+      </group>
+      <group name="studio_group_gqrfM">
+        <field name="x_hr_payslip_line_ids_47b92">
+          <form>
+            <header/>
+            <sheet string="hr_payslip_line" name="studio_sheet_49f4d2">
+              <div class="oe_title" name="studio_div_176f8f">
+                <h1>
+                  <field name="x_name" required="1" placeholder="Name..."/>
+                </h1>
+              </div>
+              <group name="studio_group_bae99b">
+                <group name="studio_group_bae99b_left">
+                  <field name="x_studio_many2one_field_iONIv"/>
+                  <field name="x_studio_cliente"/>
+                  <field name="x_studio_fecha_inicio"/>
+                  <field name="x_studio_tareas"/>
+                  <field name="x_currency_id" string="Moneda"/>
+                  <field name="x_studio_sueldo_mensual" string="Sueldo Mensual"/>
+                  <field name="x_studio_participacion_sueldo" string="Participación" widget="percentage"/>
+                  <field name="x_studio_sueldo"/>
+                </group>
+                <group name="studio_group_bae99b_right"/>
+              </group>
+            </sheet>
+          </form>
+          <tree>
+            <field name="x_studio_sequence" widget="handle"/>
+            <field name="x_name"/>
+            <field name="x_studio_many2one_field_iONIv" optional="show"/>
+            <field name="x_studio_cliente" optional="show"/>
+            <field name="x_studio_fecha_inicio" optional="show"/>
+            <field name="x_studio_participacion_sueldo" optional="show" widget="percentage" sum="Sum of Participación"/>
+            <field name="x_studio_sueldo" optional="show" sum="Sum of Sueldo"/>
+          </tree>
+        </field>
+      </group>
+      <group name="studio_group_dvzzp">
+        <group name="studio_group_dvzzp_left"/>
+        <group name="studio_group_dvzzp_right"/>
+      </group>
+      <group name="studio_group_GhUsQ">
+        <group name="studio_group_GhUsQ_left"/>
+        <group name="studio_group_GhUsQ_right"/>
+      </group>
+    </page>
+    <page string="Horas Extras" name="studio_page_7n709" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_habilitar_horas_extras&quot;,&quot;!=&quot;,True],[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}">
+      <group name="studio_group_7n709">
+        <group name="studio_group_7n709_left"/>
+        <group name="studio_group_7n709_right"/>
+      </group>
+      <group name="studio_group_Vfwzl">
+        <group name="studio_group_Vfwzl_left" string="DATOS DE REGISTRO">
+          <field name="x_studio_horas_extras_tipo_calculo" string="TIPO CÁLCULO:" attrs="{}" help="Seleccionar tipo de cálculo para las Horas Extras."/>
+          <field name="x_studio_importe_directo_he" string="Importe Directo HE." attrs="{&quot;invisible&quot;: [[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;!=&quot;,&quot;DIREC&quot;]]}"/>
+          <field name="x_studio_en_recalcular"/>
+        </group>
+        <group name="studio_group_Vfwzl_right" string="PARÁMETROS CONSIDERADOS" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;!=&quot;,&quot;CALCU&quot;],[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;=&quot;,False]]}">
+          <field name="x_studio_salario_mensual" string="Suéldo Básico"/>
+          <field name="x_studio_en_asignacion_familiar" string="Asignación Familiar" attrs="{&quot;invisible&quot;: [[&quot;x_studio_tipo_planilla&quot;,&quot;=&quot;,&quot;LOCA&quot;]]}"/>
+          <field name="x_studio_costo_x_hora" string="Costo x Hora" widget="monetary"/>
+          <field name="x_studio_costo_x_hora_25" string="Costo x Hora 25%" widget="monetary"/>
+          <field name="x_studio_costo_x_hora_35" string="Costo x Hora 35%" widget="monetary"/>
+          <field name="x_studio_costo_x_hora_100" string="Costo x Hora 100%"/>
+        </group>
+      </group>
+      <group name="studio_group_U79DL" string="REGISTRO DE HORAS EXTRAS" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;!=&quot;,&quot;CALCU&quot;],[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;=&quot;,False]]}">
+        <field name="x_studio_one2many_field_CHZUj" string="TRABAJO EXTRA:">
+          <form>
+            <header/>
+            <sheet string="hr_payslip_line" name="studio_sheet_5c2041">
+              <div class="oe_title" name="studio_div_31a851">
+                <h1>
+                  <field name="x_name" required="1" placeholder="Name..."/>
+                </h1>
+              </div>
+              <group name="studio_group_266c99">
+                <group name="studio_group_266c99_left" string="DATOS DE INGRESO">
+                  <field name="x_studio_he_fecha_trabajo" string="Fecha Trabajo:"/>
+                  <field name="x_studio_he_entrada" string="ENTRADA:" attrs="{}" invisible="1"/>
+                  <field name="x_studio_he_salida" string="SALIDA:" attrs="{}" invisible="1"/>
+                  <field name="x_studio_he_total_horas_extras" string="Total Horas Extras:" widget="float"/>
+                  <field name="x_studio_equivalente_horario" string="Equivalente Horario:" widget="float_time"/>
+                  <field name="x_studio_he_dia_libre" string="¿Día Libre?"/>
+                </group>
+                <group name="studio_group_266c99_right" string="PARÁMETROS CONSIDERADOS">
+                  <field name="x_studio_costo_x_hora" string="Costo x Hora"/>
+                  <field name="x_studio_costo_x_hora_25" string="Costo x Hora 25%"/>
+                  <field name="x_studio_costo_x_hora_35" string="Costo x Hora 35%"/>
+                  <field name="x_studio_costo_x_hora_100" string="Costo x Hora 100%"/>
+                </group>
+              </group>
+              <group name="studio_group_9x9y8">
+                <group name="studio_group_9x9y8_left" string="DISTRIBUCIÓN DE HORAS TRABAJADAS">
+                  <field name="x_studio_he_horas_normales" string="H.E. Normales:" widget="float_time" attrs="{}" invisible="1"/>
+                  <field name="x_studio_he_al_25" string="H.E. al 25%" widget="float_time"/>
+                  <field name="x_studio_he_al_35" string="H.E. al 35%" widget="float_time"/>
+                  <field name="x_studio_he_al_100" string="H.E. al 100%" widget="float_time"/>
+                </group>
+                <group name="studio_group_9x9y8_right" string="IMPORTES DE HORAS TRABAJADAS">
+                  <field name="x_studio_he_horas_nocturnas" string="H.E. Nocturnas:" widget="float_time" attrs="{}" invisible="1"/>
+                  <field name="x_studio_he_monto_al_25" string="Monto HE al 25%"/>
+                  <field name="x_studio_he_monto_al_35" string="Monto HE al 35%"/>
+                  <field name="x_studio_he_monto_al_100" string="Monto HE al 100%"/>
+                </group>
+              </group>
+            </sheet>
+          </form>
+          <tree>
+            <field name="x_studio_sequence" widget="handle"/>
+            <field name="x_name" optional="hide"/>
+            <field name="x_studio_he_fecha_trabajo" optional="show" string="Fecha"/>
+            <field name="x_studio_he_dia_libre" optional="show"/>
+            <field name="x_studio_he_total_horas_extras" optional="show" widget="float_time" string="Total Horas Extras"/>
+            <field name="x_studio_he_al_25" optional="show" widget="float_time"/>
+            <field name="x_studio_he_al_35" optional="show" widget="float_time"/>
+            <field name="x_studio_he_al_100" optional="show" widget="float_time"/>
+            <field name="x_studio_he_monto_al_25" optional="show" string="Monto al 25%" sum="Sum of Monto al 25%"/>
+            <field name="x_studio_he_monto_al_35" optional="show" string="Monto al 35%" sum="Sum of Monto al 35%"/>
+            <field name="x_studio_he_monto_al_100" optional="show" string="Monto al 100%" sum="Sum of Monto al 100%"/>
+          </tree>
+        </field>
+      </group>
+      <group name="studio_group_AL1H2">
+        <group name="studio_group_AL1H2_left" string="ACUMULADO RESULTANTE" attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;!=&quot;,&quot;CALCU&quot;],[&quot;x_studio_horas_extras_tipo_calculo&quot;,&quot;=&quot;,False]]}">
+          <field name="x_studio_total_he_a_pagar" string="TOTAL H.E. A PAGAR:" widget="monetary"/>
+          <field name="x_studio_total_al_25" string="Total al 25%" attrs="{}" invisible="1"/>
+          <field name="x_studio_total_al_25_texto" string="Total al 25%"/>
+          <field name="x_studio_total_al_35" string="Total al 35%" attrs="{}" invisible="1"/>
+          <field name="x_studio_total_al_35_texto" string="Total al 35%"/>
+          <field name="x_studio_total_al_100" string="Total al 100%" attrs="{}" invisible="1"/>
+          <field name="x_studio_total_al_100_texto" string="Total al 100%"/>
+        </group>
+        <group name="studio_group_AL1H2_right"/>
+      </group>
+    </page>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[4]/group[1]/field[1]" position="attributes">
+    <attribute name="string">(d) Adelanto Remuneración</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[4]/group[1]/field[4]" position="after">
+    <field name="x_studio_en_indemniza_despido_arbitrario"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[4]/group[1]/field[5]" position="attributes">
+    <attribute name="string">Indemniza Despido Arbitrario</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[4]/group[1]/field[5]" position="attributes">
+    <attribute name="string">(d) Indemniza Despido Arbitrario</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/group[2]/group[2]/field[46]" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="invisible">1</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/group[2]/group[2]/field[45]" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="invisible">1</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[6]" position="after">
+    <field name="x_studio_cesado" string="¿Cesado?"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[1]" position="replace"/>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[1]" position="before">
+    <field name="x_studio_cese_aplica"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[1]" position="attributes">
+    <attribute name="string">¿Aplica Cese?</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[4]" position="after">
+    <field name="x_studio_cese_etiqueta"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="attributes">
+    <attribute name="string">Etiqueta Cese</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="attributes">
+    <attribute name="options"/>
+    <attribute name="widget">badge</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="invisible">1</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[7]" position="after">
+    <field name="x_studio_etiqueta_cese_boleta"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[8]" position="attributes">
+    <attribute name="string">Etiqueta Cese - Boleta</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[8]" position="attributes">
+    <attribute name="options"/>
+    <attribute name="widget">badge</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[8]" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="invisible">1</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[8]" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="invisible"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[3]/group[1]/group[2]/field[8]" position="attributes">
+    <attribute name="attrs">{"invisible": [["x_studio_cesado","!=",True]]}</attribute>
+    <attribute name="invisible"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[4]" position="after">
+    <field name="x_studio_fecha_ingreso_laboral"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="attributes">
+    <attribute name="string">Fecha de Ingreso</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="after">
+    <field name="x_studio_cese_fecha_ingreso"/>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[6]" position="attributes">
+    <attribute name="string">Fecha Ingreso</attribute>
+  </xpath>
+  <xpath expr="/form[1]/sheet[1]/notebook[1]/page[4]/group[6]/group[1]/field[5]" position="attributes">
+    <attribute name="string">Fecha de Ingreso (actual)</attribute>
+  </xpath>
+</data>
