@@ -87,8 +87,9 @@ class HrPayslip(models.Model):
             w_tramo_dd1  = w_period_grati.get('tramo_dd1', 0)
             w_tramo_dd2  = w_period_grati.get('tramo_dd2', 0)
             w_tramo_dd3  = w_period_grati.get('tramo_dd3', 0)
-            w_total_dias = (w_tramo_dd1 if w_tramo_dd1<30 else 0) + w_tramo_dd2 + (w_tramo_dd3 if w_tramo_dd3<30 else 0)
-            w_total_mese = int(w_total_dias/30) if w_total_dias > 0 else 0
+            #w_total_dias = (w_tramo_dd1 if w_tramo_dd1<30 else 0) + w_tramo_dd2 + (w_tramo_dd3 if w_tramo_dd3<30 else 0)
+            w_total_dias = w_tramo_dd2
+            w_total_mese = int(w_total_dias/30) if w_total_dias >= 30 else 0
 
             w_trunco_grati = 0.00
             w_trunco_grati += ((w_total_remu/6) * w_total_mese)    #--- Por el rango MESES
