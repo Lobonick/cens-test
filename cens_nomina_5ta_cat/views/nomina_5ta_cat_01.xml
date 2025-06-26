@@ -144,7 +144,8 @@
                             confirm="¿Está seguro de CARGA MASIVA?"
                             type="object" 
                             class="btn-primary"
-                            icon="fa-cogs"/>
+                            icon="fa-wrench"
+                            help="Crea nuevas fichas y recalcula a todos los Empleados." />
                 </header>
                 <field name="name" invisible="1"/>
                 <field name="company_id" invisible="1"/>
