@@ -79,7 +79,7 @@ class crm_lead_Custom(models.Model):
         if not w_tipo_contrato:
             return _(
                 "ALERTA: No se puede guardar el registro:\n"
-                "-------\n"
+                "--------\n"
                 "• Debe seleccionar un tipo de contrato válido.\n"
                 "• Actualmente tiene %s proyecto(s) vinculado(s).\n"
                 "• Seleccione el tipo de contrato apropiado antes de continuar."
@@ -88,25 +88,25 @@ class crm_lead_Custom(models.Model):
         if w_tipo_contrato == 'regular' and w_proyectos_count > 1:
             return _(
                 "ALERTA: No se puede guardar el registro:\n"
-                "-------\n"
+                "--------\n"
                 "• Contratos tipo 'Regular' permiten máximo 1 proyecto.\n"
                 "• Actualmente tiene %s proyectos vinculados.\n"
                 "• Elimine %s proyecto(s) antes de guardar."
             ) % (w_proyectos_count, w_proyectos_count - 1)
         
-        elif w_tipo_contrato == 'pip' and w_proyectos_count > 2:
+        elif w_tipo_contrato == 'pip' and w_proyectos_count > 3:
             return _(
                 "ALERTA: No se puede guardar el registro:\n"
-                "-------\n"
-                "• Contratos tipo 'PIP' permiten máximo 2 proyectos.\n"
+                "--------\n"
+                "• Contratos tipo 'PIP' permiten máximo 3 proyectos.\n"
                 "• Actualmente tiene %s proyectos vinculados.\n"
                 "• Elimine %s proyecto(s) antes de guardar."
-            ) % (w_proyectos_count, w_proyectos_count - 2)
+            ) % (w_proyectos_count, w_proyectos_count - 3)
         
         # Mensaje genérico para otros casos
         return _(
             "ALERTA: No se puede guardar el registro:\n"
-            "-------\n"
+            "--------\n"
             "• Tipo de contrato: %s\n"
             "• Proyectos vinculados: %s\n"
             "• Verifique la configuración antes de continuar."
