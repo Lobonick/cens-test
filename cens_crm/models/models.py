@@ -1,10 +1,10 @@
-from odoo import api, fields, models
+from odoo import models, fields, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import xlsxwriter
 import base64
 from io import BytesIO
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 
 #
 # clase: import xlsxwriter
@@ -29,14 +29,200 @@ class crm_lead_Custom(models.Model):
     file_name = fields.Char("File Name")
 
     # ---------------------------
-    # AGREGA CAMPOS AL MODELO
+    # AGREGA CAMPOS AL MODELO   - 
     # ---------------------------
     cens_user_id = fields.Many2one('res.users', string='Usuario activo', default=lambda self: self.env.user.id)
     cens_marcador_extorno = fields.Binary(string="Imagen Extorno", related='company_id.x_studio_marcador_extorno')
     cens_fecha_actual = fields.Datetime(string='Fecha Actual:', readonly=True, existing_field=True)
     cens_conta_visita = fields.Integer(string='Visitas:', readonly=True, default=0, existing_field=True)
     cens_campo_control = fields.Char("CONTROL:")
-     
+    save_ok = fields.Boolean(
+        string='Puede Guardar',
+        compute='_compute_save_ok',     ##-- Campo que controla el uso de CREATE y WRITE.
+        store=False,
+        default=True
+    )
+
+    # =============================================================================================================
+    #   INICIO
+    #   Se controla los métodos WRITE y CREATE para que valide la cantidad de Proyectos que el usuario agrega
+    #   en función del Tipo de Contrato. 
+    # =============================================================================================================
+
+    @api.depends('x_studio_proyectos_vinculados', 'x_studio_tipo_contrato')
+    def _compute_save_ok(self):
+        """Evalúa si el registro puede ser guardado según las reglas de negocio"""
+        for record in self:
+            w_proyectos_count = len(record.x_studio_proyectos_vinculados)
+            w_tipo_contrato = record.x_studio_tipo_contrato
+            
+            if w_tipo_contrato == 'regular':
+                # Máximo 1 proyecto
+                record.save_ok = w_proyectos_count <= 1
+            elif w_tipo_contrato == 'pip':
+                # Máximo 1 proyecto
+                record.save_ok = w_proyectos_count <= 3
+            elif w_tipo_contrato == 'marco':
+                # Sin límite
+                record.save_ok = True
+            else:
+                # Tipo no reconocido o vacío
+                record.save_ok = w_proyectos_count == 0  # Solo permite si no hay proyectos (Pase Libre)
+    
+    def _get_save_error_message(self):
+        """Genera el mensaje de error específico para cada caso"""
+        self.ensure_one()
+        
+        w_proyectos_count = len(self.x_studio_proyectos_vinculados)
+        w_tipo_contrato = self.x_studio_tipo_contrato
+        
+        if not w_tipo_contrato:
+            return _(
+                "ALERTA: No se puede guardar el registro:\n"
+                "-------\n"
+                "• Debe seleccionar un tipo de contrato válido.\n"
+                "• Actualmente tiene %s proyecto(s) vinculado(s).\n"
+                "• Seleccione el tipo de contrato apropiado antes de continuar."
+            ) % w_proyectos_count
+        
+        if w_tipo_contrato == 'regular' and w_proyectos_count > 1:
+            return _(
+                "ALERTA: No se puede guardar el registro:\n"
+                "-------\n"
+                "• Contratos tipo 'Regular' permiten máximo 1 proyecto.\n"
+                "• Actualmente tiene %s proyectos vinculados.\n"
+                "• Elimine %s proyecto(s) antes de guardar."
+            ) % (w_proyectos_count, w_proyectos_count - 1)
+        
+        elif w_tipo_contrato == 'pip' and w_proyectos_count > 2:
+            return _(
+                "ALERTA: No se puede guardar el registro:\n"
+                "-------\n"
+                "• Contratos tipo 'PIP' permiten máximo 2 proyectos.\n"
+                "• Actualmente tiene %s proyectos vinculados.\n"
+                "• Elimine %s proyecto(s) antes de guardar."
+            ) % (w_proyectos_count, w_proyectos_count - 2)
+        
+        # Mensaje genérico para otros casos
+        return _(
+            "ALERTA: No se puede guardar el registro:\n"
+            "-------\n"
+            "• Tipo de contrato: %s\n"
+            "• Proyectos vinculados: %s\n"
+            "• Verifique la configuración antes de continuar."
+        ) % (w_tipo_contrato or 'No definido', w_proyectos_count)
+    
+    def _validate_before_save(self):
+        """Valida las reglas de negocio antes de guardar"""
+        for record in self:
+            if not record.save_ok:
+                error_message = record._get_save_error_message()
+                raise ValidationError(error_message)
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Override del método create para validar antes de crear"""
+        # Crear temporalmente los registros para validación
+        temp_records = []
+        
+        for vals in vals_list:
+            # Crear registro temporal para validación
+            temp_record = self.new(vals)
+            temp_records.append(temp_record)
+            
+            # Validar el registro temporal
+            if not temp_record.save_ok:
+                error_message = temp_record._get_save_error_message()
+                raise ValidationError(_(
+                    "No se puede crear el registro:\n\n%s"
+                ) % error_message)
+        
+        # Si todas las validaciones pasan, crear los registros
+        records = super(crm_lead_Custom, self).create(vals_list)
+        return records
+    
+    def write(self, vals):
+        """Override del método write para validar antes de escribir"""
+        # Validar antes de escribir
+        self._validate_before_save()
+        
+        # Aplicar los cambios temporalmente para validación
+        for record in self:
+            # Crear un registro temporal con los nuevos valores
+            temp_vals = dict(vals)
+            temp_record = record.copy_data()[0]
+            temp_record.update(temp_vals)
+            
+            # Crear un nuevo registro temporal para validación
+            new_record = self.new(temp_record)
+            
+            if not new_record.save_ok:
+                error_message = new_record._get_save_error_message()
+                raise ValidationError(_(
+                    "No se puede guardar el registro '%s':\n\n%s"
+                ) % (record.name or 'Sin nombre', error_message))
+        
+        # Si todas las validaciones pasan, escribir los cambios
+        result = super(crm_lead_Custom, self).write(vals)
+        return result
+    
+    def action_save_with_validation(self):
+        """Método personalizado para guardar con validación explícita"""
+        try:
+            self._validate_before_save()
+            # Si la validación pasa, guardar normalmente
+            self.write({})  # Escribe sin cambios para forzar la validación
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Éxito'),
+                    'message': _('Registro guardado correctamente.'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        except ValidationError as e:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Error de Validación'),
+                    'message': str(e),
+                    'type': 'danger',
+                    'sticky': True,
+                }
+            }
+    
+    def action_force_save(self):
+        """Método para forzar guardado (solo para usuarios autorizados)"""
+        if self.env.user.has_group('base.group_system'):
+            # Solo administradores pueden forzar guardado
+            return super(crm_lead_Custom, self).write({})
+        else:
+            raise UserError(_('No tiene permisos para forzar el guardado.'))
+    
+    # Método auxiliar para debugging
+    def debug_save_status(self):
+        """Método para debuggear el estado de guardado"""
+        for record in self:
+            w_proyectos_count = len(record.x_studio_proyectos_vinculados)
+            w_tipo_contrato = record.x_studio_tipo_contrato
+            
+            print(f"DEBUG - Registro ID: {record.id}")
+            print(f"  - Tipo contrato: {w_tipo_contrato}")
+            print(f"  - Proyectos count: {w_proyectos_count}")
+            print(f"  - Save OK: {record.save_ok}")
+            print(f"  - Mensaje: {record._get_save_error_message()}")
+            print("-" * 50)
+
+
+    # =============================================================================================================
+    #   FIN 
+    # =============================================================================================================
+
+
     # ------------------------------
     # SOLICITA GASTO
     # ------------------------------
@@ -49,18 +235,20 @@ class crm_lead_Custom(models.Model):
     # ------------------------------------
     def action_generar_extorno(self):
         w_Pase_Ok = False
-        for record in self:
-            if (record.partner_id):
-                w_Pase_Ok = True
-            else:
-                w_Pase_Ok = False
-                record.x_studio_observaciones = "ATENCIÓN: Debe seleccionar un CLIENTE."
-        if w_Pase_Ok:
+        if self.x_studio_estado_seleccionado:
+            if (not self.x_studio_estado_seleccionado=='Ganada'):
+                raise UserError('Sólo se APLICA a Oportunudades de Negocio GANADAS.')
+
+            if (not self.partner_id):
+                self.x_studio_observaciones = "ATENCIÓN: Debe seleccionar un CLIENTE."
+                raise UserError('Debe asignar un CLIENTE a esta Oportunudad de Negocio.')
+
             for lead in self:
                 new_lead = lead.copy()
                 new_lead.x_studio_fecha_de_oportunidad = datetime.now()
                 new_lead.x_studio_monto_de_operacion_entero = new_lead.x_studio_monto_de_operacion_entero * -1
                 new_lead.name = f"Extorno de {lead.name}"
+                new_lead.x_studio_estado_oportunidad = "Ganada"
                 # Copiar los registros relacionados de x_studio_proyectos_vinculados
                 for related_record in lead.x_studio_proyectos_vinculados:
                     self.env['x_crm_lead_line_b50b7'].create({
@@ -72,6 +260,7 @@ class crm_lead_Custom(models.Model):
                         'x_studio_responsable': related_record.x_studio_responsable,
                         'x_studio_sequence': related_record.x_studio_sequence,
                     })
+
             return {
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
@@ -96,19 +285,14 @@ class crm_lead_Custom(models.Model):
             'function': "NONE",
             'mobile': "000-000-000"
         })
-        return True
-
-    # @api.model
-    # def create(self, vals):
-    #    if 'cens_user_id' not in vals:
-    #        vals['cens_user_id'] = self.env.user.id
-
-    #    for record in self:
-    #        current_datetime = datetime.now()
-    #        record.cens_fecha_actual = current_datetime
-    #        record.cens_campo_control = "ENTRÓ LA WADA"
-
-    #    return super(crm_lead_Custom, self).create(vals)
+        #return True
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'crm.lead',
+            'res_id': new_lead.id,
+            'target': 'current',
+            }    
 
 
     # -------------------------------------------------------------------------------------------------------
@@ -277,8 +461,8 @@ class crm_lead_Custom(models.Model):
             worksheet.write('A7', 'ORD', cell_format_titu)                          #-- 00
             worksheet.write('B7', 'CÓDIGO', cell_format_titu)                       #-- 01
             worksheet.write('C7', 'FECHA REGISTRO', cell_format_titu)               #-- 02
-            worksheet.write('D7', 'CIERRE ESTIMADO', cell_format_titu)     #-- 03
-            worksheet.write('E7', 'CIERRE OPORTUNIDAD', cell_format_titu)     #-- 04
+            worksheet.write('D7', 'CIERRE ESTIMADO', cell_format_titu)              #-- 03
+            worksheet.write('E7', 'CIERRE FINAL', cell_format_titu)                 #-- 04
             worksheet.write('F7', 'GDN REPONSABLE', cell_format_titu)               #-- 05
             worksheet.write('G7', 'UNIDAD DE NEGOCIO', cell_format_titu)            #-- 06
             worksheet.write('H7', 'SUB.UNIDAD DE NEGOCIO', cell_format_titu)        #-- 07
@@ -293,7 +477,7 @@ class crm_lead_Custom(models.Model):
             worksheet.write('Q7', 'DESCRIPCIÓN DE LA OPORTUNIDAD', cell_format_titu)#-- 16
             worksheet.write('R7', 'CÓDIGO TELCO-GO', cell_format_titu)              #-- 17
             worksheet.write('S7', 'PROYECTO ASIGNADO', cell_format_titu)            #-- 18
-            worksheet.write('T7', 'PROBABILIDAD %', cell_format_titu)               #-- 19
+            worksheet.write('T7', 'AVANCE %', cell_format_titu)               #-- 19
             worksheet.write('U7', 'ESTADO OPORTUNIDAD', cell_format_titu)           #-- 20
             worksheet.write('V7', 'FECHA ÚLTIMO ESTADO', cell_format_titu)          #-- 21
             worksheet.write('W7', 'FECHA DE GANADA', cell_format_titu)              #-- 22
@@ -477,62 +661,4 @@ class crm_lead_Custom(models.Model):
             record.cens_conta_visita += 1
             record.cens_fecha_actual = current_datetime
 
-    # def create(self, vals):
-    #    record = super(crm_lead_Custom, self).create(vals)
-    #    record.inicializa_variables()
-    #    return record
-    
-    # @api.model
-    # def create(self, vals):
-    #    if 'cens_user_id' not in vals:
-    #        vals['cens_user_id'] = self.env.user.id
 
-    #    for record in self:
-    #        current_datetime = datetime.now()
-    #        record.cens_fecha_actual = current_datetime
-    #        record.cens_campo_control = "ENTRÓ LA WADA"
-
-    #    return super(crm_lead_Custom, self).create(vals)
-
-
-#    @api.onchange('date_from')
-#    def _onchange_date_from(self):
-#        for record in self:
-#            record.x_hora = record.date_from
-
-#    @api.onchange('date_from')
-#    def _onchange_date_from(self):
-#        # Calcula el código correlativo
-#        w_correlativo = ""
-#        for record in self:
-#            w_correlativo = ("000000"+str(record.id))[-6:]  
-#            record.x_cens_codiden = "AU-" + str(record.date_from.year) + "-" + w_correlativo
-
-#    def genera_codigo_correlativo(self):
-#        w_correlativo = ""
-#        for record in self:
-#            w_correlativo = ("000000"+str(record.id))[-6:]  
-#            record.x_cens_codiden = "AU-" + str(record.date_from.year) + "-" + w_correlativo
-#        return True
-
-
-#    @api.onchange('date_from')
-#    def _onchange_date_from(self):
-#        # Obtiene la hora
-#        for record in self:
-#            record.x_hora = datetime.strptime(record.date_from, '%Y-%m-%d %H:%M:%S').strftime('%H:%M')
-
-
-            # Copiar los registros relacionados de x_studio_proyectos_vinculados
-            #for related_record in lead.x_studio_proyectos_vinculados:
-                #self.env['x_crm_lead_line_b50b7'].create({
-                #    'x_crm_lead_id': new_lead.id,
-                #    'x_project_id': related_record.x_project_id.id,
-                #    'x_state': related_record.x_state,
-                #    'x_cliente': related_record.x_cliente,
-                #    'x_contrato': related_record.x_contrato,
-                #    'x_fecha_inicio': related_record.x_fecha_inicio,
-                #    'x_fecha_fin': related_record.x_fecha_fin,
-                #    'x_monto': related_record.x_monto,
-                #    'x_observaciones': related_record.x_observaciones,
-                #})

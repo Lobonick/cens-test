@@ -12,7 +12,7 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
 	'category': 'Sales/CRM',
- 	'version': '16.0.3.11',
+ 	'version': '16.0.3.20',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
