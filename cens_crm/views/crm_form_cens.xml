@@ -71,6 +71,10 @@
             </field>
         </record>
 
+        <!-- ==================== CONTROLA LISTA DE PROYECTOS ASIGNADOS ============================== -->
+
+
+
 
     </data>
 </odoo>
