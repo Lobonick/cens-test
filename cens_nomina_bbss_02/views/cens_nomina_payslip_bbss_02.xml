@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payslip_form_inherit_bbss" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.bbss</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="priority">40</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="x_studio_cesado" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page string="Liquidación BB.SS." 
+                      name="liquidacion_beneficios"
+                      attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
+                    
+                    <!-- Header informativo -->
+                    <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
+                        <h4><i class="fa fa-info-circle"/> Liquidación de Beneficios Sociales</h4>
+                        <p style="margin: 5px 0 0 0;">
+                            Esta sección contiene los cálculos de liquidación para empleados cesados.
+                        </p>
+                    </div>
+                    
+                    <!-- Contenido principal -->
+                    <group>
+                        <group string="📅 Información del Período">
+                            <field name="x_cens_periodo_ini" 
+                                   string="Período Inicio"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_fin" 
+                                   string="Período Fin"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_aa" 
+                                   string="Años de Servicio"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_mm" 
+                                   string="Meses"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_dd" 
+                                   string="Días"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                        </group>
+                        
+                        <group string="⏱️ Totales de Tiempo">
+                            <field name="x_cens_ctotal_timeserv" 
+                                   string="Total Tiempo de Servicio"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_ctotal_tnocomp" 
+                                   string="Total Tiempo No Computable"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_ctotal_tliqui" 
+                                   string="Total Tiempo para Liquidación"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                        </group>
+                    </group>
+                    
+                    <separator string="Cálculos de Remuneración"/>
+                    
+                    <group>
+                        <group string="💰 Remuneraciones Base">
+                            <field name="x_cens_remu_base" 
+                                   string="Remuneración Base"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_asig_fami" 
+                                   string="Asignación Familiar"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_grat_16to" 
+                                   string="Gratificación 1/6"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                        </group>
+                        
+                        <group string="🧮 Totales Calculados">
+                            <field name="x_cens_none_remu" 
+                                   string="Conceptos No Remunerativos"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                            <field name="x_cens_remu_comp" 
+                                   string="Remuneración Computable"
+                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"
+                                   class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Sección de observaciones -->
+                    <group string="📝 Observaciones de Liquidación"
+                           attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
+                        <field name="note" 
+                               string="Observaciones"
+                               placeholder="Ingrese observaciones adicionales sobre la liquidación..."
+                               nolabel="1"
+                               colspan="2"/>
+                    </group>
+                    
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_tree_inherit_bbss" model="ir.ui.view">
+        <field name="name">hr.payslip.tree.inherit.bbss</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="priority">40</field> 
+        <field name="arch" type="xml">
+            <!-- ============================== -->
+            <!--  GENERA REPORTE CALCULO CTS    -->
+            <!-- ============================== -->
+            <xpath expr="//header" position="inside">
+                <button name="action_listado_cts_intermit"
+                        string="CTS Intermitentes"
+                        type="object" 
+                        icon="fa-list"
+                        class="oe_highlight oe_button"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+<!--
+
+    <record id="view_hr_payslip_form_bbss_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.bbss.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="priority">95</field>
+        <field name="arch" type="xml">
+            <field name="x_studio_cesado" invisible="1"/>
+    
+        </field>
+    </record>
+         
+ 
+-->
