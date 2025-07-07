@@ -1,5 +1,7 @@
 from odoo import _, api, fields, models
 from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
+
 from odoo.exceptions import UserError
 import base64
 import xlrd
@@ -11,6 +13,112 @@ _logger = logging.getLogger(__name__)
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
+       
+    x_cens_periodo_ini = fields.Date(string='Período Inicio', help='Fecha de inicio del período de liquidación')
+    x_cens_periodo_fin = fields.Date(string='Período Fin', help='Fecha de fin del período de liquidación')
+    x_cens_periodo_aa  = fields.Integer(string='Años', compute='_compute_tiempo_servicio', store=True, help='Años de servicio del empleado')    
+    x_cens_periodo_mm  = fields.Integer(string='Meses', compute='_compute_tiempo_servicio', store=True, help='Meses de servicio del empleado')
+    x_cens_periodo_dd  = fields.Integer(string='Días', compute='_compute_tiempo_servicio', store=True, help='Días de servicio del empleado')
+    x_cens_ctotal_timeserv = fields.Float(string='Total Tiempo Servicio', compute='_compute_totales_tiempo', store=True, help='Total de tiempo de servicio en años')    
+    x_cens_ctotal_tnocomp  = fields.Float(string='Total Tiempo No Computable', default=0.0, help='Tiempo no computable para beneficios')
+    x_cens_ctotal_tliqui   = fields.Float(string='Total Tiempo Liquidación', compute='_compute_totales_tiempo', store=True, help='Tiempo total para liquidación')
+    x_cens_remu_base = fields.Monetary(string='Remuneración Base', currency_field='currency_id', help='Remuneración base del empleado')
+    x_cens_asig_fami = fields.Monetary(string='Asignación Familiar', currency_field='currency_id', help='Asignación familiar del empleado')
+    x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', compute='_compute_gratificacion', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
+    x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
+    x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', compute='_compute_remuneracion_computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
+    
+    # ===============================================================================================
+    # INICIO - Campos liquidación
+    # ===============================================================================================
+
+    # # Métodos computados
+    @api.depends('x_cens_periodo_ini', 'x_cens_periodo_fin')
+    def _compute_tiempo_servicio(self):
+        """Calcula el tiempo de servicio en años, meses y días"""
+        for record in self:
+            if record.x_cens_periodo_ini and record.x_cens_periodo_fin:
+                fecha_ini = record.x_cens_periodo_ini
+                fecha_fin = record.x_cens_periodo_fin
+                
+                # Calcular diferencia usando relativedelta
+                diff = relativedelta(fecha_fin, fecha_ini)
+                
+                record.x_cens_periodo_aa = diff.years
+                record.x_cens_periodo_mm = diff.months
+                record.x_cens_periodo_dd = diff.days
+            else:
+                record.x_cens_periodo_aa = 0
+                record.x_cens_periodo_mm = 0
+                record.x_cens_periodo_dd = 0
+    
+    @api.depends('x_cens_periodo_aa', 'x_cens_periodo_mm', 'x_cens_periodo_dd', 'x_cens_ctotal_tnocomp')
+    def _compute_totales_tiempo(self):
+        """Calcula los totales de tiempo de servicio"""
+        for record in self:
+            # Convertir todo a años decimales
+            tiempo_total = record.x_cens_periodo_aa + (record.x_cens_periodo_mm / 12.0) + (record.x_cens_periodo_dd / 365.0)
+            record.x_cens_ctotal_timeserv = tiempo_total
+            
+            # Tiempo liquidable = tiempo total - tiempo no computable
+            record.x_cens_ctotal_tliqui = tiempo_total - record.x_cens_ctotal_tnocomp
+    
+    @api.depends('x_cens_remu_base')
+    def _compute_gratificacion(self):
+        """Calcula la gratificación como 1/6 de la remuneración base"""
+        for record in self:
+            if record.x_cens_remu_base:
+                record.x_cens_grat_16to = record.x_cens_remu_base / 6.0
+            else:
+                record.x_cens_grat_16to = 0.0
+    
+    @api.depends('x_cens_remu_base', 'x_cens_asig_fami', 'x_cens_grat_16to')
+    def _compute_remuneracion_computable(self):
+        """Calcula la remuneración computable total"""
+        for record in self:
+            record.x_cens_remu_comp = (
+                record.x_cens_remu_base + 
+                record.x_cens_asig_fami + 
+                record.x_cens_grat_16to
+            )
+    
+    # Método para establecer fechas automáticamente
+    @api.onchange('employee_id')
+    def _onchange_employee_id_liquidacion(self):
+        """Establece fechas automáticamente cuando se selecciona el empleado"""
+        if self.employee_id:
+            # Fecha de inicio: fecha de contratación del empleado
+            if hasattr(self.employee_id, 'contract_ids') and self.employee_id.contract_ids:
+                primer_contrato = self.employee_id.contract_ids.sorted('date_start')[0]
+                self.x_cens_periodo_ini = primer_contrato.date_start
+            
+            # Fecha fin: fecha actual o fecha de fin del período de nómina
+            if self.date_to:
+                self.x_cens_periodo_fin = self.date_to
+            else:
+                self.x_cens_periodo_fin = date.today()
+    
+    # Método para calcular automáticamente valores desde las líneas de nómina
+    def calcular_valores_desde_nomina(self):
+        """Calcula los valores de liquidación desde las líneas de nómina"""
+        self.ensure_one()
+        
+        # Buscar remuneración base en las líneas
+        linea_sueldo = self.line_ids.filtered(lambda l: l.code == 'BASIC')
+        if linea_sueldo:
+            self.x_cens_remu_base = linea_sueldo[0].total
+        
+        # Buscar asignación familiar
+        linea_asig_fam = self.line_ids.filtered(lambda l: l.code in ['ASIG_FAM', 'AF'])
+        if linea_asig_fam:
+            self.x_cens_asig_fami = linea_asig_fam[0].total
+        
+        return True
+
+    # ===============================================================================================
+    # FIN - Campos liquidación
+    # ===============================================================================================
+
 
     def action_recalcula_bbss(self):
         """
