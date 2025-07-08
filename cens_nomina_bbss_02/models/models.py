@@ -16,17 +16,17 @@ class HrPayslip(models.Model):
        
     x_cens_periodo_ini = fields.Date(string='Período Inicio', help='Fecha de inicio del período de liquidación')
     x_cens_periodo_fin = fields.Date(string='Período Fin', help='Fecha de fin del período de liquidación')
-    x_cens_periodo_aa  = fields.Integer(string='Años', compute='_compute_tiempo_servicio', store=True, help='Años de servicio del empleado')    
-    x_cens_periodo_mm  = fields.Integer(string='Meses', compute='_compute_tiempo_servicio', store=True, help='Meses de servicio del empleado')
-    x_cens_periodo_dd  = fields.Integer(string='Días', compute='_compute_tiempo_servicio', store=True, help='Días de servicio del empleado')
-    x_cens_ctotal_timeserv = fields.Float(string='Total Tiempo Servicio', compute='_compute_totales_tiempo', store=True, help='Total de tiempo de servicio en años')    
-    x_cens_ctotal_tnocomp  = fields.Float(string='Total Tiempo No Computable', default=0.0, help='Tiempo no computable para beneficios')
-    x_cens_ctotal_tliqui   = fields.Float(string='Total Tiempo Liquidación', compute='_compute_totales_tiempo', store=True, help='Tiempo total para liquidación')
+    x_cens_periodo_aa  = fields.Integer(string='Años', store=True, help='Años de servicio del empleado')    
+    x_cens_periodo_mm  = fields.Integer(string='Meses', store=True, help='Meses de servicio del empleado')
+    x_cens_periodo_dd  = fields.Integer(string='Días', store=True, help='Días de servicio del empleado')
+    x_cens_ctotal_timeserv = fields.Char(string='Tiempo Total Servicio', default='00 años, 00 meses, 00 días', store=True, help='Tiempo total de servicio en años')    
+    x_cens_ctotal_tnocomp  = fields.Char(string='Tiempo No Computable', default='00 años, 00 meses, 00 días', store=True, help='Tiempo no computable para beneficios')
+    x_cens_ctotal_tliqui   = fields.Char(string='Tiempo Liquidación', default='00 años, 00 meses, 00 días', store=True, help='Tiempo total para liquidación')
     x_cens_remu_base = fields.Monetary(string='Remuneración Base', currency_field='currency_id', help='Remuneración base del empleado')
     x_cens_asig_fami = fields.Monetary(string='Asignación Familiar', currency_field='currency_id', help='Asignación familiar del empleado')
-    x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', compute='_compute_gratificacion', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
-    x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
-    x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', compute='_compute_remuneracion_computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
+    x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
+    x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', store=True, currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
+    x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
     
     # ===============================================================================================
     # INICIO - Campos liquidación
@@ -42,26 +42,21 @@ class HrPayslip(models.Model):
                 fecha_fin = record.x_cens_periodo_fin
                 
                 # Calcular diferencia usando relativedelta
-                diff = relativedelta(fecha_fin, fecha_ini)
-                
-                record.x_cens_periodo_aa = diff.years
-                record.x_cens_periodo_mm = diff.months
-                record.x_cens_periodo_dd = diff.days
             else:
                 record.x_cens_periodo_aa = 0
                 record.x_cens_periodo_mm = 0
                 record.x_cens_periodo_dd = 0
     
-    @api.depends('x_cens_periodo_aa', 'x_cens_periodo_mm', 'x_cens_periodo_dd', 'x_cens_ctotal_tnocomp')
-    def _compute_totales_tiempo(self):
-        """Calcula los totales de tiempo de servicio"""
-        for record in self:
-            # Convertir todo a años decimales
-            tiempo_total = record.x_cens_periodo_aa + (record.x_cens_periodo_mm / 12.0) + (record.x_cens_periodo_dd / 365.0)
-            record.x_cens_ctotal_timeserv = tiempo_total
-            
-            # Tiempo liquidable = tiempo total - tiempo no computable
-            record.x_cens_ctotal_tliqui = tiempo_total - record.x_cens_ctotal_tnocomp
+    #@api.depends('x_cens_periodo_aa', 'x_cens_periodo_mm', 'x_cens_periodo_dd', 'x_cens_ctotal_tnocomp')
+    #def _compute_totales_tiempo(self):
+    #    """Calcula los totales de tiempo de servicio"""
+    #    for record in self:
+    #        # Convertir todo a años decimales
+    #        tiempo_total = record.x_cens_periodo_aa + (record.x_cens_periodo_mm / 12.0) + (record.x_cens_periodo_dd / 365.0)
+    #        record.x_cens_ctotal_timeserv = tiempo_total
+    #        
+    #        # Tiempo liquidable = tiempo total - tiempo no computable
+    #        record.x_cens_ctotal_tliqui = tiempo_total - record.x_cens_ctotal_tnocomp
     
     @api.depends('x_cens_remu_base')
     def _compute_gratificacion(self):
@@ -114,6 +109,17 @@ class HrPayslip(models.Model):
             self.x_cens_asig_fami = linea_asig_fam[0].total
         
         return True
+    
+    def action_liquidacion_compone(self):
+        self.ensure_one()
+        
+        pass
+
+    def action_liquidacion_blanquea(self):
+        self.ensure_one()
+        
+        pass
+
 
     # ===============================================================================================
     # FIN - Campos liquidación

@@ -94,6 +94,12 @@
                                colspan="2"/>
                     </group>
                     
+                    <group>
+                        <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
+                            <button name="action_liquidacion_compone"  string="Generar Lquidación" icon="fa-wrench" type="object" class="oe_highlight oe_button" style="flex: 1; max-width: 120px;" confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
+                            <button name="action_liquidacion_blanquea" string="Limpia datos" icon="fa-calculator" type="object" class="btn-danger oe_button" style="flex: 1; max-width: 150px;" confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
+                        </div>
+                    </group>
                 </page>
             </xpath>
         </field>
