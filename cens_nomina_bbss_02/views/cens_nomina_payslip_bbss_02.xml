@@ -26,6 +26,7 @@
                     </div>
                     
                     <!-- Contenido principal -->
+                    <separator string="DETALLES GENERALES" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group>
                         <group string="📅 Información del Período">
                             <field name="x_cens_periodo_ini" 
@@ -35,9 +36,9 @@
                                    string="Período Fin"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
                         </group>
-                        <group string="🕒 Detalle del Período">
+                        <group string="🕒 Detalle del Tiempo de Servicio">
                             <field name="x_cens_periodo_aa" 
-                                   string="Años de Servicio"
+                                   string="Años"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
                             <field name="x_cens_periodo_mm" 
                                    string="Meses"
@@ -47,10 +48,7 @@
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
                         </group>
                         
-                    </group>
-                    
-                    <separator string="Cálculos de Remuneración"/>
-                    
+                    </group>                 
                     <group>
                         <group string="⏱️ Totales de Tiempo">
                             <field name="x_cens_ctotal_timeserv" 
@@ -82,21 +80,29 @@
                                    class="oe_subtotal_footer_separator"/>
                         </group>
                     </group>
-                    <group string="🧮 LIQUIDACIÓN CTS">
-                        <group string="⏱️ Descripción">
+                    <separator/>
+                    <separator string="🧮 LIQUIDACIÓN CTS" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group>
+                        <group> 
+                            <separator string="⏱️ Descripción"/>
                         </group>
-                        <group string="💰 Importes">
+                        <group>
+                            <separator string="💰 Importes"/>
                         </group>
                     </group>
                     <separator/>
-                    <group string="🧮 LIQUIDACIÓN VACACIONES">
-                        <group string="⏱️ Descripción">
+                    <separator string="🧮 LIQUIDACIÓN VACACIONES" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group>
+                        <group> 
+                            <separator string="⏱️ Descripción"/>
                         </group>
-                        <group string="💰 Importes">
+                        <group>
+                            <separator string="💰 Importes"/>
                         </group>
                     </group>
                     <separator/>
-                    <group string="🧮 LIQUIDACIÓN GRATIFICACIÓN">
+                    <separator string="🧮 LIQUIDACIÓN GRATIFICACIONES" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group>
                         <group string="⏱️ Descripción">
                         </group>
                         <group string="💰 Importes">
@@ -104,8 +110,8 @@
                     </group>
                     <separator/>
                     <!-- Sección de observaciones -->
-                    <group string="📝 Observaciones de Liquidación"
-                           attrs="{'invisible': [('x_studio_cesado', '=', False)]}">
+                    <separator string="📝 OBSERVACIONES DE LIQUIDACIÓN" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group>
                         <field name="note" 
                                string="Observaciones"
                                placeholder="Ingrese observaciones adicionales sobre la liquidación..."
@@ -120,8 +126,22 @@
                             <div>
                             </div>
                             <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
-                                <button name="action_liquidacion_compone"  string=" Generar Liquidación" icon="fa-wrench" type="object" class="oe_highlight oe_button" style="flex: 1; max-width: 120px;" confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
-                                <button name="action_liquidacion_blanquea" string=" Limpia datos" icon="fa-calculator" type="object" class="btn-danger oe_button" style="flex: 1; max-width: 120px;" confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
+                                <button 
+                                    name="action_liquidacion_compone"  
+                                    string=" Generar Liquidación" 
+                                    type="object"
+                                    class="oe_stat_button" 
+                                    icon="fa-whatsapp"
+                                    style="color: #25D366;" 
+                                    confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
+                                <button 
+                                    name="action_liquidacion_blanquea" 
+                                    string=" Limpia datos" 
+                                    icon="fa-calculator" 
+                                    type="object" 
+                                    class="btn-danger oe_button" 
+                                    style="flex: 1; max-width: 120px;" 
+                                    confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
                             </div>
                         </group>
                     </group>
@@ -152,6 +172,12 @@
 
 
 <!--
+
+                                    icon="fa-wrench" 
+                                    class="oe_highlight oe_button" 
+                                    style="flex: 1; max-width: 120px;"
+
+
 
     <record id="view_hr_payslip_form_bbss_inherit" model="ir.ui.view">
         <field name="name">hr.payslip.form.bbss.inherit</field>
