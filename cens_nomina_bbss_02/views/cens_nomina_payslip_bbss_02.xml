@@ -34,6 +34,8 @@
                             <field name="x_cens_periodo_fin" 
                                    string="Período Fin"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                        </group>
+                        <group string="🕒 Detalle del Período">
                             <field name="x_cens_periodo_aa" 
                                    string="Años de Servicio"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
@@ -45,6 +47,11 @@
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
                         </group>
                         
+                    </group>
+                    
+                    <separator string="Cálculos de Remuneración"/>
+                    
+                    <group>
                         <group string="⏱️ Totales de Tiempo">
                             <field name="x_cens_ctotal_timeserv" 
                                    string="Total Tiempo de Servicio"
@@ -56,11 +63,6 @@
                                    string="Total Tiempo para Liquidación"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
                         </group>
-                    </group>
-                    
-                    <separator string="Cálculos de Remuneración"/>
-                    
-                    <group>
                         <group string="💰 Remuneraciones Base">
                             <field name="x_cens_remu_base" 
                                    string="Remuneración Base"
@@ -71,9 +73,6 @@
                             <field name="x_cens_grat_16to" 
                                    string="Gratificación 1/6"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
-                        </group>
-                        
-                        <group string="🧮 Totales Calculados">
                             <field name="x_cens_none_remu" 
                                    string="Conceptos No Remunerativos"
                                    attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
@@ -98,6 +97,8 @@
                         <group name="group_foot_left">
                         </group>
                         <group name="group_foot_right">
+                            <div>
+                            </div>
                             <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
                                 <button name="action_liquidacion_compone"  string="Generar Liquidación" icon="fa-wrench" type="object" class="oe_highlight oe_button" style="flex: 1; max-width: 120px;" confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
                                 <button name="action_liquidacion_blanquea" string="Limpia datos" icon="fa-calculator" type="object" class="btn-danger oe_button" style="flex: 1; max-width: 150px;" confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
