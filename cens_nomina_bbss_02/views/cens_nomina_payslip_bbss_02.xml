@@ -130,16 +130,16 @@
                                     name="action_liquidacion_compone"  
                                     string=" Generar Liquidación" 
                                     type="object"
-                                    class="oe_stat_button" 
+                                    class="oe_highlight oe_stat_button" 
                                     icon="fa-whatsapp"
                                     style="color: #25D366;" 
                                     confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
                                 <button 
                                     name="action_liquidacion_blanquea" 
                                     string=" Limpia datos" 
-                                    icon="fa-calculator" 
                                     type="object" 
                                     class="btn-danger oe_button" 
+                                    icon="fa-calculator"
                                     style="flex: 1; max-width: 120px;" 
                                     confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
                             </div>
