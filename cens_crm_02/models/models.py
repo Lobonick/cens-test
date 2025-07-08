@@ -16,9 +16,13 @@ class CRMLead(models.Model):
     cens_control_02 = fields.Char("Control 02:")
     cens_usuario_activo_id = fields.Integer(
         string='Usuario Activo', 
+        default=0,
         compute='_compute_usuario_activo_id',
         store=False  # No almacenar en la BD
     )
+    #cens_img_aprueba_00 = fields.Binary(string="Estado Aprobación", related='company_id.x_studio_crm_aprueba_00', store='False')
+    #cens_img_aprueba_01 = fields.Binary(string="Estado Aprobación", related='company_id.x_studio_crm_aprueba_01', store='False')
+    #cens_img_aprueba_02 = fields.Binary(string="Estado Aprobación", related='company_id.x_studio_crm_aprueba_02', store='False')
     
     # ------------------------------
     # ACTUALIZA USUARIO ACTIVO
@@ -27,6 +31,104 @@ class CRMLead(models.Model):
         for record in self:
             record.cens_usuario_activo_id = self.env.user.id
             record.x_studio_usuario_activo_id = self.env.user.id
+
+    # ------------------------------
+    # MARCA LEADS EXTEMPORÁNEOS
+    # ------------------------------
+    def action_marca_extemporaneos(self):
+        # Verificar acceso de usuario directamente sin usar campos computados
+        if self.env.user.id not in [2, 8]:
+            raise UserError(_('No tiene permisos para realizar esta acción.'))
+        
+        # Buscar todas las oportunidades que cumplan con los criterios
+        # - Estado seleccionado = "Abierto"
+        # - Fecha de oportunidad < 2025
+        domain = [
+            ('x_studio_estado_seleccionado', '=', 'Abierto'),
+            ('x_studio_fecha_de_oportunidad', '<', '2025-01-01')
+        ]
+        
+        # Obtener los registros que cumplen con el criterio
+        leads_to_mark = self.env['crm.lead'].search(domain)
+        
+        # Contador para estadísticas
+        count_updated = 0
+        
+        # Marcar como extemporáneas
+        for lead in leads_to_mark:
+            lead.write({'x_cens_on_extemporanea': True})
+            count_updated += 1
+            
+        # Log para fines de auditoría
+        _logger.info('Usuario %s (ID: %s) marcó %s oportunidades como extemporáneas', 
+                    self.env.user.name, self.env.user.id, count_updated)
+        
+        # Notificación al usuario
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Éxito'),
+                'message': _('%s registros marcados como extemporáneos correctamente.') % count_updated,
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+
+    # ------------------------------
+    # AUTORIZA PROPUESTA ECONÓMICA
+    # ------------------------------
+    def action_autoriza_propuesta(self):
+        # Verificar acceso de usuario directamente sin usar campos computados
+        if self.env.user.id not in [2, 8]:
+            raise UserError(_('No tiene permisos para realizar esta acción.'))
+           
+        # Log para fines de auditoría
+        #_logger.info('Usuario %s (ID: %s) marcó %s oportunidades como extemporáneas', 
+        #            self.env.user.name, self.env.user.id, count_updated)
+        
+        # Notificación al usuario
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Éxito'),
+                'message': _('La Propuesta Económica fue AUTORIZADA correctamente.'),
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+
+
+    # ------------------------------
+    # ENVÍA SOLICITUD DE APROBACIÓN
+    # ------------------------------
+    def action_solicita_aprobacion(self):
+        # Verificar acceso de usuario directamente
+        if self.env.user.id not in [2, 8]:
+            raise UserError(_('No tiene permisos para realizar esta acción.'))
+                
+        # Contador para estadísticas
+        count_updated = 0
+        # -------------------------------
+        # Procesa envío de la Solicitud
+        # -------------------------------
+        # Log para fines de auditoría
+        _logger.info('Usuario %s (ID: %s) marcó %s oportunidades como extemporáneas', 
+                    self.env.user.name, self.env.user.id, count_updated)
+        
+        # Notificación al usuario
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Éxito'),
+                'message': _('%s solicitud de Aprobación de Propuesta Económica.') % count_updated,
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+
 
     # ------------------------------
     # CARGA IMAGEN DESDE URL
@@ -64,9 +166,9 @@ class CRMLead(models.Model):
         attachment = self.env['ir.attachment'].create(attachment_vals)
         return attachment.id
     
-    # ------------------------------
+    # ------------------------------------------
     # REGISTRAR MENSAJE CON IMAGEN ADJUNTA
-    # ------------------------------
+    # ------------------------------------------
     def agregar_imagen_como_mensaje(self):
         for record in self:
             attachment_id = record._crear_adjunto_imagen()
@@ -106,9 +208,9 @@ class CRMLead(models.Model):
                 }
             }
     
-    # ------------------------------
-    # ENVIAR CORREO DE ALERTA
-    # ------------------------------
+    # ----------------------------------------------------
+    # ENVIAR CORREO DE ALERTA - SOLICITA CAMBIO A GANADA
+    # ----------------------------------------------------
     def enviar_correo_solicita_ganada(self):
         self.ensure_one()
         template_id = self.env.ref('studio_customization.alerta_solicita_opor_ac464d32-6b47-4809-9432-b0fba3a7ebf4')
@@ -125,9 +227,9 @@ class CRMLead(models.Model):
             _logger.error('Error al enviar correo de SOLICITUD: %s', str(e))
             return False
 
-    # ------------------------------
-    # ENVIAR CORREO DE ALERTA
-    # ------------------------------
+    # --------------------------------------------
+    # ENVIAR CORREO DE ALERTA - NUEVA OPORTUNIDAD
+    # --------------------------------------------
     def enviar_correo_alerta(self):
         self.ensure_one()
         template_id = self.env.ref('studio_customization.alerta_nueva_oportun_22e58b58-24a7-42ad-ad6b-dc23df4cb1c5')
