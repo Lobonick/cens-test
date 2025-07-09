@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, Warning
 from odoo.tools.mail import email_split
 from datetime import datetime
 import requests
