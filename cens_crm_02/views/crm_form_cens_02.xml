@@ -79,5 +79,5 @@
                   icon="fa-whatsapp" 
                   style="color: #25D366;" 
                   attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_porcentaje_probabilidad&quot;,&quot;!=&quot;,&quot;100&quot;], [&quot;x_studio_estado_seleccionado&quot;,&quot;=&quot;,&quot;Ganada&quot;]]}" 
-                  confirm="¿Seguro de ENVIAR solicitu vía WhatsApp?"/>
+                  confirm="¿Seguro de ENVIAR solicitud vía WhatsApp?"/>
 -->

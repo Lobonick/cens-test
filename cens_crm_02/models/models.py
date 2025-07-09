@@ -234,10 +234,10 @@ class CRMLead(models.Model):
         self.ensure_one()
         w_dato = "FALTA TERMINAR"
         if (w_dato == "FALTA TERMINAR"):
-            raise UserError(_("ALERTA: Este servicio se encuentra en pleno desarrollo \n"
-                              "  ⚠️    y muy pronto estará disponible para que sus \n"
-                              "        solicitudes de cambio de estatus a GANADA, lleguen \n"
-                              "        directamente a los WhatsApp de los PMO.🚧 \n"
+            raise Warning(_("ALERTA:  Este servicio se encuentra en pleno desarrollo \n"
+                              "  ⚠️     y muy pronto estará disponible para que sus \n"
+                              "         solicitudes de cambio de estatus a GANADA, lleguen \n"
+                              "         directamente a los WhatsApp de los PMO.🚧 \n"
                               ))
             
         try:
