@@ -227,14 +227,15 @@ class CRMLead(models.Model):
             _logger.error('Error al enviar correo de SOLICITUD: %s', str(e))
             return False
 
+    # ----------------------------------------------------
+    # ENVIAR WHATSA DE ALERTA - SOLICITA CAMBIO A GANADA
+    # ----------------------------------------------------
     def enviar_whatsa_solicita_ganada(self):
         self.ensure_one()
-        template_id = self.env.ref('studio_customization.alerta_solicita_opor_ac464d32-6b47-4809-9432-b0fba3a7ebf4')
-        if not template_id:
-            _logger.error('No se encontró la plantilla de correo con ID XML: studio_customization.alerta_solicita_opor_ac464d32-6b47-4809-9432-b0fba3a7ebf4')
-            return False
+        w_dato = "FALTA TERMINAR"
+        if (w_dato == "FALTA TERMINAR"):
+            raise UserError(_('Sólo se APLICA a Oportunudades de Negocio GANADAS.'))
             
-        # Enviar correo usando la plantilla
         try:
             # template_id.send_mail(self.id, force_send=True)
             _logger.info('Correo de SOLICITUD CAMBIO DE ESTADO fue enviado correctamente  (ID: %s)', self.id)
@@ -243,7 +244,23 @@ class CRMLead(models.Model):
             _logger.error('Error al enviar correo de SOLICITUD: %s', str(e))
             return False
     
-
+    def _get_save_error_message(self):
+        """Genera el mensaje de error específico para cada caso"""
+        self.ensure_one()
+        
+        w_proyectos_count = len(self.x_studio_proyectos_vinculados)
+        w_tipo_contrato = self.x_studio_tipo_contrato
+        
+        if not w_tipo_contrato:
+            return _(
+                "ALERTA: No se puede guardar el registro:\n"
+                "--------\n"
+                "• Debe seleccionar un tipo de contrato válido.\n"
+                "• Actualmente tiene %s proyecto(s) vinculado(s).\n"
+                "• Seleccione el tipo de contrato apropiado antes de continuar."
+            ) % w_proyectos_count
+        
+ 
     # --------------------------------------------
     # ENVIAR CORREO DE ALERTA - NUEVA OPORTUNIDAD
     # --------------------------------------------

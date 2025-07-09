@@ -72,12 +72,12 @@
                         class="btn-danger oe_button"
                         class="oe_highlight oe_button"
 
-                    <button name="enviar_whatsa_solicita_ganada"  
-                        string=" Solicitar x WhatsApp" 
-                        type="object"
-                        class="oe_highlight oe_stat_button" 
-                        icon="fa-whatsapp"
-                        style="color: #25D366;" 
-                        confirm="¿Seguro de ENVIAR solicitu vía WhatsApp?"/>
-
+                <button name="enviar_whatsa_solicita_ganada" 
+                  string=" Solicitar x WhatsApp" 
+                  type="object" 
+                  class="oe_highlight oe_stat_button" 
+                  icon="fa-whatsapp" 
+                  style="color: #25D366;" 
+                  attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_porcentaje_probabilidad&quot;,&quot;!=&quot;,&quot;100&quot;], [&quot;x_studio_estado_seleccionado&quot;,&quot;=&quot;,&quot;Ganada&quot;]]}" 
+                  confirm="¿Seguro de ENVIAR solicitu vía WhatsApp?"/>
 -->
