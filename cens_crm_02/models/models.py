@@ -236,7 +236,7 @@ class CRMLead(models.Model):
         return {
             'name': _('SERVICIO DE ENVÍO WHATSAPP'), 
             'type': 'ir.actions.act_window',
-            'res_model': 'whatsapp.info.dialog',
+            'res_model': 'crm.lead',        # whatsapp.info.dialog
             'view_mode': 'form',
             'target': 'new',
             'context': {
