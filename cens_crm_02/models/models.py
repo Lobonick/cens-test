@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
+from odoo.exceptions import UserError, ValidationError, Warning
 from odoo.tools.mail import email_split
 from datetime import datetime
 import requests
@@ -232,38 +232,23 @@ class CRMLead(models.Model):
     # ----------------------------------------------------
     def enviar_whatsa_solicita_ganada(self):
         self.ensure_one()
-        w_dato = "FALTA TERMINAR"
-        if (w_dato == "FALTA TERMINAR"):
-            raise Warning(_("ALERTA:  Este servicio se encuentra en pleno desarrollo \n"
-                              "  ⚠️     y muy pronto estará disponible para que sus \n"
-                              "         solicitudes de cambio de estatus a GANADA, lleguen \n"
-                              "         directamente a los WhatsApp de los PMO.🚧 \n"
-                              ))
+        
+        return {
+            'name': _('SERVICIO DE ENVÍO WHATSAPP'), 
+            'type': 'ir.actions.act_window',
+            'res_model': 'whatsapp.info.dialog',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_message': _("ALERTA:  Este servicio se encuentra en pleno desarrollo \n"
+                                    "   ⚠️     y muy pronto estará disponible para que sus \n"
+                                    "          solicitudes de cambio de estatus a GANADA lleguen \n"
+                                    "          directamente a los WhatsApp de los PMO.🚧 \n"
+                            ),
+                'default_lead_id': self.id,
+            }
+        }
             
-        try:
-            # template_id.send_mail(self.id, force_send=True)
-            _logger.info('Correo de SOLICITUD CAMBIO DE ESTADO fue enviado correctamente  (ID: %s)', self.id)
-            return True
-        except Exception as e:
-            _logger.error('Error al enviar correo de SOLICITUD: %s', str(e))
-            return False
-    
-    def _get_save_error_message(self):
-        """Genera el mensaje de error específico para cada caso"""
-        self.ensure_one()
-        
-        w_proyectos_count = len(self.x_studio_proyectos_vinculados)
-        w_tipo_contrato = self.x_studio_tipo_contrato
-        
-        if not w_tipo_contrato:
-            return _(
-                "ALERTA: No se puede guardar el registro:\n"
-                "--------\n"
-                "• Debe seleccionar un tipo de contrato válido.\n"
-                "• Actualmente tiene %s proyecto(s) vinculado(s).\n"
-                "• Seleccione el tipo de contrato apropiado antes de continuar."
-            ) % w_proyectos_count
-        
  
     # --------------------------------------------
     # ENVIAR CORREO DE ALERTA - NUEVA OPORTUNIDAD
