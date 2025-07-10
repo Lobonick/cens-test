@@ -20,7 +20,7 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
 	'category': 'Sales/CRM',
- 	'version': '16.0.1.47',
+ 	'version': '16.0.1.48',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
@@ -37,6 +37,7 @@
 	'data': [
         'security/ir.model.access.csv',
         'views/crm_form_cens_02.xml',
+        'wizards/whatsapp_info_dialog_views.xml',
         ],
 
     'images': [
