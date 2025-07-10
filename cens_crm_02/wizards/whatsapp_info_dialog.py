@@ -41,37 +41,37 @@ class WhatsAppInfoDialog(models.TransientModel):
             _logger.info(f'MÓDULO:  {module_name}')
             _logger.info(f'ESTADO:  {module.state}')
             
-            if module.state == 'installed':     # module and 
-                # Construir ruta a la imagen
-                addon_path = self.env['ir.module.module'].get_module_path(module_name)
-                image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
-                
-                _logger.info(f'LOG - Carga de Imagen')
-                _logger.info(f'---------------------------------------------------------')
-                _logger.info('module_name  (value: %s)', module_name)
-                _logger.info('module.state (value: %s)', module.state)
-                _logger.info('addon_path  (value: %s)', addon_path)
-                _logger.info('image_path  (value: %s)', image_path)
-                _logger.info('---------------------------------------------------------')
+            #if module.state == 'installed':     # module and 
+            # Construir ruta a la imagen
+            addon_path = self.env['ir.module.module'].get_module_path(module_name)
+            image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
+            
+            _logger.info(f'LOG - Carga de Imagen')
+            _logger.info(f'---------------------------------------------------------')
+            _logger.info('module_name  (value: %s)', module_name)
+            _logger.info('module.state (value: %s)', module.state)
+            _logger.info('addon_path  (value: %s)', addon_path)
+            _logger.info('image_path  (value: %s)', image_path)
+            _logger.info('---------------------------------------------------------')
 
-                # Intentar leer la imagen
-                if os.path.exists(image_path):
-                    with open(image_path, 'rb') as image_file:
-                        return base64.b64encode(image_file.read())
-                else:
-                    # Si no existe, intentar con otros nombres comunes
-                    alternative_names = [
-                        'logo-whatsapp_03.png',
-                        'logo-whatsapp_02.png', 
-                        'logo-modulos.ico',
-                        'logo-modulos.png'
-                    ]
-                    
-                    for alt_name in alternative_names:
-                        alt_path = os.path.join(addon_path, 'static', 'description', alt_name)
-                        if os.path.exists(alt_path):
-                            with open(alt_path, 'rb') as image_file:
-                                return base64.b64encode(image_file.read())
+            # Intentar leer la imagen
+            if os.path.exists(image_path):
+                with open(image_path, 'rb') as image_file:
+                    return base64.b64encode(image_file.read())
+            else:
+                # Si no existe, intentar con otros nombres comunes
+                alternative_names = [
+                    'logo-whatsapp_03.png',
+                    'logo-whatsapp_02.png', 
+                    'logo-modulos.ico',
+                    'logo-modulos.png'
+                ]
+                
+                for alt_name in alternative_names:
+                    alt_path = os.path.join(addon_path, 'static', 'description', alt_name)
+                    if os.path.exists(alt_path):
+                        with open(alt_path, 'rb') as image_file:
+                            return base64.b64encode(image_file.read())
             
             # Si no se puede cargar imagen del módulo, usar una imagen por defecto
             return self._get_default_placeholder_image()
