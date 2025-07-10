@@ -60,7 +60,7 @@ class crm_lead_Custom(models.Model):
                 # Máximo 1 proyecto
                 record.save_ok = w_proyectos_count <= 1
             elif w_tipo_contrato == 'pip':
-                # Máximo 1 proyecto
+                # Máximo 3 proyectos
                 record.save_ok = w_proyectos_count <= 3
             elif w_tipo_contrato == 'marco':
                 # Sin límite
@@ -145,26 +145,39 @@ class crm_lead_Custom(models.Model):
         """Override del método write para validar antes de escribir"""
         # Validar antes de escribir
         self._validate_before_save()
-        
-        # Aplicar los cambios temporalmente para validación
-        for record in self:
-            # Crear un registro temporal con los nuevos valores
-            temp_vals = dict(vals)
-            temp_record = record.copy_data()[0]
-            temp_record.update(temp_vals)
+        try:
+            # Aplicar los cambios temporalmente para validación
+            for record in self:
+                # Crear un registro temporal con los nuevos valores
+                temp_vals = dict(vals)
+                temp_record = record.copy_data()[0]
+                temp_record.update(temp_vals)
+                
+                # Crear un nuevo registro temporal para validación
+                new_record = self.new(temp_record)
+                
+                if not new_record.save_ok:
+                    error_message = new_record._get_save_error_message()
+                    raise ValidationError(_(
+                        "No se puede guardar el registro '%s':\n\n%s"
+                    ) % (record.name or 'Sin nombre', error_message))
             
-            # Crear un nuevo registro temporal para validación
-            new_record = self.new(temp_record)
-            
-            if not new_record.save_ok:
-                error_message = new_record._get_save_error_message()
-                raise ValidationError(_(
-                    "No se puede guardar el registro '%s':\n\n%s"
-                ) % (record.name or 'Sin nombre', error_message))
+            # Si todas las validaciones pasan, escribir los cambios
+            result = super(crm_lead_Custom, self).write(vals)
+            return result
         
-        # Si todas las validaciones pasan, escribir los cambios
-        result = super(crm_lead_Custom, self).write(vals)
-        return result
+        except ValidationError as e:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Error de Validación'),
+                    'message': str(e),
+                    'type': 'danger',
+                    'sticky': True,
+                }
+            }
+        
     
     def action_save_with_validation(self):
         """Método personalizado para guardar con validación explícita"""
