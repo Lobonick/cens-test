@@ -78,6 +78,13 @@ class WhatsAppInfoDialog(models.TransientModel):
             
         except Exception as e:
             # En caso de error, usar placeholder
+            _logger.info(f'LOG - Carga de Imagen')
+            _logger.info(f'---------------------------------------------------------')
+            _logger.info('module_name  (value: %s)', module_name)
+            _logger.info('module.state (value: %s)', module.state)
+            _logger.info('addon_path  (value: %s)', addon_path)
+            _logger.info('image_path  (value: %s)', image_path)
+            _logger.info('---------------------------------------------------------')
             return self._get_default_placeholder_image()
     
     def _get_default_placeholder_image(self):
