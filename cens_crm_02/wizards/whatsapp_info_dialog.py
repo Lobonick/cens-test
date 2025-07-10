@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import base64
 import os
 import logging
@@ -77,20 +78,11 @@ class WhatsAppInfoDialog(models.TransientModel):
             return self._get_default_placeholder_image()
             
         except Exception as e:
+            raise UserError(_('Error al buscar la IMAGEN: %s') % str(e))
             # En caso de error, usar placeholder
-            module_name = 'cens_crm_02' 
-            # module = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
-            addon_path = self.env['ir.module.module'].get_module_path(module_name)
-            image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
-            _logger.info(f'LOG - Carga de Imagen')
-            _logger.info(f'---------------------------------------------------------')
-            _logger.info('module_name  (value: %s)', module_name)
-            _logger.info('module.state (value: %s)', module.state)
-            _logger.info('addon_path  (value: %s)', addon_path)
-            _logger.info('image_path  (value: %s)', image_path)
-            _logger.info('---------------------------------------------------------')
             return self._get_default_placeholder_image()
-    
+
+
     def _get_default_placeholder_image(self):
         """Crear una imagen placeholder simple si no se encuentra la imagen real"""
         try:
