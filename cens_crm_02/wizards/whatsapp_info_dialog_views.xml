@@ -100,12 +100,12 @@
                                 <div style="background-color: rgba(255,255,255,0.15); 
                                            padding: 15px; border-radius: 12px; text-align: left;">
                                     <div style="font-weight: bold; margin-bottom: 10px;">
-                                        🎉 Nueva Oportunidad GANADA
+                                        🎉 Solicitud cambio de estatus a GANADA
                                     </div>
                                     <div style="line-height: 1.4;">
                                         <strong>Cliente:</strong> [Nombre Cliente]<br/>
                                         <strong>Valor:</strong> S/ [Monto]<br/>
-                                        <strong>Responsable:</strong> [Usuario]<br/>
+                                        <strong>Responsable:</strong> [Usuario GDN]<br/>
                                         <strong>Fecha:</strong> [Hoy]<br/><br/>
                                         <em>¿Confirmas recepción? 👍</em>
                                     </div>
@@ -139,19 +139,20 @@
                             class="btn-secondary"
                             style="padding: 8px 16px;"/>
                     
-                    <!-- Botón de información -->
+                    <!-- Botón de información 
                     <button string="📞 Contactar Soporte" 
                             name="action_contact_support" 
                             type="object" 
                             class="btn-info"
                             style="padding: 8px 16px;"/>
-                    
-                    <!-- Botón adicional -->
+                    -->
+                    <!-- Botón adicional 
                     <button string="🗺️ Ver Roadmap" 
                             name="action_view_roadmap" 
                             type="object" 
                             class="btn-link"
                             style="padding: 8px 16px;"/>
+                    -->
                 </footer>
             </form>
         </field>

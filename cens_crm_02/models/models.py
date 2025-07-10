@@ -236,14 +236,13 @@ class CRMLead(models.Model):
         return {
             'name': _('SERVICIO DE ENVÍO WHATSAPP'), 
             'type': 'ir.actions.act_window',
-            'res_model': 'whatsapp.info.dialog',   
+            'res_model': 'whatsapp.info.dialog', 
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_message': _("ALERTA:  Este servicio se encuentra en pleno desarrollo \n"
-                                    "   ⚠️     y muy pronto estará disponible para que sus \n"
-                                    "          solicitudes de cambio de estatus a GANADA lleguen \n"
-                                    "          directamente a los WhatsApp de los PMO.🚧 \n"
+                'default_message': _("ALERTA:  Este servicio se encuentra en pleno desarrollo y muy pronto estará \n"
+                                    "disponible para que sus solicitudes de cambio de estatus a GANADA lleguen \n"
+                                    "directamente a los WhatsApp de los PMO.🚧 \n"
                             ),
                 'default_lead_id': self.id,
             }

@@ -19,7 +19,7 @@ class WhatsAppInfoDialog(models.TransientModel):
     # Campo para mostrar nombre del archivo de imagen
     whatsapp_image_name = fields.Char(
         string='Nombre de Imagen',
-        default='whatsapp-logo.jpg',
+        default='logo-whatsapp_03.png',
         readonly=True
     )
     
@@ -40,7 +40,7 @@ class WhatsAppInfoDialog(models.TransientModel):
             if module and module.state == 'installed':
                 # Construir ruta a la imagen
                 addon_path = self.env['ir.module.module'].get_module_path(module_name)
-                image_path = os.path.join(addon_path, 'static', 'description', 'logo-whatsapp_03.png')
+                image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
                 
                 # Intentar leer la imagen
                 if os.path.exists(image_path):
@@ -51,8 +51,8 @@ class WhatsAppInfoDialog(models.TransientModel):
                     alternative_names = [
                         'logo-whatsapp_03.png',
                         'logo-whatsapp_02.png', 
-                        'whatsapp-icon.jpg',
-                        'whatsapp-pmo.jpg'
+                        'logo-modulos.ico',
+                        'logo-modulos.png'
                     ]
                     
                     for alt_name in alternative_names:
