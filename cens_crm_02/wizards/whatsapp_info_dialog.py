@@ -61,10 +61,10 @@ class WhatsAppInfoDialog(models.TransientModel):
             else:
                 # Si no existe, intentar con otros nombres comunes
                 alternative_names = [
-                    'logo-whatsapp_03.png',
+                    'logo-whatsapp_03.png', 
                     'logo-whatsapp_02.png', 
-                    'logo-modulos.ico',
-                    'logo-modulos.png'
+                    'logo-modulos.ico', 
+                    'logo-modulos.png' 
                 ]
                 
                 for alt_name in alternative_names:
@@ -78,6 +78,8 @@ class WhatsAppInfoDialog(models.TransientModel):
             
         except Exception as e:
             # En caso de error, usar placeholder
+            module_name = 'cens_crm_02' 
+            # module = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
             addon_path = self.env['ir.module.module'].get_module_path(module_name)
             image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
             _logger.info(f'LOG - Carga de Imagen')
