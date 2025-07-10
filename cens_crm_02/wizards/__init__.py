@@ -1,1 +1,1 @@
-from . import cens_crm_02_wizard
+from . import whatsapp_info_dialog
