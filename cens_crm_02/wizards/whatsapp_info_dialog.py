@@ -41,13 +41,13 @@ class WhatsAppInfoDialog(models.TransientModel):
             _logger.info(f'MÓDULO:  {module_name}')
             _logger.info(f'ESTADO:  {module.state}')
             
-            if module and module.state == 'installed':
+            if module.state == 'installed':     # module and 
                 # Construir ruta a la imagen
                 addon_path = self.env['ir.module.module'].get_module_path(module_name)
                 image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
                 
-                _logger.info('LOG - Carga de Imagen')
-                _logger.info('---------------------------------------------------------')
+                _logger.info(f'LOG - Carga de Imagen')
+                _logger.info(f'---------------------------------------------------------')
                 _logger.info('module_name  (value: %s)', module_name)
                 _logger.info('module.state (value: %s)', module.state)
                 _logger.info('addon_path  (value: %s)', addon_path)
