@@ -34,55 +34,6 @@ class WhatsAppInfoDialog(models.TransientModel):
         readonly=True
     )
     
-    #def _get_default_whatsapp_image(self):
-    #    """Cargar imagen JPG desde el módulo"""
-    #    try:
-    #        # Obtener la ruta del módulo actual
-    #        module_name = 'cens_crm_02' 
-    #        module = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
-    #        _logger.info(f'MÓDULO:  {module_name}')
-    #        _logger.info(f'ESTADO:  {module.state}')
-    #        
-    #        if module.state == 'installed':     # module and 
-    #            # Construir ruta a la imagen
-    #            addon_path = self.env['ir.module.module'].get_module_path(module_name)
-    #            image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
-    #            
-    #            _logger.info(f'LOG - Carga de Imagen')
-    #            _logger.info(f'---------------------------------------------------------')
-    #            _logger.info('module_name  (value: %s)', module_name)
-    #            _logger.info('module.state (value: %s)', module.state)
-    #            _logger.info('addon_path  (value: %s)', addon_path)
-    #            _logger.info('image_path  (value: %s)', image_path)
-    #            _logger.info('---------------------------------------------------------')
-    #
-    #            # Intentar leer la imagen
-    #            if os.path.exists(image_path):
-    #                with open(image_path, 'rb') as image_file:
-    #                    return base64.b64encode(image_file.read())
-    #            else:
-    #                # Si no existe, intentar con otros nombres comunes
-    #                alternative_names = [
-    #                    'logo-whatsapp_03.png', 
-    #                    'logo-whatsapp_02.png', 
-    #                    'logo-modulos.ico', 
-    #                    'logo-modulos.png' 
-    #                ]
-    #                
-    #                for alt_name in alternative_names:
-    #                    alt_path = os.path.join(addon_path, 'static', 'description', alt_name)
-    #                    if os.path.exists(alt_path):
-    #                        with open(alt_path, 'rb') as image_file:
-    #                            return base64.b64encode(image_file.read())
-    #        
-    #        # Si no se puede cargar imagen del módulo, usar una imagen por defecto
-    #        return self._get_default_placeholder_image()
-    #        
-    #    except Exception as e:
-    #        raise UserError(_('Error al buscar la IMAGEN: %s') % str(e))
-    #        # En caso de error, usar placeholder
-    #        return self._get_default_placeholder_image()
-
     def _get_default_whatsapp_image(self):
         """Cargar imagen - Versión simplificada"""
         module_name = 'cens_crm_02'
@@ -141,9 +92,17 @@ class WhatsAppInfoDialog(models.TransientModel):
         # Por ejemplo, marcar como visto, enviar notificación, etc.
         
         # Opcional: Crear log de que el usuario vio el mensaje
+        #self.env['mail.message'].create({
+        #    'subject': f'Usuario {self.env.user.name} vio información WhatsApp PMO',
+        #    'body': f'El usuario visualizó el diálogo informativo para la oportunidad: {self.lead_id.name if self.lead_id else "N/A"}',
+        #    'model': 'crm.lead',
+        #    'res_id': self.lead_id.id if self.lead_id else False,
+        #    'message_type': 'notification',
+        #    'author_id': self.env.user.partner_id.id,
+        #})
         self.env['mail.message'].create({
-            'subject': f'Usuario {self.env.user.name} vio información WhatsApp PMO',
-            'body': f'El usuario visualizó el diálogo informativo para la oportunidad: {self.lead_id.name if self.lead_id else "N/A"}',
+            'subject': f'****** MUY PRONTO ******',
+            'body': f'La comuicación de solicitudes y aprobaciones con el PMO, también contará con una integración vía WhatsApp. Por el momento nos encontramos en IMPLEMENTACIÓN.',
             'model': 'crm.lead',
             'res_id': self.lead_id.id if self.lead_id else False,
             'message_type': 'notification',
