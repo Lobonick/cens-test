@@ -96,7 +96,7 @@ class WhatsAppInfoDialog(models.TransientModel):
                 return self._get_default_placeholder_image()
             
             # Imagen específica que buscas
-            image_path = os.path.join(addon_path, 'static', 'description', 'logo-whatsapp_03.png')
+            image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.ico')
             
             _logger.info('🔍 Buscando imagen en: %s', image_path)
             
