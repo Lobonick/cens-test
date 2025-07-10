@@ -38,6 +38,8 @@ class WhatsAppInfoDialog(models.TransientModel):
             # Obtener la ruta del módulo actual
             module_name = 'cens_crm_02' 
             module = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
+            _logger.info(f'MÓDULO:  {module_name}')
+            _logger.info(f'ESTADO:  {module.state}')
             
             if module and module.state == 'installed':
                 # Construir ruta a la imagen
