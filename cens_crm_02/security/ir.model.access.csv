@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cens_crm_button_effects_logger,access_cens_crm_button_effects_logger,model_cens_crm_button_effects_logger,base.group_user,1,0,0,0
+access_cens_crm_button_effects_logger_admin,access_cens_crm_button_effects_logger_admin,model_cens_crm_button_effects_logger,base.group_system,1,1,1,1
+access_whatsapp_info_dialog_user,whatsapp.info.dialog.user,model_whatsapp_info_dialog,base.group_user,1,1,1,1
+access_whatsapp_info_dialog_portal,whatsapp.info.dialog.portal,model_whatsapp_info_dialog,base.group_portal,1,0,0,0
+access_whatsapp_info_dialog_public,whatsapp.info.dialog.public,model_whatsapp_info_dialog,base.group_public,0,0,0,0
