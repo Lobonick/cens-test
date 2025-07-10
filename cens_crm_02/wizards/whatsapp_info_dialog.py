@@ -1,6 +1,8 @@
 from odoo import models, fields, api, _
 import base64
 import os
+import logging
+_logger = logging.getLogger(__name__)
 
 class WhatsAppInfoDialog(models.TransientModel):
     _name = 'whatsapp.info.dialog'
@@ -26,7 +28,7 @@ class WhatsAppInfoDialog(models.TransientModel):
     # Campo para título personalizado
     dialog_title = fields.Char(
         string='Título',
-        default='🚧 Servicio en Desarrollo',
+        default='🚧 Servicio en Desarrollo 🚧',
         readonly=True
     )
     
@@ -42,6 +44,14 @@ class WhatsAppInfoDialog(models.TransientModel):
                 addon_path = self.env['ir.module.module'].get_module_path(module_name)
                 image_path = os.path.join(addon_path, 'static', 'description', 'logo-modulos.png')
                 
+                _logger.info('LOG - Carga de Imagen')
+                _logger.info('---------------------------------------------------------')
+                _logger.info('module_name  (value: %s)', module_name)
+                _logger.info('module.state (value: %s)', module.state)
+                _logger.info('addon_path  (value: %s)', addon_path)
+                _logger.info('image_path  (value: %s)', image_path)
+                _logger.info('---------------------------------------------------------')
+
                 # Intentar leer la imagen
                 if os.path.exists(image_path):
                     with open(image_path, 'rb') as image_file:

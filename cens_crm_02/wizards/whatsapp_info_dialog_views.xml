@@ -20,12 +20,12 @@
                         <!-- Título y subtítulo -->
                         <div style="flex-grow: 1;">
                             <h1 style="color: #25D366; margin: 0; font-size: 24px;">
-                                <i class="fa fa-whatsapp" style="margin-right: 10px;"/>
+                                <!--  <i class="fa fa-whatsapp" style="margin-right: 10px;"/>  -->
                                 <field name="dialog_title" nolabel="1" readonly="1" 
                                        style="border: none; background: transparent; color: #25D366; font-weight: bold;"/>
                             </h1>
                             <h3 style="color: #666; margin: 5px 0 0 0; font-size: 16px;">
-                                📱 Notificación Automática PMO
+                                Notificación Automática PMO
                             </h3>
                         </div>
                     </div>
