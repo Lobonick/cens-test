@@ -4,9 +4,19 @@
         <field name="name">crm.lead.form.view.inherit</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-        <field name="priority">99</field>
+        <field name="priority">40</field>
         <field name="arch" type="xml">
-            
+            <xpath expr="//header" position="inside">
+                <button name="action_autoriza_propuesta" 
+                        class="oe_highlight" 
+                        string="Autoriza_Propuesta" 
+                        icon="fa-thumbs-up" 
+                        confirm="¿Está seguro de AUTORIZAR la Propuesta Económica?" 
+                        type="object"/> 
+            </xpath>
+        <!--
+            <field name="cens_crm_aprueba_00" options="{&quot;size&quot;:[0,270]}" widget="image" string="Estado Aprobación"/>
+        -->
             <xpath expr="//form[1]/sheet[1]/group[1]/group[not(@name)][1]/field[@name='tag_ids']" position="after">
                 <field name="cens_usuario_activo_id" string="Usuario Actual:" readonly="1"/>
                 <field name="cens_control_01" invisible="1"/>
@@ -14,9 +24,37 @@
             </xpath>
         </field>
     </record>
+
+    <record model="ir.ui.view" id="crm_lead_tree_cens_inherit">
+        <field name="name">crm.lead.tree.opportunity.cens_inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="priority">40</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_marca_extemporaneos" 
+                        class="oe_highlight" 
+                        string="Marca_Extemporáneos" 
+                        icon="fa-wrench" 
+                        confirm="¿Está seguro de MARCAR EXTEMPORÁNEOS?" 
+                        type="object"/> 
+            </xpath>
+        </field>
+    </record>
+ 
 </odoo>
 
 <!--
+            <xpath expr="//tree" position="inside">
+                <field name="cens_usuario_activo_id" invisible="1"/>
+            </xpath>
+
+  
+
+
+    attrs="{&quot;invisible&quot;: [[&quot;cens_usuario_activo_id&quot;,&quot;not in&quot;,[2,8]]]}"
+    effect="{&quot;message&quot;:&quot;Ya te respondemos!&quot;,&quot;img_url&quot;:&quot;/cens_crm_02/static/description/logo-modulos.ico&quot;,&quot;fadeout&quot;:&quot;medium&quot;}"
+
 
     <xpath expr="//form[1]/sheet[1]/group[1]/group[6]" position="inside">
 
@@ -34,4 +72,12 @@
                         class="btn-danger oe_button"
                         class="oe_highlight oe_button"
 
+                <button name="enviar_whatsa_solicita_ganada" 
+                  string=" Solicitar x WhatsApp" 
+                  type="object" 
+                  class="oe_highlight oe_stat_button" 
+                  icon="fa-whatsapp" 
+                  style="color: #25D366;" 
+                  attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;x_studio_porcentaje_probabilidad&quot;,&quot;!=&quot;,&quot;100&quot;], [&quot;x_studio_estado_seleccionado&quot;,&quot;=&quot;,&quot;Ganada&quot;]]}" 
+                  confirm="¿Seguro de ENVIAR solicitud vía WhatsApp?"/>
 -->

@@ -20,11 +20,12 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
 	'category': 'Sales/CRM',
- 	'version': '16.0.1.16',
+ 	'version': '16.0.1.64',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
     ], 
+
     'depends': [
         'crm',
         'mail',
@@ -34,7 +35,9 @@
     ],
 
 	'data': [
+        'security/ir.model.access.csv',
         'views/crm_form_cens_02.xml',
+        'wizards/whatsapp_info_dialog_views.xml',
         ],
 
     'images': [
@@ -47,6 +50,16 @@
     'external_dependencies': {
         'python': ['requests'],
     },
+
+    'assets': {
+        'web.assets_backend': [
+            'cens_crm_02/static/src/js/button_effects.js',
+            'cens_crm_02/static/src/scss/effects.scss',
+        ],
+    },
+    # 'static/src/scss/effects.scss',
+    # 'cens_crm_02/static/src/js/button_effects.js',
+
  	'installable': True,
 	'application': True,
 	'auto_install': False,

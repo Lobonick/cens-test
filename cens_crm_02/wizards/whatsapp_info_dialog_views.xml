@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista del wizard con botones personalizados e imagen JPG -->
+    <record id="view_whatsapp_info_dialog_form_custom" model="ir.ui.view">
+        <field name="name">whatsapp.info.dialog.form.custom</field>
+        <field name="model">whatsapp.info.dialog</field>
+        <field name="arch" type="xml">
+            <form string="🚧 Servicio WhatsApp PMO">
+                <sheet>
+                    <!-- Header con imagen JPG -->
+                    <div class="oe_title" style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <!-- Imagen JPG de WhatsApp -->
+                        <div style="margin-right: 20px;">
+                            <field name="whatsapp_image" 
+                                   widget="image" 
+                                   options="{'size': [80, 80]}"
+                                   nolabel="1"/>
+                        </div>
+                        
+                        <!-- Título y subtítulo -->
+                        <div style="flex-grow: 1;">
+                            <h1 style="color: #25D366; margin: 0; font-size: 24px;">
+                                <!--  <i class="fa fa-whatsapp" style="margin-right: 10px;"/>  -->
+                                <field name="dialog_title" nolabel="1" readonly="1" 
+                                       style="border: none; background: transparent; color: #25D366; font-weight: bold;"/>
+                            </h1>
+                            <h3 style="color: #666; margin: 5px 0 0 0; font-size: 16px;">
+                                FUNCIONALIDAD: Solicitud cambio de STATUS al PMO - WhatsApp <i class="fa fa-whatsapp" style="margin-right: 10px;"/>
+                            </h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Información principal con imagen de fondo -->
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+                                padding: 20px; border-radius: 10px; margin-bottom: 20px; 
+                                border-left: 4px solid #25D366;">
+                        <field name="message" 
+                               nolabel="1" 
+                               readonly="1" 
+                               style="white-space: pre-line; font-size: 14px; 
+                                      line-height: 1.6; color: #333; font-family: monospace;"/>
+                    </div>
+                    
+                    <!-- Información de la oportunidad -->
+                    <group string="📋 Información de la Oportunidad" 
+                           attrs="{'invisible': [('lead_id', '=', False)]}">
+                        <field name="lead_id" readonly="1" 
+                               options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    
+                    <!-- Sección de progreso visual -->
+                    <group string="⚡ Estado del Desarrollo">
+                        <div colspan="2" style="text-align: center; padding: 15px;">
+                            <!-- Barra de progreso -->
+                            <div style="margin-bottom: 10px;">
+                                <strong style="color: #25D366;">Progreso Actual: 85%</strong>
+                            </div>
+                            <div style="background-color: #e0e0e0; border-radius: 15px; 
+                                        height: 25px; position: relative; margin-bottom: 15px; 
+                                        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                                <div style="background: linear-gradient(90deg, #25D366 0%, #128C7E 100%); 
+                                           height: 100%; width: 85%; border-radius: 15px; 
+                                           position: relative; transition: width 0.3s ease;">
+                                    <span style="position: absolute; top: 50%; left: 50%; 
+                                                 transform: translate(-50%, -50%); color: white; 
+                                                 font-weight: bold; font-size: 14px;">
+                                        85%
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Información adicional -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; 
+                                        gap: 15px; margin-top: 15px;">
+                                <div style="padding: 10px; background-color: #f8f9fa; 
+                                           border-radius: 8px; border: 1px solid #dee2e6;">
+                                    <strong style="color: #25D366;">📅 Inicio:</strong><br/>
+                                    <span style="color: #666;">15/12/2024</span>
+                                </div>
+                                <div style="padding: 10px; background-color: #f8f9fa; 
+                                           border-radius: 8px; border: 1px solid #dee2e6;">
+                                    <strong style="color: #25D366;">🚀 Estimado:</strong><br/>
+                                    <span style="color: #666;">Próxima actualización</span>
+                                </div>
+                            </div>
+                        </div>
+                    </group>
+                    
+                    <!-- Preview del mensaje WhatsApp -->
+                    <group string="🖼️ Preview del Mensaje WhatsApp">
+                        <div colspan="2" style="text-align: center; padding: 20px;">
+                            <div style="max-width: 350px; margin: 0 auto; 
+                                        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); 
+                                        padding: 20px; border-radius: 20px; color: white; 
+                                        box-shadow: 0 8px 16px rgba(37, 211, 102, 0.3);">
+                                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <i class="fa fa-whatsapp" style="font-size: 24px; margin-right: 10px;"/>
+                                    <strong>WhatsApp PMO Bot</strong>
+                                </div>
+                                <div style="background-color: rgba(255,255,255,0.15); 
+                                           padding: 15px; border-radius: 12px; text-align: left;">
+                                    <div style="font-weight: bold; margin-bottom: 10px;">
+                                        🎉 Solicitud cambio de estatus a GANADA
+                                    </div>
+                                    <div style="line-height: 1.4;">
+                                        <strong>Cliente:</strong> [Nombre Cliente]<br/>
+                                        <strong>Valor:</strong> S/ [Monto]<br/>
+                                        <strong>Responsable:</strong> [Usuario GDN]<br/>
+                                        <strong>Fecha:</strong> [Hoy]<br/><br/>
+                                        <em>¿Confirmas recepción? 👍</em>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 15px; color: #666; font-style: italic;">
+                                Ejemplo del mensaje que recibirá el equipo PMO
+                            </p>
+                        </div>
+                    </group>
+                    
+                    <!-- Campos ocultos -->
+                    <field name="whatsapp_image_name" invisible="1"/>
+                    
+                </sheet>
+                
+                <!-- Footer con botones personalizados -->
+                <footer>
+                    <!-- Botón principal: ACEPTAR en lugar de GUARDAR -->
+                    <button string="✅ ACEPTAR" 
+                            name="action_accept" 
+                            type="object" 
+                            class="oe_highlight"
+                            style="background-color: #25D366; border-color: #25D366; 
+                                   color: white; padding: 8px 16px; font-weight: bold;"/>
+                    
+                    <!-- Botón secundario: CANCELAR -->
+                    <button string="❌ CANCELAR" 
+                            name="action_cancel" 
+                            type="object" 
+                            class="btn-secondary"
+                            style="padding: 8px 16px;"/>
+                    
+                    <!-- Botón de información 
+                    <button string="📞 Contactar Soporte" 
+                            name="action_contact_support" 
+                            type="object" 
+                            class="btn-info"
+                            style="padding: 8px 16px;"/>
+                    -->
+                    <!-- Botón adicional 
+                    <button string="🗺️ Ver Roadmap" 
+                            name="action_view_roadmap" 
+                            type="object" 
+                            class="btn-link"
+                            style="padding: 8px 16px;"/>
+                    -->
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista alternativa más simple -->
+    <record id="view_whatsapp_info_dialog_simple" model="ir.ui.view">
+        <field name="name">whatsapp.info.dialog.simple</field>
+        <field name="model">whatsapp.info.dialog</field>
+        <field name="arch" type="xml">
+            <form string="📱 WhatsApp PMO">
+                <sheet>
+                    <!-- Imagen centrada -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <field name="whatsapp_image" 
+                               widget="image" 
+                               options="{'size': [100, 100]}"
+                               nolabel="1"/>
+                    </div>
+                    
+                    <!-- Mensaje -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <field name="message" 
+                               nolabel="1" 
+                               readonly="1" 
+                               style="white-space: pre-line; font-size: 14px;"/>
+                    </div>
+                    
+                    <!-- Oportunidad -->
+                    <field name="lead_id" readonly="1" attrs="{'invisible': [('lead_id', '=', False)]}"/>
+                </sheet>
+                
+                <!-- Botones simples -->
+                <footer>
+                    <button string="✅ ACEPTAR" 
+                            name="action_accept" 
+                            type="object" 
+                            class="oe_highlight"/>
+                    <button string="❌ CANCELAR" 
+                            name="action_cancel" 
+                            type="object" 
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

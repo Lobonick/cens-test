@@ -1,0 +1,122 @@
+/*
+ * ============================================
+ * CENS CRM 02 - EFECTOS PERSONALIZADOS
+ * ============================================
+ * Archivo: effects.scss
+ * Propósito: Estilos CSS para efectos de botones personalizados
+ * Módulo: cens_crm_02
+ * ============================================
+ */
+
+// Efectos personalizados para botones
+.o_roll_in_effect {
+    animation: rollIn 0.7s ease-in-out;
+    /* LOG: Efecto roll_in aplicado */
+}
+
+.o_slide_effect {
+    animation: slideIn 0.5s ease-out;
+    /* LOG: Efecto slide aplicado */
+}
+
+.o_explode_effect {
+    animation: explode 0.6s ease-in-out;
+    /* LOG: Efecto explode aplicado */
+}
+
+.o_fold_effect {
+    animation: fold 0.5s ease-in-out;
+    /* LOG: Efecto fold aplicado */
+}
+
+// Estilo para mensajes de efecto
+.o_effect_message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 9999;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    
+    img {
+        display: block;
+        margin: 0 auto 10px auto;
+        border-radius: 50%;
+    }
+}
+
+// Definición de keyframes para las animaciones
+/* ============================================ */
+/* KEYFRAMES - ANIMACIONES PERSONALIZADAS      */
+/* ============================================ */
+
+@keyframes rollIn {
+    /* CENS CRM 02: Animación roll_in iniciada */
+    0% {
+        opacity: 0;
+        transform: translateX(-100%) rotate(-120deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotate(0);
+    }
+    /* CENS CRM 02: Animación roll_in completada */
+}
+
+@keyframes slideIn {
+    /* CENS CRM 02: Animación slide iniciada */
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* CENS CRM 02: Animación slide completada */
+}
+
+@keyframes explode {
+    /* CENS CRM 02: Animación explode iniciada */
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    /* CENS CRM 02: Animación explode completada */
+}
+
+@keyframes fold {
+    /* CENS CRM 02: Animación fold iniciada */
+    0% {
+        opacity: 0;
+        transform: scaleY(0.1);
+    }
+    50% {
+        transform: scaleY(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    /* CENS CRM 02: Animación fold completada */
+}
+
+/* ============================================ */
+/* FIN DE ARCHIVO EFFECTS.SCSS                 */
+/* CENS CRM 02 - Estilos cargados correctamente*/
+/* ============================================ */
