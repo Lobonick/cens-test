@@ -11,7 +11,7 @@ import calendar
 import logging
 _logger = logging.getLogger(__name__)
 
-class HrPayslip(models.Model):
+class HrPayslip(models.Model):  ## QUIQUE
     _inherit = 'hr.payslip'
        
     x_cens_periodo_ini = fields.Date(string='Período Inicio', help='Fecha de inicio del período de liquidación')
@@ -110,9 +110,29 @@ class HrPayslip(models.Model):
         
         return True
     
-    def action_liquidacion_compone(self):
+    def action_liquidacion_compone(self):   ## QUIQUE
         self.ensure_one()
-        
+
+        w_periodo_aa = 0
+        w_periodo_mm = 0
+        w_periodo_dd = 0
+
+        self.write({
+                'x_cens_periodo_ini': self.x_studio_cese_fecha_ingreso,
+                'x_cens_periodo_fin': self.x_studio_cese_fecha,
+                'x_cens_periodo_aa': w_periodo_aa,
+                'x_cens_periodo_mm': w_periodo_mm,
+                'x_cens_periodo_dd': w_periodo_dd,
+                'x_cens_ctotal_timeserv': "",
+                'x_cens_ctotal_tnocomp': "",
+                'x_cens_ctotal_tliqui': "",
+                'x_cens_remu_base': 0.00,
+                'x_cens_asig_fami': 0.00,
+                'x_cens_grat_16to': 0.00,
+                'x_cens_none_remu': 0.00,
+                'x_cens_remu_comp': 0.00
+            })  
+        self.recompute()
         pass
 
     def action_liquidacion_blanquea(self):
