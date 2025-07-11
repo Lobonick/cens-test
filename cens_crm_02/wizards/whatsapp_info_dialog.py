@@ -101,8 +101,8 @@ class WhatsAppInfoDialog(models.TransientModel):
         #    'author_id': self.env.user.partner_id.id,
         #})
         self.env['mail.message'].create({
-            'subject': f'COMUNICADO - Área de Sistemas - CENS-PERÚ',
-            'body': f'La comuicación de solicitudes y aprobaciones con el PMO, también contará con una integración vía WhatsApp. Por el momento nos encontramos en IMPLEMENTACIÓN.',
+            'subject': f'INTEGRACIÓN WHATSAPP - Área de Sistemas - CENS-PERÚ',
+            'body': f'La comunicación de las solicitudes y aprobaciones con el PMO, también contarán con una integración vía WhatsApp. Por el momento nos encontramos en plena IMPLEMENTACIÓN.',
             'model': 'crm.lead',
             'res_id': self.lead_id.id if self.lead_id else False,
             'message_type': 'notification',
