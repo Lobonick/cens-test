@@ -118,9 +118,9 @@ class HrPayslip(models.Model):  ## QUIQUE
             w_total_remu = self.x_studio_salario_mensual + self.x_studio_en_asignacion_familiar 
 
             w_period_tot = self.desglosa_periodo("PERIODO TOTAL", w_fecha_ingr, w_fecha_cese)
-            w_periodo_aa = w_period_vac.get('anios', 0)
-            w_periodo_mm = w_period_vac.get('meses', 0)
-            w_periodo_dd = w_period_vac.get('dias', 0)
+            w_periodo_aa = w_period_tot.get('anios', 0)
+            w_periodo_mm = w_period_tot.get('meses', 0)
+            w_periodo_dd = w_period_tot.get('dias', 0)
 
             w_ctotal_timeserv  = "("+str(w_periodo_aa) + " años) + (" + str(w_periodo_mm) + " meses) + (" + str(w_periodo_dd) + " dias) "
             w_ctotal_tnocomp   = ""
