@@ -112,27 +112,48 @@ class HrPayslip(models.Model):  ## QUIQUE
     
     def action_liquidacion_compone(self):   ## QUIQUE
         self.ensure_one()
+        if self.x_studio_cesado:
+            w_fecha_ingr = self.x_studio_cese_fecha_ingreso
+            w_fecha_cese = self.x_studio_cese_fecha
+            w_total_remu = self.x_studio_salario_mensual + self.x_studio_en_asignacion_familiar 
 
-        w_periodo_aa = 0
-        w_periodo_mm = 0
-        w_periodo_dd = 0
+            w_period_tot = self.desglosa_periodo("PERIODO TOTAL", w_fecha_ingr, w_fecha_cese)
+            w_periodo_aa = w_period_vac.get('anios', 0)
+            w_periodo_mm = w_period_vac.get('meses', 0)
+            w_periodo_dd = w_period_vac.get('dias', 0)
 
-        self.write({
-                'x_cens_periodo_ini': self.x_studio_cese_fecha_ingreso,
-                'x_cens_periodo_fin': self.x_studio_cese_fecha,
-                'x_cens_periodo_aa': w_periodo_aa,
-                'x_cens_periodo_mm': w_periodo_mm,
-                'x_cens_periodo_dd': w_periodo_dd,
-                'x_cens_ctotal_timeserv': "",
-                'x_cens_ctotal_tnocomp': "",
-                'x_cens_ctotal_tliqui': "",
-                'x_cens_remu_base': 0.00,
-                'x_cens_asig_fami': 0.00,
-                'x_cens_grat_16to': 0.00,
-                'x_cens_none_remu': 0.00,
-                'x_cens_remu_comp': 0.00
-            })  
-        self.recompute()
+            w_ctotal_timeserv  = "("+str(w_periodo_aa) + " años) + (" + str(w_periodo_mm) + " meses) + (" + str(w_periodo_dd) + " dias) "
+            w_ctotal_tnocomp   = ""
+            w_ctotal_tliqui    = w_ctotal_timeserv
+
+            # --------------------------------------------------
+            #  CALCULA VACACIONES TRUNCAS
+            # --------------------------------------------------
+            w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
+            if (w_period_vac.get('anios', 0) > 0):
+                w_trunco_vac = 0.00
+            else:    
+                w_trunco_vac = 0.00
+                w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)           #--- Por el rango meses
+                w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
+
+
+            self.write({
+                    'x_cens_periodo_ini': w_fecha_ingr,
+                    'x_cens_periodo_fin': w_fecha_cese,
+                    'x_cens_periodo_aa': w_periodo_aa,
+                    'x_cens_periodo_mm': w_periodo_mm,
+                    'x_cens_periodo_dd': w_periodo_dd,
+                    'x_cens_ctotal_timeserv': w_ctotal_timeserv,
+                    'x_cens_ctotal_tnocomp': w_ctotal_tnocomp,
+                    'x_cens_ctotal_tliqui': w_ctotal_tliqui,
+                    'x_cens_remu_base': self.x_studio_salario_mensual,
+                    'x_cens_asig_fami': self.x_studio_en_asignacion_familiar,
+                    'x_cens_grat_16to': 0.00,
+                    'x_cens_none_remu': 0.00,
+                    'x_cens_remu_comp': 0.00
+                })  
+            self.recompute()
         pass
 
     def action_liquidacion_blanquea(self):
