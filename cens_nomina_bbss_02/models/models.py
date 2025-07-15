@@ -27,7 +27,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
     x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', store=True, currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
     x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
-    x_cens_blanco    = fields.Char(string='Blanco', default=' ', store=True)
+    x_cens_blanco    = fields.Char(string='Blanco', default='(PEN) S/.', store=True)
     x_cens_ccts_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación CTS')
     x_cens_ccts_dmes = fields.Char(string='Detalle cálulo x meses', default='', store=True, help='Detalle del cálculo x meses')
     x_cens_ccts_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
@@ -201,7 +201,8 @@ class HrPayslip(models.Model):  ## QUIQUE
                     'x_cens_ccts_imes': w_impcts_mes,
                     'x_cens_ccts_ddia': w_detcts_dia,
                     'x_cens_ccts_idia': w_impcts_dia,
-                    'x_cens_ccts_itot': w_impcts_tot
+                    'x_cens_ccts_itot': w_impcts_tot,
+                    'x_cens_blanco': '(PEN) S/.'
                 })  
             self.recompute()
         pass
