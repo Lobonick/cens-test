@@ -85,14 +85,22 @@
                     <group>
                         <group> 
                             <separator string="⏱️ Descripción"/>
-                            <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"/>
-                            <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"/>
-                            <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"/>
+                            <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
                             <!-- <label string=" " colspan="2" class="o_form_label"/>  -->
-                            <field name="x_cens_blanco" string="Espacio en blanco" nolabel="1" colspan="2" attrs="{'readonly': True}"/>
+                            <field name="x_cens_blanco" 
+                                   string="Espacio en blanco" 
+                                   nolabel="1" 
+                                   colspan="2" 
+                                   attrs="{'readonly': True}"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_imes" 
                                    string="Importe cálculo x mes" 
                                    nolabel="1" 
