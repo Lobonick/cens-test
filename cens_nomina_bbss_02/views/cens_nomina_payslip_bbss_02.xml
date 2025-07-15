@@ -86,31 +86,31 @@
                         <group> 
                             <separator string="⏱️ Descripción"/>
                             <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
                             <!-- <label string=" " colspan="2" class="o_form_label"/>  -->
-                            <field name="x_cens_blanco" 
+                            <field name="x_cens_moneda" 
                                    string="Espacio en blanco" 
                                    nolabel="1" 
                                    colspan="2" 
                                    attrs="{'readonly': True}"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_ccts_imes" 
                                    string="Importe cálculo x mes" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_idia" 
                                    string="Importe cálculo x día" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_itot" 
                                    string="Importe total CTS" 
                                    nolabel="1" 
@@ -124,9 +124,44 @@
                     <group>
                         <group> 
                             <separator string="⏱️ Descripción"/>
+                            <field name="x_cens_vaca_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_dano" string="Detalle cálculo x año" nolabel="1" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
+                            <field name="x_cens_moneda" 
+                                   string="Espacio en blanco" 
+                                   nolabel="1" 
+                                   colspan="2" 
+                                   attrs="{'readonly': True}"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_iano" 
+                                   string="Importe cálculo x año" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_imes" 
+                                   string="Importe cálculo x mes" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_idia" 
+                                   string="Importe cálculo x día" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_itot" 
+                                   string="Importe total VACA" 
+                                   nolabel="1" 
+                                   colspan="2" 
+                                   class="oe_subtotal_footer_separator"
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                         </group>
                     </group>
                     <separator/>

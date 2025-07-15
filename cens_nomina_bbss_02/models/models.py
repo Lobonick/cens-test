@@ -27,13 +27,23 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
     x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', store=True, currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
     x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
-    x_cens_blanco    = fields.Char(string='Blanco', default='(PEN) S/.', store=True)
+    
+    x_cens_moneda    = fields.Char(string='Moneda', default='(PEN) S/.', store=True)
     x_cens_ccts_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación CTS')
     x_cens_ccts_dmes = fields.Char(string='Detalle cálulo x meses', default='', store=True, help='Detalle del cálculo x meses')
     x_cens_ccts_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
     x_cens_ccts_ddia = fields.Char(string='Detalle cálulo x días', default='', store=True, help='Detalle del cálculo x días')
     x_cens_ccts_idia = fields.Monetary(string='Importe cálulo x días', store=True, currency_field='currency_id', help='Importe del cálculo x días.')
     x_cens_ccts_itot = fields.Monetary(string='Importe total CTS', store=True, currency_field='currency_id', help='Importe total CTS.')
+    
+    x_cens_vaca_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación VACA')
+    x_cens_vaca_dano = fields.Char(string='Detalle cálulo x años', default='', store=True, help='Detalle del cálculo x años')
+    x_cens_vaca_iano = fields.Monetary(string='Importe cálulo x años', store=True, currency_field='currency_id', help='Importe del cálculo x años.')
+    x_cens_vaca_dmes = fields.Char(string='Detalle cálulo x meses', default='', store=True, help='Detalle del cálculo x meses')
+    x_cens_vaca_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
+    x_cens_vaca_ddia = fields.Char(string='Detalle cálulo x días', default='', store=True, help='Detalle del cálculo x días')
+    x_cens_vaca_idia = fields.Monetary(string='Importe cálulo x días', store=True, currency_field='currency_id', help='Importe del cálculo x días.')
+    x_cens_vaca_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
 
     # ===============================================================================================
@@ -174,12 +184,20 @@ class HrPayslip(models.Model):  ## QUIQUE
             #  CALCULA VACACIONES TRUNCAS
             # --------------------------------------------------
             w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
-            if (w_period_vac.get('anios', 0) > 0):
-                w_trunco_vac = 0.00
-            else:    
-                w_trunco_vac = 0.00
-                w_trunco_vac += (w_total_remu/12) * w_period_vac.get('meses', 0)           #--- Por el rango meses
-                w_trunco_vac += ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
+            w_detvaca_per = "DESDE: " + str(w_fecha_ingr.day) + " de " + self.mes_literal(w_fecha_ingr.month) + " del " + str(w_fecha_ingr.year) + " "
+            w_detvaca_per += "AL " + str(w_fecha_cese.day) + " de " + self.mes_literal(w_fecha_cese.month) + " del " + str(w_fecha_cese.year) + " "
+
+            w_impvaca_ano = w_total_remu * w_period_vac.get('anios', 0)
+            w_impvaca_mes = (w_total_remu/12) * w_period_vac.get('meses', 0)           #--- Por el rango meses
+            w_impvaca_dia = ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
+            w_impvaca_tot = w_impvaca_ano + w_impvaca_mes + w_impvaca_dia
+
+            w_detvaca_ano = "- Por " + str(w_period_vac.get('anios', 0)) + " años "
+            w_detvaca_ano += " ( " + self.formato_moneda(w_total_remu, "S/.") + "  x " + str(w_period_vac.get('anios', 0)) + " )  = "
+            w_detvaca_mes = "- Por " + str(w_period_vac.get('meses', 0)) + " meses "
+            w_detvaca_mes += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 12 x " + str(w_period_vac.get('meses', 0)) + " )  = "
+            w_detvaca_dia = "- Por " + str(w_period_vac.get('dias', 0))  + " días  "
+            w_detvaca_dia += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 12 ÷ 30 x " + str(w_period_vac.get('dias', 0)) + " )  = "
 
 
             self.write({
@@ -202,7 +220,15 @@ class HrPayslip(models.Model):  ## QUIQUE
                     'x_cens_ccts_ddia': w_detcts_dia,
                     'x_cens_ccts_idia': w_impcts_dia,
                     'x_cens_ccts_itot': w_impcts_tot,
-                    'x_cens_blanco': '(PEN) S/.'
+                    'x_cens_moneda': '(PEN) S/.',
+                    'x_cens_vaca_peri': w_detvaca_per,
+                    'x_cens_vaca_dano': w_detvaca_ano,
+                    'x_cens_vaca_iano': w_impvaca_ano,
+                    'x_cens_vaca_dmes': w_detvaca_mes,
+                    'x_cens_vaca_imes': w_impvaca_mes,
+                    'x_cens_vaca_ddia': w_detvaca_dia,
+                    'x_cens_vaca_idia': w_impvaca_dia,
+                    'x_cens_vaca_itot': w_impvaca_tot
                 })  
             self.recompute()
         pass
