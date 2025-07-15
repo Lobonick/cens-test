@@ -93,14 +93,22 @@
                             <separator string="💰 Importes"/>
                             <!-- <label string=" " colspan="2" class="o_form_label"/>  -->
                             <field name="x_cens_blanco" string="Espacio en blanco" nolabel="1" colspan="2" attrs="{'readonly': True}"/>
-                            <field name="x_cens_ccts_imes" string="Importe cálculo x mes" nolabel="1" colspan="2"/>
-                            <field name="x_cens_ccts_idia" string="Importe cálculo x día" nolabel="1" colspan="2"/>
+                            <field name="x_cens_ccts_imes" 
+                                   string="Importe cálculo x mes" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_ccts_idia" 
+                                   string="Importe cálculo x día" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_itot" 
                                    string="Importe total CTS" 
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #2d5016; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
                         </group>
                     </group>
                     <separator/>
