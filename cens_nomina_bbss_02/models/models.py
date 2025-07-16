@@ -45,6 +45,13 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_vaca_idia = fields.Monetary(string='Importe cálulo x días', store=True, currency_field='currency_id', help='Importe del cálculo x días.')
     x_cens_vaca_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
+    x_cens_grat_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación GRATI')
+    x_cens_grat_dmes = fields.Char(string='Detalle cálulo x meses', default='', store=True, help='Detalle del cálculo x meses')
+    x_cens_grat_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
+    x_cens_grat_dbon = fields.Char(string='Detalle Bonific.Extraordinaria', default='', store=True, help='Detalle Bonific.Extraordinaria.')
+    x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
+    x_cens_grat_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
+
 
     # ===============================================================================================
     # INICIO - Campos liquidación
@@ -164,7 +171,7 @@ class HrPayslip(models.Model):  ## QUIQUE
             w_conce_noremuner = 0.00
             w_remun_compu_cts = w_total_remu + w_conce_noremuner + w_sexto_total
 
-            # --------------------------------------------------     ## QUIQUE
+            # --------------------------------------------------     
             #  CALCULA CTS TRUNCOS
             # --------------------------------------------------
             w_fecha_tope = self.determina_periodo_cts(w_fecha_ingr, w_fecha_cese)
@@ -199,6 +206,39 @@ class HrPayslip(models.Model):  ## QUIQUE
             w_detvaca_dia = "- Por " + str(w_period_vac.get('dias', 0))  + " días  "
             w_detvaca_dia += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 12 ÷ 30 x " + str(w_period_vac.get('dias', 0)) + " )  = "
 
+            # --------------------------------------------------
+            #  CALCULA GRATIFICACIONES TRUNCAS
+            # --------------------------------------------------    ## QUIQUE
+            #w_fecha_actual = datetime.now().date()
+            w_ano = w_fecha_cese.year
+            w_inicio_ano = date(w_ano, 1, 1)
+            w_ultimo_dia = self.ultimo_dia_del_mes(w_fecha_cese).day
+            if (w_fecha_ingr >= w_inicio_ano):
+                w_inicio_ano = w_fecha_ingr
+            w_meses_habiles = w_fecha_cese.month 
+            w_meses_habiles = w_meses_habiles if w_fecha_cese.month <= 6 else w_meses_habiles - 6 
+            w_meses_habiles = w_meses_habiles if w_inicio_ano.day==1 else w_meses_habiles - 1
+            w_meses_habiles = w_meses_habiles if not w_ultimo_dia in [30,31] else w_meses_habiles - 1
+
+            w_detgrat_per = "DESDE: " + str(w_inicio_ano.day) + " de " + self.mes_literal(w_inicio_ano.month) + " del " + str(w_inicio_ano.year) + " "
+            w_detgrat_per += "AL " + str(w_fecha_cese.day) + " de " + self.mes_literal(w_fecha_cese.month) + " del " + str(w_fecha_cese.year) + " "
+
+            w_trunco_gra = 0.00
+            w_trunco_gra += ((w_total_remu/6) * w_meses_habiles)                 #--- Por el rango meses
+
+            w_detgrat_mes = "- Por " + str(w_meses_habiles) + " meses "
+            w_detgrat_mes += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 12 x " + str(w_meses_habiles) + " )  = "
+
+            # --------------------------------------------------
+            #  CALCULA BONIFICACIÓN DE GRATIF TRUNCAS
+            # --------------------------------------------------
+            w_trunco_bon = 0.00
+            w_trunco_bon += w_trunco_gra * 0.09                             #--- Por el rango meses
+
+            w_detgrat_bon = "- Bonificación 9%"
+            w_impgrat_bon = w_trunco_bon 
+            w_impgrat_mes = w_trunco_gra 
+            w_impgrat_tot = w_trunco_gra + w_trunco_bon
 
             self.write({
                     'x_cens_periodo_ini': w_fecha_ingr,
@@ -214,21 +254,27 @@ class HrPayslip(models.Model):  ## QUIQUE
                     'x_cens_grat_16to': w_sexto_total,
                     'x_cens_none_remu': w_conce_noremuner,
                     'x_cens_remu_comp': w_remun_compu_cts,
-                    'x_cens_ccts_peri': w_detcts_per,
+                    'x_cens_ccts_peri': w_detcts_per,   #-----------------------    CTS
                     'x_cens_ccts_dmes': w_detcts_mes,
                     'x_cens_ccts_imes': w_impcts_mes,
                     'x_cens_ccts_ddia': w_detcts_dia,
                     'x_cens_ccts_idia': w_impcts_dia,
                     'x_cens_ccts_itot': w_impcts_tot,
                     'x_cens_moneda': '(PEN) S/.',
-                    'x_cens_vaca_peri': w_detvaca_per,
+                    'x_cens_vaca_peri': w_detvaca_per,  #-----------------------    VACACIONES
                     'x_cens_vaca_dano': w_detvaca_ano,
                     'x_cens_vaca_iano': w_impvaca_ano,
                     'x_cens_vaca_dmes': w_detvaca_mes,
                     'x_cens_vaca_imes': w_impvaca_mes,
                     'x_cens_vaca_ddia': w_detvaca_dia,
                     'x_cens_vaca_idia': w_impvaca_dia,
-                    'x_cens_vaca_itot': w_impvaca_tot
+                    'x_cens_vaca_itot': w_impvaca_tot,
+                    'x_cens_grat_peri': w_detgrat_per,  #-----------------------    GRATIFICACIÓN
+                    'x_cens_grat_dmes': w_detgrat_mes,
+                    'x_cens_grat_imes': w_impgrat_mes,
+                    'x_cens_grat_dbon': w_detgrat_bon,
+                    'x_cens_grat_ibon': w_impgrat_bon,
+                    'x_cens_grat_itot': w_impgrat_tot
                 })  
             self.recompute()
         pass
