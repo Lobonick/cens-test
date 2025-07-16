@@ -64,7 +64,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_vaca_itot')
     def _calcula_afp_comision_flujo(self):
         for record in self:
-            w_SBRUTO = record.x_cens_vaca_itot
+            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp
             if record.x_studio_compania_afp :
                 if (record.x_studio_compania_afp.x_name  == "ONP"):
                     record.x_cens_afp_flujo = 0.00
@@ -79,7 +79,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_vaca_itot')
     def _calcula_afp_comision_mixta(self):
         for record in self:
-            w_SBRUTO = record.x_cens_vaca_itot
+            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp
             if record.x_studio_compania_afp :
                 if (record.x_studio_compania_afp.x_name == "ONP"):
                     record.x_cens_afp_mixta = 0.00
@@ -94,7 +94,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_vaca_itot')
     def _calcula_afp_prima_seguro(self):
         for record in self:
-            w_SBRUTO = record.x_cens_vaca_itot
+            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp
             if record.x_studio_compania_afp :
                 if (record.x_studio_compania_afp.x_name  == "ONP"):
                     record.x_cens_afp_prima = 0.00
@@ -106,7 +106,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_vaca_itot')
     def _calcula_afp_aporte_obligatorio(self):
         for record in self:
-            w_SBRUTO = record.x_cens_vaca_itot
+            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp
             record.x_cens_afp_oblig = w_SBRUTO * record.x_studio_aporte_obligatorio_2    
 
     def calcula_descuento_afp(self, subtotal_afp):
@@ -138,7 +138,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
     def _calcula_liquidacion_total(self):
         for r in self: 
-            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot) - r.x_cens_liqu_iafp
+            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot)
 
     # ===============================================================================================
     # INICIO - Campos liquidación
