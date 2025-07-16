@@ -205,7 +205,7 @@
                             <field name="x_cens_ccts_itot" string="CTS Trunco" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_vaca_itot" string="Vacaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_grat_itot" string="Gratificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_liqu_iafp" string="Descuento AFP"
+                            <field name="x_cens_liqu_iafp" string="Descuento AFP" readonly="0"
                                    widget="monetary" 
                                    style="font-size: 14px; color: red; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_liqu_tota" string="TOTAL GENERAL" readonly="0" 
@@ -214,7 +214,12 @@
 
                         </group>
                         <group string="📝 APORTES">
-
+                            <field name="x_studio_compania_afp" string="Compañia AFP/ONP" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_oblig" string="Aporte Obligatorio" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_prima" string="Prima Seguro" style="font-size: 14px;"/>
+                            <field name="x_studio_en_tipo_comision" string="Tipo Comisión" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_mixta" string="Comisión Mixta" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_flujo" string="Comisión Flujo" style="font-size: 14px;"/>
                         </group>
                     </group>
                     <separator/>

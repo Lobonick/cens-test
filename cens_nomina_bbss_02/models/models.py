@@ -52,9 +52,61 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
     x_cens_grat_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
+    x_cens_afp_oblig = fields.Float(compute='_calcula_afp_aporte_obligatorio', default=0.00, store=True)
+    x_cens_afp_prima = fields.Float(compute='_calcula_afp_prima_seguro', default=0.00, store=True)
+    x_cens_afp_mixta = fields.Float(compute='_calcula_afp_comision_mixta', default=0.00, store=True)
+    x_cens_afp_flujo = fields.Float(compute='_calcula_afp_comision_flujo', default=0.00, store=True)
     x_cens_liqu_iafp = fields.Float(compute='_calcula_descuento_afp', string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
-    
+
+    @api.depends('x_cens_vaca_itot')
+    def _calcula_afp_comision_flujo(self):
+        for record in self:
+            w_SBRUTO = record.x_cens_vaca_itot
+            if record.x_studio_compania_afp :
+                if (record.x_studio_compania_afp.x_name  == "ONP"):
+                    record.x_cens_afp_flujo = 0.00
+                else:
+                    if (record.x_studio_en_tipo_comision  == "FLU"):
+                        record.x_cens_afp_flujo = w_SBRUTO * record.x_studio_comision_flujo_2
+                    else:
+                        record.x_cens_afp_flujo = 0.00
+            else:
+                record.x_cens_afp_flujo = 0.00
+
+    @api.depends('x_cens_vaca_itot')
+    def _calcula_afp_comision_mixta(self):
+        for record in self:
+            w_SBRUTO = record.x_cens_vaca_itot
+            if record.x_studio_compania_afp :
+                if (record.x_studio_compania_afp.x_name == "ONP"):
+                    record.x_cens_afp_mixta = 0.00
+                else:
+                    if (record.x_studio_en_tipo_comision  == "MIX"):
+                        record.x_cens_afp_mixta = w_SBRUTO * record.x_studio_comision_mixta_2
+                    else:
+                        record.x_cens_afp_mixta = 0.00
+            else:
+                record.x_cens_afp_mixta = 0.00
+
+    @api.depends('x_cens_vaca_itot')
+    def _calcula_afp_prima_seguro(self):
+        for record in self:
+            w_SBRUTO = record.x_cens_vaca_itot
+            if record.x_studio_compania_afp :
+                if (record.x_studio_compania_afp.x_name  == "ONP"):
+                    record.x_cens_afp_prima = 0.00
+                else:
+                    record.x_cens_afp_prima = w_SBRUTO * record.x_studio_prima_seguro_2
+            else:
+                record.x_cens_afp_prima = 0.00
+  
+    @api.depends('x_cens_vaca_itot')
+    def _calcula_afp_aporte_obligatorio(self):
+        for record in self:
+            w_SBRUTO = record.x_cens_vaca_itot
+            record.x_cens_afp_oblig = w_SBRUTO * record.x_studio_aporte_obligatorio_2    
+
     @api.depends('x_cens_vaca_itot')
     def _calcula_descuento_afp(self):
         for record in self:
