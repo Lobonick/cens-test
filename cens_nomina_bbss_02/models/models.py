@@ -58,7 +58,7 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_afp_prima = fields.Float(compute='_calcula_afp_prima_seguro', default=0.00, store=True)
     x_cens_afp_mixta = fields.Float(compute='_calcula_afp_comision_mixta', default=0.00, store=True)
     x_cens_afp_flujo = fields.Float(compute='_calcula_afp_comision_flujo', default=0.00, store=True)
-    x_cens_liqu_iafp = fields.Float(compute='_calcula_descuento_afp', string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
+    x_cens_liqu_iafp = fields.Float(string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
 
     @api.depends('x_cens_vaca_itot')
