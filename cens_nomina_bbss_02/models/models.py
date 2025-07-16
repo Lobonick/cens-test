@@ -52,6 +52,12 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
     x_cens_grat_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
+    x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
+    
+    @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
+    def _calcula_liquidacion_total(self):
+        for r in self: 
+            r.x_cens_liqu_tota = r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot
 
     # ===============================================================================================
     # INICIO - Campos liquidación
