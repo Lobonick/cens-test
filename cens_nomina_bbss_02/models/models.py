@@ -52,12 +52,41 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
     x_cens_grat_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
+    x_cens_liqu_iafp = fields.Float(compute='_calcula_descuento_afp', string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
     
+    @api.depends('x_cens_vaca_itot')
+    def _calcula_descuento_afp(self):
+        for record in self:
+            w_SBRUTO = record.x_cens_vaca_itot
+            w_Dato = 0.00
+            if record.x_studio_compania_afp :
+                w_Dato = 0.00
+                w_Dat2 = 0
+                w_Dat2 = record.x_studio_compania_afp.id    #---- Verifica si es ONP (registro 5)
+                if (w_Dat2 == 5):
+                    w_Dato += w_SBRUTO * record.x_studio_aporte_obligatorio_2
+                else:
+                    w_Dato += w_SBRUTO * record.x_studio_aporte_obligatorio_2
+                    w_Dato += w_SBRUTO * record.x_studio_prima_seguro_2
+                    if record.x_studio_tipo_comision :
+                        if record.x_studio_tipo_comision != "CERO" :
+                            if record.x_studio_tipo_comision == "FLU" :
+                                w_Dato += w_SBRUTO * record.x_studio_comision_flujo_2
+                            else:
+                                w_Dato += w_SBRUTO * record.x_studio_comision_mixta_2
+            else:
+                w_Dato = 0.00
+            if (record.x_studio_tipo_planilla=="LOCA"):
+                record.x_cens_liqu_iafp = 0.00
+            else:
+                record.x_cens_liqu_iafp = w_Dato
+
+
     @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
     def _calcula_liquidacion_total(self):
         for r in self: 
-            r.x_cens_liqu_tota = r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot
+            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot) - r.x_cens_liqu_iafp
 
     # ===============================================================================================
     # INICIO - Campos liquidación
