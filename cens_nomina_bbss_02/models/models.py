@@ -43,6 +43,8 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_vaca_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
     x_cens_vaca_ddia = fields.Char(string='Detalle cálulo x días', default='', store=True, help='Detalle del cálculo x días')
     x_cens_vaca_idia = fields.Monetary(string='Importe cálulo x días', store=True, currency_field='currency_id', help='Importe del cálculo x días.')
+    x_cens_vaca_dafp = fields.Char(string='Descuento AFP/ONP', default='', store=True, help='Descuento AFP/ONP')
+    x_cens_vaca_iafp = fields.Monetary(string='Importe AFP/ONP', store=True, currency_field='currency_id', help='Importe AFP/ONP.')
     x_cens_vaca_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
     x_cens_grat_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación GRATI')
@@ -107,10 +109,9 @@ class HrPayslip(models.Model):  ## QUIQUE
             w_SBRUTO = record.x_cens_vaca_itot
             record.x_cens_afp_oblig = w_SBRUTO * record.x_studio_aporte_obligatorio_2    
 
-    @api.depends('x_cens_vaca_itot')
-    def _calcula_descuento_afp(self):
+    def calcula_descuento_afp(self, subtotal_afp):
         for record in self:
-            w_SBRUTO = record.x_cens_vaca_itot
+            w_SBRUTO = subtotal_afp
             w_Dato = 0.00
             if record.x_studio_compania_afp :
                 w_Dato = 0.00
@@ -129,11 +130,10 @@ class HrPayslip(models.Model):  ## QUIQUE
                                 w_Dato += w_SBRUTO * record.x_studio_comision_mixta_2
             else:
                 w_Dato = 0.00
-            if (record.x_studio_tipo_planilla=="LOCA"):
-                record.x_cens_liqu_iafp = 0.00
-            else:
-                record.x_cens_liqu_iafp = w_Dato
 
+            if (record.x_studio_tipo_planilla=="LOCA"):
+                w_Dato = 0.00
+        return w_Dato
 
     @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
     def _calcula_liquidacion_total(self):
@@ -158,18 +158,7 @@ class HrPayslip(models.Model):  ## QUIQUE
                 record.x_cens_periodo_aa = 0
                 record.x_cens_periodo_mm = 0
                 record.x_cens_periodo_dd = 0
-    
-    #@api.depends('x_cens_periodo_aa', 'x_cens_periodo_mm', 'x_cens_periodo_dd', 'x_cens_ctotal_tnocomp')
-    #def _compute_totales_tiempo(self):
-    #    """Calcula los totales de tiempo de servicio"""
-    #    for record in self:
-    #        # Convertir todo a años decimales
-    #        tiempo_total = record.x_cens_periodo_aa + (record.x_cens_periodo_mm / 12.0) + (record.x_cens_periodo_dd / 365.0)
-    #        record.x_cens_ctotal_timeserv = tiempo_total
-    #        
-    #        # Tiempo liquidable = tiempo total - tiempo no computable
-    #        record.x_cens_ctotal_tliqui = tiempo_total - record.x_cens_ctotal_tnocomp
-    
+        
     @api.depends('x_cens_remu_base')
     def _compute_gratificacion(self):
         """Calcula la gratificación como 1/6 de la remuneración base"""
@@ -285,6 +274,8 @@ class HrPayslip(models.Model):  ## QUIQUE
             w_impvaca_mes = (w_total_remu/12) * w_period_vac.get('meses', 0)           #--- Por el rango meses
             w_impvaca_dia = ((w_total_remu/12)/30) * w_period_vac.get('dias', 0)      #--- Por el rango días
             w_impvaca_tot = w_impvaca_ano + w_impvaca_mes + w_impvaca_dia
+            w_impvaca_afp = self.calcula_descuento_afp(w_impvaca_tot)
+            w_impvaca_tot = w_impvaca_tot - w_impvaca_afp
 
             w_detvaca_ano = "- Por " + str(w_period_vac.get('anios', 0)) + " años "
             w_detvaca_ano += " ( " + self.formato_moneda(w_total_remu, "S/.") + "  x " + str(w_period_vac.get('anios', 0)) + " )  = "
@@ -355,6 +346,8 @@ class HrPayslip(models.Model):  ## QUIQUE
                     'x_cens_vaca_imes': w_impvaca_mes,
                     'x_cens_vaca_ddia': w_detvaca_dia,
                     'x_cens_vaca_idia': w_impvaca_dia,
+                    'x_cens_vaca_dafp': 'Descuento AFP/ONP',
+                    'x_cens_vaca_iafp': w_impvaca_afp,
                     'x_cens_vaca_itot': w_impvaca_tot,
                     'x_cens_grat_peri': w_detgrat_per,  #-----------------------    GRATIFICACIÓN
                     'x_cens_grat_dmes': w_detgrat_mes,

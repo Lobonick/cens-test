@@ -128,6 +128,8 @@
                                    style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
                             <field name="x_cens_vaca_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2" readonly="1"
                                    style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dafp" string="Descuento AFP/ONP" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 5px; color: red; font-weight: bold; text-align: left; font-size: 14px; vertical-align: middle;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
@@ -152,6 +154,11 @@
                                    nolabel="1" 
                                    colspan="2"
                                    style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_iafp" 
+                                   string="Importe AFP/ONP" 
+                                   nolabel="1" 
+                                   colspan="2"
+                                   style="padding: 5px; color: red; font-weight: bold; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_vaca_itot" 
                                    string="Importe total VACA" 
                                    nolabel="1" 
@@ -207,19 +214,11 @@
                             <field name="x_cens_liqu_iafp" string="Descuento AFP" readonly="0"
                                    widget="monetary" 
                                    style="font-size: 14px; color: red; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_liqu_tota" string="TOTAL GENERAL" readonly="0" 
+                            <field name="x_cens_liqu_tota" string="TOTAL A PAGAR" readonly="0" 
                                    widget="monetary"
                                    style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 6px;"/>
                             <separator/>
                             <separator/>
-                            <separator string="📝 ÚLTIMA REMUNERACIÓN"/>
-                            <field name="x_studio_literal_fecha_titulo" string="Periodo" readonly="1" style="font-size: 14px;"/>
-                            <field name="number" string="Boleta de Pago" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_basico" string="Básico" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_asignacion_familiar" string="Asig.Familiar" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_bonificacion_cumplimiento" string="Bonificación" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_feriados" string="Feriados" widget="monetary" readonly="1" style="font-size: 14px;"/>
-
                         </group>
                         <group string="📝 APORTES">
                             <field name="x_studio_compania_afp" string="Compañia AFP/ONP" style="font-size: 14px;"/>
@@ -234,9 +233,18 @@
                                    style="font-size: 14px;"/>
                             <separator/>
                             <separator/>
-                            <separator string="📝 APORTE DEL EMPLEADOR"/>
-
-
+                        </group>
+                    </group>
+                    <group>
+                        <group string="📝 ÚLTIMA REMUNERACIÓN">
+                            <field name="x_studio_literal_fecha_titulo" string="Periodo" readonly="1" style="font-size: 14px;"/>
+                            <field name="number" string="Boleta de Pago" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_studio_en_basico" string="Básico" widget="monetary" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_studio_en_asignacion_familiar" string="Asig.Familiar" widget="monetary" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_studio_en_bonificacion_cumplimiento" string="Bonificación" widget="monetary" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_studio_en_feriados" string="Feriados" widget="monetary" readonly="1" style="font-size: 14px;"/>
+                        </group>
+                        <group string="📝 APORTE DEL EMPLEADOR">
 
                         </group>
                     </group>
