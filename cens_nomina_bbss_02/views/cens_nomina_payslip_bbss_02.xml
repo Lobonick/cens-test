@@ -85,12 +85,12 @@
                     <group>
                         <group> 
                             <separator string="⏱️ Descripción"/>
-                            <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
@@ -116,7 +116,7 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 16px;"/>
                         </group>
                     </group>
                     <separator/>
@@ -124,14 +124,14 @@
                     <group>
                         <group> 
                             <separator string="⏱️ Descripción"/>
-                            <field name="x_cens_vaca_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_vaca_dano" string="Detalle cálculo x año" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_vaca_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_vaca_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dano" string="Detalle cálculo x año" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
                         </group>
                         <group>
                             <separator string="💰 Importes"/>
@@ -161,19 +161,19 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 16px;"/>
                         </group>
                     </group>
                     <separator/>
                     <separator string="🧮 LIQUIDACIÓN GRATIFICACIONES" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group>
                         <group string="⏱️ Descripción">
-                            <field name="x_cens_grat_peri" string="Detalle del Periodo  " nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_grat_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
-                            <field name="x_cens_grat_dbon" string="Bonificación" nolabel="1" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_grat_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_grat_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_grat_dbon" string="Bonificación" nolabel="1" colspan="2" readonly="1"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
                         </group>
                         <group string="💰 Importes">
                             <field name="x_cens_moneda" 
@@ -197,7 +197,7 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 16px;"/>
                         </group>
                     </group>
                     <separator/>
@@ -205,15 +205,16 @@
                     <separator string="📝 RESUMEN LIQUIDACIÓN DE BB.SS." style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group>
                         <group>
+                            <separator/>
                             <field name="x_cens_ccts_itot" string="CTS Trunco" nolabel="0" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 12px; display: flex; vertical-align: middle;"/>
                             <field name="x_cens_vaca_itot" string="Vacaciones Truncas" nolabel="0" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 12px; display: flex; vertical-align: middle;"/>
                             <field name="x_cens_grat_itot" string="Gratificaciones Truncas" nolabel="0" colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 12px; display: flex; vertical-align: middle;"/>
                         </group>
                         <group>
-                            
+
                         </group>
                     </group>
                     <separator/>
