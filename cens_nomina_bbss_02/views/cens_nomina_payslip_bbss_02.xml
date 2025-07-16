@@ -116,7 +116,7 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
                         </group>
                     </group>
                     <separator/>
@@ -161,7 +161,7 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
                         </group>
                     </group>
                     <separator/>
@@ -197,7 +197,23 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    class="oe_subtotal_footer_separator"
-                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="background-color: #128C7E; color: white; font-weight: bold; padding: 10px; border-radius: 5px; text-align: center; font-size: 18px;"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <!-- Sección de observaciones -->
+                    <separator string="📝 RESUMEN LIQUIDACIÓN DE BB.SS." style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group>
+                        <group>
+                            <field name="x_cens_ccts_itot" string="CTS Trunco" nolabel="0" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_itot" string="Vacaciones Truncas" nolabel="0" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_grat_itot" string="Gratificaciones Truncas" nolabel="0" colspan="2"
+                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                        </group>
+                        <group>
+                            
                         </group>
                     </group>
                     <separator/>
