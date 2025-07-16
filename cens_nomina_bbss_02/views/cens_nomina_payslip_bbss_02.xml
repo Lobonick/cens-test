@@ -61,20 +61,19 @@
                         <group string="💰 Remuneraciones Base">
                             <field name="x_cens_remu_base" 
                                    string="Remuneración Base"
-                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_asig_fami" 
                                    string="Asignación Familiar"
-                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_grat_16to" 
                                    string="Gratificación 1/6"
-                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_none_remu" 
                                    string="Conceptos No Remunerativos"
-                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"/>
+                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_remu_comp" 
                                    string="Remuneración Computable"
-                                   attrs="{'readonly': [('x_studio_cesado', '=', False)]}"
-                                   class="oe_subtotal_footer_separator"/>
+                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                         </group>
                     </group>
                     <separator/>
@@ -97,22 +96,22 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    readonly="1"
-                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                                   style="padding: 10px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_ccts_imes" 
                                    string="Importe cálculo x mes" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_idia" 
                                    string="Importe cálculo x día" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_ccts_itot" 
                                    string="Importe total CTS" 
                                    nolabel="1" 
-                                   colspan="2" 
-                                   style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                                   colspan="2"
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/> 
                         </group>
                     </group>
                     <separator/>
@@ -136,22 +135,22 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    readonly="1"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_vaca_iano" 
                                    string="Importe cálculo x año" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_vaca_imes" 
                                    string="Importe cálculo x mes" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_vaca_idia" 
                                    string="Importe cálculo x día" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_vaca_itot" 
                                    string="Importe total VACA" 
                                    nolabel="1" 
@@ -177,17 +176,17 @@
                                    nolabel="1" 
                                    colspan="2" 
                                    readonly="1"
-                                   style="padding: 10px; border-radius: 5px; text-align: left; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: left; font-size: 14px;"/>
                             <field name="x_cens_grat_imes" 
                                    string="Importe cálculo x mes" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_grat_ibon" 
                                    string="Importe cálculo x día" 
                                    nolabel="1" 
                                    colspan="2"
-                                   style="padding: 10px; border-radius: 5px; text-align: center; font-size: 14px;"/>
+                                   style="padding: 10px; text-align: center; font-size: 14px;"/>
                             <field name="x_cens_grat_itot" 
                                    string="Importe total VACA" 
                                    nolabel="1" 
@@ -202,11 +201,11 @@
                     <group>
                         <group>
                             <separator/>
-                            <field name="x_cens_ccts_itot" string="CTS Trunco" readonly="1" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_vaca_itot" string="Vacaciones Truncas" readonly="1" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_grat_itot" string="Gratificaciones Truncas" readonly="1" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_ccts_itot" string="CTS Trunco" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_vaca_itot" string="Vacaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_grat_itot" string="Gratificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <separator/>
-                            <field name="x_cens_liqu_tota" string="TOTAL GENERAL" readonly="1" 
+                            <field name="x_cens_liqu_tota" string="TOTAL GENERAL" readonly="0" 
                                    widget="monetary"
                                    style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 6px;"/>
 
