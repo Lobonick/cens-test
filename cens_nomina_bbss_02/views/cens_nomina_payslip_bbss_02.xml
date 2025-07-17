@@ -268,6 +268,7 @@
                                 <button name="action_liquidacion_compone"  
                                         string=" Generar" 
                                         type="object"
+                                        class="btn-success oe_button"
                                         icon="fa-cog"
                                         style="flex: 1; max-width: 120px; background-color: #198754; border: 1px solid #198754; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"/>
                                 
@@ -275,6 +276,7 @@
                                 <button name="action_liquidacion_imprimir" 
                                         string=" Imprimir" 
                                         type="object" 
+                                        class="btn-warning oe_button"
                                         icon="fa-print"
                                         style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"/>
                                 
@@ -282,6 +284,7 @@
                                 <button name="action_liquidacion_blanquea" 
                                         string=" Limpiar" 
                                         type="object" 
+                                        class="btn-primary oe_button"
                                         icon="fa-eraser"
                                         style="flex: 1; max-width: 120px; background-color: #ffc107; border: 1px solid #ffc107; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"/>
                                 
