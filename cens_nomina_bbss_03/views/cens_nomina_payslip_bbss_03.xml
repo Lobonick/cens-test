@@ -10,7 +10,7 @@
             <!--  GENERA REPORTE CALCULO GRATIFICACIONES   -->
             <!-- ========================================= -->
             <xpath expr="//header" position="inside">
-                <button name="action_listado_gratificacioes" 
+                <button name="action_listado_gratificaciones" 
                         string="Listado Gratificaciones" 
                         type="object" 
                         class="btn-warning oe_button"
