@@ -274,11 +274,11 @@
                                 
                                 <!-- Botón Púrpura (Imprimir) -->
                                 <button name="action_liquidacion_imprimir" 
-                                        string=" Imprimir" 
+                                        string=" Imprimir Formato" 
                                         type="object" 
-                                        class="btn-warning oe_button"
-                                        icon="fa-print"
-                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"/>
+                                        class="oe_button" 
+                                        icon="fa-print" 
+                                        style="background-color: #6f42c1; color: white;"/>
                                 
                                 <!-- Botón Amarillo (Limpiar) -->
                                 <button name="action_liquidacion_blanquea" 
@@ -319,6 +319,15 @@
 
 
 <!--
+
+
+                                <button name="action_liquidacion_imprimir" 
+                                        string=" Imprimir" 
+                                        type="object" 
+                                        class="btn-warning oe_button"
+                                        icon="fa-print"
+                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"/>
+                                
 
 
                     <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
