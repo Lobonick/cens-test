@@ -215,7 +215,6 @@
                                    widget="monetary"
                                    style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 6px;"/>
                             <separator/>
-                            <separator/>
                         </group>
                         <group string="📝 APORTES">
                             <field name="x_studio_compania_afp" string="Compañia AFP/ONP" style="font-size: 14px;"/>
@@ -229,20 +228,21 @@
                                    attrs="{'invisible': [('x_studio_en_tipo_comision', '!=', 'FLU')]}" 
                                    style="font-size: 14px;"/>
                             <separator/>
-                            <separator/>
                         </group>
                     </group>
                     <group>
                         <group string="📝 ÚLTIMA REMUNERACIÓN">
                             <field name="x_studio_literal_fecha_titulo" string="Periodo" readonly="1" style="font-size: 14px;"/>
                             <field name="number" string="Boleta de Pago" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_basico" string="Básico" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_asignacion_familiar" string="Asig.Familiar" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_bonificacion_cumplimiento" string="Bonificación" widget="monetary" readonly="1" style="font-size: 14px;"/>
-                            <field name="x_studio_en_feriados" string="Feriados" widget="monetary" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_studio_en_basico" string="Básico" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_studio_en_asignacion_familiar" string="Asig.Familiar" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_studio_en_bonificacion_cumplimiento" string="Bonificación" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_studio_en_feriados" string="Feriados" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
                         </group>
                         <group string="📝 APORTE DEL EMPLEADOR">
-
+                            <field name="x_cens_apor_mbas" string="Monto Base" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_apor_essa" string="Aporte ESSALUD 9%" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                        
                         </group>
                     </group>
                     <separator/>

@@ -11,7 +11,7 @@ import calendar
 import logging
 _logger = logging.getLogger(__name__)
 
-class HrPayslip(models.Model):  ## QUIQUE
+class HrPayslip(models.Model):  
     _inherit = 'hr.payslip'
        
     x_cens_periodo_ini = fields.Date(string='Período Inicio', help='Fecha de inicio del período de liquidación')
@@ -54,12 +54,15 @@ class HrPayslip(models.Model):  ## QUIQUE
     x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
     x_cens_grat_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
-    x_cens_afp_oblig = fields.Float(compute='_calcula_afp_aporte_obligatorio', default=0.00, store=True)
+    x_cens_afp_oblig = fields.Float(compute='_calcula_afp_aporte_obligatorio', default=0.00, store=True)    ## QUIQUE
     x_cens_afp_prima = fields.Float(compute='_calcula_afp_prima_seguro', default=0.00, store=True)
     x_cens_afp_mixta = fields.Float(compute='_calcula_afp_comision_mixta', default=0.00, store=True)
     x_cens_afp_flujo = fields.Float(compute='_calcula_afp_comision_flujo', default=0.00, store=True)
     x_cens_liqu_iafp = fields.Float(string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
+    x_cens_apor_mbas = fields.Float(compute='_calcula_Monto_Base', default=0.00, store=True)
+    x_cens_apor_essa = fields.Float(compute='_calcula_aporte_essalud', default=0.00, store=True)
+    
 
     @api.depends('x_cens_vaca_itot')
     def _calcula_afp_comision_flujo(self):
@@ -138,7 +141,17 @@ class HrPayslip(models.Model):  ## QUIQUE
     @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
     def _calcula_liquidacion_total(self):
         for r in self: 
-            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot)
+            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot) ## QUIQUE
+
+    @api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia')
+    def _calcula_Monto_Base(self):
+        for r in self: 
+            r.x_cens_apor_mbas = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia)
+
+    @api.depends('x_cens_apor_mbas')
+    def _calcula_aporte_essalud(self):
+        for r in self: 
+            r.x_cens_apor_essa = (r.x_cens_apor_mbas * 0.09)
 
     # ===============================================================================================
     # INICIO - Campos liquidación
