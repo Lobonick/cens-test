@@ -9,6 +9,23 @@
             <!-- ========================================= -->
             <!--  GENERA REPORTE CALCULO GRATIFICACIONES   -->
             <!-- ========================================= -->
+            <xpath expr="//header" position="after">
+                <div style="margin: 15px 0 10px 0; padding-top: 10px; border-top: 1px solid #e9ecef;">
+                    <button name="action_listado_gratificaciones" 
+                            string="Listado Gratificaciones" 
+                            type="object" 
+                            class="btn-warning oe_button"
+                            icon="fa-file-excel-o"
+                            confirm="¿Seguro de IMPRIMIR listado de Gratificaciones?"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+<!--
+
             <xpath expr="//header" position="inside">
                 <button name="action_listado_gratificaciones" 
                         string="Listado Gratificaciones" 
@@ -17,12 +34,6 @@
                         icon="fa-file-excel-o"
                         confirm="¿Seguro de IMPRIMIR listado de Gratificaciones?"/>
             </xpath>
-        </field>
-    </record>
-</odoo>
-
-
-<!--
 
 
                 <button name="action_listado_cts_intermit"
