@@ -224,6 +224,9 @@ class HrPayslip(models.Model):
         
         return True
     
+    # =============================
+    # BOTÓN - GENERAR LIQUIDACIÓN
+    # =============================
     def action_liquidacion_compone(self):  
         self.ensure_one()
         if self.x_studio_cesado:
@@ -372,6 +375,9 @@ class HrPayslip(models.Model):
             self.recompute()
         pass
 
+    # ==========================
+    # BOTÓN - BLANQUEA
+    # ==========================
     def action_liquidacion_blanquea(self):
         self.ensure_one()
         self.write({
@@ -396,6 +402,13 @@ class HrPayslip(models.Model):
                 'x_cens_ccts_itot': 0.00
             })  
         self.recompute()
+        pass
+
+    # ==========================
+    # BOTÓN - IMPRIMIR
+    # ==========================
+    def action_liquidacion_imprimir(self):
+        self.ensure_one()
         pass
 
     # ===============================================================================================

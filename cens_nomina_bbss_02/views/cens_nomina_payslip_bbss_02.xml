@@ -262,24 +262,31 @@
                         <group name="group_foot_right">
                             <div>
                             </div>
-                            <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
-                                <button 
-                                    name="action_liquidacion_compone"  
-                                    string=" Generar Liquidación" 
-                                    type="object"
-                                    class="oe_highlight oe_stat_button" 
-                                    icon="fa-cog"
-                                    style="color: #25D366;" 
-                                    confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
-                                <button 
-                                    name="action_liquidacion_blanquea" 
-                                    string=" Limpia datos" 
-                                    type="object" 
-                                    class="btn-danger oe_button" 
-                                    icon="fa-calculator"
-                                    style="flex: 1; max-width: 120px;" 
-                                    confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
+                            <div style="display: flex; gap: 12px; margin: 20px 0; width: 100%; justify-content: center;">
+                                
+                                <!-- Botón Verde Oscuro -->
+                                <button name="action_liquidacion_compone"  
+                                        string=" Generar Liquidación" 
+                                        type="object"
+                                        icon="fa-cog"
+                                        style="flex: 1; max-width: 150px; background: linear-gradient(135deg, #2d5016, #3a6b1e); border: none; color: white; padding: 12px 10px; border-radius: 6px; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: 0 3px 8px rgba(45,80,22,0.3);"/>
+                                
+                                <!-- Botón Azul Marino -->
+                                <button name="action_liquidacion_imprimir" 
+                                        string=" Imprimir Formato" 
+                                        type="object" 
+                                        icon="fa-print"
+                                        style="flex: 1; max-width: 150px; background: linear-gradient(135deg, #1e3a8a, #2563eb); border: none; color: white; padding: 12px 10px; border-radius: 6px; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: 0 3px 8px rgba(30,58,138,0.3);"/>
+                                
+                                <!-- Botón Morado -->
+                                <button name="action_liquidacion_blanquea" 
+                                        string=" Limpiar Datos" 
+                                        type="object" 
+                                        icon="fa-broom"
+                                        style="flex: 1; max-width: 150px; background: linear-gradient(135deg, #7c3aed, #8b5cf6); border: none; color: white; padding: 12px 10px; border-radius: 6px; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); box-shadow: 0 3px 8px rgba(124,58,237,0.3);"/>
+                                
                             </div>
+
                         </group>
                     </group>
                 </page>
@@ -309,6 +316,36 @@
 
 
 <!--
+
+
+                    <div style="display: flex; gap: 5px; margin-bottom: 5px; width: 100%;" name="studio_div_67e01d">
+                                <button 
+                                    name="action_liquidacion_compone"  
+                                    string=" Generar Liquidación" 
+                                    type="object"
+                                    class="oe_highlight oe_stat_button" 
+                                    icon="fa-cog"
+                                    style="color: #25D366;" 
+                                    confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
+                                <button 
+                                    name="action_liquidacion_blanquea" 
+                                    string=" Limpia datos" 
+                                    type="object" 
+                                    class="btn-danger oe_button" 
+                                    icon="fa-calculator"
+                                    style="flex: 1; max-width: 120px;" 
+                                    confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
+                                <button 
+                                    name="action_liquidacion_imprimir" 
+                                    string=" Imprimir Formato" 
+                                    type="object" 
+                                    class="btn-danger oe_button" 
+                                    icon="fa-print"
+                                    style="flex: 1; max-width: 120px;" 
+                                    confirm="¿Seguro de IMPRIMIR Hoja de liquidación?"/>    
+                            </div>
+
+
 
                                     icon="fa-wrench" 
                                     class="oe_highlight oe_button" 
