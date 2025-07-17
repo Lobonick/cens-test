@@ -10,14 +10,12 @@
             <!--  GENERA REPORTE CALCULO GRATIFICACIONES   -->
             <!-- ========================================= -->
             <xpath expr="//header" position="after">
-                <div style="margin: 15px 0 10px 0; padding-top: 10px; border-top: 1px solid #e9ecef;">
-                    <button name="action_listado_gratificaciones" 
+                     <button name="action_listado_gratificaciones" 
                             string="Listado Gratificaciones" 
                             type="object" 
                             class="btn-warning oe_button"
                             icon="fa-file-excel-o"
                             confirm="¿Seguro de IMPRIMIR listado de Gratificaciones?"/>
-                </div>
             </xpath>
         </field>
     </record>
