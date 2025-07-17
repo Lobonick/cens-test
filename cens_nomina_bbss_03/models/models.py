@@ -831,7 +831,7 @@ class HrPayslip(models.Model):
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H5', 'COMPENSACIÓN POR TIEMPO DE SERVICIOS - CÁLCULO CTS - MODALIDAD INTERMITENTE', cell_format_cabe)
+            worksheet.write('H5', 'CALCULO SEMESTRAL DE GRATIFICACIONES', cell_format_cabe)
             # ------
             worksheet.write('A6', 'FECHA:')
             worksheet.write('B6', datetime.now(), cell_format_fech)
@@ -844,23 +844,23 @@ class HrPayslip(models.Model):
             #-----
             merge_format = workbook.add_format({'align': 'center'})
 
-            worksheet.merge_range('H7:I7', 'Merged Cells', merge_format)
-            worksheet.write('H7', 'TIEMPO LABORAL', cell_format_tuti)
+            worksheet.merge_range('H7:N7', 'Merged Cells', merge_format)
+            worksheet.write('H7', 'DIAS TRABAJADOS INTERMITENTES', cell_format_tuti)
 
-            worksheet.merge_range('J7:M7', 'Merged Cells', merge_format)
-            worksheet.write('J7', 'REMUNERACION', cell_format_tut2)
+            worksheet.merge_range('O7:U7', 'Merged Cells', merge_format)
+            worksheet.write('O7', 'HH.EE. / BONO / FERIADOS', cell_format_tut2)
 
-            worksheet.merge_range('N7:P7', 'Merged Cells', merge_format)
-            worksheet.write('N7', 'COSTOS UNID.TIEMPO', cell_format_tuti)
+            worksheet.merge_range('V7:AA7', 'Merged Cells', merge_format)
+            worksheet.write('V7', 'REMUNERACIONES', cell_format_tuti)
 
-            worksheet.merge_range('Q7:S7', 'Merged Cells', merge_format)
-            worksheet.write('Q7', 'DESGLOSE PERIODO', cell_format_tut2)
+            # worksheet.merge_range('Q7:S7', 'Merged Cells', merge_format)
+            # worksheet.write('Q7', 'DESGLOSE PERIODO', cell_format_tut2)
 
-            worksheet.merge_range('T7:U7', 'Merged Cells', merge_format)
-            worksheet.write('T7', 'PERIODO CÁLCULO', cell_format_tuti)
+            # worksheet.merge_range('T7:U7', 'Merged Cells', merge_format)
+            # worksheet.write('T7', 'PERIODO CÁLCULO', cell_format_tuti)
 
-            worksheet.merge_range('Y7:AB7', 'Merged Cells', merge_format)
-            worksheet.write('Y7', 'LIQUIDACIÓN BENEFICIOS', cell_format_tut2)
+            # worksheet.merge_range('Y7:AB7', 'Merged Cells', merge_format)
+            # worksheet.write('Y7', 'LIQUIDACIÓN BENEFICIOS', cell_format_tut2)
             
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
@@ -1148,68 +1148,69 @@ class HrPayslip(models.Model):
             #worksheet.set_row(7, 7) 2A7486
             #worksheet.set_column('A:M', 7)
             worksheet.merge_range('A8:A9', 'Merged Cells', merge_format)
-            worksheet.write('A8', 'ORD', cell_format_titu)                           #-- 00
+            worksheet.write('A8', 'ORD', cell_format_titu)                      #-- 00
             worksheet.merge_range('B8:B9', 'Merged Cells', merge_format)
-            worksheet.write('B8', 'BOLETA', cell_format_titu)                       #-- 01
+            worksheet.write('B8', 'NOMBRE DEL EMPLEADO', cell_format_titu)      #-- 01
             worksheet.merge_range('C8:C9', 'Merged Cells', merge_format)
-            worksheet.write('C8', 'NOMBRE DEL EMPLEADO', cell_format_titu)          #-- 02
+            worksheet.write('C8', 'D.N.I.', cell_format_titu)                   #-- 02
             worksheet.merge_range('D8:D9', 'Merged Cells', merge_format)
-            worksheet.write('D8', 'D.N.I.', cell_format_titu)                       #-- 03
+            worksheet.write('D8', 'TIPO CONTRATO', cell_format_titu)            #-- 03
             worksheet.merge_range('E8:E9', 'Merged Cells', merge_format)
-            worksheet.write('E8', 'LOTE', cell_format_titu)                         #-- 04
+            worksheet.write('E8', 'CENTRO COSTOS', cell_format_titu)            #-- 04
             worksheet.merge_range('F8:F9', 'Merged Cells', merge_format)
-            worksheet.write('F8', 'UNIDAD NEGOCIO', cell_format_titu)               #-- 06
+            worksheet.write('F8', 'UNIDAD NEGOCIO', cell_format_titu)           #-- 05
             worksheet.merge_range('G8:G9', 'Merged Cells', merge_format)
-            worksheet.write('G8', 'MONEDA', cell_format_titu)                       #-- 07
+            worksheet.write('G8', 'MONEDA', cell_format_titu)                   #-- 06
 
-            worksheet.write('H8', 'FECHA INGRESO', cell_format_tito)                #-- 05
-            worksheet.write('I8', 'FECHA CESE', cell_format_tito)                   #-- 06
+            worksheet.write('H8', 'MES-1', cell_format_tito)                    #-- 07
+            worksheet.write('I8', 'MES-2', cell_format_tito)                    #-- 08
+            worksheet.write('J8', 'MES-3', cell_format_titu)                    #-- 09
+            worksheet.write('K8', 'MES-4', cell_format_titu)                    #-- 10  DIAS TRABAJADOS INTERMITENTES 
+            worksheet.write('L8', 'MES-5', cell_format_titu)                    #-- 11
+            worksheet.write('M8', 'MES-6', cell_format_tit2)                    #-- 12
+            worksheet.write('N8', 'IMPORTE TOTAL HORAS', cell_format_tito)      #-- 13
 
-            worksheet.write('J8', 'SUELDO BÁSICO', cell_format_titu)                #-- 08
-            worksheet.write('K8', 'ASIGNACIÓN FAMILIAR', cell_format_titu)          #-- 
-            worksheet.write('L8', 'SEXTO GRATIFIC', cell_format_titu)               #-- 11
-            worksheet.write('M8', 'TOTAL REMUNERACIÓN', cell_format_tit2)           #-- 09
+            worksheet.write('O8', 'MES-1', cell_format_tito)                    #-- 14
+            worksheet.write('P8', 'MES-2', cell_format_tito)                    #-- 15
+            worksheet.write('Q8', 'MES-3', cell_format_titu)                    #-- 16
+            worksheet.write('R8', 'MES-4', cell_format_titu)                    #-- 17  HORAS EXTRAS / BONO / FERIADOS
+            worksheet.write('S8', 'MES-5', cell_format_titu)                    #-- 18
+            worksheet.write('T8', 'MES-6', cell_format_tito)                    #-- 19
+            worksheet.write('U8', 'TOTAL IMPORTE', cell_format_tito)            #-- 20
 
-            worksheet.write('N8', 'AÑOS', cell_format_tito)                         #-- 10
-            worksheet.write('O8', 'MESES', cell_format_tito)                        #-- 13
-            worksheet.write('P8', 'DÍAS', cell_format_tito)
+            worksheet.write('V8', 'REMU-COMP PROMEDIO', cell_format_tit2)       #-- 21   
+            worksheet.write('W8', 'REMUNERCIÓN FIJA', cell_format_titu)         #-- 22
+            worksheet.write('Y8', 'ASIGN. FAMILIAR', cell_format_tit8)          #-- 23  REMUNERACIONES
+            worksheet.write('Z8', 'TOTAL REMUNERACIÓN', cell_format_tit8)       #-- 24
+            worksheet.write('AA8', 'REMU-COMPU GRATIFIC', cell_format_tit8)     #-- 25     
 
-            worksheet.write('Q8', 'AÑOS', cell_format_titu)                         #-- 12
-            worksheet.write('R8', 'MESES', cell_format_titu)                        #-- 13
-            worksheet.write('S8', 'DÍAS', cell_format_titu)                         #-- 14
-
-            worksheet.write('T8', 'INICIO', cell_format_tito)                       #-- 15
-            worksheet.write('U8', 'FINAL', cell_format_tito)                        #-- 16
-            worksheet.write('V8', 'IMPORTE CTS', cell_format_tit2)                  #-- 17   REGISTRO EGRESOS
-            worksheet.write('W8', 'OBSERVACIONES', cell_format_titu)                #-- 18
-
-            worksheet.write('Y8', 'VACACIONES TRUNCAS', cell_format_tit8)       #-- 38
-            worksheet.write('Z8', 'CTS TRUNCO', cell_format_tit8)               #-- 39
-            worksheet.write('AA8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
-            worksheet.write('AB8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
+            worksheet.write('AB8', 'INASISTENCIAS', cell_format_tit8)           #-- 26
 
             #----------------------------------------------------------------
-            worksheet.write('I9', '(aaa/mm/dd)', cell_format_tut4)                 #-- 09
-            worksheet.write('H9', '(aaa/mm/dd)', cell_format_tut4)         #-- 34
-            worksheet.write('J9', 'S/.', cell_format_tut4)                 #-- 10
-            worksheet.write('K9', 'S/.', cell_format_tut4)                 #-- 11
-            worksheet.write('L9', 'S/.', cell_format_tut4)                 #-- 12
-            worksheet.write('M9', 'S/.', cell_format_tut4)                 #-- 12
-            worksheet.write('N9', 'S/.', cell_format_tut4)                 #-- 12
-            worksheet.write('O9', 'S/.', cell_format_tut4)                 #-- 13
-            worksheet.write('P9', 'S/.', cell_format_tut4)                 #-- 15
-            worksheet.write('Q9', 'aa', cell_format_tut4)                  #-- 16
-            worksheet.write('R9', 'mm', cell_format_tut4)                  #-- 17
-            worksheet.write('S9', 'dd', cell_format_tut4)                  #-- 18
-            worksheet.write('T9', '(dd/mm/aaaa)', cell_format_tut4)             #-- 19
-            worksheet.write('U9', '(dd/mm/aaaa)', cell_format_tut4)             #-- 20
-            worksheet.write('V9', 'S/.', cell_format_tut4)                 #-- 21
-            worksheet.write('W9', '', cell_format_tut4)                    #-- 22
+            worksheet.write('H9', 'dd', cell_format_tut4)                       #-- 07
+            worksheet.write('I9', 'dd', cell_format_tut4)                       #-- 08
+            worksheet.write('J9', 'dd', cell_format_tut4)                       #-- 09
+            worksheet.write('K9', 'dd', cell_format_tut4)                       #-- 10
+            worksheet.write('L9', 'dd', cell_format_tut4)                       #-- 11
+            worksheet.write('M9', 'dd', cell_format_tut4)                       #-- 12
+            worksheet.write('N9', 'S/.', cell_format_tut4)                      #-- 13
 
-            worksheet.write('Y9', '(Cese)', cell_format_sub8)         #-- 40
-            worksheet.write('Z9', '(Cese)', cell_format_sub8)         #-- 41
-            worksheet.write('AA9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
-            worksheet.write('AB9', '(Cese)', cell_format_sub8)         #-- 43
+            worksheet.write('O9', 'S/.', cell_format_tut4)                      #-- 14
+            worksheet.write('P9', 'S/.', cell_format_tut4)                      #-- 15
+            worksheet.write('Q9', 'S/.', cell_format_tut4)                      #-- 16
+            worksheet.write('R9', 'S/.', cell_format_tut4)                      #-- 17
+            worksheet.write('S9', 'S/.', cell_format_tut4)                      #-- 18
+            worksheet.write('T9', 'S/.', cell_format_tut4)                      #-- 19
+            worksheet.write('U9', 'S/.', cell_format_tut4)                      #-- 20
+
+            worksheet.write('V9', 'S/.', cell_format_tut4)                      #-- 21
+            worksheet.write('W9', 'S/.', cell_format_tut4)                      #-- 22
+            worksheet.write('X9', 'S/.', cell_format_tut4)                      #-- 23
+            worksheet.write('Y9', 'S/.', cell_format_sub8)                      #-- 24
+            worksheet.write('Z9', 'S/.', cell_format_sub8)                      #-- 25
+            worksheet.write('AA9', 'S/.', cell_format_sub8)                     #-- 26     
+
+            worksheet.write('AB9', '', cell_format_sub8)         #-- 27
 
             #-----
             # worksheet.autofilter(8, 60, 8, 65)  #--- Coloca FILTROS en RESUMEN 
@@ -1261,17 +1262,12 @@ class HrPayslip(models.Model):
                 else:
                     worksheet.write(w_fila, 0, w_fila-8, cell_format_cent)
                 # worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
-                worksheet.write(w_fila, 1, w_boleta.number, current_format_cent)
+                # worksheet.write(w_fila, 1, w_boleta.number, current_format_cent)
                 w_dato = w_boleta.employee_id.name
                 worksheet.write(w_fila, 2, w_dato, current_format_left)
                 worksheet.write(w_fila, 3, w_boleta.x_studio_dni, current_format_cent)
 
-                # w_dato = w_boleta.payslip_run_id.name
                 w_dato = ""
-                w_mes = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').month
-                w_dia = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').day
-                w_ano = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').year
-                w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
                 worksheet.write(w_fila, 4, w_dato, current_format_cent)
               
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
@@ -1280,74 +1276,7 @@ class HrPayslip(models.Model):
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 6, w_dato, current_format_cent)
 
-                # ----------------------------
-                if not w_boleta.x_studio_cese_fecha_ingreso:
-                    w_boleta.write({'x_studio_cese_fecha_ingreso': w_boleta.x_studio_fecha_ingreso_laboral})
-
-                w_fecha_ingr = w_boleta.x_studio_cese_fecha_ingreso if w_boleta.x_studio_cese_fecha_ingreso else w_boleta.employee_id.first_contract_date 
-                worksheet.write(w_fila, 7, w_fecha_ingr, current_format_fech)
-                # ----------------------------
-
-                if w_boleta.x_studio_cese_fecha:
-                    w_fecha_fiin = w_boleta.x_studio_cese_fecha if w_boleta.x_studio_cesado else date(2025, 4, 30)
-                else:
-                    w_fecha_fiin = date(2025, 4, 30)
-
-                if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 8, w_fecha_fiin, current_format_fech)
-
-                # -------------------------------------
-                # --   CALCULO DE DATOS GENERALES    --
-                # -------------------------------------
-                worksheet.write(w_fila, 9, w_boleta.x_studio_salario_mensual, current_format_impo)
-                worksheet.write(w_fila, 10, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
-
-                w_impo_sext = 0.00
-                worksheet.write(w_fila, 11, " " if w_impo_sext==0.00 else w_impo_sext, current_format_impo)
                 
-                w_impo_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar + w_impo_sext
-                worksheet.write(w_fila, 12, w_impo_remu, current_format_imp2)
-                
-                w_impo_cano = w_impo_remu if w_impo_remu > 0 else 0.00
-                w_impo_cmes = w_impo_remu/12 if w_impo_remu > 0 else 0.00
-                w_impo_cdia = (w_impo_remu/12)/30 if w_impo_remu > 0 else 0.00
-                worksheet.write(w_fila, 13, w_impo_cano, current_format_impo)
-                worksheet.write(w_fila, 14, w_impo_cmes, current_format_impo)
-                worksheet.write(w_fila, 15, w_impo_cdia, current_format_impo)
-
-                # --------------------------------------------------
-                #  CALCULA CTS TRUNCOS
-                # --------------------------------------------------
-                w_fecha_tope = self.determina_periodo_cts(w_fecha_ingr, w_fecha_fiin)
-                w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_fiin)
-                w_desgl_anio = w_period_cts.get('anios', 0)
-                w_desgl_mess = w_period_cts.get('meses', 0)
-                w_desgl_dias = w_period_cts.get('dias', 0)
-                w_trunco_cts = 0.00
-                w_trunco_cts += ((w_impo_remu/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
-                w_trunco_cts += (((w_impo_remu/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
-
-                worksheet.write(w_fila, 16, w_desgl_anio, current_format_nume)
-                worksheet.write(w_fila, 17, w_desgl_mess, current_format_nume)
-                worksheet.write(w_fila, 18, w_desgl_dias, current_format_nume)
-
-                worksheet.write(w_fila, 19, w_fecha_tope, current_format_fech)
-                worksheet.write(w_fila, 20, w_fecha_fiin, current_format_fech)
-                worksheet.write(w_fila, 21, w_trunco_cts, current_format_imp2)
-                w_acum_tota_1 += w_trunco_cts
-
-                if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 22, w_boleta.x_studio_cese_comentarios + " " + w_boleta.x_studio_cese_observaciones, current_format_left)
-                    # -----------------------------------------
-                    # BOLETA PAGO - CONCEPTOS DE LIQUIDACIÓN  - ASIGNAR CAMPOS REALES
-                    # -----------------------------------------
-                    worksheet.write(w_fila, 24, w_boleta.x_studio_cese_vaca_trunca, current_format_impo)
-                    worksheet.write(w_fila, 25, w_boleta.x_studio_cese_cts_trunco, current_format_impo)
-                    worksheet.write(w_fila, 26, w_boleta.x_studio_cese_grati_trunca, current_format_impo)
-                    worksheet.write(w_fila, 27, w_boleta.x_studio_cese_bonif_grati_trunca, current_format_impo)
-                else:
-                    worksheet.write(w_fila, 22, " ", current_format_left)
-
                 w_fila += 1
 
             worksheet.write(5, 20, "TOTAL GENERAL:", cell_format_left) 
@@ -1360,7 +1289,7 @@ class HrPayslip(models.Model):
             # Crear adjunto
             xlsx_data = output.getvalue()
             attachment = self.env['ir.attachment'].create({
-                'name': 'CENS-CTS-2025-A.xlsx',
+                'name': 'CENS-GRATI-2025-A.xlsx',
                 'type': 'binary',
                 'datas': base64.b64encode(xlsx_data),
             })
@@ -1399,3 +1328,74 @@ class HrPayslip(models.Model):
     @staticmethod
     def formato_moneda(cantidad, simbolo="S/."):
         return f"{simbolo}{cantidad:,.2f}"
+    
+
+
+        
+                # # ----------------------------
+                # if not w_boleta.x_studio_cese_fecha_ingreso:
+                #     w_boleta.write({'x_studio_cese_fecha_ingreso': w_boleta.x_studio_fecha_ingreso_laboral})
+
+                # w_fecha_ingr = w_boleta.x_studio_cese_fecha_ingreso if w_boleta.x_studio_cese_fecha_ingreso else w_boleta.employee_id.first_contract_date 
+                # worksheet.write(w_fila, 7, w_fecha_ingr, current_format_fech)
+                # # ----------------------------
+
+                # if w_boleta.x_studio_cese_fecha:
+                #     w_fecha_fiin = w_boleta.x_studio_cese_fecha if w_boleta.x_studio_cesado else date(2025, 4, 30)
+                # else:
+                #     w_fecha_fiin = date(2025, 4, 30)
+
+                # if w_boleta.x_studio_cesado:
+                #     worksheet.write(w_fila, 8, w_fecha_fiin, current_format_fech)
+
+                # # -------------------------------------
+                # # --   CALCULO DE DATOS GENERALES    --
+                # # -------------------------------------
+                # worksheet.write(w_fila, 9, w_boleta.x_studio_salario_mensual, current_format_impo)
+                # worksheet.write(w_fila, 10, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
+
+                # w_impo_sext = 0.00
+                # worksheet.write(w_fila, 11, " " if w_impo_sext==0.00 else w_impo_sext, current_format_impo)
+                
+                # w_impo_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar + w_impo_sext
+                # worksheet.write(w_fila, 12, w_impo_remu, current_format_imp2)
+                
+                # w_impo_cano = w_impo_remu if w_impo_remu > 0 else 0.00
+                # w_impo_cmes = w_impo_remu/12 if w_impo_remu > 0 else 0.00
+                # w_impo_cdia = (w_impo_remu/12)/30 if w_impo_remu > 0 else 0.00
+                # worksheet.write(w_fila, 13, w_impo_cano, current_format_impo)
+                # worksheet.write(w_fila, 14, w_impo_cmes, current_format_impo)
+                # worksheet.write(w_fila, 15, w_impo_cdia, current_format_impo)
+
+                # # --------------------------------------------------
+                # #  CALCULA CTS TRUNCOS
+                # # --------------------------------------------------
+                # w_fecha_tope = self.determina_periodo_cts(w_fecha_ingr, w_fecha_fiin)
+                # w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_fiin)
+                # w_desgl_anio = w_period_cts.get('anios', 0)
+                # w_desgl_mess = w_period_cts.get('meses', 0)
+                # w_desgl_dias = w_period_cts.get('dias', 0)
+                # w_trunco_cts = 0.00
+                # w_trunco_cts += ((w_impo_remu/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
+                # w_trunco_cts += (((w_impo_remu/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
+
+                # worksheet.write(w_fila, 16, w_desgl_anio, current_format_nume)
+                # worksheet.write(w_fila, 17, w_desgl_mess, current_format_nume)
+                # worksheet.write(w_fila, 18, w_desgl_dias, current_format_nume)
+
+                # worksheet.write(w_fila, 19, w_fecha_tope, current_format_fech)
+                # worksheet.write(w_fila, 20, w_fecha_fiin, current_format_fech)
+                # worksheet.write(w_fila, 21, w_trunco_cts, current_format_imp2)
+                # w_acum_tota_1 += w_trunco_cts
+
+                # if w_boleta.x_studio_cesado:
+                #     worksheet.write(w_fila, 22, w_boleta.x_studio_cese_comentarios + " " + w_boleta.x_studio_cese_observaciones, current_format_left)
+                #     # -----------------------------------------
+                #     # BOLETA PAGO - CONCEPTOS DE LIQUIDACIÓN  - ASIGNAR CAMPOS REALES
+                #     # -----------------------------------------
+                #     worksheet.write(w_fila, 24, w_boleta.x_studio_cese_vaca_trunca, current_format_impo)
+                #     worksheet.write(w_fila, 25, w_boleta.x_studio_cese_cts_trunco, current_format_impo)
+                #     worksheet.write(w_fila, 26, w_boleta.x_studio_cese_grati_trunca, current_format_impo)
+                #     worksheet.write(w_fila, 27, w_boleta.x_studio_cese_bonif_grati_trunca, current_format_impo)
+                # else:
+                #     worksheet.write(w_fila, 22, " ", current_format_left)
