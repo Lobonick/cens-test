@@ -788,34 +788,33 @@ class HrPayslip(models.Model):
             # AJUSTA ANCHO DE COLUMNAS   (ColIni,ColFin,Ancho)
             # -------------------------------------------------------------------------------------
             worksheet.set_column(0, 0, 9)       #-- ID Empleado
-            worksheet.set_column(1, 1, 14)      #-- Boleta 
-            worksheet.set_column(2, 2, 33)      #-- Nombre del Empleado
-            worksheet.set_column(3, 3, 13)      #-- DNI
-            worksheet.set_column(4, 4, 11)      #-- LOTE
+            worksheet.set_column(1, 1, 33)      #-- Nombre del Empleado
+            worksheet.set_column(2, 2, 13)      #-- DNI
+            worksheet.set_column(3, 3, 15)      #-- TIPO CONTRATO
+            worksheet.set_column(4, 4, 15)      #-- CENTRO DE COSTOS
             worksheet.set_column(5, 5, 20)      #-- UNIDAD DE NEGOCIO
             worksheet.set_column(6, 6, 8)       #-- MONEDA
-            worksheet.set_column(7, 7, 13)      #-- FECHA INGRESO                   H
-            worksheet.set_column(8, 8, 13)      #-- FECHA CESE                      I
-            worksheet.set_column(9, 9, 12)      #-- Sueldo Básico                   J
-            worksheet.set_column(10, 10, 12)    #-- Asignación Familiar             K
-            worksheet.set_column(11, 11, 12)    #-- Sexto Gratificación             L
-            worksheet.set_column(12, 12, 12)    #-- Total Remuneración              M
-            worksheet.set_column(13, 13, 12)    #-- Mes - 01                        N
-            worksheet.set_column(14, 14, 12)    #-- Mes - 02                        O
-            worksheet.set_column(15, 15, 12)    #-- Mes - 03                        P
-            worksheet.set_column(16, 16, 10)    #-- Mes - 04                        Q
-            worksheet.set_column(17, 17, 10)    #-- Mes - 05                        R
-            worksheet.set_column(18, 18, 10)    #-- Mes - 06                        S
-            worksheet.set_column(19, 19, 13)    #-- Total Días Trabajados           T
-            worksheet.set_column(20, 20, 13)    #--            U
-            worksheet.set_column(21, 21, 12)    #-- Importe CTS
-            worksheet.set_column(22, 22, 50)    #-- Observaciones
+            worksheet.set_column(7, 7, 9)      #-- MES-1                   
+            worksheet.set_column(8, 8, 9)      #-- MES-2                      
+            worksheet.set_column(9, 9, 9)      #-- MES-3                   
+            worksheet.set_column(10, 10, 9)    #-- MES-4             
+            worksheet.set_column(11, 11, 9)    #-- MES-5             
+            worksheet.set_column(12, 12, 9)    #-- MES-6              
+            worksheet.set_column(13, 13, 12)    #-- IMPORTE TOTAL HORAS
+            worksheet.set_column(14, 14, 12)    #-- Mes - 01                        O
+            worksheet.set_column(15, 15, 12)    #-- Mes - 02                        P
+            worksheet.set_column(16, 16, 12)    #-- Mes - 03                        Q
+            worksheet.set_column(17, 17, 12)    #-- Mes - 04                        R
+            worksheet.set_column(18, 18, 12)    #-- Mes - 05                        S
+            worksheet.set_column(19, 19, 12)    #-- Mes - 06                        T
+            worksheet.set_column(20, 20, 12)    #-- IMPORTE TOTAL           U
+            worksheet.set_column(21, 21, 12)    #-- REMUN COMP PROMED
 
-            worksheet.set_column(23, 23, 5)     #--     (Seperador)
-
+            worksheet.set_column(22, 22, 12)    #-- 
+            worksheet.set_column(23, 23, 12)    #--  
             worksheet.set_column(24, 24, 12)    #-- 
             worksheet.set_column(25, 25, 12)    #--
-            worksheet.set_column(26, 26, 12)    #--     LIQUIDACIONES
+            worksheet.set_column(26, 26, 9)     #-- INASISTENCIAS
             worksheet.set_column(27, 27, 12)    #--
 
             # ------
@@ -1164,21 +1163,21 @@ class HrPayslip(models.Model):
 
             worksheet.write('H8', 'MES-1', cell_format_tito)                    #-- 07
             worksheet.write('I8', 'MES-2', cell_format_tito)                    #-- 08
-            worksheet.write('J8', 'MES-3', cell_format_titu)                    #-- 09
-            worksheet.write('K8', 'MES-4', cell_format_titu)                    #-- 10  DIAS TRABAJADOS INTERMITENTES 
-            worksheet.write('L8', 'MES-5', cell_format_titu)                    #-- 11
-            worksheet.write('M8', 'MES-6', cell_format_tit2)                    #-- 12
-            worksheet.write('N8', 'IMPORTE TOTAL HORAS', cell_format_tito)      #-- 13
+            worksheet.write('J8', 'MES-3', cell_format_tito)                    #-- 09
+            worksheet.write('K8', 'MES-4', cell_format_tito)                    #-- 10  DIAS TRABAJADOS INTERMITENTES 
+            worksheet.write('L8', 'MES-5', cell_format_tito)                    #-- 11
+            worksheet.write('M8', 'MES-6', cell_format_tito)                    #-- 12
+            worksheet.write('N8', 'IMPORTE TOTAL HORAS', cell_format_tit2)      #-- 13
 
-            worksheet.write('O8', 'MES-1', cell_format_tito)                    #-- 14
-            worksheet.write('P8', 'MES-2', cell_format_tito)                    #-- 15
+            worksheet.write('O8', 'MES-1', cell_format_titu)                    #-- 14
+            worksheet.write('P8', 'MES-2', cell_format_titu)                    #-- 15
             worksheet.write('Q8', 'MES-3', cell_format_titu)                    #-- 16
             worksheet.write('R8', 'MES-4', cell_format_titu)                    #-- 17  HORAS EXTRAS / BONO / FERIADOS
             worksheet.write('S8', 'MES-5', cell_format_titu)                    #-- 18
-            worksheet.write('T8', 'MES-6', cell_format_tito)                    #-- 19
-            worksheet.write('U8', 'TOTAL IMPORTE', cell_format_tito)            #-- 20
+            worksheet.write('T8', 'MES-6', cell_format_titu)                    #-- 19
+            worksheet.write('U8', 'TOTAL IMPORTE', cell_format_tit2)            #-- 20
 
-            worksheet.write('V8', 'REMU-COMP PROMEDIO', cell_format_tit2)       #-- 21   
+            worksheet.write('V8', 'REMU-COMP PROMEDIO', cell_format_tito)       #-- 21   
             worksheet.write('W8', 'REMUNERCIÓN FIJA', cell_format_titu)         #-- 22
             worksheet.write('Y8', 'ASIGN. FAMILIAR', cell_format_tit8)          #-- 23  REMUNERACIONES
             worksheet.write('Z8', 'TOTAL REMUNERACIÓN', cell_format_tit8)       #-- 24
@@ -1264,8 +1263,8 @@ class HrPayslip(models.Model):
                 # worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
                 # worksheet.write(w_fila, 1, w_boleta.number, current_format_cent)
                 w_dato = w_boleta.employee_id.name
-                worksheet.write(w_fila, 2, w_dato, current_format_left)
-                worksheet.write(w_fila, 3, w_boleta.x_studio_dni, current_format_cent)
+                worksheet.write(w_fila, 1, w_dato, current_format_left)
+                worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)
 
                 w_dato = ""
                 worksheet.write(w_fila, 4, w_dato, current_format_cent)
