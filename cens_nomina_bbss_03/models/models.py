@@ -1309,14 +1309,10 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 1, w_dato, current_format_left)         #-- Nombre Empleado
                 worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)  #-- DNI
 
-                #w_dato = w_boleta.employee_id.x_studio_tipo_planilla
-                w_dato = dict(w_boleta.employee_id._fields['x_studio_tipo_planilla'].selection).get(
-                              w_boleta.employee_id.x_studio_tipo_planilla, 'NONE')
+                w_dato = self.tipo_planilla(w_boleta.employee_id.x_studio_tipo_planilla)
                 worksheet.write(w_fila, 3, w_dato, current_format_left)         #-- Tipo Contrato
 
-                #w_dato = w_boleta.employee_id.x_studio_centro_de_costos
-                w_dato = dict(w_boleta.employee_id._fields['x_studio_centro_de_costos'].selection).get(
-                              w_boleta.employee_id.x_studio_centro_de_costos, 'NONE')
+                w_dato = self.centro_costo(int(w_boleta.employee_id.x_studio_centro_de_costos))
                 worksheet.write(w_fila, 4, w_dato, current_format_left)         #-- Centro Costos
               
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
@@ -1376,6 +1372,27 @@ class HrPayslip(models.Model):
         }
         return meses.get(nmes, "ERROR")
     
+    @staticmethod
+    def centro_costo(ntipo):
+        costo = {
+            1:	"Costo Directo",	
+            2:	"Costo Indirecto",	
+            3:	"Gasto de Venta",	
+            4:	"Gasto General"
+        }
+        return costo.get(ntipo, "ERROR")
+    
+    @staticmethod
+    def tipo_planilla(codigo):
+        tipos = {
+            "GENE": "Régimen General",
+            "INTE": "Régimen Intermitente", 
+            "LOCA": "Locación de Servicios",
+            "PRAC": "Practicantes"
+        }
+        return tipos.get(codigo, "ERROR")
+    	
+
     @staticmethod
     def formato_moneda(cantidad, simbolo="S/."):
         return f"{simbolo}{cantidad:,.2f}"
