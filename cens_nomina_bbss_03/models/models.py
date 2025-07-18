@@ -1309,10 +1309,14 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 1, w_dato, current_format_left)         #-- Nombre Empleado
                 worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)  #-- DNI
 
-                w_dato = w_boleta.employee_id.x_studio_tipo_planilla.name
+                #w_dato = w_boleta.employee_id.x_studio_tipo_planilla
+                w_dato = dict(w_boleta.employee_id._fields['x_studio_tipo_planilla'].selection).get(
+                              w_boleta.employee_id.x_studio_tipo_planilla, 'NONE')
                 worksheet.write(w_fila, 3, w_dato, current_format_left)         #-- Tipo Contrato
 
-                w_dato = w_boleta.employee_id.x_studio_centro_de_costos.name
+                #w_dato = w_boleta.employee_id.x_studio_centro_de_costos
+                w_dato = dict(w_boleta.employee_id._fields['x_studio_centro_de_costos'].selection).get(
+                              w_boleta.employee_id.x_studio_centro_de_costos, 'NONE')
                 worksheet.write(w_fila, 4, w_dato, current_format_left)         #-- Centro Costos
               
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
