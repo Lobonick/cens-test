@@ -598,8 +598,37 @@ class HrPayslip(models.Model):
         ultimo_dia = calendar.monthrange(fecha.year, fecha.month)[1]
         return date(fecha.year, fecha.month, ultimo_dia)
     
-
+    # ==========================================================
+    # BOTÓN - ACTIVA LISTADO DE GRATIFICACIONES 
+    # ==========================================================
     def action_listado_gratificaciones(self):
+        # Verificar si se usa un LOTE de Julio o Diciembre
+        w_user = self.env.user.id 
+        w_lote = self.browse(self._context.get('active_ids', []))
+        w_pase = False 
+        for w_boleta in w_lote:
+            w_mes_lote = w_boleta.date_from.month
+            w_pase = (True if w_mes_lote == 7 else False)
+        
+        if not w_pase:
+            raise UserError(_('CUIDADO: Debe usar un LOTE de JULIO o DICIEMBRE.'))
+        
+        self.procesa_listado_gratificaciones()
+
+        # Notificación al usuario
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Éxito'),
+                'message': _('Listado de Gratificaciones generado correctamente.'),
+                'sticky': False,
+                'type': 'success',
+            }
+        }
+        
+
+    def procesa_listado_gratificaciones(self):
         # Crear archivo Excel en memoria
         output = BytesIO()
         #workbook = xlsxwriter.Workbook(output)
@@ -830,7 +859,7 @@ class HrPayslip(models.Model):
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H5', 'CALCULO SEMESTRAL DE GRATIFICACIONES', cell_format_cabe)
+            worksheet.write('H5', 'CÁLCULO SEMESTRAL DE GRATIFICACIONES', cell_format_cabe)
             # ------
             worksheet.write('A6', 'FECHA:')
             worksheet.write('B6', datetime.now(), cell_format_fech)
@@ -849,7 +878,7 @@ class HrPayslip(models.Model):
             worksheet.merge_range('O7:U7', 'Merged Cells', merge_format)
             worksheet.write('O7', 'HH.EE. / BONO / FERIADOS', cell_format_tut2)
 
-            worksheet.merge_range('V7:AA7', 'Merged Cells', merge_format)
+            worksheet.merge_range('V7:Z7', 'Merged Cells', merge_format)
             worksheet.write('V7', 'REMUNERACIONES', cell_format_tuti)
 
             # worksheet.merge_range('Q7:S7', 'Merged Cells', merge_format)
@@ -1183,7 +1212,7 @@ class HrPayslip(models.Model):
             worksheet.write('Y8', 'TOTAL REMUNERACIÓN', cell_format_tito)       #-- 24  REMUNERACIONES
             worksheet.write('Z8', 'REMU-COMPU GRATIFIC', cell_format_tit2)      #-- 25
             worksheet.write('AA8', 'INASISTENCIAS', cell_format_tito)           #-- 26     
-            worksheet.write('AB8', 'FECHA ALTA T-REGIST', cell_format_tito)           #-- 27
+            worksheet.write('AB8', 'FECHA ALTA TREGISTRO', cell_format_tito)           #-- 27
 
             #----------------------------------------------------------------
             worksheet.write('H9', 'dd', cell_format_tut4)                       #-- 07
@@ -1205,16 +1234,16 @@ class HrPayslip(models.Model):
             worksheet.write('V9', 'S/.', cell_format_tut4)                      #-- 21
             worksheet.write('W9', 'S/.', cell_format_tut4)                      #-- 22
             worksheet.write('X9', 'S/.', cell_format_tut4)                      #-- 23
-            worksheet.write('Y9', 'S/.', cell_format_sub8)                      #-- 24
-            worksheet.write('Z9', 'S/.', cell_format_sub8)                      #-- 25
-            worksheet.write('AA9', 'S/.', cell_format_sub8)                     #-- 26     
+            worksheet.write('Y9', 'S/.', cell_format_tut4)                      #-- 24
+            worksheet.write('Z9', 'S/.', cell_format_tut4)                      #-- 25
+            worksheet.write('AA9', 'S/.', cell_format_tut4)                     #-- 26     
 
             worksheet.write('AB9', '', cell_format_sub8)         #-- 27
 
             #-----
             # worksheet.autofilter(8, 60, 8, 65)  #--- Coloca FILTROS en RESUMEN 
             #-----
-            worksheet.freeze_panes(9, 4)    #--- Inmoviliza Paneles
+            worksheet.freeze_panes(9, 3)    #--- Inmoviliza Paneles
 
             # -------------------------------------------------------------------------------------
             # INSERTA NOMBRE DE CAMPOS Y OCULTA FILA
@@ -1260,22 +1289,26 @@ class HrPayslip(models.Model):
                     worksheet.write(w_fila, 0, 'CESADO', cell_format_rojo)
                 else:
                     worksheet.write(w_fila, 0, w_fila-8, cell_format_cent)
-                # worksheet.write(w_fila, 0, w_boleta.id, cell_format_cent)   
-                # worksheet.write(w_fila, 1, w_boleta.number, current_format_cent)
-                w_dato = w_boleta.employee_id.name
-                worksheet.write(w_fila, 1, w_dato, current_format_left)
-                worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)
 
-                w_dato = ""
-                worksheet.write(w_fila, 4, w_dato, current_format_cent)
+                w_dato = w_boleta.employee_id.name
+                worksheet.write(w_fila, 1, w_dato, current_format_left)         #-- Nombre Empleado
+                worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)  #-- DNI
+
+                w_dato = w_boleta.employee_id.x_studio_tipo_planilla
+                worksheet.write(w_fila, 3, w_dato, current_format_left)         #-- Tipo Contrato
+
+                w_dato = w_boleta.employee_id.x_studio_centro_de_costos
+                worksheet.write(w_fila, 4, w_dato, current_format_left)         #-- Centro Costos
               
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
-                worksheet.write(w_fila, 5, w_dato, current_format_cent)
+                worksheet.write(w_fila, 5, w_dato, current_format_left)         #-- Unidad de Negocio
                 
                 w_dato = w_boleta.currency_id.name
-                worksheet.write(w_fila, 6, w_dato, current_format_cent)
+                worksheet.write(w_fila, 6, w_dato, current_format_cent)         #-- Moneda
 
-                
+                # w_dato = w_boleta.currency_id.name
+                # worksheet.write(w_fila, 6, w_dato, current_format_cent)         #-- Moneda
+
                 w_fila += 1
 
             worksheet.write(5, 20, "TOTAL GENERAL:", cell_format_left) 
