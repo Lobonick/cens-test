@@ -1178,12 +1178,12 @@ class HrPayslip(models.Model):
             worksheet.write('U8', 'TOTAL IMPORTE', cell_format_tit2)            #-- 20
 
             worksheet.write('V8', 'REMU-COMP PROMEDIO', cell_format_tito)       #-- 21   
-            worksheet.write('W8', 'REMUNERCIÓN FIJA', cell_format_titu)         #-- 22
-            worksheet.write('Y8', 'ASIGN. FAMILIAR', cell_format_tit8)          #-- 23  REMUNERACIONES
-            worksheet.write('Z8', 'TOTAL REMUNERACIÓN', cell_format_tit8)       #-- 24
-            worksheet.write('AA8', 'REMU-COMPU GRATIFIC', cell_format_tit8)     #-- 25     
-
-            worksheet.write('AB8', 'INASISTENCIAS', cell_format_tit8)           #-- 26
+            worksheet.write('W8', 'REMUNERCIÓN FIJA', cell_format_tito)         #-- 22
+            worksheet.write('X8', 'ASIGN. FAMILIAR', cell_format_tito)          #-- 23
+            worksheet.write('Y8', 'TOTAL REMUNERACIÓN', cell_format_tito)       #-- 24  REMUNERACIONES
+            worksheet.write('Z8', 'REMU-COMPU GRATIFIC', cell_format_tit2)      #-- 25
+            worksheet.write('AA8', 'INASISTENCIAS', cell_format_tito)           #-- 26     
+            worksheet.write('AB8', 'FECHA ALTA T-REGIST', cell_format_tito)           #-- 27
 
             #----------------------------------------------------------------
             worksheet.write('H9', 'dd', cell_format_tut4)                       #-- 07
