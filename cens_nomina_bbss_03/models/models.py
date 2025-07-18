@@ -601,21 +601,21 @@ class HrPayslip(models.Model):
     # ==========================================================
     # BOTÓN - ACTIVA LISTADO DE GRATIFICACIONES 
     # ==========================================================
-    def action_listado_gratificaciones(self):
-        # Verificar si se usa un LOTE de Julio o Diciembre
-        w_user = self.env.user.id 
-        w_lote = self.browse(self._context.get('active_ids', []))
-        w_pase = False 
-        for w_boleta in w_lote:
-            w_mes_lote = w_boleta.date_from.month
-            w_pase = (True if w_mes_lote == 7 else False)
+    # def action_listado_gratificaciones(self):
+    #     # Verificar si se usa un LOTE de Julio o Diciembre
+    #     w_user = self.env.user.id 
+    #     w_lote = self.browse(self._context.get('active_ids', []))
+    #     w_pase = False 
+    #     for w_boleta in w_lote:
+    #         w_mes_lote = w_boleta.date_from.month
+    #         w_pase = (True if w_mes_lote == 7 else False)
         
-        if not w_pase:
-            raise UserError(_('CUIDADO: Debe usar un LOTE de JULIO o DICIEMBRE.'))
+    #     if not w_pase:
+    #         raise UserError(_('CUIDADO: Debe usar un LOTE de JULIO o DICIEMBRE.'))
         
-        self.procesa_listado_gratificaciones()
+    #     self.procesa_listado_gratificaciones()
 
-        pass
+    #     pass
 
         # # Notificación al usuario
         # return {
@@ -629,8 +629,21 @@ class HrPayslip(models.Model):
         #     }
         # }
         
-
-    def procesa_listado_gratificaciones(self):
+    # ==========================================================
+    # BOTÓN - ACTIVA LISTADO DE GRATIFICACIONES 
+    # ==========================================================
+    def action_listado_gratificaciones(self):
+         # Verificar si se usa un LOTE de Julio o Diciembre
+        w_user = self.env.user.id 
+        w_lote = self.browse(self._context.get('active_ids', []))
+        w_pase = False 
+        for w_boleta in w_lote:
+            w_mes_lote = w_boleta.date_from.month
+            w_pase = (True if w_mes_lote == 7 else False)
+        
+        if not w_pase:
+            raise UserError(_('CUIDADO: Debe usar un LOTE de JULIO o DICIEMBRE.'))
+        
         # Crear archivo Excel en memoria
         output = BytesIO()
         #workbook = xlsxwriter.Workbook(output)
