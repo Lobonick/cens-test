@@ -615,17 +615,19 @@ class HrPayslip(models.Model):
         
         self.procesa_listado_gratificaciones()
 
-        # Notificación al usuario
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Éxito'),
-                'message': _('Listado de Gratificaciones generado correctamente.'),
-                'sticky': False,
-                'type': 'success',
-            }
-        }
+        pass
+
+        # # Notificación al usuario
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'display_notification',
+        #     'params': {
+        #         'title': _('Éxito'),
+        #         'message': _('Listado de Gratificaciones generado correctamente.'),
+        #         'sticky': False,
+        #         'type': 'success',
+        #     }
+        # }
         
 
     def procesa_listado_gratificaciones(self):
