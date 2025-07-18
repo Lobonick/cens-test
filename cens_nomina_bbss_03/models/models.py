@@ -666,7 +666,7 @@ class HrPayslip(models.Model):
                     'keywords': 'nómina, lote, cts, intermitente',
                     'created':  datetime.now(),
                     'comments': 'Creado por: Área de Sistemas - CENS-PERÚ'})
-            worksheet = workbook.add_worksheet('CÁLCULO GRATIFICACIONES 2025-B')
+            worksheet = workbook.add_worksheet('CÁLCULO GRATIFICACIONES 2025-'+self.mes_literal(w_mes_lote).upper[:3])
             w_formato_hora  = workbook.add_format({
                 'num_format': 'hh:mm',
                 'align'     : 'center',  
@@ -874,8 +874,8 @@ class HrPayslip(models.Model):
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H5', 'CÁLCULO SEMESTRAL DE GRATIFICACIONES', cell_format_cabe)
-            # ------
+            worksheet.write('H5', 'CÁLCULO SEMESTRAL DE GRATIFICACIONES' + self.mes_literal(w_mes_lote).upper, cell_format_cabe)
+            # ------ 
             worksheet.write('A6', 'FECHA:')
             worksheet.write('B6', datetime.now(), cell_format_fech)
             #-----
@@ -1309,10 +1309,10 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 1, w_dato, current_format_left)         #-- Nombre Empleado
                 worksheet.write(w_fila, 2, w_boleta.x_studio_dni, current_format_cent)  #-- DNI
 
-                w_dato = w_boleta.employee_id.x_studio_tipo_planilla
+                w_dato = w_boleta.employee_id.x_studio_tipo_planilla.name
                 worksheet.write(w_fila, 3, w_dato, current_format_left)         #-- Tipo Contrato
 
-                w_dato = w_boleta.employee_id.x_studio_centro_de_costos
+                w_dato = w_boleta.employee_id.x_studio_centro_de_costos.name
                 worksheet.write(w_fila, 4, w_dato, current_format_left)         #-- Centro Costos
               
                 w_dato = w_boleta.employee_id.x_studio_unidad_negocio
