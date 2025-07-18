@@ -666,6 +666,7 @@ class HrPayslip(models.Model):
                     'keywords': 'nómina, lote, cts, intermitente',
                     'created':  datetime.now(),
                     'comments': 'Creado por: Área de Sistemas - CENS-PERÚ'})
+            
             w_dato = 'CÁLCULO GRATIFICACIONES 2025-' + self.mes_literal(w_mes_lote).upper
             worksheet = workbook.add_worksheet(w_dato)
             w_formato_hora  = workbook.add_format({
@@ -1314,7 +1315,7 @@ class HrPayslip(models.Model):
                 # w_dato = self.tipo_planilla(w_codi_tipoplani)
                 # worksheet.write(w_fila, 3, w_dato, current_format_left)         #-- Tipo Contrato
 
-                w_codi_centcosto = int(w_boleta.employee_id.x_studio_centro_de_costos)
+                w_codi_centcosto = w_boleta.employee_id.x_studio_centro_de_costos
                 w_dato = self.centro_costo(w_codi_centcosto)
                 worksheet.write(w_fila, 4, w_dato, current_format_left)         #-- Centro Costos
               
