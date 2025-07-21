@@ -1,0 +1,10 @@
+/* 
+-----------------------------------------
+CSS PERSONALIZADO PARAEL MÓDULO CENS
+-----------------------------------------
+*/
+
+.button-group button {
+    display: inline-block;
+    margin-right: 5px;  /* Espacio opcional entre los botones */
+}
