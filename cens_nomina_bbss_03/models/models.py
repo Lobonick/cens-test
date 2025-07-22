@@ -736,6 +736,12 @@ class HrPayslip(models.Model):
             cell_format_nume.set_align('center')
             cell_format_nume.set_align('vcenter')
             # ------
+            cell_format_num2 = workbook.add_format()
+            cell_format_num2.set_num_format('#,##0')
+            cell_format_num2.set_bg_color('#FFFF99')
+            cell_format_num2.set_align('center')
+            cell_format_num2.set_align('vcenter')
+            # ------
             cell_format_numc = workbook.add_format()
             cell_format_numc.set_num_format('#00.00')
             cell_format_numc.set_align('center')
@@ -1368,6 +1374,7 @@ class HrPayslip(models.Model):
                 current_format_impo = cell_format_cesado_impo if w_codi_tipoplani == "INTE" else cell_format_impo
                 current_format_fech = cell_format_cesado_fech if w_codi_tipoplani == "INTE" else cell_format_fech
                 current_format_nume = cell_format_cesado_nume if w_codi_tipoplani == "INTE" else cell_format_nume
+                current_format_num2 = cell_format_cesado_nume if w_codi_tipoplani == "INTE" else cell_format_num2
                 current_format_imp2 = cell_format_cesado_impo if w_codi_tipoplani == "INTE" else cell_format_imp2
                 current_format_imp3 = cell_format_cesado_imp3 if w_codi_tipoplani == "INTE" else cell_format_impo
        
@@ -1495,12 +1502,13 @@ class HrPayslip(models.Model):
                 w_peri_canti_mm = w_time_work.get('meses', 0)
                 w_peri_canti_dd = w_time_work.get('dias', 0)
                 worksheet.write(w_fila, 30, w_peri_canti_mm, current_format_nume)       #-- Periodo en Meses
-                worksheet.write(w_fila, 31, w_peri_canti_dd, current_format_nume)       #-- Perioro en días
+                worksheet.write(w_fila, 31, w_peri_canti_dd, current_format_num2)       #-- Perioro en días
 
                 if (w_codi_tipoplani == "INTE"):
                     w_grati_impo = w_remu_comp
                 else:
-                    w_grati_impo = ((w_remu_comp/6 if w_remu_comp>0 else 0.00) * w_peri_canti_mm) + (((w_remu_comp/6)/30 if w_remu_comp>0 else 0.00) * w_peri_canti_dd) 
+                    w_grati_impo = ((w_remu_comp/6 if w_remu_comp>0 else 0.00) * w_peri_canti_mm) 
+                    # w_grati_impo += (((w_remu_comp/6)/30 if w_remu_comp>0 else 0.00) * w_peri_canti_dd) 
                 w_grati_boni = w_grati_impo * 0.09
                 w_grati_tota = w_grati_impo + w_grati_boni
                 worksheet.write(w_fila, 32, w_grati_impo, current_format_impo)       #-- Gratificación: Importe
