@@ -301,6 +301,9 @@ class HrPayslip(models.Model):
             worksheet.set_column(85, 85, 12)    #--   
             worksheet.set_column(86, 86, 12)    #-
 
+            worksheet.set_column(87, 87, 5)    #- (Seperador)
+
+            worksheet.set_column(88, 88, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -757,6 +760,8 @@ class HrPayslip(models.Model):
             # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
             # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
+            worksheet.write('CL8', 'FECHA CESE', cell_format_tit7)                     #-- 87
+
 
             #----------------------------------------------------------------
             worksheet.write('I9', 'DIAS', cell_format_tut3)                 #-- 09
@@ -839,6 +844,8 @@ class HrPayslip(models.Model):
             worksheet.write('CH9', 'FLUJO', cell_format_sub6)         #-- 72      
             worksheet.write('CI9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
             worksheet.write('CJ9', 'ONP', cell_format_sub7)         #-- 74
+
+            worksheet.write('CL9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
 
             #-----
             #worksheet.autofilter(8, 2, 8, 8)    #--- Coloca FILTROS en datos generales
@@ -1170,6 +1177,12 @@ class HrPayslip(models.Model):
                             worksheet.write(w_fila, 85, w_boleta.x_studio_en_comision_flujo, current_format_impo)
 
                         worksheet.write(w_fila, 86, w_boleta.x_studio_en_afp_onp, current_format_impo)
+                
+                #
+                # FECHA DE CESE
+                #
+                worksheet.write(w_fila, 88, w_boleta.x_studio_cese_fecha, current_format_fech)
+
                 w_fila += 1
 
             worksheet.write(5, 64, "TOTAL GENERAL:", cell_format_left)
