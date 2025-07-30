@@ -1182,7 +1182,7 @@ class HrPayslip(models.Model):
                 # FECHA DE CESE
                 #
                 if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 88, w_boleta.x_studio_cese_fecha, current_format_fech)
+                    worksheet.write(w_fila, 89, w_boleta.x_studio_cese_fecha, current_format_fech)
 
                 w_fila += 1
 
