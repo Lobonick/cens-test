@@ -301,9 +301,9 @@ class HrPayslip(models.Model):
             worksheet.set_column(85, 85, 12)    #--   
             worksheet.set_column(86, 86, 12)    #-
 
-            worksheet.set_column(87, 87, 5)    #- (Seperador)
+            worksheet.set_column(88, 88, 5)    #- (Seperador)
 
-            worksheet.set_column(88, 88, 12)    #- FECHA DE CESE
+            worksheet.set_column(89, 89, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -1181,7 +1181,8 @@ class HrPayslip(models.Model):
                 #
                 # FECHA DE CESE
                 #
-                worksheet.write(w_fila, 88, w_boleta.x_studio_cese_fecha, current_format_fech)
+                if w_boleta.x_studio_cesado:
+                    worksheet.write(w_fila, 88, w_boleta.x_studio_cese_fecha, current_format_fech)
 
                 w_fila += 1
 
