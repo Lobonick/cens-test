@@ -136,7 +136,7 @@ class CRMLead(models.Model):
     @api.model
     def _cargar_imagen_aviso(self):
         try:
-            url_imagen = "https://sisac-peru.com/Aviso-Novedades-01.jpg"
+            url_imagen = "https://sisac-peru.com/Aviso-Novedades-03.jpg"
             response = requests.get(url_imagen, timeout=10)
             if response.status_code == 200:
                 return response.content
@@ -155,7 +155,7 @@ class CRMLead(models.Model):
             
         # Crear el adjunto
         attachment_vals = {
-            'name': 'Aviso-Novedades-01.jpg',
+            'name': 'Aviso-Novedades-03.jpg',
             'datas': base64.b64encode(imagen_contenido),
             'res_model': 'crm.lead',
             'res_id': self.id,

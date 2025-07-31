@@ -9,7 +9,7 @@
             <xpath expr="//header" position="inside">
                 <button name="action_autoriza_propuesta" 
                         class="oe_highlight" 
-                        string="Autoriza_Propuesta" 
+                        string="Aprobar_Propuesta_Económica" 
                         icon="fa-thumbs-up" 
                         confirm="¿Está seguro de AUTORIZAR la Propuesta Económica?" 
                         type="object"/> 
