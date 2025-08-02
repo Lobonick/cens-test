@@ -97,16 +97,16 @@ class CRMLead(models.Model):
                     'warning': {
                         'title': _('⚠️ ALERTA - CONTACTOS REQUERIDOS'),
                         'message': _(
-                            '🚨 CUIDADO: Esta Oportunidad de Negocio no puede pasar a GANADA sin antes registrar  '
-                            '             uno o más contactos relacionados a la parte FINANCIERA.\n\n'
+                            '🚨 CUIDADO: Esta Oportunidad de Negocio no puede pasar a GANADA sin antes registrar \n'
+                            '              uno o más contactos relacionados a la parte FINANCIERA.\n\n'
                             '📋 Acciones requeridas:\n'
-                            '    • Registrar al menos un contacto financiero\n'
-                            '    • Deberás asignar como ETIQUETA principal la descripción del CARGO o el ÁREA involucrada.\n'
-                            '    • Luego debes seleccionar una persona ya registrada o agregar una nueva.\n'
-                            '    • Recuerda que debes colocar un contacto con el que se pueda tatar temas relacionados a la \n'
-                            '      gestión de finaciamiento, desembolsos, contratos, adendas, cobranzas, entre otras. \n\n'
+                            '      • Registrar al menos un contacto financiero\n'
+                            '      • Deberás asignar como ETIQUETA principal la descripción del CARGO o el ÁREA involucrada.\n'
+                            '      • Luego debes seleccionar una persona ya registrada o agregar una nueva.\n'
+                            '      • Recuerda que debes colocar un contacto con el que se pueda tatar temas relacionados a la \n'
+                            '        gestión de finaciamiento, desembolsos, contratos, adendas, cobranzas, entre otras. \n\n'
                             '🔄 En este momento el porcentaje de Probabilidad será revertido automáticamente a 70% (Mucha posibilidad \n'
-                            '    de ganar), hasta que ingreses el contacto requerido.'
+                            '     de ganar), hasta que ingreses el contacto requerido.'
                         ),
                     },
                     'type': 'ir.actions.client',
