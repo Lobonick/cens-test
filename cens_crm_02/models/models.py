@@ -75,6 +75,49 @@ class CRMLead(models.Model):
             }
         }
 
+
+    # -------------------------------------
+    # VALIDACIÓN DE CONTACTOS PARA GANADA
+    # -------------------------------------
+    @api.onchange('x_studio_porcentaje_probabilidad')
+    def _onchange_porcentaje_probabilidad(self):
+        """
+        Validar que existan contactos registrados cuando se selecciona 100% (GANADA)
+        """
+        if self.x_studio_porcentaje_probabilidad == '100':
+            # Verificar si el contador de contactos es cero
+            contador_contactos = self.x_studio_contador_contactos or 0
+            
+            if contador_contactos == 0:
+                # Mostrar mensaje de alerta y resetear el valor y lo ajusta a 30%
+                self.x_studio_porcentaje_probabilidad = '30'  # Regresar a "30% - Presentación de propuesta"
+                
+                # Retornar mensaje de advertencia
+                return {
+                    'warning': {
+                        'title': _('⚠️ ALERTA - CONTACTOS REQUERIDOS'),
+                        'message': _(
+                            '🚨 CUIDADO: Esta Oportunidad de Negocio no puede pasar a GANADA '
+                            'sin antes registrar uno o más contactos relacionados a la parte FINANCIERA.\n\n'
+                            '📋 Acciones requeridas:\n'
+                            '• Registrar al menos un contacto financiero\n'
+                            '• Verificar información de facturación\n'
+                            '• Completar datos de contacto del tomador de decisiones\n\n'
+                            '🔄 El porcentaje se ha revertido automáticamente a "30% - Presentación de propuesta".'
+                        ),
+                    },
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('⚠️ CONTACTOS REQUERIDOS'),
+                        'message': _('No se puede marcar como GANADA sin contactos financieros registrados.'),
+                        'sticky': True,
+                        'type': 'warning',
+                        'className': 'o_notification_shake',  # Efecto visual de shake
+                    }
+                }
+    
+
     # ------------------------------
     # AUTORIZA PROPUESTA ECONÓMICA
     # ------------------------------
@@ -162,7 +205,6 @@ class CRMLead(models.Model):
             'type': 'binary',
             'mimetype': 'image/jpeg',
         }
-        
         attachment = self.env['ir.attachment'].create(attachment_vals)
         return attachment.id
     
@@ -180,7 +222,7 @@ class CRMLead(models.Model):
                 'model': 'crm.lead',
                 'res_id': record.id,
                 'message_type': 'comment',
-                'body': _('<p>Aviso importante: Se ha adjuntado una imagen con información relevante.</p>'),
+                'body': _('<p>Aviso importante: Se adjunta imagen con información relevante.</p>'),
                 'attachment_ids': [(4, attachment_id)],  # Usar 4 para añadir al many2many
                 'author_id': self.env.user.partner_id.id,
                 'email_from': self.env.user.email,
