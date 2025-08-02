@@ -90,27 +90,30 @@ class CRMLead(models.Model):
             
             if contador_contactos == 0:
                 # Mostrar mensaje de alerta y resetear el valor y lo ajusta a 30%
-                self.x_studio_porcentaje_probabilidad = '30'  # Regresar a "30% - Presentación de propuesta"
+                self.x_studio_porcentaje_probabilidad = '70'  # Regresar a "70% - Mucha posibilidad de ganar. - "
                 
                 # Retornar mensaje de advertencia
                 return {
                     'warning': {
                         'title': _('⚠️ ALERTA - CONTACTOS REQUERIDOS'),
                         'message': _(
-                            '🚨 CUIDADO: Esta Oportunidad de Negocio no puede pasar a GANADA '
-                            'sin antes registrar uno o más contactos relacionados a la parte FINANCIERA.\n\n'
+                            '🚨 CUIDADO: Esta Oportunidad de Negocio no puede pasar a GANADA sin antes registrar  '
+                            '             uno o más contactos relacionados a la parte FINANCIERA.\n\n'
                             '📋 Acciones requeridas:\n'
-                            '• Registrar al menos un contacto financiero\n'
-                            '• Verificar información de facturación\n'
-                            '• Completar datos de contacto del tomador de decisiones\n\n'
-                            '🔄 El porcentaje se ha revertido automáticamente a "30% - Presentación de propuesta".'
+                            '    • Registrar al menos un contacto financiero\n'
+                            '    • Deberás asignar como ETIQUETA principal la descripción del CARGO o el ÁREA involucrada.\n'
+                            '    • Luego debes seleccionar una persona ya registrada o agregar una nueva.\n'
+                            '    • Recuerda que debes colocar un contacto con el que se pueda tatar temas relacionados a la \n'
+                            '      gestión de finaciamiento, desembolsos, contratos, adendas, cobranzas, entre otras. \n\n'
+                            '🔄 En este momento el porcentaje de Probabilidad será revertido automáticamente a 70% (Mucha posibilidad \n'
+                            '    de ganar), hasta que ingreses el contacto requerido.'
                         ),
                     },
                     'type': 'ir.actions.client',
                     'tag': 'display_notification',
                     'params': {
                         'title': _('⚠️ CONTACTOS REQUERIDOS'),
-                        'message': _('No se puede marcar como GANADA sin contactos financieros registrados.'),
+                        'message': _('No se puede marcar como GANADA sin Contactos Financieros registrados.'),
                         'sticky': True,
                         'type': 'warning',
                         'className': 'o_notification_shake',  # Efecto visual de shake
