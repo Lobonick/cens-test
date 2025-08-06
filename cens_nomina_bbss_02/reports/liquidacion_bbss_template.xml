@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="liquidacion_bbss_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            .header-company {
+                                text-align: center;
+                                margin-bottom: 20px;
+                                border-bottom: 2px solid #875A7B;
+                                padding-bottom: 10px;
+                            }
+                            .section-title {
+                                background-color: #875A7B;
+                                color: white;
+                                padding: 8px;
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 15px 0 10px 0;
+                            }
+                            .info-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-bottom: 15px;
+                            }
+                            .info-table td {
+                                padding: 5px 8px;
+                                border: 1px solid #ddd;
+                                font-size: 12px;
+                            }
+                            .info-table .label {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 40%;
+                            }
+                            .calculation-section {
+                                margin: 20px 0;
+                                border: 1px solid #ddd;
+                                border-radius: 5px;
+                            }
+                            .calc-header {
+                                background-color: #128C7E;
+                                color: white;
+                                padding: 10px;
+                                font-weight: bold;
+                                font-size: 14px;
+                            }
+                            .calc-content {
+                                padding: 15px;
+                            }
+                            .calc-row {
+                                display: flex;
+                                justify-content: space-between;
+                                margin: 5px 0;
+                                padding: 5px 0;
+                                border-bottom: 1px solid #eee;
+                            }
+                            .calc-total {
+                                background-color: #a8e6cf;
+                                color: #2d5016;
+                                font-weight: bold;
+                                padding: 10px;
+                                border-radius: 5px;
+                                margin: 10px 0;
+                            }
+                            .monetary {
+                                text-align: right;
+                                font-family: monospace;
+                            }
+                            .warning-text {
+                                color: red;
+                                font-weight: bold;
+                            }
+                        </style>
+
+                        <!-- Encabezado del documento -->
+                        <div class="header-company">
+                            <h1>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
+                            <h3 t-field="res_company.name"/>
+                            <p>RUC: <span t-field="res_company.vat"/></p>
+                        </div>
+
+                        <!-- Información del empleado -->
+                        <div class="section-title">📋 INFORMACIÓN DEL EMPLEADO</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Empleado:</td>
+                                <td t-field="o.employee_id.name"/>
+                                <td class="label">DNI:</td>
+                                <td t-field="o.employee_id.identification_id"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Cargo:</td>
+                                <td t-field="o.employee_id.job_id.name"/>
+                                <td class="label">Departamento:</td>
+                                <td t-field="o.employee_id.department_id.name"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Fecha de Ingreso:</td>
+                                <td t-field="o.x_studio_cese_fecha_ingreso"/>
+                                <td class="label">Fecha de Cese:</td>
+                                <td t-field="o.x_studio_cese_fecha"/>
+                            </tr>
+                        </table>
+
+                        <!-- Información del período -->
+                        <div class="section-title">📅 INFORMACIÓN DEL PERÍODO</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Período Inicio:</td>
+                                <td t-field="o.x_cens_periodo_ini"/>
+                                <td class="label">Período Fin:</td>
+                                <td t-field="o.x_cens_periodo_fin"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Tiempo de Servicio:</td>
+                                <td>
+                                    <span t-field="o.x_cens_periodo_aa"/> años, 
+                                    <span t-field="o.x_cens_periodo_mm"/> meses, 
+                                    <span t-field="o.x_cens_periodo_dd"/> días
+                                </td>
+                                <td class="label">Moneda:</td>
+                                <td t-field="o.x_cens_moneda"/>
+                            </tr>
+                        </table>
+
+                        <!-- Remuneraciones base -->
+                        <div class="section-title">💰 REMUNERACIONES BASE</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Remuneración Base:</td>
+                                <td class="monetary" t-field="o.x_cens_remu_base" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="label">Asignación Familiar:</td>
+                                <td class="monetary" t-field="o.x_cens_asig_fami" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Gratificación 1/6:</td>
+                                <td class="monetary" t-field="o.x_cens_grat_16to" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="label">Remuneración Computable:</td>
+                                <td class="monetary" t-field="o.x_cens_remu_comp" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                        </table>
+
+                        <!-- Liquidación CTS -->
+                        <div class="calculation-section">
+                            <div class="calc-header">🧮 LIQUIDACIÓN CTS</div>
+                            <div class="calc-content">
+                                <div class="calc-row">
+                                    <span>Detalle del Período:</span>
+                                    <span t-field="o.x_cens_ccts_peri"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por mes:</span>
+                                    <span t-field="o.x_cens_ccts_dmes"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por día:</span>
+                                    <span t-field="o.x_cens_ccts_ddia"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por mes:</span>
+                                    <span class="monetary" t-field="o.x_cens_ccts_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por día:</span>
+                                    <span class="monetary" t-field="o.x_cens_ccts_idia" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-total">
+                                    <div class="calc-row">
+                                        <span><strong>TOTAL CTS:</strong></span>
+                                        <span class="monetary" t-field="o.x_cens_ccts_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Liquidación Vacaciones -->
+                        <div class="calculation-section">
+                            <div class="calc-header">🧮 LIQUIDACIÓN VACACIONES</div>
+                            <div class="calc-content">
+                                <div class="calc-row">
+                                    <span>Detalle del Período:</span>
+                                    <span t-field="o.x_cens_vaca_peri"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por año:</span>
+                                    <span t-field="o.x_cens_vaca_dano"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por mes:</span>
+                                    <span t-field="o.x_cens_vaca_dmes"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por día:</span>
+                                    <span t-field="o.x_cens_vaca_ddia"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por año:</span>
+                                    <span class="monetary" t-field="o.x_cens_vaca_iano" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por mes:</span>
+                                    <span class="monetary" t-field="o.x_cens_vaca_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por día:</span>
+                                    <span class="monetary" t-field="o.x_cens_vaca_idia" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-row warning-text">
+                                    <span>Descuento AFP/ONP:</span>
+                                    <span class="monetary" t-field="o.x_cens_vaca_iafp" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-total">
+                                    <div class="calc-row">
+                                        <span><strong>TOTAL VACACIONES:</strong></span>
+                                        <span class="monetary" t-field="o.x_cens_vaca_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Liquidación Gratificaciones -->
+                        <div class="calculation-section">
+                            <div class="calc-header">🧮 LIQUIDACIÓN GRATIFICACIONES</div>
+                            <div class="calc-content">
+                                <div class="calc-row">
+                                    <span>Detalle del Período:</span>
+                                    <span t-field="o.x_cens_grat_peri"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Cálculo por mes:</span>
+                                    <span t-field="o.x_cens_grat_dmes"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Bonificación:</span>
+                                    <span t-field="o.x_cens_grat_dbon"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe por mes:</span>
+                                    <span class="monetary" t-field="o.x_cens_grat_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-row">
+                                    <span>Importe bonificación:</span>
+                                    <span class="monetary" t-field="o.x_cens_grat_ibon" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                </div>
+                                <div class="calc-total">
+                                    <div class="calc-row">
+                                        <span><strong>TOTAL GRATIFICACIONES:</strong></span>
+                                        <span class="monetary" t-field="o.x_cens_grat_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resumen final -->
+                        <div class="section-title">📝 RESUMEN LIQUIDACIÓN DE BB.SS.</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">CTS Trunco:</td>
+                                <td class="monetary" t-field="o.x_cens_ccts_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Vacaciones Truncas (*):</td>
+                                <td class="monetary" t-field="o.x_cens_vaca_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Gratificaciones Truncas:</td>
+                                <td class="monetary" t-field="o.x_cens_grat_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                            <tr style="background-color: #a8e6cf; font-weight: bold; font-size: 16px;">
+                                <td class="label">TOTAL A PAGAR:</td>
+                                <td class="monetary" t-field="o.x_cens_liqu_tota" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                            </tr>
+                        </table>
+
+                        <!-- Información de aportes -->
+                        <div class="section-title">📝 INFORMACIÓN DE APORTES</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Compañía AFP/ONP:</td>
+                                <td t-field="o.x_studio_compania_afp"/>
+                                <td class="label">Aporte Obligatorio:</td>
+                                <td t-field="o.x_cens_afp_oblig"/>
+                            </tr>
+                            <tr>
+                                <td class="label">Prima Seguro:</td>
+                                <td t-field="o.x_cens_afp_prima"/>
+                                <td class="label">Tipo Comisión:</td>
+                                <td t-field="o.x_studio_en_tipo_comision"/>
+                            </tr>
+                            <tr t-if="o.x_studio_en_tipo_comision == 'MIX'">
+                                <td class="label">Comisión Mixta:</td>
+                                <td t-field="o.x_cens_afp_mixta"/>
+                                <td class="label"></td>
+                                <td></td>
+                            </tr>
+                            <tr t-if="o.x_studio_en_tipo_comision == 'FLU'">
+                                <td class="label">Comisión Flujo:</td>
+                                <td t-field="o.x_cens_afp_flujo"/>
+                                <td class="label"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                        <!-- Observaciones -->
+                        <div class="section-title">📝 OBSERVACIONES</div>
+                        <div style="padding: 10px; border: 1px solid #ddd; min-height: 100px;">
+                            <p t-field="o.note"/>
+                            <p style="font-size: 10px; color: #666;">
+                                * Las vacaciones truncas incluyen el cálculo y descuento del importe ONP/AFP.
+                            </p>
+                        </div>
+
+                        <!-- Pie de página con firmas -->
+                        <div style="margin-top: 50px;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="text-align: center; width: 50%; padding: 20px;">
+                                        <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 5px;">
+                                            <strong>EMPLEADO</strong><br/>
+                                            <span t-field="o.employee_id.name"/>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; width: 50%; padding: 20px;">
+                                        <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 5px;">
+                                            <strong>EMPLEADOR</strong><br/>
+                                            <span t-field="res_company.name"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Fecha del documento -->
+                        <div style="text-align: center; margin-top: 30px; font-size: 12px;">
+                            Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

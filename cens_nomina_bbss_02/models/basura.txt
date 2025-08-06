@@ -1,0 +1,198 @@
+
+
+
+
+
+
+    # ===================================================================================================================
+
+
+            # Convertir las fechas de string a componentes numéricos
+            w_fecha_str_ini = w_fecha_ingr.strftime('%d/%m/%Y')
+            w_fecha_str_fin = w_fecha_cese.strftime('%d/%m/%Y')
+            w_dia_ini, w_mes_ini, w_ano_ini = map(int, w_fecha_str_ini.split('/'))
+            w_dia_fin, w_mes_fin, w_ano_fin = map(int, w_fecha_str_fin.split('/'))
+            
+            # Ajustar el día si es mayor a 30 (en cálculo comercial)
+            if w_dia_ini > 30:
+                w_dia_ini = 30
+            if w_dia_fin > 30:
+                w_dia_fin = 30
+            
+            # Calcular la diferencia total en días
+            w_tota_ano = w_ano_fin - w_ano_ini
+            w_tota_mes = w_mes_fin - w_mes_ini
+            w_tota_dia = w_dia_fin - w_dia_ini
+            
+            # Ajustar si los días son negativos
+            if w_tota_dia < 0:
+                w_tota_mes -= 1
+                w_tota_dia += 30
+            
+            # Ajustar si los meses son negativos
+            if w_tota_mes < 0:
+                w_tota_ano -= 1
+                w_tota_mes += 12
+            
+            # Calcular el total de días
+            w_tota_tdd = (w_tota_ano * 360) + (w_tota_mes * 30) + w_tota_dia
+
+
+            _logger.info(f'------------------------------------------')
+            _logger.info(f'TOTALIZADO: año = {w_tota_ano} ')
+            _logger.info(f'            mes = {w_tota_mes} ')
+            _logger.info(f'            dia = {w_tota_dia} ')
+            _logger.info(f'            ddd = {w_tota_tdd} ')
+
+
+    # ===================================================================================================================
+
+
+            # --------------------------------------------------
+            #  CALCULA RANGOS DE TIEMPO (días, meses, años)
+            # --------------------------------------------------
+            w_dia_ing = w_fecha_ingr.day
+            w_mes_ing = w_fecha_ingr.month
+            w_mes_ces = w_fecha_cese.month
+            w_ano_ing = w_fecha_ingr.year
+
+            # ============================================================================================================
+
+            w_cant_dia_ini = (30 - w_dia_ing) + 1
+            w_cant_dia_fin = w_fecha_cese.day
+
+            w_mess_partmes = ((12 - w_mes_ing) + (w_mes_ces-1))         #--- (12-MES(D6)) + (MES(D7)-1)
+            w_dias_partmes = (w_mess_partmes * 30) + w_cant_dia_fin     #--- (E7*30) + DIA(D7)
+            w_cant_dia_fin = (w_dias_partmes % 30)                      #--- RESIDUO(F7;30) 
+
+            _logger.info(f'Conteo: - Días inicial = {w_cant_dia_ini} ')
+            _logger.info(f'        - Dias medio   = {w_dias_partmes} ')
+            _logger.info(f'        - Días final   = {w_cant_dia_fin} ')
+            _logger.info(f'------------------------------------------')
+            _logger.info(f'Cantidad meses = {w_mess_partmes} ')
+            _logger.info(f'Cantidad días  = {w_dias_partmes} ')
+
+            w_tota_mes = int(w_dias_partmes / 30)            #--- Total rango meses
+            w_tota_dia = (w_dias_partmes % 30) + w_cant_dia_ini                 #--- Total rango días
+            w_tota_ddd = w_cant_dia_ini + w_dias_partmes + w_cant_dia_fin       #--- Total tiempo en días
+            w_tota_ano = int(w_tota_ddd/360) if w_tota_ddd >= 360 else 0        #--- Total rango años
+
+            _logger.info(f'------------------------------------------')
+            _logger.info(f'TOTALIZADO: año = {w_tota_ano} ')
+            _logger.info(f'            mes = {w_tota_mes} ')
+            _logger.info(f'            dia = {w_tota_dia} ')
+            _logger.info(f'            ddd = {w_tota_ddd} ')
+
+            
+            # ============================================================================================================
+
+            # --------------------------------------------------
+            #  CALCULA VACACIONES TRUNCAS
+            # --------------------------------------------------
+            w_trunco_vac = 0.00
+            w_trunco_vac += (w_total_remu/12) * w_tota_mes                  #--- Por el rango meses
+            w_trunco_vac += ((w_total_remu/12)/30)*w_tota_dia               #--- Por el rango días
+
+            # --------------------------------------------------
+            #  CALCULA CTS TRUNCOS
+            # --------------------------------------------------
+            w_trunco_cts = 0.00
+            w_trunco_cts += ((w_total_remu/12) * w_tota_mes)                #--- Por el rango meses
+            w_trunco_cts += (((w_total_remu/12)/30) * w_tota_dia)           #--- Por el rango días
+            if (w_trunco_vac > 0.00):
+                w_trunco_cts += w_trunco_vac/6 if w_tota_mes>6 else 0.00    #--- Por el SEXTO de
+
+            # --------------------------------------------------
+            #  CALCULA GRATIFICACIONES TRUNCAS
+            # --------------------------------------------------
+            w_trunco_gra = 0.00
+            w_trunco_gra += ((w_total_remu/6) * w_tota_mes)                 #--- Por el rango meses
+
+            # --------------------------------------------------
+            #  CALCULA BONIFICACIÓN DE GRATIF TRUNCAS
+            # --------------------------------------------------
+            w_trunco_bon = 0.00
+            w_trunco_bon += w_trunco_gra * 0.09                             #--- Por el rango meses
+
+
+
+   # ============================================================================================================
+
+
+    # # Métodos computados
+    @api.depends('x_cens_periodo_ini', 'x_cens_periodo_fin')
+    def _compute_tiempo_servicio(self):
+        """Calcula el tiempo de servicio en años, meses y días"""
+        for record in self:
+            if record.x_cens_periodo_ini and record.x_cens_periodo_fin:
+                fecha_ini = record.x_cens_periodo_ini
+                fecha_fin = record.x_cens_periodo_fin
+                
+                # Calcular diferencia usando relativedelta
+            else:
+                record.x_cens_periodo_aa = 0
+                record.x_cens_periodo_mm = 0
+                record.x_cens_periodo_dd = 0
+    
+    @api.depends('x_cens_periodo_aa', 'x_cens_periodo_mm', 'x_cens_periodo_dd', 'x_cens_ctotal_tnocomp')
+    def _compute_totales_tiempo(self):
+        """Calcula los totales de tiempo de servicio"""
+        for record in self:
+            # Convertir todo a años decimales
+            tiempo_total = record.x_cens_periodo_aa + (record.x_cens_periodo_mm / 12.0) + (record.x_cens_periodo_dd / 365.0)
+            record.x_cens_ctotal_timeserv = tiempo_total
+            
+            # Tiempo liquidable = tiempo total - tiempo no computable
+            record.x_cens_ctotal_tliqui = tiempo_total - record.x_cens_ctotal_tnocomp
+    
+    @api.depends('x_cens_remu_base')
+    def _compute_gratificacion(self):
+        """Calcula la gratificación como 1/6 de la remuneración base"""
+        for record in self:
+            if record.x_cens_remu_base:
+                record.x_cens_grat_16to = record.x_cens_remu_base / 6.0
+            else:
+                record.x_cens_grat_16to = 0.0
+    
+    @api.depends('x_cens_remu_base', 'x_cens_asig_fami', 'x_cens_grat_16to')
+    def _compute_remuneracion_computable(self):
+        """Calcula la remuneración computable total"""
+        for record in self:
+            record.x_cens_remu_comp = (
+                record.x_cens_remu_base + 
+                record.x_cens_asig_fami + 
+                record.x_cens_grat_16to
+            )
+    
+    # Método para establecer fechas automáticamente
+    @api.onchange('employee_id')
+    def _onchange_employee_id_liquidacion(self):
+        """Establece fechas automáticamente cuando se selecciona el empleado"""
+        if self.employee_id:
+            # Fecha de inicio: fecha de contratación del empleado
+            if hasattr(self.employee_id, 'contract_ids') and self.employee_id.contract_ids:
+                primer_contrato = self.employee_id.contract_ids.sorted('date_start')[0]
+                self.x_cens_periodo_ini = primer_contrato.date_start
+            
+            # Fecha fin: fecha actual o fecha de fin del período de nómina
+            if self.date_to:
+                self.x_cens_periodo_fin = self.date_to
+            else:
+                self.x_cens_periodo_fin = date.today()
+    
+    # Método para calcular automáticamente valores desde las líneas de nómina
+    def calcular_valores_desde_nomina(self):
+        """Calcula los valores de liquidación desde las líneas de nómina"""
+        self.ensure_one()
+        
+        # Buscar remuneración base en las líneas
+        linea_sueldo = self.line_ids.filtered(lambda l: l.code == 'BASIC')
+        if linea_sueldo:
+            self.x_cens_remu_base = linea_sueldo[0].total
+        
+        # Buscar asignación familiar
+        linea_asig_fam = self.line_ids.filtered(lambda l: l.code in ['ASIG_FAM', 'AF'])
+        if linea_asig_fam:
+            self.x_cens_asig_fami = linea_asig_fam[0].total
+        
+        return True
