@@ -471,7 +471,8 @@ class HrPayslip(models.Model):
             
             # Obtener el reporte definido
             # report = self.env.ref('cens_nomina_bbss_02.action_report_liquidacion_bbss')
-            w_refer_plantilla = 'studio_customization.studio_report_docume_282a2eec-6fbc-4762-b761-9a4a62daa8be'
+            # w_refer_plantilla = 'studio_customization.studio_report_docume_282a2eec-6fbc-4762-b761-9a4a62daa8be'
+            w_refer_plantilla = 'cens_nomina_bbss_02.liquidacion_bbss_document'
             w_nombr_empleado  = self.employee_id.name
             report = self.env.ref(w_refer_plantilla)
             w_filename = f"Liquidacion_BBSS_{w_nombr_empleado}_{self.id}.pdf"
@@ -514,7 +515,8 @@ class HrPayslip(models.Model):
             #self._generar_datos_liquidacion()
             
             # Configuración
-            w_refer_plantilla = 'studio_customization.studio_report_docume_282a2eec-6fbc-4762-b761-9a4a62daa8be'
+            # w_refer_plantilla = 'studio_customization.studio_report_docume_282a2eec-6fbc-4762-b761-9a4a62daa8be'
+            w_refer_plantilla = 'cens_nomina_bbss_02.liquidacion_bbss_document'
             w_nombr_empleado = self.employee_id.name
             
             _logger.info(f'Generando reporte para: {w_nombr_empleado}')
