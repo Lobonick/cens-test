@@ -503,6 +503,7 @@ class HrPayslip(models.Model):
             _logger.error(f"Error en action_liquidacion_imprimir: {str(e)}")
             raise UserError(f"Error al generar el reporte: {str(e)}")        
     
+
     def action_liquidacion_imprimir_v2(self):
         """
         Método alternativo usando report service directamente
@@ -512,10 +513,7 @@ class HrPayslip(models.Model):
             if not getattr(self, 'x_studio_cesado', False):
                 raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
             
-            #self._generar_datos_liquidacion()
-            
             # Configuración
-            # w_refer_plantilla = 'studio_customization.studio_report_docume_282a2eec-6fbc-4762-b761-9a4a62daa8be'
             w_refer_plantilla = 'cens_nomina_bbss_02.liquidacion_bbss_document'
             w_nombr_empleado = self.employee_id.name
             
@@ -537,11 +535,26 @@ class HrPayslip(models.Model):
             filename = f'Liquidacion_BBSS_{w_nombr_empleado}_{self.id}.pdf'
             
             # Retornar el PDF para descarga
+            #return {
+            #    'name': 'pdf_content',
+            #    'type': 'ir.actions.report',
+            #    'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
+            #    'target': 'new',
+            #}
+        
+            # Generar y retornar la acción del reporte
+            #return report.report_action(self)
             return {
-                'name': 'pdf_content',
                 'type': 'ir.actions.report',
-                'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
+                'report_name': w_refer_plantilla,
+                'report_type': 'qweb-pdf',
+                'data': {
+                    'ids': [self.id],
+                    'model': 'hr.payslip'
+                },
+                'context': dict(self.env.context, report_name=filename),
                 'target': 'new',
+                'close_on_report_download': True,
             }
             
         except Exception as e:
