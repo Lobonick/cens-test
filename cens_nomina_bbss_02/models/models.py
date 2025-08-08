@@ -540,36 +540,122 @@ class HrPayslip(models.Model):
                 'type': 'ir.actions.report',
                 'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
                 'target': 'new',
-                'close_on_report_download': True,
             }
-        
-            # Generar y retornar la acción del reporte
-            #return report.report_action(self)
-            #return {
-            #    'type': 'ir.actions.report',
-            #    'report_name': w_refer_plantilla,
-            #    'report_type': 'qweb-pdf',
-            #    'data': {
-            #        'ids': [self.id],
-            #        'model': 'hr.payslip'
-            #    },
-            #    'context': dict(self.env.context, report_name=filename),
-            #    'target': 'new',
-            #    'close_on_report_download': True,
-            #}
-            
+                  
         except Exception as e:
             _logger.error(f"Error en método v2: {str(e)}")
             raise UserError(f"Error al generar el reporte: {str(e)}")
 
-    # 'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
 
-    def action_print_payslip2(self):
-        return {
-            'name': 'Payslip',
-            'type': 'ir.actions.act_url',
-            'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
-        }
+    def action_liquidacion_imprimir_v3(self):
+        """
+        Método mejorado para generar PDF usando el enfoque estándar de Odoo
+        """
+        try:
+            # Validaciones
+            if not getattr(self, 'x_studio_cesado', False):
+                raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
+            
+            # Verificar que existan datos de liquidación
+            if not self.x_cens_liqu_tota or self.x_cens_liqu_tota <= 0:
+                raise UserError("Debe generar primero los cálculos de liquidación antes de imprimir.")
+            
+            # Obtener el reporte definido
+            report = self.env.ref('cens_nomina_bbss_02.action_report_liquidacion_bbss')
+            
+            if not report:
+                raise UserError("No se encontró la configuración del reporte.")
+            
+            _logger.info(f'Generando reporte para: {self.employee_id.name}')
+            
+            # Generar y retornar la acción del reporte usando el método estándar
+            return report.report_action(self)
+            
+        except Exception as e:
+            _logger.error(f"Error al generar reporte: {str(e)}")
+            raise UserError(f"Error al generar el reporte: {str(e)}")
+
+    def action_liquidacion_imprimir_v4(self):
+        """
+        Método alternativo usando return directo
+        """
+        try:
+            # Validaciones
+            if not getattr(self, 'x_studio_cesado', False):
+                raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
+            
+            _logger.info(f'Generando reporte para: {self.employee_id.name}')
+            
+            # Retornar acción directa del reporte
+            return {
+                'type': 'ir.actions.report',
+                'report_name': 'cens_nomina_bbss_02.liquidacion_bbss_document',
+                'report_type': 'qweb-pdf',
+                'data': {'ids': self.ids},
+                'context': self.env.context,
+                'target': 'new',
+            }
+            
+        except Exception as e:
+            _logger.error(f"Error al generar reporte: {str(e)}")
+            raise UserError(f"Error al generar el reporte: {str(e)}")
+
+    def action_liquidacion_imprimir_v5(self):
+        """
+        Método usando el servicio de reportes con manejo mejorado
+        """
+        try:
+            # Validaciones
+            if not getattr(self, 'x_studio_cesado', False):
+                raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
+            
+            # Asegurar que el registro existe y tiene datos
+            self.ensure_one()
+            
+            _logger.info(f'Generando reporte para: {self.employee_id.name}')
+            
+            # Configurar el contexto del reporte
+            report_context = dict(self.env.context)
+            report_context.update({
+                'active_model': 'hr.payslip',
+                'active_ids': self.ids,
+                'active_id': self.id,
+            })
+            
+            # Obtener el reporte
+            report_name = 'cens_nomina_bbss_02.liquidacion_bbss_document'
+            
+            # Usar el servicio de reportes
+            pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(
+                report_name, 
+                self.ids,
+                data={'context': report_context}
+            )
+            
+            if not pdf_content:
+                raise UserError("No se pudo generar el contenido del PDF")
+            
+            # Crear el attachment
+            filename = f'Liquidacion_BBSS_{self.employee_id.name}_{self.id}.pdf'
+            attachment = self.env['ir.attachment'].create({
+                'name': filename,
+                'type': 'binary',
+                'datas': base64.b64encode(pdf_content),
+                'res_model': 'hr.payslip',
+                'res_id': self.id,
+                'mimetype': 'application/pdf',
+            })
+            
+            # Retornar URL para descarga
+            return {
+                'type': 'ir.actions.act_url',
+                'url': f'/web/content/{attachment.id}?download=true',
+                'target': 'new',
+            }
+            
+        except Exception as e:
+            _logger.error(f"Error al generar reporte: {str(e)}")
+            raise UserError(f"Error al generar el reporte: {str(e)}")
 
 
     # ===============================================================================================

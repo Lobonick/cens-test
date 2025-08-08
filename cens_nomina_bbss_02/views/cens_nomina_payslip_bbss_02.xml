@@ -280,7 +280,7 @@
                                         confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
                                 
                                 <!-- Botón Naranja (Imprimir) -->
-                                <button name="action_liquidacion_imprimir_v2" 
+                                <button name="action_liquidacion_imprimir_v3" 
                                         string=" Imprimir" 
                                         type="object" 
                                         class="btn-warning oe_button"
