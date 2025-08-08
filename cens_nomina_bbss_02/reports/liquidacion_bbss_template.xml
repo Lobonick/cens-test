@@ -33,7 +33,12 @@
                             .info-table .label {
                                 background-color: #f8f9fa;
                                 font-weight: bold;
-                                width: 40%;
+                                width: 20%;
+                            }
+                            .info-table .label1 {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 15%;
                             }
                             .calculation-section {
                                 margin: 20px 0;
@@ -86,15 +91,15 @@
                         <div class="section-title">📋 INFORMACIÓN DEL EMPLEADO</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Empleado:</td>
+                                <td class="label1">Empleado:</td>
                                 <td><span t-esc="o.employee_id.name"/></td>
-                                <td class="label">DNI:</td>
+                                <td class="label1">DNI:</td>
                                 <td><span t-esc="o.employee_id.identification_id"/></td>
                             </tr>
                             <tr>
-                                <td class="label">Cargo:</td>
+                                <td class="label1">Cargo:</td>
                                 <td><span t-esc="o.employee_id.job_id.name"/></td>
-                                <td class="label">Departamento:</td>
+                                <td class="label1">Departamento:</td>
                                 <td><span t-esc="o.employee_id.department_id.name"/></td>
                             </tr>
                             <tr>
