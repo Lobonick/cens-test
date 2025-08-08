@@ -8,7 +8,7 @@
                         <style>
                             .header-company {
                                 text-align: center;
-                                margin-bottom: 20px;
+                                margin-bottom: 10px;
                                 border-bottom: 2px solid #875A7B;
                                 padding-bottom: 10px;
                             }
@@ -38,7 +38,7 @@
                             .info-table .label1 {
                                 background-color: #f8f9fa;
                                 font-weight: bold;
-                                width: 15%;
+                                width: 12%;
                             }
                             .calculation-section {
                                 margin: 20px 0;
@@ -82,8 +82,8 @@
 
                         <!-- Encabezado del documento -->
                         <div class="header-company">
-                            <h1>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
-                            <h3><span t-esc="o.company_id.name"/></h3>
+                            <h2>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h2>
+                            <h4><span t-esc="o.company_id.name"/></h4>
                             <p>RUC: <span t-esc="o.company_id.vat"/></p>
                         </div>
 
@@ -114,41 +114,38 @@
                         <div class="section-title">📅 INFORMACIÓN DEL PERÍODO</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Período Inicio:</td>
+                                <td class="label1">Período Inicio:</td>
                                 <td><span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/></td>
-                                <td class="label">Período Fin:</td>
-                                <td><span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tiempo de Servicio:</td>
-                                <td>
-                                    <span t-esc="o.x_cens_periodo_aa"/> años, 
-                                    <span t-esc="o.x_cens_periodo_mm"/> meses, 
-                                    <span t-esc="o.x_cens_periodo_dd"/> días
-                                </td>
-                                <td class="label">Moneda:</td>
-                                <td><span t-esc="o.x_cens_moneda"/></td>
-                            </tr>
-                        </table>
-
-                        <!-- Remuneraciones base -->
-                        <div class="section-title">💰 REMUNERACIONES BASE</div>
-                        <table class="info-table">
-                            <tr>
-                                <td class="label">Remuneración Base:</td>
+                                <td class="label1">Remuneración Base:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_base or 0)"/>
                                 </td>
-                                <td class="label">Asignación Familiar:</td>
+                            </tr>
+                            <tr>
+                                <td class="label1">Período Fin:</td>
+                                <td><span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/></td>
+                                <td class="label1">Asignación Familiar:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Gratificación 1/6:</td>
+                                <td class="label1">Tiempo de Servicio:</td>
+                                <td>
+                                    <span t-esc="o.x_cens_periodo_aa"/> años, 
+                                    <span t-esc="o.x_cens_periodo_mm"/> meses, 
+                                    <span t-esc="o.x_cens_periodo_dd"/> días
+                                </td>
+
+                                <td class="label1">1/6 gratificación:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_16to or 0)"/>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Moneda:</td>
+                                <td><span t-esc="o.x_cens_moneda"/></td>
+                                
                                 <td class="label">Remuneración Computable:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_comp or 0)"/>
