@@ -429,11 +429,6 @@
                         <div style="text-align: center; margin-top: 30px; font-size: 12px;">
                             Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
                         </div>
-                    </div>
-                    <!-- Fecha del documento -->
-                    <div style="text-align: center; margin-top: 30px; font-size: 12px;">
-                        Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
-                    </div>
                 </div>
             </t>
         </t>
