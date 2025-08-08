@@ -3,7 +3,7 @@
     <template id="liquidacion_bbss_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <div class="page" style="margin: 0; padding: 20mm; font-family: Arial, sans-serif;">
+                <div class="page" style="margin: 0; padding: 8mm; font-family: Arial, sans-serif;">
                         <style>
                             /* Configuración para página A4 */
                             @page {
@@ -143,16 +143,13 @@
                                 Logo de la Empresa
                             </div>
                             
-                            <h1 style="margin: 10px 0;">LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
                             <h3><span t-esc="o.company_id.name"/></h3>
                             <p>RUC: <span t-esc="o.company_id.vat"/></p>
                         </div>
 
                         <!-- Encabezado del documento _____________________________________________________ -->
                         <div class="header-company">
-                            <h2>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h2>
-                            <h4><span t-esc="o.company_id.name"/></h4>
-                            <p>RUC: <span t-esc="o.company_id.vat"/></p>
+                            <h1>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
                         </div>
 
                         <!-- Información del empleado -->
