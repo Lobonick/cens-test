@@ -78,8 +78,8 @@
                         <!-- Encabezado del documento -->
                         <div class="header-company">
                             <h1>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
-                            <h3 t-field="res_company.name"/>
-                            <p>RUC: <span t-field="res_company.vat"/></p>
+                            <h3><span t-esc="o.company_id.name"/></h3>
+                            <p>RUC: <span t-esc="o.company_id.vat"/></p>
                         </div>
 
                         <!-- Información del empleado -->
@@ -87,21 +87,21 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label">Empleado:</td>
-                                <td t-field="o.employee_id.name"/>
+                                <td><span t-esc="o.employee_id.name"/></td>
                                 <td class="label">DNI:</td>
-                                <td t-field="o.employee_id.identification_id"/>
+                                <td><span t-esc="o.employee_id.identification_id"/></td>
                             </tr>
                             <tr>
                                 <td class="label">Cargo:</td>
-                                <td t-field="o.employee_id.job_id.name"/>
+                                <td><span t-esc="o.employee_id.job_id.name"/></td>
                                 <td class="label">Departamento:</td>
-                                <td t-field="o.employee_id.department_id.name"/>
+                                <td><span t-esc="o.employee_id.department_id.name"/></td>
                             </tr>
                             <tr>
                                 <td class="label">Fecha de Ingreso:</td>
-                                <td t-field="o.x_studio_cese_fecha_ingreso"/>
+                                <td><span t-esc="o.x_studio_cese_fecha_ingreso" t-options="{'widget': 'date'}"/></td>
                                 <td class="label">Fecha de Cese:</td>
-                                <td t-field="o.x_studio_cese_fecha"/>
+                                <td><span t-esc="o.x_studio_cese_fecha" t-options="{'widget': 'date'}"/></td>
                             </tr>
                         </table>
 
@@ -110,19 +110,19 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label">Período Inicio:</td>
-                                <td t-field="o.x_cens_periodo_ini"/>
+                                <td><span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/></td>
                                 <td class="label">Período Fin:</td>
-                                <td t-field="o.x_cens_periodo_fin"/>
+                                <td><span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/></td>
                             </tr>
                             <tr>
                                 <td class="label">Tiempo de Servicio:</td>
                                 <td>
-                                    <span t-field="o.x_cens_periodo_aa"/> años, 
-                                    <span t-field="o.x_cens_periodo_mm"/> meses, 
-                                    <span t-field="o.x_cens_periodo_dd"/> días
+                                    <span t-esc="o.x_cens_periodo_aa"/> años, 
+                                    <span t-esc="o.x_cens_periodo_mm"/> meses, 
+                                    <span t-esc="o.x_cens_periodo_dd"/> días
                                 </td>
                                 <td class="label">Moneda:</td>
-                                <td t-field="o.x_cens_moneda"/>
+                                <td><span t-esc="o.x_cens_moneda"/></td>
                             </tr>
                         </table>
 
@@ -131,15 +131,23 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label">Remuneración Base:</td>
-                                <td class="monetary" t-field="o.x_cens_remu_base" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_remu_base or 0)"/>
+                                </td>
                                 <td class="label">Asignación Familiar:</td>
-                                <td class="monetary" t-field="o.x_cens_asig_fami" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label">Gratificación 1/6:</td>
-                                <td class="monetary" t-field="o.x_cens_grat_16to" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_16to or 0)"/>
+                                </td>
                                 <td class="label">Remuneración Computable:</td>
-                                <td class="monetary" t-field="o.x_cens_remu_comp" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_remu_comp or 0)"/>
+                                </td>
                             </tr>
                         </table>
 
@@ -149,28 +157,28 @@
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
-                                    <span t-field="o.x_cens_ccts_peri"/>
+                                    <span t-esc="o.x_cens_ccts_peri"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por mes:</span>
-                                    <span t-field="o.x_cens_ccts_dmes"/>
+                                    <span t-esc="o.x_cens_ccts_dmes"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por día:</span>
-                                    <span t-field="o.x_cens_ccts_ddia"/>
+                                    <span t-esc="o.x_cens_ccts_ddia"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por mes:</span>
-                                    <span class="monetary" t-field="o.x_cens_ccts_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_imes or 0)"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por día:</span>
-                                    <span class="monetary" t-field="o.x_cens_ccts_idia" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_idia or 0)"/>
                                 </div>
                                 <div class="calc-total">
                                     <div class="calc-row">
                                         <span><strong>TOTAL CTS:</strong></span>
-                                        <span class="monetary" t-field="o.x_cens_ccts_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
                                     </div>
                                 </div>
                             </div>
@@ -182,40 +190,40 @@
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
-                                    <span t-field="o.x_cens_vaca_peri"/>
+                                    <span t-esc="o.x_cens_vaca_peri"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por año:</span>
-                                    <span t-field="o.x_cens_vaca_dano"/>
+                                    <span t-esc="o.x_cens_vaca_dano"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por mes:</span>
-                                    <span t-field="o.x_cens_vaca_dmes"/>
+                                    <span t-esc="o.x_cens_vaca_dmes"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por día:</span>
-                                    <span t-field="o.x_cens_vaca_ddia"/>
+                                    <span t-esc="o.x_cens_vaca_ddia"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por año:</span>
-                                    <span class="monetary" t-field="o.x_cens_vaca_iano" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_vaca_iano or 0)"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por mes:</span>
-                                    <span class="monetary" t-field="o.x_cens_vaca_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_vaca_imes or 0)"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por día:</span>
-                                    <span class="monetary" t-field="o.x_cens_vaca_idia" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_vaca_idia or 0)"/>
                                 </div>
                                 <div class="calc-row warning-text">
                                     <span>Descuento AFP/ONP:</span>
-                                    <span class="monetary" t-field="o.x_cens_vaca_iafp" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_vaca_iafp or 0)"/>
                                 </div>
                                 <div class="calc-total">
                                     <div class="calc-row">
                                         <span><strong>TOTAL VACACIONES:</strong></span>
-                                        <span class="monetary" t-field="o.x_cens_vaca_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
                                     </div>
                                 </div>
                             </div>
@@ -227,28 +235,28 @@
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
-                                    <span t-field="o.x_cens_grat_peri"/>
+                                    <span t-esc="o.x_cens_grat_peri"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Cálculo por mes:</span>
-                                    <span t-field="o.x_cens_grat_dmes"/>
+                                    <span t-esc="o.x_cens_grat_dmes"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Bonificación:</span>
-                                    <span t-field="o.x_cens_grat_dbon"/>
+                                    <span t-esc="o.x_cens_grat_dbon"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe por mes:</span>
-                                    <span class="monetary" t-field="o.x_cens_grat_imes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
                                 </div>
                                 <div class="calc-row">
                                     <span>Importe bonificación:</span>
-                                    <span class="monetary" t-field="o.x_cens_grat_ibon" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
                                 </div>
                                 <div class="calc-total">
                                     <div class="calc-row">
                                         <span><strong>TOTAL GRATIFICACIONES:</strong></span>
-                                        <span class="monetary" t-field="o.x_cens_grat_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                        <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_itot or 0)"/>
                                     </div>
                                 </div>
                             </div>
@@ -259,19 +267,27 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label">CTS Trunco:</td>
-                                <td class="monetary" t-field="o.x_cens_ccts_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label">Vacaciones Truncas (*):</td>
-                                <td class="monetary" t-field="o.x_cens_vaca_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label">Gratificaciones Truncas:</td>
-                                <td class="monetary" t-field="o.x_cens_grat_itot" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_itot or 0)"/>
+                                </td>
                             </tr>
                             <tr style="background-color: #a8e6cf; font-weight: bold; font-size: 16px;">
                                 <td class="label">TOTAL A PAGAR:</td>
-                                <td class="monetary" t-field="o.x_cens_liqu_tota" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_liqu_tota or 0)"/>
+                                </td>
                             </tr>
                         </table>
 
@@ -280,25 +296,25 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label">Compañía AFP/ONP:</td>
-                                <td t-field="o.x_studio_compania_afp"/>
+                                <td><span t-esc="o.x_studio_compania_afp"/></td>
                                 <td class="label">Aporte Obligatorio:</td>
-                                <td t-field="o.x_cens_afp_oblig"/>
+                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
                             </tr>
                             <tr>
                                 <td class="label">Prima Seguro:</td>
-                                <td t-field="o.x_cens_afp_prima"/>
+                                <td><span t-esc="o.x_cens_afp_prima"/></td>
                                 <td class="label">Tipo Comisión:</td>
-                                <td t-field="o.x_studio_en_tipo_comision"/>
+                                <td><span t-esc="o.x_studio_en_tipo_comision"/></td>
                             </tr>
                             <tr t-if="o.x_studio_en_tipo_comision == 'MIX'">
                                 <td class="label">Comisión Mixta:</td>
-                                <td t-field="o.x_cens_afp_mixta"/>
+                                <td><span t-esc="o.x_cens_afp_mixta"/></td>
                                 <td class="label"></td>
                                 <td></td>
                             </tr>
                             <tr t-if="o.x_studio_en_tipo_comision == 'FLU'">
                                 <td class="label">Comisión Flujo:</td>
-                                <td t-field="o.x_cens_afp_flujo"/>
+                                <td><span t-esc="o.x_cens_afp_flujo"/></td>
                                 <td class="label"></td>
                                 <td></td>
                             </tr>
@@ -307,7 +323,7 @@
                         <!-- Observaciones -->
                         <div class="section-title">📝 OBSERVACIONES</div>
                         <div style="padding: 10px; border: 1px solid #ddd; min-height: 100px;">
-                            <p t-field="o.note"/>
+                            <p><span t-esc="o.note"/></p>
                             <p style="font-size: 10px; color: #666;">
                                 * Las vacaciones truncas incluyen el cálculo y descuento del importe ONP/AFP.
                             </p>
@@ -320,13 +336,13 @@
                                     <td style="text-align: center; width: 50%; padding: 20px;">
                                         <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 5px;">
                                             <strong>EMPLEADO</strong><br/>
-                                            <span t-field="o.employee_id.name"/>
+                                            <span t-esc="o.employee_id.name"/>
                                         </div>
                                     </td>
                                     <td style="text-align: center; width: 50%; padding: 20px;">
                                         <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 5px;">
                                             <strong>EMPLEADOR</strong><br/>
-                                            <span t-field="res_company.name"/>
+                                            <span t-esc="o.company_id.name"/>
                                         </div>
                                     </td>
                                 </tr>
