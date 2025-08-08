@@ -535,27 +535,28 @@ class HrPayslip(models.Model):
             filename = f'Liquidacion_BBSS_{w_nombr_empleado}_{self.id}.pdf'
             
             # Retornar el PDF para descarga
-            #return {
-            #    'name': 'pdf_content',
-            #    'type': 'ir.actions.report',
-            #    'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
-            #    'target': 'new',
-            #}
-        
-            # Generar y retornar la acción del reporte
-            #return report.report_action(self)
             return {
+                'name': 'pdf_content',
                 'type': 'ir.actions.report',
-                'report_name': w_refer_plantilla,
-                'report_type': 'qweb-pdf',
-                'data': {
-                    'ids': [self.id],
-                    'model': 'hr.payslip'
-                },
-                'context': dict(self.env.context, report_name=filename),
+                'url': f'/web/content/?model=hr.payslip&id={self.id}&field=__temp_pdf&filename={filename}&download=true',
                 'target': 'new',
                 'close_on_report_download': True,
             }
+        
+            # Generar y retornar la acción del reporte
+            #return report.report_action(self)
+            #return {
+            #    'type': 'ir.actions.report',
+            #    'report_name': w_refer_plantilla,
+            #    'report_type': 'qweb-pdf',
+            #    'data': {
+            #        'ids': [self.id],
+            #        'model': 'hr.payslip'
+            #    },
+            #    'context': dict(self.env.context, report_name=filename),
+            #    'target': 'new',
+            #    'close_on_report_download': True,
+            #}
             
         except Exception as e:
             _logger.error(f"Error en método v2: {str(e)}")
