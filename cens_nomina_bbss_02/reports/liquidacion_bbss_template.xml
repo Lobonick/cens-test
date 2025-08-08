@@ -3,16 +3,36 @@
     <template id="liquidacion_bbss_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.external_layout">
-                    <div class="page">
+                <div class="page" style="margin: 0; padding: 20mm; font-family: Arial, sans-serif;">
                         <style>
+                            /* Configuración para página A4 */
+                            @page {
+                                size: A4;
+                                margin: 20mm;
+                            }
+                        
+                            .page {
+                                width: 210mm;
+                                min-height: 297mm;
+                                background: white;
+                            }
+                            
+                            /* Estilo para la imagen del header */
+                            .company-logo {
+                                width: 150px;
+                                height: 150px;
+                                object-fit: contain;
+                                margin: 0 auto 20px auto;
+                                display: block;
+                            }
+                            
                             .header-company {
                                 text-align: center;
-                                margin-top: -5px;
-                                margin-bottom: 10px;
+                                margin-bottom: 30px;
+                                padding-bottom: 20px;
                                 border-bottom: 2px solid #875A7B;
-                                padding-bottom: 10px;
                             }
+
                             .section-title {
                                 background-color: #875A7B;
                                 color: white;
@@ -20,7 +40,20 @@
                                 font-weight: bold;
                                 font-size: 14px;
                                 margin: 15px 0 10px 0;
+                                position: relative;
+                                padding-left: 35px; /* Espacio para el icono */
                             }
+
+                            .section-title::before {
+                                content: "\f0f6"; /* Código Font Awesome para icono de archivo */
+                                font-family: "FontAwesome";
+                                position: absolute;
+                                left: 10px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                font-size: 16px;
+                            }
+
                             .info-table {
                                 width: 100%;
                                 border-collapse: collapse;
@@ -87,7 +120,35 @@
                             }
                         </style>
 
-                        <!-- Encabezado del documento -->
+                        <!-- Header con imagen de la empresa -->
+                        <div class="header-company">
+                            <!-- Imagen del logo - puedes usar diferentes métodos -->
+                            
+                            <!-- MÉTODO 1: Imagen desde campo de la empresa -->
+                            <img t-if="o.company_id.logo" 
+                                class="company-logo"
+                                t-att-src="'data:image/png;base64,' + o.company_id.logo.decode('utf-8')"
+                                alt="Logo de la empresa"/>
+                            
+                            <!-- MÉTODO 2: Imagen estática desde el módulo -->
+                            <!-- <img class="company-logo" 
+                                src="/cens_nomina_bbss_02/static/description/company_logo.png" 
+                                alt="Logo CENS"/> -->
+                            
+                            <!-- MÉTODO 3: Imagen por defecto si no hay logo -->
+                            <div t-if="not o.company_id.logo" 
+                                style="width: 150px; height: 150px; border: 2px dashed #ccc; 
+                                        display: flex; align-items: center; justify-content: center; 
+                                        margin: 0 auto 20px auto; color: #999;">
+                                Logo de la Empresa
+                            </div>
+                            
+                            <h1 style="margin: 10px 0;">LIQUIDACIÓN DE BENEFICIOS SOCIALES</h1>
+                            <h3><span t-esc="o.company_id.name"/></h3>
+                            <p>RUC: <span t-esc="o.company_id.vat"/></p>
+                        </div>
+
+                        <!-- Encabezado del documento _____________________________________________________ -->
                         <div class="header-company">
                             <h2>LIQUIDACIÓN DE BENEFICIOS SOCIALES</h2>
                             <h4><span t-esc="o.company_id.name"/></h4>
@@ -369,7 +430,11 @@
                             Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
                         </div>
                     </div>
-                </t>
+                    <!-- Fecha del documento -->
+                    <div style="text-align: center; margin-top: 30px; font-size: 12px;">
+                        Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                    </div>
+                </div>
             </t>
         </t>
     </template>
