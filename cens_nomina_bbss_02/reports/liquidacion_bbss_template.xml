@@ -8,7 +8,7 @@
                         <style>
                             .header-company {
                                 text-align: center;
-                                margin-top: 10px;
+                                margin-top: -5px;
                                 margin-bottom: 10px;
                                 border-bottom: 2px solid #875A7B;
                                 padding-bottom: 10px;
@@ -77,8 +77,9 @@
                             }
                             .monetary-total {
                                 background-color: #a8e6cf;
+                                color: #2d5016;
+                                font-weight: bold;
                                 text-align: right;
-                                font-family: monospace;
                             }
                             .warning-text {
                                 color: red;
@@ -117,13 +118,13 @@
                         </table>
 
                         <!-- Información del período -->
-                        <div class="section-title">📅 INFORMACIÓN DEL PERÍODO</div>
+                        <div class="section-title">🔧 PARÁMETROS DE CÁLCULO</div>
                         <table class="info-table">
                             <tr>
                                 <td class="label1">Período laboral:</td>
                                 <td>
                                     <span>Desde </span>
-                                    <span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/> al ,
+                                    <span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/> al 
                                     <span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/>
                                 </td>
 
