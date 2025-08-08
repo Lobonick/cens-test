@@ -8,6 +8,7 @@
                         <style>
                             .header-company {
                                 text-align: center;
+                                margin-top: 10px;
                                 margin-bottom: 10px;
                                 border-bottom: 2px solid #875A7B;
                                 padding-bottom: 10px;
@@ -74,6 +75,11 @@
                                 text-align: right;
                                 font-family: monospace;
                             }
+                            .monetary-total {
+                                background-color: #a8e6cf;
+                                text-align: right;
+                                font-family: monospace;
+                            }
                             .warning-text {
                                 color: red;
                                 font-weight: bold;
@@ -114,19 +120,16 @@
                         <div class="section-title">📅 INFORMACIÓN DEL PERÍODO</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label1">Período Inicio:</td>
-                                <td><span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/></td>
+                                <td class="label1">Período laboral:</td>
+                                <td>
+                                    <span>Desde </span>
+                                    <span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/> al ,
+                                    <span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/>
+                                </td>
+
                                 <td class="label1">Remuneración Base:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_base or 0)"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label1">Período Fin:</td>
-                                <td><span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/></td>
-                                <td class="label1">Asignación Familiar:</td>
-                                <td class="monetary">
-                                    <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
                                 </td>
                             </tr>
                             <tr>
@@ -137,17 +140,26 @@
                                     <span t-esc="o.x_cens_periodo_dd"/> días
                                 </td>
 
+                                <td class="label1">Asignación Familiar:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Moneda:</td>
+                                <td><span t-esc="o.x_cens_moneda"/></td>
+
                                 <td class="label1">1/6 gratificación:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_16to or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Moneda:</td>
-                                <td><span t-esc="o.x_cens_moneda"/></td>
+                                <td> </td>
+                                <td> </td>
                                 
                                 <td class="label">Remuneración Computable:</td>
-                                <td class="monetary">
+                                <td class="monetary-total">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_comp or 0)"/>
                                 </td>
                             </tr>
