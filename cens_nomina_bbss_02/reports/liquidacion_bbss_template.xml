@@ -7,7 +7,7 @@
                         <style>
                             @page {
                                 size: A4 portrait;
-                                margin: 5mm 10mm 10mm 10mm; /* Superior mínimo: 5mm */
+                                /* margin: 5mm 10mm 10mm 10mm;  Superior mínimo: 5mm */
                             }
                             
                             @charset "UTF-8";
@@ -16,7 +16,7 @@
                                 width: 210mm;
                                 min-height: 297mm;
                                 background: white;
-                                font-family: "DejaVu Sans", Arial, sans-serif; /* Fuente que soporta UTF-8 */
+                                font-family: Arial, sans-serif; /* Fuente que soporta UTF-8 */
                                 margin: 0;
                                 padding: 5mm 0 0 0; /* Padding superior mínimo */
                             }
@@ -157,7 +157,7 @@
                         </div>
 
                         <!-- Información del empleado -->
-                        <div class="section-title">📋 INFORMACIÓN DEL EMPLEADO</div>
+                        <div class="section-title">INFORMACIÓN DEL EMPLEADO</div>
                         <table class="info-table">
                             <tr>
                                 <td class="label1">Empleado:</td>
@@ -180,7 +180,7 @@
                         </table>
 
                         <!-- Información del período -->
-                        <div class="section-title">🔧 PARÁMETROS DE CÁLCULO</div>
+                        <div class="section-title">PARÁMETROS DE CÁLCULO</div>
                         <table class="info-table">
                             <tr>
                                 <td class="label1">Período laboral:</td>
@@ -230,7 +230,7 @@
 
                         <!-- Liquidación CTS -->
                         <div class="calculation-section">
-                            <div class="calc-header">🧮 LIQUIDACIÓN CTS</div>
+                            <div class="calc-header">LIQUIDACIÓN CTS</div>
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
@@ -263,7 +263,7 @@
 
                         <!-- Liquidación Vacaciones -->
                         <div class="calculation-section">
-                            <div class="calc-header">🧮 LIQUIDACIÓN VACACIONES</div>
+                            <div class="calc-header">LIQUIDACIÓN VACACIONES</div>
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
@@ -308,7 +308,7 @@
 
                         <!-- Liquidación Gratificaciones -->
                         <div class="calculation-section">
-                            <div class="calc-header">🧮 LIQUIDACIÓN GRATIFICACIONES</div>
+                            <div class="calc-header">LIQUIDACIÓN GRATIFICACIONES</div>
                             <div class="calc-content">
                                 <div class="calc-row">
                                     <span>Detalle del Período:</span>
@@ -340,7 +340,7 @@
                         </div>
 
                         <!-- Resumen final -->
-                        <div class="section-title">📝 RESUMEN LIQUIDACIÓN DE BB.SS.</div>
+                        <div class="section-title">RESUMEN LIQUIDACIÓN DE BB.SS.</div>
                         <table class="info-table">
                             <tr>
                                 <td class="label">CTS Trunco:</td>
@@ -369,7 +369,7 @@
                         </table>
 
                         <!-- Información de aportes -->
-                        <div class="section-title">📝 INFORMACIÓN DE APORTES</div>
+                        <div class="section-title">INFORMACIÓN DE APORTES</div>
                         <table class="info-table">
                             <tr>
                                 <td class="label">Compañía AFP/ONP:</td>
@@ -398,7 +398,7 @@
                         </table>
 
                         <!-- Observaciones -->
-                        <div class="section-title">📝 OBSERVACIONES</div>
+                        <div class="section-title">OBSERVACIONES</div>
                         <div style="padding: 10px; border: 1px solid #ddd; min-height: 100px;">
                             <p><span t-esc="o.note"/></p>
                             <p style="font-size: 10px; color: #666;">
