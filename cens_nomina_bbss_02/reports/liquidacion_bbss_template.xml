@@ -249,8 +249,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <div></div>
-                                <div><span>TOTAL CTS:</span></div>
+                                <td></td>
+                                <td><span>TOTAL CTS:</span></td>
                                 <td class="monetary-total">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
                                 </td>
@@ -287,46 +287,46 @@
                                 </td>
                             </tr>
                             <tr>
-                                <div></div>
-                                <div><span>TOTAL VACACIONES:</span></div>
+                                <td></td>
+                                <td><span>TOTAL VACACIONES:</span></td>
                                 <td class="monetary-total">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
                                 </td>
                             </tr>
                         </table>
-
+                        <separator/>
+                        <separator/>
                         <!-- Liquidación Gratificaciones -->
-                        <div class="calculation-section">
-                            <div class="calc-header">LIQUIDACION GRATIFICACIONES TRUNCAS</div>
-                            <div class="calc-content">
-                                <div class="calc-row">
-                                    <span>Detalle del Período:</span>
-                                    <span t-esc="o.x_cens_grat_peri"/>
-                                </div>
-                                <div class="calc-row">
-                                    <span>Cálculo por mes:</span>
-                                    <span t-esc="o.x_cens_grat_dmes"/>
-                                </div>
-                                <div class="calc-row">
-                                    <span>Bonificación:</span>
-                                    <span t-esc="o.x_cens_grat_dbon"/>
-                                </div>
-                                <div class="calc-row">
-                                    <span>Importe por mes:</span>
-                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
-                                </div>
-                                <div class="calc-row">
-                                    <span>Importe bonificación:</span>
-                                    <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
-                                </div>
-                                <div class="calc-total">
-                                    <div class="calc-row">
-                                        <span><strong>TOTAL GRATIFICACIONES:</strong></span>
-                                        <span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_grat_itot or 0)"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="section-title2">LIQUIDACION GRATIFICACIONES TRUNCAS</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label1">Periodo:</td>
+                                <td><span t-esc="o.x_cens_grat_peri"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label1">Cálculo x Mes:</td>
+                                <td><span t-esc="o.x_cens_grat_dmes"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label1">Gratificación:</td>
+                                <td><span t-esc="o.x_cens_grat_dbon"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><span>TOTAL GRATIFICACIONES:</span></td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_itot or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <separator/>
+                        <separator/>
 
                         <!-- Resumen final -->
                         <div class="section-title">RESUMEN LIQUIDACION DE BB.SS.</div>
