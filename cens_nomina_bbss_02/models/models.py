@@ -11,6 +11,20 @@ import calendar
 import logging
 
 # IMPORTANTE: Instalar PyPDF2 en el servidor
+#
+#   pip install PyPDF2                                      --- INSTALA
+#   python -c "import PyPDF2; print(PyPDF2.__version__)"    --- VERIFICA
+#   sudo systemctl restart odoo                             --- REINICIA
+#   ./odoo-bin -c /ruta/a/tu/configuracion.conf
+#
+#   Si estás trabajando con módulos personalizados que usan PyPDF2, asegúrate de incluirlo en el 
+#   archivo __manifest__.py bajo external_dependencies, aunque no es obligatorio si ya está 
+#   instalado en el entorno.
+#
+#   'external_dependencies': {
+#       'python': ['PyPDF2'],
+#       },
+#
 try:
     from PyPDF2 import PdfWriter, PdfReader
     HAS_PYPDF2 = True
