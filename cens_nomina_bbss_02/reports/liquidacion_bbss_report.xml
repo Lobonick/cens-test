@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- CORRECCIÓN: Formato de papel con márgenes mínimos -->
     <record id="paperformat_a4_minimal" model="report.paperformat">
         <field name="name">A4 - Liquidación BBSS Mínimo</field>
         <field name="default" eval="False"/>
         <field name="format">A4</field>
-        <field name="page_height">0</field>
-        <field name="page_width">0</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
         <field name="orientation">Portrait</field>
         <field name="margin_top">5</field>     <!-- MÍNIMO: 5mm -->
         <field name="margin_bottom">10</field>
@@ -14,7 +13,7 @@
         <field name="margin_right">10</field>
         <field name="header_line" eval="False"/>
         <field name="header_spacing">0</field>
-        <field name="dpi">96</field>            <!-- Mayor resolución para mejor calidad -->
+        <field name="dpi">110</field>            <!-- Mayor resolución para mejor calidad -->
     </record>
 
     <!-- Reporte actualizado con nueva configuración -->
