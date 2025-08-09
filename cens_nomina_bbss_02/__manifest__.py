@@ -13,17 +13,13 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources/Payroll',
- 	'version': '16.0.1.23',
+ 	'version': '16.0.1.24',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',
     ],
 
     'depends': ['hr_payroll', 'base', 'hr', 'web', 'base_setup'],
-
-    'external_dependencies': {
-            'python': ['PyPDF2'],
-        },
 
 	'data': [
         'views/cens_nomina_payslip_bbss_02.xml',
