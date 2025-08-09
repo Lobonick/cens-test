@@ -9,17 +9,18 @@
                                 size: A4 portrait;
                             }
                             
-                            /* @charset "UTF-8"; */
+                            @charset "UTF-8";
                             
                             .page {
-                                /* width: 210mm; */
-                                /* min-height: 297mm; */
                                 background: white;
-                                font-family: Arial, sans-serif; /* Fuente que soporta UTF-8 */
+                                font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif; /* Fuentes con soporte UTF-8 */
                                 margin: 0;
-                                padding: 5mm 0 0 0; /* Padding superior mínimo */
+                                padding: 5mm 0 0 0;
+                                /* IMPORTANTE: Declarar encoding explícitamente */
+                                unicode-bidi: embed;
+                                direction: ltr;
                             }
-                            
+
                             /* Estilo para la imagen del header */
                             .company-logo {
                                 width: 150px;
@@ -134,8 +135,13 @@
                                 Logo de la Empresa
                             </div>
                             
+                            <!--
                             <h3><span t-esc="o.company_id.name"/></h3>
                             <p>RUC: <span t-esc="o.company_id.vat"/></p>
+                            -->
+
+                            <h3><t t-raw="o.company_id.name or ''"/></h3>
+                            <p>RUC: <t t-raw="o.company_id.vat or ''"/></p>
                         </div>
 
                         <!-- Encabezado del documento _____________________________________________________ -->
