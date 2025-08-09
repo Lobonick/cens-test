@@ -3,18 +3,22 @@
     <template id="liquidacion_bbss_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <div class="page" style="margin: 0; padding: 8mm; font-family: Arial, sans-serif;">
+                <div class="page">
                         <style>
-                            /* Configuración para página A4 */
                             @page {
-                                size: A4;
-                                margin: 20mm;
+                                size: A4 portrait;
+                                margin: 5mm 10mm 10mm 10mm; /* Superior mínimo: 5mm */
                             }
-                        
+                            
+                            @charset "UTF-8";
+                            
                             .page {
                                 width: 210mm;
                                 min-height: 297mm;
                                 background: white;
+                                font-family: "DejaVu Sans", Arial, sans-serif; /* Fuente que soporta UTF-8 */
+                                margin: 0;
+                                padding: 5mm 0 0 0; /* Padding superior mínimo */
                             }
                             
                             /* Estilo para la imagen del header */
