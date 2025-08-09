@@ -7,7 +7,6 @@
                         <style>
                             @page {
                                 size: A4 portrait;
-                                /* margin: 5mm 10mm 10mm 10mm;  Superior mínimo: 5mm */
                             }
                             
                             /* @charset "UTF-8"; */
@@ -46,16 +45,6 @@
                                 margin: 15px 0 10px 0;
                                 position: relative;
                                 padding-left: 35px; /* Espacio para el icono */
-                            }
-
-                            .section-title::before {
-                                content: "\f0f6"; /* Código Font Awesome para icono de archivo */
-                                font-family: "FontAwesome";
-                                position: absolute;
-                                left: 10px;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                font-size: 16px;
                             }
 
                             .info-table {
@@ -126,8 +115,6 @@
 
                         <!-- Header con imagen de la empresa -->
                         <div class="header-company">
-                            <!-- Imagen del logo - puedes usar diferentes métodos -->
-                            
                             <!-- MÉTODO 1: Imagen desde campo de la empresa -->
                             <img t-if="o.company_id.logo" 
                                 class="company-logo"

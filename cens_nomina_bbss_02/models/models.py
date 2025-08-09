@@ -476,9 +476,19 @@ class HrPayslip(models.Model):
                 raise UserError("No se encontró la configuración del reporte.")
             
             _logger.info(f'Generando reporte para: {self.employee_id.name}')
+
+            # CORRECCIÓN: Establecer contexto con idioma correcto
+            context = dict(self.env.context)
+            context.update({
+                'lang': 'es_PE',  # Forzar español de Perú
+                'tz': 'America/Lima',
+            })
+            
+            # Generar reporte con contexto actualizado
+            return report.with_context(context).report_action(self)
             
             # Generar y retornar la acción del reporte usando el método estándar
-            return report.report_action(self)
+            # return report.report_action(self)
             
         except Exception as e:
             _logger.error(f"Error al generar reporte: {str(e)}")
