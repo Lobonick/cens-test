@@ -233,22 +233,27 @@
                             <tr>
                                 <td class="label1">Periodo:</td>
                                 <td><span t-esc="o.x_cens_ccts_peri"/></td>
-                                <td></td>
                             </tr>
                             <tr>
                                 <td class="label1">Cálculo x Mes:</td>
                                 <td><span t-esc="o.x_cens_ccts_dmes"/></td>
-                                <td><span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_imes or 0)"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_imes or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label1">Cálculo x día:</td>
                                 <td><span t-esc="o.x_cens_ccts_ddia"/></td>
-                                <td><span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_idia or 0)"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_idia or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td><span>TOTAL CTS:</span></td>
-                                <td><span class="monetary" t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/></td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
+                                </td>
                             </tr>
                         </table>
                         <separator/>
