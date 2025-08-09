@@ -9,6 +9,14 @@ import xlsxwriter
 from io import BytesIO
 import calendar
 import logging
+
+# IMPORTANTE: Instalar PyPDF2 en el servidor
+try:
+    from PyPDF2 import PdfWriter, PdfReader
+    HAS_PYPDF2 = True
+except ImportError:
+    HAS_PYPDF2 = False
+
 _logger = logging.getLogger(__name__)
 
 class HrPayslip(models.Model):  
@@ -581,6 +589,191 @@ class HrPayslip(models.Model):
     # FIN - Campos liquidación
     # ===============================================================================================
 
+    # ===============================================================================================
+    # INICIO - Genera PDF con PASSWORD
+    # ===============================================================================================
+    def action_liquidacion_imprimir_con_password(self):
+        """
+        Método para generar PDF protegido con contraseña (DNI del empleado)
+        """
+        try:
+            # Validaciones
+            if not getattr(self, 'x_studio_cesado', False):
+                raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
+            
+            if not self.employee_id.identification_id:
+                raise UserError("El empleado debe tener un DNI registrado para generar el PDF protegido.")
+            
+            # Verificar que PyPDF2 esté disponible
+            if not HAS_PYPDF2:
+                raise UserError("La librería PyPDF2 no está instalada. Contacte al administrador del sistema.")
+            
+            self.ensure_one()
+            
+            _logger.info(f'Generando reporte protegido para: {self.employee_id.name}')
+            
+            # PASO 1: Generar PDF sin protección primero
+            report_context = dict(self.env.context)
+            report_context.update({
+                'active_model': 'hr.payslip',
+                'active_ids': self.ids,
+                'active_id': self.id,
+                'lang': 'es_PE',  # Forzar español de Perú para UTF-8
+                'tz': 'America/Lima',
+            })
+            
+            # Obtener el reporte
+            report_name = 'cens_nomina_bbss_02.liquidacion_bbss_document'
+            
+            # Generar PDF inicial
+            pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(
+                report_name, 
+                self.ids,
+                data={
+                    'context': report_context,
+                    'encoding': 'utf-8',  # Forzar encoding UTF-8
+                }
+            )
+            
+            if not pdf_content:
+                raise UserError("No se pudo generar el contenido del PDF")
+            
+            # PASO 2: Agregar protección con contraseña
+            password = self.employee_id.identification_id.strip()  # DNI como contraseña
+            
+            # Crear un archivo temporal en memoria
+            from io import BytesIO
+            input_stream = BytesIO(pdf_content)
+            output_stream = BytesIO()
+            
+            # Leer el PDF original
+            pdf_reader = PdfReader(input_stream)
+            pdf_writer = PdfWriter()
+            
+            # Copiar todas las páginas
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                pdf_writer.add_page(page)
+            
+            # Agregar protección con contraseña
+            pdf_writer.encrypt(
+                user_password=password,      # Contraseña para abrir (DNI)
+                owner_password=password,     # Contraseña de propietario (mismo DNI)
+                use_128bit=True              # Usar encriptación de 128 bits
+            )
+            
+            # Escribir el PDF protegido
+            pdf_writer.write(output_stream)
+            protected_pdf_content = output_stream.getvalue()
+            
+            # Cerrar streams
+            input_stream.close()
+            output_stream.close()
+            
+            # PASO 3: Crear attachment con el PDF protegido
+            employee_name = self.employee_id.name or 'Empleado'
+            safe_name = ''.join(c for c in employee_name if c.isalnum() or c in (' ', '-', '_')).strip()
+            filename = f'Liquidacion_BBSS_PROTEGIDA_{safe_name}_{self.id}.pdf'
+            
+            attachment = self.env['ir.attachment'].create({
+                'name': filename,
+                'type': 'binary',
+                'datas': base64.b64encode(protected_pdf_content),
+                'res_model': 'hr.payslip',
+                'res_id': self.id,
+                'mimetype': 'application/pdf',
+                'description': f'Liquidación protegida con contraseña. Usar DNI: {password}',
+            })
+            
+            # PASO 4: Retornar URL para descarga
+            return {
+                'type': 'ir.actions.act_url',
+                'url': f'/web/content/{attachment.id}?download=true',
+                'target': 'new',
+            }
+            
+        except Exception as e:
+            _logger.error(f"Error al generar reporte protegido: {str(e)}")
+            raise UserError(f"Error al generar el reporte protegido: {str(e)}")
+
+    # -----------------------------------------------
+    # IMPRIME: Genera PDF con juego caracteres UTF8
+    # -----------------------------------------------
+    def action_liquidacion_imprimir_v6_utf8(self):
+        """
+        Método mejorado con soporte completo UTF-8
+        """
+        try:
+            # Validaciones
+            if not getattr(self, 'x_studio_cesado', False):
+                raise UserError("Solo se puede imprimir la liquidación para empleados cesados.")
+            
+            self.ensure_one()
+            
+            _logger.info(f'Generando reporte UTF-8 para: {self.employee_id.name}')
+            
+            # CORRECCIÓN CRÍTICA: Configurar contexto con encoding UTF-8
+            report_context = dict(self.env.context)
+            report_context.update({
+                'active_model': 'hr.payslip',
+                'active_ids': self.ids,
+                'active_id': self.id,
+                'lang': 'es_PE',           # Español de Perú
+                'tz': 'America/Lima',
+                'website_id': False,       # Evitar conflictos de website
+            })
+            
+            # Forzar configuración de idioma para caracteres especiales
+            self = self.with_context(
+                lang='es_PE',
+                tz='America/Lima'
+            )
+            
+            # Obtener el reporte
+            report_name = 'cens_nomina_bbss_02.liquidacion_bbss_document'
+            
+            # CORRECCIÓN: Usar el servicio de reportes con opciones específicas
+            pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(
+                report_name, 
+                self.ids,
+                data={
+                    'context': report_context,
+                    'encoding': 'utf-8',
+                    'disable_smart_quotes': True,  # Evitar conversión de comillas
+                }
+            )
+            
+            if not pdf_content:
+                raise UserError("No se pudo generar el contenido del PDF")
+            
+            # Crear filename con caracteres seguros
+            employee_name = self.employee_id.name or 'Empleado'
+            safe_name = ''.join(c for c in employee_name if c.isalnum() or c in (' ', '-', '_')).strip()
+            filename = f'Liquidacion_BBSS_UTF8_{safe_name}_{self.id}.pdf'
+            
+            # Crear attachment
+            attachment = self.env['ir.attachment'].create({
+                'name': filename,
+                'type': 'binary',
+                'datas': base64.b64encode(pdf_content),
+                'res_model': 'hr.payslip',
+                'res_id': self.id,
+                'mimetype': 'application/pdf',
+            })
+            
+            return {
+                'type': 'ir.actions.act_url',
+                'url': f'/web/content/{attachment.id}?download=true',
+                'target': 'new',
+            }
+            
+        except Exception as e:
+            _logger.error(f"Error al generar reporte UTF-8: {str(e)}")
+            raise UserError(f"Error al generar el reporte: {str(e)}")
+
+    # ===============================================================================================
+    # FIN - Genera PDF con PASSWORD
+    # ===============================================================================================
 
     # --------------------------------------
     # BOTÓN: Resumen Liquidación (Cálculos)     ----- TIPO = 1

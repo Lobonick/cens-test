@@ -279,8 +279,8 @@
                                         style="flex: 1; max-width: 120px; background-color: #198754; border: 1px solid #198754; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
                                         confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
                                 
-                                <!-- Botón Naranja (Imprimir) -->
-                                <button name="action_liquidacion_imprimir_v3" 
+                                <!-- Botón Naranja (Imprimir)   action_liquidacion_imprimir_v3             -->
+                                <button name="action_liquidacion_imprimir_con_password" 
                                         string=" Imprimir" 
                                         type="object" 
                                         class="btn-warning oe_button"
