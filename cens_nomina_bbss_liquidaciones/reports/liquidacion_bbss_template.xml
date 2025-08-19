@@ -16,6 +16,29 @@
                                 direction: ltr;
                             }
 
+                            @page {
+                                background-image: url('/cens_nomina_bbss_liquidaciones/static/description/sello_agua.png');
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: 300px 300px;
+                                background-opacity: 0.1;
+                            }
+    
+                            body::before {
+                                content: '';
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-image: url('/cens_nomina_bbss_liquidaciones/static/description/sello_agua.png');
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: 300px;
+                                opacity: 0.1;
+                                z-index: -1;
+                            }
+
                             /* Estilo para la imagen del header */
                             .company-logo {
                                 width: 150px;
