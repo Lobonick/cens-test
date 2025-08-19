@@ -6,7 +6,8 @@
                 <div class="page">
                         <style>
                             @charset "UTF-8";
-                            .page {
+                            /* .page { */
+                            @page {
                                 background: white;
                                 font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif; /* Fuentes con soporte UTF-8 */
                                 margin: 0;
@@ -14,9 +15,6 @@
                                 /* IMPORTANTE: Declarar encoding explícitamente */
                                 unicode-bidi: embed;
                                 direction: ltr;
-                            }
-
-                            @page {
                                 background-image: url('/cens_nomina_bbss_liquidaciones/static/description/sello_agua.png');
                                 background-position: center;
                                 background-repeat: no-repeat;
