@@ -202,7 +202,7 @@
                         <table class="info-table">
                             <tr>
                                 <td class="label1">Empleado:</td>
-                                <td><span t-esc="o.employee_id.name"/></td>
+                                <td style="color: #b70e05ff; font-weight: bold; font-size: 16px;"><span t-esc="o.employee_id.name"/></td>
                                 <td class="label1">DNI:</td>
                                 <td class="datos"><span t-esc="o.employee_id.identification_id"/></td>
                             </tr>
