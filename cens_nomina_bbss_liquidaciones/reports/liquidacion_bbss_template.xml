@@ -59,7 +59,7 @@
                                 padding: 8px;
                                 font-weight: bold;
                                 font-size: 14px;
-                                margin: 15px 0 10px 0;
+                                margin: 15px 0 30px 0;
                                 position: relative;
                                 padding-left: 10px; /* Espacio para el icono */
                             }
@@ -475,7 +475,7 @@
                                             t-att-src="'data:image/png;base64,' + o.company_id.x_studio_firma_cens.decode('utf-8')"
                                             alt="FIRMA-CENS"/>
 
-                                        <div style="border-top: 1px solid #000; margin-top: 60px; padding-top: 5px;">                                                
+                                        <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">                                                
                                             <strong>EMPLEADOR</strong><br/>
                                             <span t-esc="o.company_id.name"/>
                                         </div>
