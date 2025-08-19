@@ -3,7 +3,7 @@
     <!-- Menú de Renta 5ta Categoría bajo Gestión Planillas -->
     <menuitem 
         id="menu_liquidacion_bbss"
-        name="Liquidación Beneficios Sociales"
+        name="Beneficios Sociales"
         parent="hr_payroll.menu_hr_payroll_payslips"
         sequence="100"/>
         <!-- parent="hr_payroll.menu_hr_payroll_payslips" -->
@@ -11,7 +11,7 @@
     <!-- Submenú para Control Anual de Renta -->
     <menuitem 
         id="menu_liquidacion_bbss_control"
-        name="Control Beneficios Sociales"
+        name="Liquidación de Beneficios Sociales"
         parent="menu_liquidacion_bbss"
         action="action_liquidacion_bbss"
         sequence="10"/>

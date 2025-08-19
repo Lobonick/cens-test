@@ -110,6 +110,7 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_en_asifam = fields.Float(string="Asig.Familiar", related='payslip_id.x_studio_en_asignacion_familiar')
     x_cens_en_bonifi = fields.Float(string="Bonificación", related='payslip_id.x_studio_en_bonificacion_cumplimiento')
     x_cens_en_feriad = fields.Float(string="Bonificación", related='payslip_id.x_studio_en_feriados')
+    x_cens_lite_fech = fields.Char(string='Literal Fecha', compute='_calcula_literal_fecha', default='Lima,', store=True)
 
 
     @api.onchange('employee_id')
@@ -202,6 +203,20 @@ class HrPayslipLiquidacion(models.Model):
     #             self.cens_renta_quinta_id = last_record.id
     #         else:
     #             self.cens_renta_quinta_id = False  # Limpiar el campo si no hay registro activo
+
+
+    @api.depends('contract_fecese')
+    def _calcula_literal_fecha(self):
+        # ----------------------- COMPONE CADENA LITERAL DE FECHA --------------------------
+        #
+        for record in self:
+            w_mes = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').month
+            w_dia = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').day
+            w_ano = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').year
+            w_mes_name = self.mes_literal(w_mes)
+            w_Resultado = "LIMA, " + str(w_dia) + " de " + w_mes_name + " del " + str(w_ano)
+            record['x_cens_lite_fech'] = w_Resultado
+
 
     @api.depends('contract_cesado')
     def _calcula_mensaje_nota_automatic(self):

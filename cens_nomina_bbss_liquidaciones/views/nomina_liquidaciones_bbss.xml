@@ -32,6 +32,7 @@
                     <field name="company_id" invisible="1"/>
                     <field name="user_id" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
+                    <field name="x_cens_lite_fech" invisible="1"/>
 
                     <div class="header-company">
                         <img class="company-logo" 

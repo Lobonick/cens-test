@@ -33,14 +33,14 @@
                                 display: block;
                             }
 
-                            .company-marcador {
-                                width: 250px;
-                                height: 100px;
+                            .company-firma {
+                                width: 200px;
+                                height: 250px;
                                 object-fit: contain;
-                                margin: 0 auto 10px auto;
+                                margin: 0 auto 5px auto;
                                 display: block;
                             }
-                            
+                           
                             .header-company {
                                 text-align: center;
                                 margin-bottom: 30px;
@@ -59,7 +59,7 @@
                                 padding: 8px;
                                 font-weight: bold;
                                 font-size: 14px;
-                                margin: 15px 0 30px 0;
+                                margin: 35px 0 10px 0;
                                 position: relative;
                                 padding-left: 10px; /* Espacio para el icono */
                             }
@@ -463,7 +463,10 @@
                                 </tr>
                             </table>
                         </div>
-
+                        <div style="margin-top: 20px;">
+                            <!-- Fecha -->
+                            <span t-esc="o.x_cens_lite_fech"/>
+                        </div>
                         <!-- Pie de página con firmas -->
                         <div style="margin-top: 50px;">
                             <table style="width: 100%;">
@@ -471,7 +474,7 @@
                                     <td style="text-align: center; width: 50%; padding: 20px;">
                                         <!-- FIRMA CENS -->
                                         <img t-if="o.company_id.x_studio_firma_cens" 
-                                            class="company-codeqr"
+                                            class="company-firma"
                                             t-att-src="'data:image/png;base64,' + o.company_id.x_studio_firma_cens.decode('utf-8')"
                                             alt="FIRMA-CENS"/>
 
