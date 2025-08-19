@@ -335,6 +335,13 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="label">(-) Descuento x AFP/ONP:</td>
+                                <td><span t-esc="o.x_cens_vaca_dafp"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iafp or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td></td>
                                 <td class="label2" style="text-align: right; padding-right: 10px;">TOTAL VACACIONES:</td>
                                 <td class="monetary-total">
@@ -482,7 +489,7 @@
                                     <td style="text-align: center; width: 50%; height: 250px; padding: 20px;">
                                         <br/><br/><br/><br/> 
                                         <br/><br/><br/><br/> 
-                                        <br/><br/><br/><br/>
+                                        <br/><br/>
                                         <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">
                                             <strong>EMPLEADO</strong><br/>
                                             <span t-esc="o.employee_id.name"/>
