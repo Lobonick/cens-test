@@ -438,11 +438,7 @@
                             </tr>
                         </table>
 
-                        <!-- Observaciones 
-                        
-                        src="cens_nomina_bbss_liquidaciones/static/description/cens-qrcode.jpg"
-                        
-                        -->
+                        <!-- Observaciones -->
                         <div class="section-title">OBSERVACIONES</div>
                         <div>
                             <table style="width: 100%;">
@@ -484,6 +480,7 @@
                                         </div>
                                     </td>
                                     <td style="text-align: center; width: 50%; height: 250px; padding: 20px;">
+                                        <br/><br/><br/><br/><br/><br/><br/><br/>
                                         <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">
                                             <strong>EMPLEADO</strong><br/>
                                             <span t-esc="o.employee_id.name"/>
