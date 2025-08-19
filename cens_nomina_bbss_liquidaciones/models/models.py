@@ -102,7 +102,7 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
     x_cens_apor_mbas = fields.Float(compute='_calcula_Monto_Base', default=0.00, store=True)
     x_cens_apor_essa = fields.Float(compute='_calcula_aporte_essalud', default=0.00, store=True)
-    
+
     x_cens_tipo_calc = fields.Char(string='Tipo Cálculo', default='1', store=True)
     x_cens_en_litefe = fields.Char(string="Literal Fecha", related='payslip_id.x_studio_literal_fecha_titulo')
     x_cens_en_nbolet = fields.Char(string="Núm.BoletaPago", related='payslip_id.number')
@@ -111,7 +111,8 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_en_bonifi = fields.Float(string="Bonificación", related='payslip_id.x_studio_en_bonificacion_cumplimiento')
     x_cens_en_feriad = fields.Float(string="Bonificación", related='payslip_id.x_studio_en_feriados')
     x_cens_lite_fech = fields.Char(string='Literal Fecha', compute='_calcula_literal_fecha', default='Lima,', store=True)
-
+    x_cens_bole_iden = fields.Char(string='Lote Boleta', compute='_calcula_boleta_identifi', default='', store=True)
+    
 
     @api.onchange('employee_id')
     def _onchange_empleado_info(self):
@@ -219,6 +220,18 @@ class HrPayslipLiquidacion(models.Model):
             else: 
                 w_Resultado = "LIMA, "
             record['x_cens_lite_fech'] = w_Resultado
+    
+
+    @api.depends('payslip_id')
+    def _calcula_boleta_identifi(self):
+        # ----------------------- COMPONE CADENA LITERAL DE FECHA --------------------------
+        #
+        for record in self:
+            if (record.payslip_id):
+                w_Resultado = record.payslip_id.x_studio_literal_fecha_titulo
+            else: 
+                w_Resultado = "NONE"
+            record['x_cens_bole_iden'] = w_Resultado
 
 
     @api.depends('contract_cesado')

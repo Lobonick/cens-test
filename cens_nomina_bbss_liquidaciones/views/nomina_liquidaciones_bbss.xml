@@ -73,6 +73,9 @@
                                    domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
                                    context="{'record.employee_id': employee_id}" 
                                    options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+
+                            <field name="x_cens_bole_iden" string="Lote Boleta" />
+
                             <field name="setup_afp_id" 
                                    domain="[[&quot;x_compania_afp.id&quot;,&quot;=&quot;,x_cens_afp_compa]]" 
                                    context="{'record.x_cens_afp_compa.id': x_cens_afp_compa}" 
