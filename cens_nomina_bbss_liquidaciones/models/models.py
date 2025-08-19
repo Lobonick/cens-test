@@ -211,9 +211,9 @@ class HrPayslipLiquidacion(models.Model):
         #
         for record in self:
             if (record.contract_fecese):
-                w_mes = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').month
-                w_dia = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').day
-                w_ano = datetime.datetime.strptime(str(record.contract_fecese), '%Y-%m-%d').year
+                w_mes = record.contract_fecese.month
+                w_dia = record.contract_fecese.day
+                w_ano = record.contract_fecese.year
                 w_mes_name = self.mes_literal(w_mes)
                 w_Resultado = "LIMA, " + str(w_dia) + " de " + w_mes_name + " del " + str(w_ano)
             else: 
