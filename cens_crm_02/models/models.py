@@ -311,34 +311,35 @@ class CRMLead(models.Model):
                     try:
                         contador_contactos = len(record.x_studio_contactos_financieros) if record.x_studio_contactos_financieros else 0
                         
-                        if contador_contactos == 0:
-                            # Cambiar el valor a 30% antes de continuar
-                            vals['x_studio_porcentaje_probabilidad'] = '30'
-                            
-                            # Log para auditoría
-                            _logger.warning(
-                                'Usuario %s (ID: %s) intentó marcar oportunidad %s como GANADA sin contactos. Acción bloqueada.',
-                                self.env.user.name, self.env.user.id, record.name or 'Nueva'
-                            )
-                            
-                            # Crear mensaje en el chatter para auditoría (sin causar recursión)
-                            try:
-                                record.with_context(tracking_disable=True).message_post(
-                                    body=_(
-                                        '⚠️ <strong>INTENTO DE CAMBIO A GANADA BLOQUEADO</strong><br/>'
-                                        '🚨 <strong>Motivo:</strong> No hay contactos financieros registrados<br/>'
-                                        '📅 <strong>Fecha:</strong> %s<br/>'
-                                        '👤 <strong>Usuario:</strong> %s<br/>'
-                                        '🔄 <strong>Acción:</strong> Porcentaje revertido automáticamente a 30%%'
-                                    ) % (
-                                        fields.Datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-                                        self.env.user.name
-                                    ),
-                                    subject='Validación de Contactos - GANADA Bloqueada',
-                                    message_type='notification'
+                        if (self.x_studio_monto_de_operacion_entero > 0):
+                            if contador_contactos == 0:
+                                # Cambiar el valor a 30% antes de continuar
+                                vals['x_studio_porcentaje_probabilidad'] = '30'
+                                
+                                # Log para auditoría
+                                _logger.warning(
+                                    'Usuario %s (ID: %s) intentó marcar oportunidad %s como GANADA sin contactos. Acción bloqueada.',
+                                    self.env.user.name, self.env.user.id, record.name or 'Nueva'
                                 )
-                            except Exception as e:
-                                _logger.warning('Error al crear mensaje en chatter: %s', str(e))
+                                
+                                # Crear mensaje en el chatter para auditoría (sin causar recursión)
+                                try:
+                                    record.with_context(tracking_disable=True).message_post(
+                                        body=_(
+                                            '⚠️ <strong>INTENTO DE CAMBIO A GANADA BLOQUEADO</strong><br/>'
+                                            '🚨 <strong>Motivo:</strong> No hay contactos financieros registrados<br/>'
+                                            '📅 <strong>Fecha:</strong> %s<br/>'
+                                            '👤 <strong>Usuario:</strong> %s<br/>'
+                                            '🔄 <strong>Acción:</strong> Porcentaje revertido automáticamente a 30%%'
+                                        ) % (
+                                            fields.Datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
+                                            self.env.user.name
+                                        ),
+                                        subject='Validación de Contactos - GANADA Bloqueada',
+                                        message_type='notification'
+                                    )
+                                except Exception as e:
+                                    _logger.warning('Error al crear mensaje en chatter: %s', str(e))
                     except Exception as e:
                         _logger.error('Error al validar contactos en write: %s', str(e))
                         # En caso de error, permitir continuar pero registrar
@@ -409,33 +410,34 @@ class CRMLead(models.Model):
         
         verificacion = self.verificar_contactos_financieros()
         
-        if verificacion['tiene_contactos']:
-            # Si tiene contactos, permitir cambiar a GANADA
-            self.write({'x_studio_porcentaje_probabilidad': '100'})
-            
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': _('✅ VALIDACIÓN EXITOSA'),
-                    'message': _('La oportunidad puede ser marcada como GANADA. Contactos verificados: %s') % verificacion['cantidad_contactos'],
-                    'sticky': False,
-                    'type': 'success',
+        if (self.x_studio_monto_de_operacion_entero > 0):
+            if verificacion['tiene_contactos']:
+                # Si tiene contactos, permitir cambiar a GANADA
+                self.write({'x_studio_porcentaje_probabilidad': '100'})
+                
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('✅ VALIDACIÓN EXITOSA'),
+                        'message': _('La oportunidad puede ser marcada como GANADA. Contactos verificados: %s') % verificacion['cantidad_contactos'],
+                        'sticky': False,
+                        'type': 'success',
+                    }
                 }
-            }
-        else:
-            # Si no tiene contactos, mostrar alerta
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': _('⚠️ VALIDACIÓN FALLIDA'),
-                    'message': verificacion['mensaje'],
-                    'sticky': True,
-                    'type': 'warning',
-                    'className': 'o_notification_shake',
+            else:
+                # Si no tiene contactos, mostrar alerta
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('⚠️ VALIDACIÓN FALLIDA'),
+                        'message': verificacion['mensaje'],
+                        'sticky': True,
+                        'type': 'warning',
+                        'className': 'o_notification_shake',
+                    }
                 }
-            }
         
     # ------------------------------
     # MÉTODO RECOMENDADO: USAR EL DECORADOR @api.model_create_multi MEJORADO
@@ -530,37 +532,38 @@ class CRMLead(models.Model):
             # Verificar si el contador de contactos es cero
             contador_contactos = self.x_studio_contador_contactos or 0
             
-            if contador_contactos == 0:
-                # Mostrar mensaje de alerta y resetear el valor y lo ajusta a 30%
-                self.x_studio_porcentaje_probabilidad = '70'  # Regresar a "70% - Mucha posibilidad de ganar. - "
-                
-                # Retornar mensaje de advertencia
-                return {
-                    'warning': {
-                        'title': _('⚠️ ALERTA - CONTACTOS REQUERIDOS'),
-                        'message': _(
-                            '🚨 CUIDADO:  Por directiva de la GERENCIA ADMINISTRATIVA, esta Oportunidad de Negocio NO puede pasar a GANADA sin antes  \n'
-                            '                       registrar uno o más contactos relacionados a la parte FINANCIERA.\n\n'
-                            '📋 Acciones requeridas:\n'
-                            '      • Registrar al menos un contacto financiero\n'
-                            '      • Deberás asignar como ETIQUETA principal la descripción del CARGO o el ÁREA involucrada.\n'
-                            '      • Luego debes seleccionar una persona ya registrada o agregar una nueva.\n'
-                            '      • Recuerda que debes colocar un contacto con el que se pueda tratar temas relacionados a la \n'
-                            '        gestión de financiamiento, desembolsos, contratos, adendas, cobranzas, entre otras. \n\n'
-                            '🔄 En este momento el porcentaje de Probabilidad será revertido automáticamente a 70% (Mucha posibilidad \n'
-                            '      de ganar), hasta que ingreses el contacto requerido.'
-                        ),
-                    },
-                    'type': 'ir.actions.client',
-                    'tag': 'display_notification',
-                    'params': {
-                        'title': _('⚠️ CONTACTOS REQUERIDOS'),
-                        'message': _('No se puede marcar como GANADA sin Contactos Financieros registrados.'),
-                        'sticky': True,
-                        'type': 'warning',
-                        'className': 'o_notification_shake',  # Efecto visual de shake
+            if (self.x_studio_monto_de_operacion_entero > 0):
+                if contador_contactos == 0:
+                    # Mostrar mensaje de alerta y resetear el valor y lo ajusta a 70%
+                    self.x_studio_porcentaje_probabilidad = '70'  # Regresar a "70% - Mucha posibilidad de ganar. - "
+                    
+                    # Retornar mensaje de advertencia
+                    return {
+                        'warning': {
+                            'title': _('⚠️ ALERTA - CONTACTOS REQUERIDOS'),
+                            'message': _(
+                                '🚨 CUIDADO:  Por directiva de la GERENCIA ADMINISTRATIVA, esta Oportunidad de Negocio NO puede pasar a GANADA sin antes  \n'
+                                '                       registrar uno o más contactos relacionados a la parte FINANCIERA.\n\n'
+                                '📋 Acciones requeridas:\n'
+                                '      • Registrar al menos un contacto financiero\n'
+                                '      • Deberás asignar como ETIQUETA principal la descripción del CARGO o el ÁREA involucrada.\n'
+                                '      • Luego debes seleccionar una persona ya registrada o agregar una nueva.\n'
+                                '      • Recuerda que debes colocar un contacto con el que se pueda tratar temas relacionados a la \n'
+                                '        gestión de financiamiento, desembolsos, contratos, adendas, cobranzas, entre otras. \n\n'
+                                '🔄 En este momento el porcentaje de Probabilidad será revertido automáticamente a 70% (Mucha posibilidad \n'
+                                '      de ganar), hasta que ingreses el contacto requerido.'
+                            ),
+                        },
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'title': _('⚠️ CONTACTOS REQUERIDOS'),
+                            'message': _('No se puede marcar como GANADA sin Contactos Financieros registrados.'),
+                            'sticky': True,
+                            'type': 'warning',
+                            'className': 'o_notification_shake',  # Efecto visual de shake
+                        }
                     }
-                }
 
     # ------------------------------
     # AUTORIZA PROPUESTA ECONÓMICA
