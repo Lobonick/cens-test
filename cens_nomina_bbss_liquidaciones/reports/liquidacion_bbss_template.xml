@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="liquidacion_bbss_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                        <style>
+                            @charset "UTF-8";
+                            /* .page  */
+                            @page {
+                                background: white;
+                                font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif; /* Fuentes con soporte UTF-8 */
+                                margin: 0;
+                                padding: 5mm 0 0 0;
+                                /* IMPORTANTE: Declarar encoding explícitamente */
+                                unicode-bidi: embed;
+                                direction: ltr;
+                                background-image: url('/cens_nomina_bbss_liquidaciones/static/description/sello_agua.png');
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: 300px 300px;
+                                background-opacity: 0.1;
+                            }
+    
+                            body::before {
+                                content: '';
+                                position: fixed;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-image: url('/cens_nomina_bbss_liquidaciones/static/description/sello_agua.png');
+                                background-position: center;
+                                background-repeat: no-repeat;
+                                background-size: 300px;
+                                opacity: 0.1;
+                                z-index: -1;
+                            }
+
+                            /* Estilo para la imagen del header */
+                            .company-logo {
+                                width: 150px;
+                                height: 150px;
+                                object-fit: contain;
+                                margin: 0 auto 20px auto;
+                                display: block;
+                            }
+
+                            .company-codeqr {
+                                width: 150px;
+                                height: 150px;
+                                object-fit: contain;
+                                margin: 0 auto 5px auto;
+                                display: block;
+                            }
+
+                            .company-firma {
+                                width: 250px;
+                                height: 200px;
+                                object-fit: contain;
+                                margin: 0 auto 5px auto;
+                                display: block;
+                            }
+                           
+                            .header-company {
+                                text-align: center;
+                                margin-bottom: 30px;
+                                padding-bottom: 20px;
+                                border-bottom: 2px solid #875A7B;
+                            }
+
+                            .header-calculo {
+                                text-align: center;
+                                padding-top: 20px;
+                            }
+
+                            .section-title {
+                                background-color: #875A7B;
+                                color: white;
+                                padding: 8px;
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 35px 0 10px 0;
+                                position: relative;
+                                padding-left: 10px; /* Espacio para el icono */
+                            }
+                            .section-title2 {
+                                background-color: #128C7E;
+                                color: white;
+                                padding: 8px;
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 15px 0 10px 0;
+                                position: relative;
+                                padding-left: 10px; /* Espacio para el icono */
+                            }
+
+                            .info-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-bottom: 15px;
+                            }
+                            .info-table td {
+                                padding: 5px 8px;
+                                border: 1px solid #ddd;
+                                font-size: 12px;
+                            }
+                            .info-table .datos {
+                                background-color: #f8f9fa;
+                                text-align: left;
+                                width: 20%;
+                            }
+                            .info-table .label {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 20%;
+                            }
+                            .info-table .label1 {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 10%;
+                            }
+                            .info-table .label2 {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 60%;
+                            }
+                            .info-table .label3 {
+                                background-color: #f8f9fa;
+                                font-weight: bold;
+                                width: 30%;
+                            }
+                            .calculation-section {
+                                margin: 20px 0;
+                                border: 1px solid #ddd;
+                                border-radius: 5px;
+                            }
+                            .calc-header {
+                                background-color: #128C7E;
+                                color: white;
+                                padding: 10px;
+                                font-weight: bold;
+                                font-size: 14px;
+                            }
+                            .calc-content {
+                                padding: 15px;
+                            }
+                            .calc-row {
+                                display: flex;
+                                justify-content: space-between;
+                                margin: 5px 0;
+                                padding: 5px 0;
+                                border-bottom: 1px solid #eee;
+                            }
+                            .calc-total {
+                                background-color: #a8e6cf;
+                                color: #2d5016;
+                                font-weight: bold;
+                                padding: 10px;
+                                border-radius: 5px;
+                                margin: 10px 0;
+                            }
+                            .monetary {
+                                text-align: right;
+                                font-family: monospace;
+                                width: 20%;
+                            }
+                            .monetary-total {
+                                background-color: #a8e6cf;
+                                color: #2d5016;
+                                font-weight: bold;
+                                text-align: right;
+                            }
+                            .warning-text {
+                                color: red;
+                                font-weight: bold;
+                            }
+                        </style>
+
+                        <!-- ============================================================================= -->
+                        <!--                                    CABECERA                                   -->
+                        <!-- ============================================================================= -->
+                        <!-- Header con imagen de la empresa -->
+                        <div class="header-company">
+                            <!-- MÉTODO 1: Imagen desde campo de la empresa -->
+                            <img t-if="o.company_id.logo" 
+                                class="company-logo"
+                                t-att-src="'data:image/png;base64,' + o.company_id.logo.decode('utf-8')"
+                                alt="Logo de la empresa"/>
+                            
+                            <!-- MÉTODO 2: Imagen estática desde el módulo -->
+                            <!-- <img class="company-logo" 
+                                src="/cens_nomina_bbss_liquidaciones/static/description/company_logo.png" 
+                                alt="Logo CENS"/> -->
+                            
+                            <!-- MÉTODO 3: Imagen por defecto si no hay logo -->
+                            <div t-if="not o.company_id.logo" 
+                                style="width: 150px; height: 150px; border: 2px dashed #ccc; 
+                                        display: flex; align-items: center; justify-content: center; 
+                                        margin: 0 auto 20px auto; color: #999;">
+                                Logo de la Empresa
+                            </div>
+                            
+                            <!--
+                            <h3><span t-esc="o.company_id.name"/></h3>
+                            <p>RUC: <span t-esc="o.company_id.vat"/></p>
+                            -->
+
+                            <h3><t t-raw="o.company_id.name or ''"/></h3>
+                            <p>RUC: <t t-raw="o.company_id.vat or ''"/></p>
+                        </div>
+
+                        <!-- Encabezado del documento _____________________________________________________ -->
+                        <div class="header-company">
+                            <h1>LIQUIDACION DE BENEFICIOS SOCIALES</h1>
+                        </div>
+
+                        <!-- ============================================================================= -->
+                        <!--                                   PÁGINA 01                                   -->
+                        <!-- ============================================================================= -->
+                        <!-- Información del empleado -->
+                        <div class="section-title">INFORMACION DEL EMPLEADO</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label1">Empleado:</td>
+                                <td style="color: #b70e05ff; font-weight: bold; font-size: 16px;"><span t-esc="o.employee_id.name"/></td>
+                                <td class="label1">DNI:</td>
+                                <td class="datos"><span t-esc="o.employee_id.identification_id"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label1">Cargo:</td>
+                                <td><span t-esc="o.employee_id.job_id.name"/></td>
+                                <td class="label1">Departamento:</td>
+                                <td class="datos"><span t-esc="o.employee_id.department_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Fecha de Ingreso:</td>
+                                <td><span t-esc="o.contract_fingr" t-options="{'widget': 'date'}"/></td>
+                                <td class="label">Fecha de Cese:</td>
+                                <td class="datos"><span t-esc="o.contract_fcese" t-options="{'widget': 'date'}"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Información del período -->
+                        <div class="section-title">PARAMETROS DE CALCULO</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label1">Período laboral:</td>
+                                <td>
+                                    <span>Desde </span>
+                                    <span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/> al 
+                                    <span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/>
+                                </td>
+
+                                <td class="label1">Remuneración Base:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_remu_base or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label1">Tiempo de Servicio:</td>
+                                <td>
+                                    <span t-esc="o.x_cens_periodo_aa"/> años, 
+                                    <span t-esc="o.x_cens_periodo_mm"/> meses, 
+                                    <span t-esc="o.x_cens_periodo_dd"/> días
+                                </td>
+
+                                <td class="label1">Asignación Familiar:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Moneda:</td>
+                                <td><span t-esc="o.x_cens_moneda"/></td>
+
+                                <td class="label1">1/6 gratificación:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_16to or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                
+                                <td class="label">Remuneración Computable:</td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_remu_comp or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- __________________________________________________________________ -->
+                        <div class="header-calculo">
+                            <h2>Cálculo de Beneficios</h2>
+                        </div>
+                        <!-- __________________________________________________________________ -->
+
+                        <!-- Liquidación CTS -->
+                        <div class="section-title2">LIQUIDACION CTS TRUNCO</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Periodo:</td>
+                                <td><span t-esc="o.x_cens_ccts_peri"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x Mes:</td>
+                                <td><span t-esc="o.x_cens_ccts_dmes"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_imes or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x día:</td>
+                                <td><span t-esc="o.x_cens_ccts_ddia"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_idia or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="label2" style="text-align: right; padding-right: 10px;">TOTAL CTS:</td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <separator/>
+                        <separator/>
+                        <!-- Liquidación Vacaciones -->
+                        <div class="section-title2">LIQUIDACION VACACIONES TRUNCAS</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Periodo:</td>
+                                <td><span t-esc="o.x_cens_vaca_peri"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x Año:</td>
+                                <td><span t-esc="o.x_cens_vaca_dano"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iano or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x Mes:</td>
+                                <td><span t-esc="o.x_cens_vaca_dmes"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_imes or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x día:</td>
+                                <td><span t-esc="o.x_cens_vaca_ddia"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_idia or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">(-) Descuento Vacaciones Gozadas:</td>
+                                <td><span t-esc="o.x_cens_vaca_dgoz"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_igoz or 0)"/>
+                                </td>
+                            </tr>
+                            <!--
+                            <tr>
+                                <td class="label">(-) Descuento x AFP/ONP:</td>
+                                <td><span t-esc="o.x_cens_vaca_dafp"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iafp or 0)"/>
+                                </td>
+                            </tr>
+                            -->
+                            <tr>
+                                <td></td>
+                                <td class="label2" style="text-align: right; padding-right: 10px;">TOTAL VACACIONES:</td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <separator/>
+                        <separator/>
+                        <!-- Liquidación Gratificaciones -->
+                        <div class="section-title2">LIQUIDACION GRATIFICACIONES TRUNCAS</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Periodo:</td>
+                                <td><span t-esc="o.x_cens_grat_peri"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Cálculo x Mes:</td>
+                                <td><span t-esc="o.x_cens_grat_dmes"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Gratificación:</td>
+                                <td><span t-esc="o.x_cens_grat_dbon"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="label2" style="text-align: right; padding-right: 10px;">TOTAL GRATIFICACIONES:</td>
+                                <td class="monetary-total">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_itot or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- ============================================================================= -->
+                        <!--                                   PÁGINA 02                                   -->
+                        <!-- ============================================================================= -->
+                        <div style="page-break-before: always;"></div>
+                        <br/><br/><br/><br/>
+
+                        <!-- Resumen final -->
+                        <div class="section-title">RESUMEN LIQUIDACION DE BB.SS.</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">CTS Trunco:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Vacaciones Truncas (*):</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Gratificaciones Truncas:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Bonificaciones Truncas:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #a8e6cf; font-weight: bold; font-size: 16px;">
+                                <td class="label">TOTAL A PAGAR:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_liqu_tota or 0)"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Información de aportes -->
+                        <div class="section-title">INFORMACION DE APORTES</div>
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Compañía AFP/ONP:</td>
+                                <td><span t-esc="o.x_cens_afp_compa.x_name"/></td>
+                                <td class="label">Aporte Obligatorio:</td>
+                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Prima Seguro:</td>
+                                <td><span t-esc="o.x_cens_afp_prima"/></td>
+                                <td class="label">Tipo Comisión:</td>
+                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
+                            </tr>
+                            <tr t-if="o.x_cens_afp_oblig == 'MIX'">
+                                <td class="label">Comisión Mixta:</td>
+                                <td><span t-esc="o.x_cens_afp_mixta"/></td>
+                                <td class="label"></td>
+                                <td></td>
+                            </tr>
+                            <tr t-if="o.x_cens_afp_oblig == 'FLU'">
+                                <td class="label">Comisión Flujo:</td>
+                                <td><span t-esc="o.x_cens_afp_flujo"/></td>
+                                <td class="label"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                        <!-- Observaciones -->
+                        <div class="section-title">OBSERVACIONES</div>
+                        <div>
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="text-align: left; width: 70%; height: 150px; padding: 20px; border: 1px solid #999;">
+                                        <p><span t-esc="o.note"/></p>
+                                        <p style="font-size: 14px; color: #999;">
+                                            * Las vacaciones truncas incluyen el cálculo y descuento del importe ONP/AFP.
+                                        </p>
+                                    </td>
+                                    <td style="text-align: center; width: 20%; padding: 10px;">
+                                        <!-- CÓDIGO QR -->
+                                        <img t-if="o.company_id.x_studio_code_qr" 
+                                            class="company-codeqr"
+                                            t-att-src="'data:image/png;base64,' + o.company_id.x_studio_code_qr.decode('utf-8')"
+                                            alt="QR-CENS"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <!-- Fecha -->
+                            <span t-esc="o.x_cens_lite_fech"/>
+                        </div>
+                        <!-- Pie de página con firmas -->
+                        <div style="margin-top: 20px;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="text-align: center; width: 50%; padding: 20px;">
+                                        <!-- FIRMA CENS -->
+                                        <img t-if="o.company_id.x_studio_firma_cens" 
+                                            class="company-firma"
+                                            t-att-src="'data:image/png;base64,' + o.company_id.x_studio_firma_cens.decode('utf-8')"
+                                            alt="FIRMA-CENS"/>
+
+                                        <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">                                                
+                                            <strong>EMPLEADOR</strong><br/>
+                                            <span t-esc="o.company_id.name"/>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; width: 50%; height: 250px; padding: 20px;">
+                                        <br/><br/><br/><br/> 
+                                        <br/><br/><br/><br/> 
+                                        <br/><br/>
+                                        <div style="border-top: 1px solid #000; margin-top: 10px; padding-top: 5px;">
+                                            <strong>EMPLEADO</strong><br/>
+                                            <span t-esc="o.employee_id.name"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Fecha del documento -->
+                        <div style="text-align: center; margin-top: 30px; font-size: 12px;">
+                            Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

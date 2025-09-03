@@ -1,0 +1,47 @@
+
+/* Estilos más específicos para la columna name en tree view dentro de notebook */
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table tbody td[name="name"],
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table thead th[data-name="name"] {
+    min-width: 400px !important;
+    width: 400px !important;
+    max-width: 400px !important;
+    padding-right: 8px !important;
+}
+
+/* Controlar el contenedor de la tabla */
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view {
+    overflow-x: auto !important;
+    min-width: min-content !important;
+}
+
+/* Forzar el ancho de otras columnas para que no se expandan */
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table th:not([data-name="name"]),
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table td:not([name="name"]) {
+    min-width: 100px !important;
+    width: 100px !important;
+    max-width: 100px !important;
+    white-space: nowrap !important;
+}
+
+/* Asegurar que la tabla tenga el ancho correcto */
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table {
+    table-layout: fixed !important;
+    width: auto !important;
+}
+
+/*
+.o_form_view .o_notebook .tab-content .tab-pane .o_list_view .o_list_table {
+    table-layout: auto;
+    width: 100%;
+}
+*/
+
+.o_list_container {
+    overflow-x: visible !important;
+    width: auto !important;
+}
+
+.o_list_container .o_list_view .o_list_table {
+    width: auto !important;
+    min-width: max-content !important;
+}

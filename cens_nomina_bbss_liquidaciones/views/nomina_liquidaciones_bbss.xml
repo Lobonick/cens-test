@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payslip_liquidacion_form_bbss" model="ir.ui.view">
+        <field name="name">hr.payslip.liquidacion.form.bbss</field>
+        <field name="model">hr.payslip.liquidacion</field>
+        <field name="priority">40</field>
+        <field name="arch" type="xml">
+            <form string="Hoja de Liquidación BBSS">
+                <sheet>
+                    <style>
+                        .header-company {
+                            text-align: left;
+                            margin-bottom: 40px;
+                            padding-bottom: 30px;
+                            border-bottom: 2px solid #875A7B;
+                        }
+
+                        .section-title {
+                            background-color: #875A7B;
+                            color: white;
+                            padding: 8px;
+                            font-weight: bold;
+                            font-size: 14px;
+                            margin: 15px 0 10px 0;
+                            position: relative;
+                            padding-left: 10px; /* Espacio para el icono */
+                        }
+                    </style>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted,annul" clickable="True"/>
+                    </header>
+                    <field name="company_id" invisible="1"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="x_cens_lite_fech" invisible="1"/>
+
+                    <div class="header-company">
+                        <img class="company-logo" 
+                             src="/cens_nomina_bbss_liquidaciones/static/description/marcador-pdf.png" 
+                             alt="marcador"/>                            
+                    
+                        <field name="x_cens_foto_empleado" 
+                            class="oe_right" 
+                            options="{'size':[160,200]}" 
+                            widget="image"
+                            style="float: right; margin-left: 50px; margin-top: 10px; max-width: 160px; width: 160px;"/>
+                        
+                        <!-- <h1 style="margin-right: 150px; overflow: visible; white-space: normal;">  --> 
+                        <separator/>
+                        <h1 class="d-flex flex-row">
+                            <field name="employee_id" 
+                                placeholder="Nombre del Empleado" 
+                                class="oe_left"
+                                options="{'no_open': True, 'no_create': True}"
+                                style="width: 100%; max-width: 500px; display: block; text-align: left;"/>
+                        </h1>
+                        <h3>
+                            <field name="x_cens_cargo_emple" class="oe_left"/>
+                        </h3>
+                    </div>
+                    <div class="oe_title" name="title">
+                    </div>
+                    <field name="x_cens_cesado" invisible="1"/>
+                    <field name="generado" invisible="1"/>
+                    <field name="x_cens_remu_base" invisible="1"/>
+                    <field name="x_cens_tipo_calc" invisible="1"/>                    
+                    <group>
+                        <group string="Datos Vinculantes">
+                            <field name="name" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                            <field name="contract_id" string="Contrato Activo" />
+                            <field name="payslip_id" 
+                                   string="Boleta de Pago" 
+                                   domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
+                                   context="{'record.employee_id': employee_id}" 
+                                   options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+
+                            <field name="x_cens_bole_iden" string="Lote Nómina" />
+
+                            <field name="setup_afp_id" 
+                                   domain="[[&quot;x_compania_afp.id&quot;,&quot;=&quot;,x_cens_afp_compa]]" 
+                                   context="{'record.x_cens_afp_compa.id': x_cens_afp_compa}" 
+                                   options="{&quot;no_edit&quot;:true,&quot;no_create&quot;:true,&quot;no_open&quot;:true}" 
+                                   force_save="True" attrs="{}"/>
+                            <separator/>
+                            <separator string="Detalles del Cese"/>
+                            <field name="contract_cesado" />
+                            <field name="contract_fecese" attrs="{'invisible': [('contract_cesado', '!=', True)]}"/>
+                            <field name="contract_motivo" attrs="{'invisible': [('contract_cesado', '!=', True)]}"/>
+                            <field name="contract_observ" attrs="{'invisible': [('contract_cesado', '!=', True)]}"/>
+                        </group>
+                        <group string="Datos Contrato Activo">
+                            <field name="contract_fingr"/>
+                            <field name="contract_fcese"/>
+                            <field name="contract_wage"   string="☑️ Sueldo Básic" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="contract_movili" string="☑️ Movilidad   " style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="contract_alimen" string="☑️ Alimentación" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="contract_bonifi" string="☑️ Bonif.Educac" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="contract_utilid" string="☑️ Dist.Utilid." style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <separator/>
+                            <div></div>
+                            <div attrs="{'invisible': [('contract_cesado', '=', False)]}">
+                                <!-- Botón Verde claro (Generar) -->
+                                <button name="action_recalcula_hoja_bbss"  
+                                        string=" Generar Liquidación " 
+                                        type="object"
+                                        class="btn-success oe_button"
+                                        icon="fa-cog"
+                                        confirm="¿Seguro de GENERAR Hoja de Liquidación?"/>
+                            </div>
+                            <separator string="OBSERVACIONES INTERNAS" 
+                                     style="color: #080808ff;
+                                            background-color: #bec5cfff; 
+                                            font-weight: bold; 
+                                            font-size: 16px;
+                                            max-width: 400px;
+                                            padding-left: 10px;"/>
+                            <field name="note_automatic" string="Obsv.Internas" nolabel="1" colspan="2" readonly="1"
+                                 style="flex: 1; 
+                                        color: #080808ff;
+                                        font-size: 16px;
+                                        text-align: left;
+                                        vertical-align: middle;
+                                        max-width: 400px; 
+                                        background-color: #bec5cfff; 
+                                        border: 1px solid #bec5cfff; 
+                                        padding: 10px 8px; 
+                                        border-radius: 2px; 
+                                        font-weight: 500;"/>
+                            <!--
+                             style="display: flex; gap: 8px; margin: 15px 0; width: 100%;"
+                            style="flex: 1; max-width: 120px; background-color: #198754; border: 1px solid #198754; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                            -->                                        
+                        </group>
+                    </group>
+
+                    <separator/>
+                    <!-- Header informativo -->
+                    <div class="alert alert-info" role="alert" style="margin-bottom: 20px;" attrs="{'invisible': [('generado', '=', False)]}">
+                        <h1><i class="fa fa-info-circle"/> Liquidación de Beneficios Sociales</h1>
+                        <p style="margin: 5px 0 0 0; font-size: 16px;">
+                            Esta sección contiene los cálculos de liquidación para empleados cesados.
+                        </p>
+                    </div>
+                    
+                    <!-- Contenido principal -->
+                    <separator string="DETALLES GENERALES" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_01' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group string="📅 Información del Período">
+                            <field name="x_cens_periodo_ini" 
+                                string="Período Inicio"
+                                attrs="{'readonly': [('x_cens_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_fin" 
+                                string="Período Fin"
+                                attrs="{'readonly': [('x_cens_cesado', '=', False)]}"/>
+                        </group>
+                        <group string="🕒 Detalle del Tiempo de Servicio">
+                            <field name="x_cens_periodo_aa" 
+                                string="Años"
+                                attrs="{'readonly': [('x_cens_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_mm" 
+                                string="Meses"
+                                attrs="{'readonly': [('x_cens_cesado', '=', False)]}"/>
+                            <field name="x_cens_periodo_dd" 
+                                string="Días"
+                                attrs="{'readonly': [('x_cens_cesado', '=', False)]}"/>
+                        </group>
+                        
+                    </group>                 
+                    <group name='grupo_seccion_02' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group string="⏱️ Totales de Tiempo">
+                            <field name="x_cens_ctotal_timeserv" string="Total Tiempo de Servicio" attrs="{'readonly':True}" />
+                            <field name="x_cens_ctotal_tnocomp" string="Total Tiempo No Computable" attrs="{'readonly':True}"/>
+                            <field name="x_cens_ctotal_tliqui" string="Total Tiempo para Liquidación" attrs="{'readonly':True}"/>
+                        </group>
+                        <group string="💰 Remuneración Computable">
+                            <field name="x_cens_remu_base" 
+                                string="☑️ Remuneración Base"
+                                style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_asig_fami" 
+                                string="☑️ Asignación Familiar"
+                                style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_grat_16to" 
+                                string="☑️ 1/6 Gratificación "
+                                style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_none_remu" 
+                                string="☑️ No Remunerativos"
+                                style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_remu_comp" string="TOTAL COMPUTABLE:" readonly="0" 
+                                widget="monetary"
+                                style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 3px;"/>
+                            <separator/>
+                        </group>
+                    </group>
+                   
+                    <div class="header-company" attrs="{'invisible': [('generado', '=', False)]}">
+                        <h3>
+
+                        </h3>
+                    </div>
+                    <separator string="🧮 LIQUIDACIÓN CTS - TRUNCOS" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_03' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group> 
+                            <separator string="⏱️ Descripción"/>
+                            <field name="x_cens_ccts_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_ccts_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_ccts_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                        </group>
+                        <group>
+                            <separator string="💰 Importes"/>
+                            <!-- <label string=" " colspan="2" class="o_form_label"/>  -->
+                            <field name="x_cens_moneda" 
+                                string="Moneda" 
+                                nolabel="1" 
+                                colspan="2" 
+                                readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_ccts_imes" 
+                                string="Importe cálculo x mes" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_ccts_idia" 
+                                string="Importe cálculo x día" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_ccts_itot" 
+                                string="Importe total CTS" 
+                                nolabel="1" 
+                                colspan="2"
+                                class="oe_subtotal_footer_separator"
+                                style="background-color: #128C7E; color: white; font-weight: bold; padding: 8px; border-radius: 5px; text-align: center; font-size: 16px;"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <separator string="🧮 LIQUIDACIÓN VACACIONES - TRUNCOS" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_04' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group> 
+                            <separator string="⏱️ Descripción"/>
+                            <field name="x_cens_vaca_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dano" string="Detalle cálculo x año" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_ddia" string="Detalle cálculo x día" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_vaca_dgoz" string="Detalle Vacaciones Gozadas" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <!--    
+                            <field name="x_cens_vaca_dafp" string="Descuento AFP/ONP" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; color: red; font-weight: bold; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            -->
+                        </group>
+                        <group>
+                            <separator string="💰 Importes"/>
+                            <field name="x_cens_moneda" 
+                                string="Moneda" 
+                                nolabel="1" 
+                                colspan="2" 
+                                readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_vaca_iano" 
+                                string="Importe cálculo x año" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_imes" 
+                                string="Importe cálculo x mes" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_idia" 
+                                string="Importe cálculo x día" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_vaca_igoz" 
+                                string="Importe Vacaciones Gozadas" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; color: red; font-weight: bold; text-align: center; font-size: 14px;"/>
+                            <!--
+                            <field name="x_cens_vaca_iafp" 
+                                string="Importe AFP/ONP" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; color: red; font-weight: bold; text-align: center; font-size: 14px;"/>
+                            -->
+                            <field name="x_cens_vaca_itot" 
+                                string="Importe total VACA" 
+                                nolabel="1" 
+                                colspan="2" 
+                                class="oe_subtotal_footer_separator"
+                                style="background-color: #128C7E; color: white; font-weight: bold; padding: 8px; border-radius: 5px; text-align: center; font-size: 16px;"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <separator string="🧮 LIQUIDACIÓN GRATIFICACIONES - TRUNCOS" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_05' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group string="⏱️ Descripción">
+                            <field name="x_cens_grat_peri" string="Detalle del Periodo  " nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_grat_dmes" string="Detalle cálculo x mes" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                            <field name="x_cens_grat_dbon" string="Bonificación" nolabel="1" colspan="2" readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px; vertical-align: middle;"/>
+                        </group>
+                        <group string="💰 Importes">
+                            <field name="x_cens_moneda" 
+                                string="Moneda" 
+                                nolabel="1" 
+                                colspan="2" 
+                                readonly="1"
+                                style="padding: 5px; text-align: left; font-size: 14px;"/>
+                            <field name="x_cens_grat_imes" 
+                                string="Importe cálculo x mes" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_grat_ibon" 
+                                string="Importe cálculo x día" 
+                                nolabel="1" 
+                                colspan="2"
+                                style="padding: 5px; text-align: center; font-size: 14px;"/>
+                            <field name="x_cens_grat_itot" 
+                                string="Importe total VACA" 
+                                nolabel="1" 
+                                colspan="2" 
+                                class="oe_subtotal_footer_separator"
+                                style="background-color: #128C7E; color: white; font-weight: bold; padding: 8px; border-radius: 5px; text-align: center; font-size: 16px;"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <div class="header-company">
+                        <h3>
+
+                        </h3>
+                    </div>
+                    <!-- Sección de observaciones -->
+                    <separator string="📝 RESUMEN LIQUIDACIÓN DE BB.SS." style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_06' attrs="{'invisible': [('generado', '=', False)]}">
+                        <group string="📝 BENEFICIOS TRUNCOS">
+                            <field name="x_cens_ccts_itot" string="CTS Trunco" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_vaca_itot" string="Vacaciones Truncas (*)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <!--
+                            <div>
+                            </div>
+                            <div>
+                                <p style="margin: 1px 0 0 0; font-size: 10px;">* Incluye cálculo y descuento de importe ONP/AFP.</p>
+                            </div>
+                            -->
+                            <field name="x_cens_grat_imes" string="Gratificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_grat_ibon" string="Bonificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_liqu_tota" string="TOTAL A PAGAR" readonly="0" 
+                                widget="monetary"
+                                style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 3px;"/>
+                            <separator/>
+                        </group>
+                        <group string="📝 APORTES">
+                            <field name="x_cens_afp_compa" string="Compañía AFP/ONP" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_oblig" string="Aporte Obligatorio" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_prima" string="Prima Seguro" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_tcomi" string="Tipo Comisión" style="font-size: 14px;"/>
+                            <field name="x_cens_afp_mixta" string="Comisión Mixta" 
+                                attrs="{'invisible': [('x_cens_afp_tcomi', '!=', 'MIX')]}"
+                                style="font-size: 14px;"/>
+                            <field name="x_cens_afp_flujo" string="Comisión Flujo"
+                                attrs="{'invisible': [('x_cens_afp_tcomi', '!=', 'FLU')]}" 
+                                style="font-size: 14px;"/>
+                            <separator/>
+                        </group>
+                    </group>
+                    <group name='grupo_seccion_07' attrs="{'invisible': [('generado', '=', False)]}">
+                        <!--
+                        <group string="📝 ÚLTIMA REMUNERACIÓN">
+                            <field name="x_cens_en_litefe" string="Periodo" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_cens_en_nbolet" string="Boleta Pago" readonly="1" style="font-size: 14px;"/>
+                            <field name="x_cens_en_basico" string="Sueldo Básico" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_cens_en_asifam" string="Asig.Familiar" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_cens_en_bonifi" string="Bonificación" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                            <field name="x_cens_en_feriad" string="Feriados" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
+                        </group>
+                        -->
+                        <group>
+                        </group>
+                        <group string="📝 APORTE DEL EMPLEADOR">
+                            <field name="x_cens_apor_mbas" string="Monto Base" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_apor_essa" string="Aporte ESSALUD 9%" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                        
+                        </group>
+                    </group>
+                    <separator/>
+                    <!-- Sección de observaciones -->
+                    <separator string="📝 OBSERVACIONES DE LIQUIDACIÓN" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_08' attrs="{'invisible': [('generado', '=', False)]}">
+                        <field name="note" 
+                            string="Observaciones"
+                            placeholder="Ingrese observaciones adicionales sobre la liquidación..."
+                            nolabel="1"
+                            colspan="2"/>
+                    </group>
+                    
+                    <separator/>
+                    <!-- Sección de observaciones internas del cálculo -->
+                    <separator string="🔧 OBSERVACIONES INTERNAS DEL CÁLCULO" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
+                    <group name='grupo_seccion_08' attrs="{'invisible': [('generado', '=', False)]}">
+                        <field name="note_calculos" string="Obsv.Internas" nolabel="1" colspan="2" readonly="1"
+                                 placeholder="Observaciones internas sobre el cálculo."
+                                 style="flex: 1; 
+                                        color: #7b3030ff;
+                                        font-size: 16px;
+                                        text-align: left;
+                                        vertical-align: middle;
+                                        max-width: 400px; 
+                                        background-color: #f4f6b1ff; 
+                                        border: 1px solid #f4f6b1ff; 
+                                        padding: 10px 8px; 
+                                        border-radius: 2px; 
+                                        font-weight: 500;"/>
+                    </group>
+                    
+                    <group name="group_foot" attrs="{'invisible': [('generado', '=', False)]}">
+                        <group name="group_foot_left">
+                        </group>
+                        <group name="group_foot_right">
+                            <div>
+                            </div>
+                            <div style="display: flex; gap: 8px; margin: 15px 0; width: 100%;">
+                                
+                                <!-- Botón Naranja (Imprimir)   action_liquidacion_imprimir_v3             -->
+                                <button name="action_liquidacion_imprimir_v3" 
+                                        string=" Imprimir" 
+                                        type="object" 
+                                        class="btn-warning oe_button"
+                                        icon="fa-print"
+                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: white; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de IMPRIMIR Hoja de liquidación?"/>
+                                
+                                <!-- Botón Verde Oscuro (Limpiar) -->
+                                <button name="action_liquidacion_blanquea" 
+                                        string=" Limpiar" 
+                                        type="object" 
+                                        class="btn-primary oe_button"
+                                        icon="fa-eraser"
+                                        style="flex: 1; max-width: 120px; background-color: #ffc107; border: 1px solid #ffc107; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de BLANQUEAR Hoja de liquidación?"/>
+
+                                <!-- Botón Azul (Resumen) -->
+                                <button name="action_actualiza_bbss_boleta" 
+                                        string=" Resumen" 
+                                        type="object" 
+                                        class="btn-info oe_button"
+                                        icon="fa-file-text"
+                                        style="flex: 1; max-width: 120px; background-color: #3477dcff; border: 1px solid #3477dcff; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de TRASLADAR RESUMEN LIQUIDACIÓN a la Boleta de Pago?"/>
+                                
+                            </div>
+
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" string="MENSAJES" invisible="1"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}" invisible="1"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para Liquidaciones BBSS -->
+    <record id="view_payslip_liquidaciones_bbss_tree" model="ir.ui.view">
+        <field name="name">payslip_liquidación_bbss.tree</field>
+        <field name="model">hr.payslip.liquidacion</field>
+        <field name="arch" type="xml">
+            <tree string="Liquidación BBSS" limit="300">
+                <header>
+                    <button name="action_genera_liquidación_masiva" 
+                            string=" Generar Liqudaciones masivas" 
+                            confirm="¿Está seguro de CARGA MASIVA?"
+                            type="object" 
+                            class="btn-primary"
+                            icon="fa-wrench"
+                            help="Crea nuevas fichas y recalcula a todos los Empleados." />
+                </header>
+                <field name="company_id" invisible="1"/>
+                <field name="user_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="name" string="Código"/>
+                <field name="employee_id" widget="many2one_avatar_employee" options="{&quot;size&quot;:[0,280]}" domain="[('x_studio_sujeto_a_renta_5cat', '=', True)]"/>
+                <field name="x_cens_fech_registro" string="Registro"  optional="show"/>
+                <field name="contract_fingr" string="Ingreso" optional="show"/>
+                <field name="contract_fecese" string="Cese" optional="show"/>
+                <field name="x_cens_ccts_itot" string="Total CTS" optional="show"/>
+                <field name="x_cens_vaca_itot" string="Total VACA" optional="show"/>
+                <field name="x_cens_grat_itot" string="Total GRATI" optional="show"/>
+                <field name="x_cens_liqu_tota" string="TOTAL PAGAR" optional="show"/>
+                <field name="currency_id" string="Moneda"/>
+                <field name="note"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción para el Control Anual de Renta -->
+    <record id="action_liquidacion_bbss" model="ir.actions.act_window">
+        <field name="name">Liquidación de Beneficios Sociales</field>
+        <field name="res_model">hr.payslip.liquidacion</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'create': 1}</field>
+        <field name="view_id" ref="view_payslip_liquidaciones_bbss_tree"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <div class="text-center">
+                <p class="o_view_nocontent_smiling_face">
+                    Crea tu primera Liquidación de Beneficios Sociales
+                </p>
+                <p class="text-muted">
+                    Este módulo te permitirá gestionar fácilmente el control de las Liquidaciones BB.SS.
+                </p>
+                <img src="/cens_nomina_5ta_cat/static/description/logo-modulos.png" alt="CENS" width="150" height="150"/>
+            </div>
+        </field>
+        <!--
+        <field name="domain">[('contract_id.state', '=', 'open'), ('x_studio_sujeto_a_renta_5cat', '=', True)]</field>
+        -->
+    </record>
+
+
+
+</odoo>
+
+<!--
+
+
+EJEMPLO 1
+<field name="x_studio_preventa_seguimiento" 
+               string="PreVenta  Seguimiento" 
+               widget="many2one_avatar_employee" 
+               domain="[('x_studio_es_preventa_seguimiento', '=', True)]" 
+               context="{'search_default_x_studio_es_preventa_seguimiento': 1}" />
+EJEMPLO 2
+<field name="x_studio_preventa_seguimiento" 
+       string="PreVenta Seguimiento" 
+       widget="many2one_avatar_employee" 
+       domain="[('x_studio_es_preventa_seguimiento', '=', True), ('x_studio_negocio_unidad', 'in', context.get('allowed_units', []))]" 
+       context="{'allowed_units': [1,3,5,8], 'search_default_x_studio_es_preventa_seguimiento': 1}" />
+
+EJEMPLO 2
+<field name="x_studio_many2one_field_RmaJp" 
+               string="Sub.Unidad de Negocio:" 
+               attrs="{&quot;invisible&quot;: [[&quot;x_studio_id_linea_negocio&quot;,&quot;=&quot;,0]], &quot;readonly&quot;: [[&quot;x_studio_estado_seleccionado&quot;,&quot;!=&quot;,&quot;Abierto&quot;]]}" 
+               required="1" 
+               domain="[[&quot;x_sun_udn.id&quot;,&quot;=&quot;,x_studio_id_linea_negocio]]" 
+               context="{'record.x_studio_id_linea_negocio': x_studio_id_linea_negocio}" 
+               options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+EJEMPLO 3
+<field name="x_studio_preventa_seguimiento" 
+               string="PreVenta  Seguimiento" 
+               widget="many2one_avatar_employee" 
+               domain="[('x_studio_es_preventa_seguimiento', '=', True), ('x_studio_negocio_unidad', '=', x_studio_id_linea_negocio)]" 
+               context="{'record.x_studio_id_linea_negocio': x_studio_id_linea_negocio}"
+
+               options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}" 
+               attrs="{'invisible': [['x_studio_many2one_field_t33Z2','=',False]]}"/>
+
+
+
+
+                    
+                  
+
+-->
