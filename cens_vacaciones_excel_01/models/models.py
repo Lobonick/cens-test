@@ -376,7 +376,7 @@ class HrLeaveExtended(models.Model):
                             'ausencia_numdias': leave.number_of_days,
                             'ausencia_state'  : leave.state,
                             'ausencia_comenta': leave.name,
-                            'ausencia_creadopor': leave.create_uid,
+                            'ausencia_creadopor': leave.create_uid.name,
                             'ausencia_creadoen' : leave.create_date
                     })
                     # 'ausencia_periodo': f"{leave.request_date_from.year-1}-{leave.request_date_from.year}",
