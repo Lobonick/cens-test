@@ -172,7 +172,7 @@ class HrLeaveExtended(models.Model):
             worksheet.set_column(15, 15, 8)     #-- NRO DE DÍAS
             worksheet.set_column(16, 16, 15)    #-- ESTATUS
             worksheet.set_column(17, 17, 40)    #-- COMENTARIOS
-            worksheet.set_column(18, 18, 15)    #-- Creado Por
+            worksheet.set_column(18, 18, 20)    #-- Creado Por
             worksheet.set_column(19, 19, 15)    #-- Creado En
             # ------
             worksheet.set_row(6, 39)        # (Fila,Altura)
@@ -181,7 +181,7 @@ class HrLeaveExtended(models.Model):
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
             worksheet.insert_image('A1', 'src/user/cens_vacaciones_excel_01/static/description/logo-tiny_96.png')
-            worksheet.insert_image('R2', 'src/user/cens_vacaciones_excel_01/static/description/logo-odoo-tiny.png', 
+            worksheet.insert_image('S2', 'src/user/cens_vacaciones_excel_01/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.6, 'y_scale': 0.6})
             worksheet.write('B2', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
             worksheet.write('B3', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -265,7 +265,8 @@ class HrLeaveExtended(models.Model):
             w_lote = self.browse(self._context.get('active_ids', []))
             
             # Ordenar los registros por employee_id
-            sorted_leaves = w_lote.sorted(key=lambda r: r.employee_id.id)
+            # sorted_leaves = w_lote.sorted(key=lambda r: r.employee_id.id)
+            sorted_leaves = w_lote.sorted(key=lambda r: r.employee_id.name)
             
             # Inicializar variables
             current_employee = None
@@ -308,7 +309,7 @@ class HrLeaveExtended(models.Model):
                             if ausencia['ausencia_comenta']:
                                 worksheet.write(w_fila, 17, ausencia['ausencia_comenta'], cell_format_left)
                             worksheet.write(w_fila, 18, ausencia['ausencia_creadopor'], cell_format_left)
-                            worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_left)
+                            worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_fech)
                             # ----------------------------------
                             # Colorea el Background de la fila
                             # ----------------------------------
@@ -328,7 +329,7 @@ class HrLeaveExtended(models.Model):
                             w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
                                                                              'font_color': '#963634'})
                             
-                            worksheet.conditional_format(f'K{w_fila+1}:R{w_fila+1}', {
+                            worksheet.conditional_format(f'K{w_fila+1}:T{w_fila+1}', {
                                     'type': 'formula',
                                     'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
@@ -405,7 +406,7 @@ class HrLeaveExtended(models.Model):
                 if ausencia['ausencia_comenta']:
                     worksheet.write(w_fila, 17, ausencia['ausencia_comenta'], cell_format_left)
                 worksheet.write(w_fila, 18, ausencia['ausencia_creadopor'], cell_format_left)
-                worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_left)
+                worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_fech)
 
                 # ----------------------------------
                 # Colorea el Background de la fila
@@ -426,7 +427,7 @@ class HrLeaveExtended(models.Model):
                 w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
                                                                     'font_color': '#963634'})
                 
-                worksheet.conditional_format(f'K{w_fila+1}:R{w_fila+1}', {
+                worksheet.conditional_format(f'K{w_fila+1}:T{w_fila+1}', {
                         'type': 'formula',
                         'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía
                         'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
