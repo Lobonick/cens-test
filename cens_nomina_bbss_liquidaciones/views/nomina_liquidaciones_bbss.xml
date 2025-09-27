@@ -67,7 +67,12 @@
                     <group>
                         <group string="Datos Vinculantes">
                             <field name="name" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
-                            <field name="contract_id" string="Contrato Activo" />
+                            <field name="contract_id" 
+                                   string="Contrato Activo"
+                                   domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
+                                   context="{'record.employee_id': employee_id}" 
+                                   options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+
                             <field name="payslip_id" 
                                    string="Boleta de Pago" 
                                    domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
@@ -408,14 +413,14 @@
                     <!-- Sección de observaciones internas del cálculo -->
                     <separator string="🔧 OBSERVACIONES INTERNAS DEL CÁLCULO" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group name='grupo_seccion_08' attrs="{'invisible': [('generado', '=', False)]}">
-                        <field name="note_calculos" string="Obsv.Internas" nolabel="1" colspan="2" readonly="1"
+                        <field name="note_calculos" string="Obsv.Internas" nolabel="1" colspan="4" readonly="1"
                                  placeholder="Observaciones internas sobre el cálculo."
                                  style="flex: 1; 
                                         color: #7b3030ff;
                                         font-size: 16px;
                                         text-align: left;
                                         vertical-align: middle;
-                                        max-width: 400px; 
+                                        max-width: 600px; 
                                         background-color: #f4f6b1ff; 
                                         border: 1px solid #f4f6b1ff; 
                                         padding: 10px 8px; 
@@ -457,7 +462,6 @@
                                         icon="fa-file-text"
                                         style="flex: 1; max-width: 120px; background-color: #3477dcff; border: 1px solid #3477dcff; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
                                         confirm="¿Seguro de TRASLADAR RESUMEN LIQUIDACIÓN a la Boleta de Pago?"/>
-                                
                             </div>
 
                         </group>

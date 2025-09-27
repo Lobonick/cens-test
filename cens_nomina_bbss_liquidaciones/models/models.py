@@ -26,7 +26,8 @@ class HrPayslipLiquidacion(models.Model):
     currency_id = fields.Many2one('res.currency', string='Moneda', 
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'PEN')], limit=1).id,
                                   required=True)
-    contract_id = fields.Many2one('hr.contract', string='Contrato Activo', related='employee_id.contract_id', store=True)
+    # contract_id = fields.Many2one('hr.contract', string='Contrato Activo', related='employee_id.contract_id', store=True)
+    contract_id = fields.Many2one('hr.contract', string='Contrato Activo', store=True)
     payslip_id = fields.Many2one('hr.payslip', string='Boletas Pago')
     setup_afp_id = fields.Many2one('x_hr_payslip.setup_afp', string='Configuración AFP/ONP')
     state = fields.Selection([("draft", "Borrador"), ("posted", "Confirmado"), ("annul", "Anulado")], default="draft")
@@ -352,7 +353,7 @@ class HrPayslipLiquidacion(models.Model):
     @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot')
     def _calcula_liquidacion_total(self):
         for r in self: 
-            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + r.x_cens_vaca_itot + r.x_cens_grat_itot) ## QUIQUE
+            r.x_cens_liqu_tota = (r.x_cens_ccts_itot + (r.x_cens_vaca_itot - r.x_cens_vaca_iafp) + r.x_cens_grat_itot) ## QUIQUE
 
     @api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia')
     def _calcula_Monto_Base(self):
@@ -504,7 +505,7 @@ class HrPayslipLiquidacion(models.Model):
                 #
                 # AQUI COMENTARIO: "SEXTO: Fecha ingreso sobrepasa fecha TOPE ({w_fecha_tope1}) para cálculo "
                 #
-                w_mensajes += "\n" + f"- SEXTO: Fecha ingreso sobrepasa fecha TOPE ({w_fecha_tope1}) para cálculo "
+                w_mensajes += "\n" + f"- SEXTO: Fecha de ingreso FUERA DE RANGO para cálculo. "
 
             w_conce_noremuner = 0.00
             w_remun_compu_cts = w_total_remu + w_conce_noremuner + w_sexto_total
@@ -532,22 +533,26 @@ class HrPayslipLiquidacion(models.Model):
             _logger.info(f'TOTAL SEXTO   :  {w_sexto_total}')
             _logger.info(f'=============================================')
 
-
-
             # --------------------------------------------------     
             #  CALCULA CTS TRUNCOS
             # --------------------------------------------------
             w_fecha_tope = self.determina_periodo_cts(w_fecha_ingr, w_fecha_cese)
             w_period_cts = self.desglosa_periodo("CTS TRUNCOS", w_fecha_tope, w_fecha_cese)
+            w_cant_mm = w_period_cts.get('meses', 0)
+            w_cant_dd = w_period_cts.get('dias', 0)
             if ((w_fecha_tope.month == w_fecha_cese.month) and (w_fecha_tope.year == w_fecha_cese.year)):
                 if ((w_fecha_tope.day==1) and (w_fecha_cese.day in [30,31])):
-                    w_impcts_mes = ((w_remun_compu_cts/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
+                    w_impcts_mes = ((w_remun_compu_cts/12) * w_cant_mm)                #--- Por el rango meses
                 else:
                     w_impcts_mes = 0.00
                 w_impcts_dia = 0
             else:
-                w_impcts_mes = ((w_remun_compu_cts/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
-                w_impcts_dia = (((w_remun_compu_cts/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
+                w_impcts_mes = ((w_remun_compu_cts/12) * w_cant_mm)                #--- Por el rango meses
+                w_impcts_dia = (((w_remun_compu_cts/12)/30) * w_cant_dd)           #--- Por el rango días
+
+            if ((w_cant_mm==0) and (w_cant_dd<30)):
+                w_impcts_dia = 0.00                     #-- Ajusta a CERO si tiempo es menor a 30 días
+                w_mensajes += "\n" + f"- CTS  : Tiempo laboral ({w_cant_dd} días) es menor a un mes."
 
             w_impcts_tot = w_impcts_mes + w_impcts_dia  
 
@@ -583,15 +588,30 @@ class HrPayslipLiquidacion(models.Model):
                 w_impvaca_mes = (w_total_remu/12) * w_cant_mm           #--- Por el rango meses
                 w_impvaca_dia = ((w_total_remu/12)/30) * w_cant_dd      #--- Por el rango días
 
-            #
-            # BUSCA LAS VACACIONES GOZADAS  (x_cens_vaca_igoz, x_cens_vaca_dgoz)
-            #
-            w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_cese))
-            w_cost_dd_gozados = (w_total_remu/30)
-            w_impo_dd_gozados = w_cost_dd_gozados * w_cant_dd_gozados
-            w_deta_dd_gozados = "- Menos " + str(w_cant_dd_gozados) + " días gozados " 
-            w_deta_dd_gozados += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 30 x " + str(w_cant_dd_gozados) + "días )  = "
+            if ((w_cant_aa==0) and (w_cant_mm==0) and (w_cant_dd<30)):
+                w_impvaca_ano = 0.00
+                w_impvaca_mes = 0.00
+                w_impvaca_dia = 0.00
+                w_cant_dd_gozados = 0
+                w_cost_dd_gozados = 0.00
+                w_impo_dd_gozados = 0.00
+                w_deta_dd_gozados = "- Días gozados. " 
+                w_mensajes += "\n" + f"- VACA : Tiempo laboral ({w_cant_dd} días) es menor a un mes."
+            else:
+                #
+                # BUSCA LAS VACACIONES GOZADAS  (x_cens_vaca_igoz, x_cens_vaca_dgoz)
+                #
+                w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_cese))
+                if (w_cant_dd_gozados > 0):
+                    w_cost_dd_gozados = (w_total_remu/30)
+                    w_impo_dd_gozados = w_cost_dd_gozados * w_cant_dd_gozados
+                else:
+                    w_cost_dd_gozados = 0.00
+                    w_impo_dd_gozados = 0.00
+                    w_mensajes += "\n" + f"- VACA : No presenta días de vacaciones gozados."
 
+                w_deta_dd_gozados = "- Menos " + str(w_cant_dd_gozados) + " días gozados " 
+                w_deta_dd_gozados += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 30 x " + str(w_cant_dd_gozados) + "días )  = "
             w_detvaca_ano = "- Por " + str(w_cant_aa) + " años "
             w_detvaca_ano += " ( " + self.formato_moneda(w_total_remu, "S/.") + "  x " + str(w_cant_aa) + " )  = "
             w_detvaca_mes = "- Por " + str(w_cant_mm) + " meses "
@@ -610,25 +630,33 @@ class HrPayslipLiquidacion(models.Model):
             w_fecha_tope1 = self.determina_periodo_grati(w_fecha_ingr, w_fecha_cese)    #-- F.inicio
             w_fecha_tope2 = w_fecha_cese                                                #-- F.final
             w_ultimo_dia2 = self.ultimo_dia_del_mes(w_fecha_tope2).day
+            w_period_grati= self.desglosa_periodo("GRATIFICACIONES TRUNCAS", w_fecha_tope1, w_fecha_tope2)
+            w_cant_aa = w_period_grati.get('anios', 0)
+            w_cant_mm = w_period_grati.get('meses', 0)
+            w_cant_dd = w_period_grati.get('dias', 0)
+
             if ((w_fecha_tope1.month == w_fecha_tope2.month) and (w_fecha_tope1.year == w_fecha_tope2.year)):
-                if ((w_fecha_tope1.day==1) and (w_fecha_tope2.day==w_ultimo_dia2)):
+                if ((w_fecha_tope1.day==1) and (w_fecha_tope2.day in [30,31])):
                     w_meses_habiles = 1
                 else:    
                     w_meses_habiles = 0
+                    w_mensajes += "\n" + f"- GRATI: No presenta meses hábiles."
             else:
                 w_meses_habiles = (w_fecha_cese.month - w_fecha_tope1.month)
                 if ((w_fecha_tope1.day==1) and (w_fecha_cese.day in [30,31])):
                     w_meses_habiles += 1
-                #else:
-                #    w_meses_habiles = w_meses_habiles if w_fecha_tope1.day==1 else w_meses_habiles - 1
-                #    w_meses_habiles = w_meses_habiles if w_fecha_cese.day in [30,31] else w_meses_habiles - 1
 
             w_detgrat_per = "DESDE: " + str(w_fecha_tope1.day) + " de " + self.mes_literal(w_fecha_tope1.month) + " del " + str(w_fecha_tope1.year) + " "
             w_detgrat_per += "AL " + str(w_fecha_tope2.day) + " de " + self.mes_literal(w_fecha_tope2.month) + " del " + str(w_fecha_tope2.year) + " "
 
             w_trunco_gra = 0.00
-            if (w_meses_habiles > 0):
-                w_trunco_gra += ((w_total_remu/6) * w_meses_habiles)                 #--- Por el rango meses
+            if ((w_cant_aa==0) and (w_cant_mm==0) and (w_cant_dd<30)):
+                w_mensajes += "\n" + f"- GRATI: Periodo menor de 30 días."
+            else:
+                if (w_meses_habiles > 0):
+                    w_trunco_gra += ((w_total_remu/6) * w_meses_habiles)                 #--- Por el rango meses
+                else:
+                    w_mensajes += "\n" + f"- GRATI: No presenta meses hábiles."
 
             w_detgrat_mes = "- Por " + str(w_meses_habiles) + " meses "
             w_detgrat_mes += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 6 x " + str(w_meses_habiles) + " )  = "
@@ -1218,8 +1246,8 @@ class HrPayslipLiquidacion(models.Model):
 
 
     # -----------------------------------------------
-    # ACCION PARA GENERAR PROYECTADO DE 5TA A 
-    #        LOS EMPLEADOS MARCADOS CON CHECK
+    # ACCION: Se debe modificar para que se genere las liquidaciones de modo masivo, considerando 
+    #         los empleados cesados en el mes.  OJO EN PROCESO
     # -----------------------------------------------
     def action_genera_liquidación_masiva(self):
         for record in self:
@@ -1234,7 +1262,7 @@ class HrPayslipLiquidacion(models.Model):
 
         # Buscar los Empleado con el check 5ta activado
         domain = [
-            ('x_studio_estado_contrato', '=', 'open')  
+            ('x_studio_estado_contrato', '=', 'open')  #-- (En Proceso)
         ]
         
         # Obtener todas los Empleados con 5ta (InMemory)
@@ -1243,17 +1271,18 @@ class HrPayslipLiquidacion(models.Model):
         _logger.info('INGRESANDO A CREAR DICCIONARIOS')
         w_fila = 0
         # Procesar cada boleta y extraer la información
-        for empleado in personal:
-            w_fila += 1
-            # Verificar si ya existe un registro para este empleado en el año ejercicio
-            existing_record = self.env['hr.payslip.renta_quinta'].search([
-                ('employee_id', '=', empleado.id),
-                ('cens_nano_ejercicio', '=', w_AñoEje)
-            ], limit=1)
-            
-            # Si no existe un registro, crear uno nuevo
-            if not existing_record:
-                # Preparar valores para el nuevo registro
+        if personal:
+            for empleado in personal:
+                w_fila += 1
+                # Verificar si ya existe un registro para este empleado en el año ejercicio
+                # existing_record = self.env['hr.payslip.renta_quinta'].search([
+                #    ('employee_id', '=', empleado.id),
+                #    ('cens_nano_ejercicio', '=', w_AñoEje)
+                # ], limit=1)
+                
+                # Si no existe un registro, crear uno nuevo
+                #if not existing_record:
+                    # Preparar valores para el nuevo registro
                 vals = {
                     'name': f"RENTA {w_AñoEje} - 5TA CAT - {empleado.name}",
                     'employee_id': empleado.id,
@@ -1267,7 +1296,7 @@ class HrPayslipLiquidacion(models.Model):
                     'cens_tiene_renta5ta': True,
                     'cens_observaciones': f"Creado automáticamente desde proceso masivo el {fields.Date.to_string(fields.Date.context_today(self))}"
                 }
-                
+                    
                 # Crear el nuevo registro
                 new_record = self.env['hr.payslip.renta_quinta'].create(vals)
                 
@@ -1282,8 +1311,9 @@ class HrPayslipLiquidacion(models.Model):
                 new_record.action_traslada_boletas()
                 new_record.action_traslada_datos()
                 #new_record.action_rellena_datos()
-            else:
-                _logger.info(f'Ya existe registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
+        else:
+            _logger.info(f'Ya existe registro de renta quinta para empleado: {empleado.name} (ID: {empleado.id}) - Año: {w_AñoEje}')
+        
         return {
                 'type': 'ir.actions.client',
                 'tag': 'reload',
