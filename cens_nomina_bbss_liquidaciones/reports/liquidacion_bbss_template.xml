@@ -103,6 +103,9 @@
                             }
                             .info-table2 {
                                 width: 100%;
+                                padding: 5px 8px;
+                                margin: 15px 0 20px 0;
+                                border: 1px solid #ddd;
                                 font-size: 16px;
                                 border-collapse: collapse;
                                 margin-bottom: 15px;
@@ -434,13 +437,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Vacaciones Truncas (*):</td>
+                                <td class="label">Vacaciones Truncas:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
                                 </td>
                             </tr>
                             <tr> 
-                                <td class="label">Menos AFP/ONP (*):</td>
+                                <td class="label">(-) Menos AFP/ONP (*):</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iafp or 0)"/>
                                 </td>
@@ -472,17 +475,23 @@
                                 <td class="label">COMPAÑIA AFP/ONP:</td>
                                 <td><span t-esc="o.x_cens_afp_compa.x_name"/></td>
                                 <td class="label">APORTE ESSALUD:</td>
-                                <td><span t-esc="o.x_cens_apor_essa"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_apor_essa or 0)"/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="label">APORTE OBLIGATORIO:</td>
-                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_oblig or 0)"/>
+                                </td>
                                 <td> </td>
                                 <td> </td>
                             </tr>
                             <tr>
                                 <td class="label">PRIMA SEGURO:</td>
-                                <td><span t-esc="o.x_cens_afp_prima"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_prima or 0)"/>
+                                </td>
                                 <td> </td>
                                 <td> </td>
                             </tr>
@@ -494,13 +503,17 @@
                             </tr>
                             <tr t-if="o.x_cens_afp_oblig == 'MIX'">
                                 <td class="label">COMISION MIXTA:</td>
-                                <td><span t-esc="o.x_cens_afp_mixta"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_mixta or 0)"/>
+                                </td>
                                 <td> </td>
                                 <td> </td>
                             </tr>
                             <tr t-if="o.x_cens_afp_oblig == 'FLU'">
                                 <td class="label">COMISION FLUJO:</td>
-                                <td><span t-esc="o.x_cens_afp_flujo"/></td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_flujo or 0)"/>
+                                </td>
                                 <td> </td>
                                 <td> </td>
                             </tr>
