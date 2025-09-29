@@ -257,7 +257,8 @@ class HrPayslipLiquidacion(models.Model):
             w_comi_flujo = record.setup_afp_id.x_comision_flujo
             w_tipo_comis = record.employee_id.x_studio_tipo_comision
             w_impo_flujo = 0.00
-            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
+            w_SBRUTO = record.x_cens_vaca_itot 
+            # + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
             if record.x_cens_afp_compa :
                 if (record.x_cens_afp_compa.x_name  == "ONP"):
                     w_impo_flujo = 0.00
@@ -276,7 +277,8 @@ class HrPayslipLiquidacion(models.Model):
             w_comi_mixta = record.setup_afp_id.x_comision_mixta
             w_tipo_comis = record.employee_id.x_studio_tipo_comision
             w_impo_mixta = 0.00
-            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
+            w_SBRUTO = record.x_cens_vaca_itot 
+            # + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
             if record.x_cens_afp_compa :
                 if (record.x_cens_afp_compa.x_name == "ONP"):
                     w_impo_mixta = 0.00
@@ -295,7 +297,8 @@ class HrPayslipLiquidacion(models.Model):
             w_segu_prima = record.setup_afp_id.x_prima_seguro
             w_tipo_comis = record.employee_id.x_studio_tipo_comision
             w_impo_prima = 0.00
-            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
+            w_SBRUTO = record.x_cens_vaca_itot 
+            # + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
             if record.x_cens_afp_compa :
                 if (record.x_cens_afp_compa.x_name  == "ONP"):
                     w_impo_prima = 0.00
@@ -312,7 +315,8 @@ class HrPayslipLiquidacion(models.Model):
             w_apor_oblig = record.setup_afp_id.x_aporte_obligatorio
             w_tipo_comis = record.employee_id.x_studio_tipo_comision
             w_impo_aport = 0.00
-            w_SBRUTO = record.x_cens_vaca_itot + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
+            w_SBRUTO = record.x_cens_vaca_itot 
+            # + record.x_cens_vaca_iafp        #--- (Le repone el iAFP que le descontó antes)
             w_impo_aport = w_SBRUTO * w_apor_oblig    
             record.write({'x_cens_afp_oblig': w_impo_aport})
 
