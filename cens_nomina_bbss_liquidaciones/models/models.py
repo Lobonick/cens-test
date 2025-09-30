@@ -66,7 +66,7 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_asig_fami = fields.Monetary(string='Asignación Familiar', currency_field='currency_id', help='Asignación familiar del empleado')
     x_cens_grat_16to = fields.Monetary(string='Gratificación 1/6', store=True, currency_field='currency_id', help='Gratificación extraordinaria (1/6 de la remuneración)')
     x_cens_none_remu = fields.Monetary(string='Conceptos No Remunerativos', store=True, currency_field='currency_id', help='Conceptos que no forman parte de la remuneración')
-    x_cens_remu_comp = fields.Monetary(string='Remuneración Computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
+    x_cens_remu_comp = fields.Monetary(compute='_calcula_total_remu_paracts', string='Remuneración Computable', store=True, currency_field='currency_id', help='Remuneración total computable para beneficios')
     
     x_cens_moneda    = fields.Char(string='Moneda', default='(PEN) S/.', store=True)
     x_cens_ccts_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación CTS')
@@ -74,7 +74,7 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_ccts_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
     x_cens_ccts_ddia = fields.Char(string='Detalle cálulo x días', default='', store=True, help='Detalle del cálculo x días')
     x_cens_ccts_idia = fields.Monetary(string='Importe cálulo x días', store=True, currency_field='currency_id', help='Importe del cálculo x días.')
-    x_cens_ccts_itot = fields.Monetary(string='Importe total CTS', store=True, currency_field='currency_id', help='Importe total CTS.')
+    x_cens_ccts_itot = fields.Monetary(compute='_calcula_total_ccts', string='Importe total CTS', store=True, currency_field='currency_id', help='Importe total CTS.')
     
     x_cens_vaca_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación VACA')
     x_cens_vaca_dano = fields.Char(string='Detalle cálulo x años', default='', store=True, help='Detalle del cálculo x años')
@@ -87,14 +87,14 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_vaca_igoz = fields.Monetary(string='Importe Vacaciones Gozadas', store=True, currency_field='currency_id', help='Importe Vacaciones Gozadas.')
     x_cens_vaca_dafp = fields.Char(string='- Descuento AFP/ONP', default='', store=True, help='Descuento AFP/ONP')
     x_cens_vaca_iafp = fields.Monetary(string='Importe AFP/ONP', store=True, currency_field='currency_id', help='Importe AFP/ONP.')
-    x_cens_vaca_itot = fields.Monetary(string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
+    x_cens_vaca_itot = fields.Monetary(compute='_calcula_total_vaca', string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
     x_cens_grat_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación GRATI')
     x_cens_grat_dmes = fields.Char(string='Detalle cálulo x meses', default='', store=True, help='Detalle del cálculo x meses')
     x_cens_grat_imes = fields.Monetary(string='Importe cálulo x meses', store=True, currency_field='currency_id', help='Importe del cálculo x meses.')
     x_cens_grat_dbon = fields.Char(string='Detalle Bonific.Extraordinaria', default='', store=True, help='Detalle Bonific.Extraordinaria.')
     x_cens_grat_ibon = fields.Monetary(string='Importe Bonific.Extraordinaria', store=True, currency_field='currency_id', help='Importe Bonific.Extraordinaria.')
-    x_cens_grat_itot = fields.Monetary(string='Importe total GRATI', store=True, currency_field='currency_id', help='Importe total VACA.')
+    x_cens_grat_itot = fields.Monetary(compute='_calcula_total_grati', string='Importe total GRATI', store=True, currency_field='currency_id', help='Importe total VACA.')
     
     x_cens_afp_compa = fields.Many2one(string="Compañía AFP", related='employee_id.x_compania_afp')
     x_cens_afp_tcomi = fields.Selection(string="Tipo Comisión AFP", related='payslip_id.x_studio_en_tipo_comision')
@@ -209,6 +209,59 @@ class HrPayslipLiquidacion(models.Model):
     #         else:
     #             self.cens_renta_quinta_id = False  # Limpiar el campo si no hay registro activo
 
+
+    
+    @api.depends('x_cens_remu_base, x_cens_asig_fami, x_cens_grat_16to, x_cens_none_remu')
+    def _calcula_total_remu_paracts(self):
+        # ----------------------- CALCULA TOTAL REMUNERACIÓN PARA CTS --------------------------
+        for record in self:
+            w_dato = 0.00 
+            w_dato += record.x_cens_remu_base
+            w_dato += record.x_cens_asig_fami 
+            w_dato += record.x_cens_grat_16to 
+            w_dato += record.x_cens_none_remu
+            record['x_cens_remu_comp'] = w_dato
+
+    @api.depends('x_cens_ccts_imes, x_cens_ccts_idia')
+    def _calcula_total_ccts(self):
+        # ----------------------- CALCULA TOTAL CTS --------------------------
+        for record in self:
+            w_dato = 0.00 
+            w_dato += record.x_cens_ccts_imes
+            w_dato += record.x_cens_ccts_idia 
+            record['x_cens_ccts_itot'] = w_dato
+  
+    api.depends('x_cens_vaca_iano, x_cens_vaca_imes, x_cens_vaca_idia, x_cens_vaca_igoz')
+    def _calcula_total_vaca(self):
+        # ----------------------- CALCULA TOTAL VACA --------------------------
+        for record in self:
+            w_dato = 0.00 
+            w_dato += record.x_cens_vaca_iano
+            w_dato += record.x_cens_vaca_imes
+            w_dato += record.x_cens_vaca_idia
+            w_dato -= record.x_cens_vaca_igoz 
+            record['x_cens_vaca_itot'] = w_dato
+
+    api.depends('x_cens_grat_imes, x_cens_grat_ibon')
+    def _calcula_total_grati(self):
+        # ----------------------- CALCULA TOTAL GRATI --------------------------
+        for record in self:
+            w_dato = 0.00 
+            w_dato += record.x_cens_grat_imes
+            w_dato += record.x_cens_grat_ibon
+            record['x_cens_grat_itot'] = w_dato
+
+    api.depends('x_cens_ccts_itot, x_cens_vaca_itot, x_cens_vaca_iafp, x_cens_grat_imes, x_cens_grat_ibon')
+    def _calcula_total_resumen(self):
+        # ----------------------- CALCULA TOTAL RESUMEN --------------------------
+        for record in self:
+            w_dato = 0.00 
+            w_dato += record.x_cens_ccts_itot
+            w_dato += record.x_cens_vaca_itot
+            w_dato -= record.x_cens_vaca_iafp
+            w_dato += record.x_cens_grat_imes
+            w_dato += record.x_cens_grat_ibon
+            record['x_cens_liqu_tota'] = w_dato
 
     @api.depends('contract_fecese')
     def _calcula_literal_fecha(self):
@@ -733,6 +786,20 @@ class HrPayslipLiquidacion(models.Model):
             self.write({
                         'note_calculos': w_mensajes
                     })
+        pass
+
+    
+    # ==============================================
+    # BOTÓN - RECALCULA BBSS
+    # ==============================================
+    def action_recalcular_bbss(self):  
+        self.ensure_one()
+        w_mensajes = ""
+        if self.contract_cesado:
+            #
+            #
+            w_mensajes = ""
+
         pass
 
     # ==============================================

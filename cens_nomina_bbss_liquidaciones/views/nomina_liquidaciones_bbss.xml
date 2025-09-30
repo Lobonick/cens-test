@@ -351,7 +351,7 @@
                         <group string="📝 BENEFICIOS TRUNCOS">
                             <field name="x_cens_ccts_itot" string="CTS Trunco" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_vaca_itot" string="Vacaciones Truncas (*)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_vaca_iafp" string="Vacaciones &#10;(descuento x AFP/ONP)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_vaca_iafp" string="Vacaciones &#xA; (descuento x AFP/ONP)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <!--
                             <div>
                             </div>
@@ -463,6 +463,14 @@
                                         icon="fa-file-text"
                                         style="flex: 1; max-width: 120px; background-color: #3477dcff; border: 1px solid #3477dcff; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
                                         confirm="¿Seguro de TRASLADAR RESUMEN LIQUIDACIÓN a la Boleta de Pago?"/>
+                                
+                                <button name="action_recalcular_bbss" 
+                                        string=" Recalcular" 
+                                        type="object" 
+                                        class="btn-info oe_button"
+                                        icon="fa-calculator"
+                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de RECALCULAR los Beneficios Sociales?"/>
                             </div>
 
                         </group>
