@@ -211,7 +211,7 @@ class HrPayslipLiquidacion(models.Model):
 
 
     
-    @api.depends('x_cens_remu_base, x_cens_asig_fami, x_cens_grat_16to, x_cens_none_remu')
+    @api.depends('x_cens_remu_base', 'x_cens_asig_fami', 'x_cens_grat_16to', 'x_cens_none_remu')
     def _calcula_total_remu_paracts(self):
         # ----------------------- CALCULA TOTAL REMUNERACIÓN PARA CTS --------------------------
         for record in self:
@@ -222,7 +222,7 @@ class HrPayslipLiquidacion(models.Model):
             w_dato += record.x_cens_none_remu
             record['x_cens_remu_comp'] = w_dato
 
-    @api.depends('x_cens_ccts_imes, x_cens_ccts_idia')
+    @api.depends('x_cens_ccts_imes', 'x_cens_ccts_idia')
     def _calcula_total_ccts(self):
         # ----------------------- CALCULA TOTAL CTS --------------------------
         for record in self:
@@ -231,7 +231,7 @@ class HrPayslipLiquidacion(models.Model):
             w_dato += record.x_cens_ccts_idia 
             record['x_cens_ccts_itot'] = w_dato
   
-    api.depends('x_cens_vaca_iano, x_cens_vaca_imes, x_cens_vaca_idia, x_cens_vaca_igoz')
+    api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia', 'x_cens_vaca_igoz')
     def _calcula_total_vaca(self):
         # ----------------------- CALCULA TOTAL VACA --------------------------
         for record in self:
@@ -242,7 +242,7 @@ class HrPayslipLiquidacion(models.Model):
             w_dato -= record.x_cens_vaca_igoz 
             record['x_cens_vaca_itot'] = w_dato
 
-    api.depends('x_cens_grat_imes, x_cens_grat_ibon')
+    api.depends('x_cens_grat_imes', 'x_cens_grat_ibon')
     def _calcula_total_grati(self):
         # ----------------------- CALCULA TOTAL GRATI --------------------------
         for record in self:
@@ -251,7 +251,7 @@ class HrPayslipLiquidacion(models.Model):
             w_dato += record.x_cens_grat_ibon
             record['x_cens_grat_itot'] = w_dato
 
-    api.depends('x_cens_ccts_itot, x_cens_vaca_itot, x_cens_vaca_iafp, x_cens_grat_imes, x_cens_grat_ibon')
+    api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_vaca_iafp', 'x_cens_grat_imes', 'x_cens_grat_ibon')
     def _calcula_total_resumen(self):
         # ----------------------- CALCULA TOTAL RESUMEN --------------------------
         for record in self:
