@@ -501,8 +501,7 @@ class HrPayslipLiquidacion(models.Model):
         if self.contract_cesado:
             w_fecha_ingr = self.contract_fingr
             w_fecha_cese = self.contract_fcese 
-            if tipo_proceso == 1: 
-                w_total_remu = self.contract_wage + self.x_cens_asig_fami
+            w_total_remu = self.contract_wage + self.x_cens_asig_fami
 
             w_period_tot = self.desglosa_periodo("PERIODO TOTAL", w_fecha_ingr, w_fecha_cese)
             w_periodo_aa = w_period_tot.get('anios', 0)
@@ -810,10 +809,10 @@ class HrPayslipLiquidacion(models.Model):
         w_mensajes = ""
         if self.contract_cesado:
             #
-            #
-            w_mensajes = ""
-
-
+            self.ensure_one()
+            self.write({'x_cens_tipo_calc': "1"})
+            self.action_liquidacion_compone(0)
+            self.recompute()
         pass
 
     # ==============================================
