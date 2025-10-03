@@ -568,11 +568,14 @@ class HrPayslipLiquidacion(models.Model):
             w_remun_compu_cts = w_total_remu + w_conce_noremuner + w_sexto_total
             if (tipo_proceso == 0):
                 w_remun_compu_cts = self.x_cens_remu_comp
-                
+
             # -------------------------------------------------------------------------------------------------------
             w_cantidad_aa =  w_period_grati.get('anios', 0) if w_periodo_switch else 0
             w_cantidad_mm =  w_period_grati.get('meses', 0) if w_periodo_switch else 0
             w_cantidad_dd =  w_period_grati.get('dias', 0) if w_periodo_switch else 0
+            _logger.info(f'=============================================')
+            _logger.info(f'REMU.COMPUTAB:  {w_remun_compu_cts}')
+            _logger.info(f'TIPO PPROCESO:  {tipo_proceso}')
             _logger.info(f'==============================================')
             _logger.info(f'CONTROL EN CÁLCULO SEXTO DE LA GRATIFICACIÓN ')
             _logger.info(f'==============================================')
@@ -629,8 +632,6 @@ class HrPayslipLiquidacion(models.Model):
                 # w_detcts_dia = self.x_cens_ccts_ddia
                 # w_impcts_dia = self.x_cens_ccts_idia
                 # w_impcts_tot = self.x_cens_ccts_itot                
-
-
 
             # --------------------------------------------------
             #  CALCULA VACACIONES TRUNCAS
