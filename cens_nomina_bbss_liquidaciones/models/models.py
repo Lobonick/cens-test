@@ -434,7 +434,6 @@ class HrPayslipLiquidacion(models.Model):
             if record.x_cens_periodo_ini and record.x_cens_periodo_fin:
                 fecha_ini = record.x_cens_periodo_ini
                 fecha_fin = record.x_cens_periodo_fin
-                
                 # Calcular diferencia usando relativedelta
             else:
                 record.x_cens_periodo_aa = 0
@@ -496,13 +495,14 @@ class HrPayslipLiquidacion(models.Model):
     # =============================
     # BOTÓN - GENERAR LIQUIDACIÓN
     # =============================
-    def action_liquidacion_compone(self):  
+    def action_liquidacion_compone(self, tipo_proceso): 
         self.ensure_one()
         w_mensajes = ""
         if self.contract_cesado:
             w_fecha_ingr = self.contract_fingr
             w_fecha_cese = self.contract_fcese 
-            w_total_remu = self.contract_wage + self.x_cens_asig_fami
+            if tipo_proceso == 1: 
+                w_total_remu = self.contract_wage + self.x_cens_asig_fami
 
             w_period_tot = self.desglosa_periodo("PERIODO TOTAL", w_fecha_ingr, w_fecha_cese)
             w_periodo_aa = w_period_tot.get('anios', 0)
@@ -566,7 +566,7 @@ class HrPayslipLiquidacion(models.Model):
 
             w_conce_noremuner = 0.00
             w_remun_compu_cts = w_total_remu + w_conce_noremuner + w_sexto_total
-
+            # -------------------------------------------------------------------------------------------------------
             w_cantidad_aa =  w_period_grati.get('anios', 0) if w_periodo_switch else 0
             w_cantidad_mm =  w_period_grati.get('meses', 0) if w_periodo_switch else 0
             w_cantidad_dd =  w_period_grati.get('dias', 0) if w_periodo_switch else 0
@@ -619,6 +619,15 @@ class HrPayslipLiquidacion(models.Model):
             w_detcts_mes += " ( " + self.formato_moneda(w_remun_compu_cts, "S/.") + " ÷ 12 x " + str(w_period_cts.get('meses', 0)) + " )  = "
             w_detcts_dia = "- Por " + str(w_period_cts.get('dias', 0))  + " días  "
             w_detcts_dia += " ( " + self.formato_moneda(w_remun_compu_cts, "S/.") + " ÷ 12 ÷ 30 x " + str(w_period_cts.get('dias', 0)) + " )  = "
+            if (tipo_proceso == 0):
+                w_detcts_per = self.x_cens_ccts_peri
+                w_detcts_mes = self.x_cens_ccts_dmes 
+                w_impcts_mes = self.x_cens_ccts_imes
+                w_detcts_dia = self.x_cens_ccts_ddia
+                w_impcts_dia = self.x_cens_ccts_idia
+                w_impcts_tot = self.x_cens_ccts_itot                
+
+
 
             # --------------------------------------------------
             #  CALCULA VACACIONES TRUNCAS
@@ -799,6 +808,7 @@ class HrPayslipLiquidacion(models.Model):
             #
             #
             w_mensajes = ""
+
 
         pass
 
@@ -987,7 +997,6 @@ class HrPayslipLiquidacion(models.Model):
             else:
                 w_fech_desde = w_fech_ingreso
 
-
         return w_dias_gozados
     
 
@@ -1008,7 +1017,7 @@ class HrPayslipLiquidacion(models.Model):
         if self.contract_cesado:
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "1"})
-            self.action_liquidacion_compone()
+            # self.action_liquidacion_compone(0)
             self.recompute()
         pass
 
@@ -1030,7 +1039,7 @@ class HrPayslipLiquidacion(models.Model):
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "2"})
             self.write({'generado': True})
-            self.action_liquidacion_compone()
+            self.action_liquidacion_compone(1)
             self.recompute()
         pass
 
