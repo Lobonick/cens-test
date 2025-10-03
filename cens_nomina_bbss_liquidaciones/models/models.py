@@ -1005,19 +1005,13 @@ class HrPayslipLiquidacion(models.Model):
     # --------------------------------------
     def action_recalcula_bbss(self):
         """
-        CALCULA LOS VALORES PARA: 
-        - Vacaciones Truncas
-        - CTS Truncas
-        - Gratificaciones Truncas
-        - Bonific. Gratificaciones
-
-        Pero valiéndose del método: action_liquidacion_compone()
+        RE-CALCULA LOS VALORES PARA LAS MODIFICACIONES: 
         
         """
         if self.contract_cesado:
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "1"})
-            # self.action_liquidacion_compone(0)
+            self.action_liquidacion_compone(0)
             self.recompute()
         pass
 
