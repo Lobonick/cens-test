@@ -566,6 +566,9 @@ class HrPayslipLiquidacion(models.Model):
 
             w_conce_noremuner = 0.00
             w_remun_compu_cts = w_total_remu + w_conce_noremuner + w_sexto_total
+            if (tipo_proceso == 0):
+                w_remun_compu_cts = self.x_cens_remu_comp
+                
             # -------------------------------------------------------------------------------------------------------
             w_cantidad_aa =  w_period_grati.get('anios', 0) if w_periodo_switch else 0
             w_cantidad_mm =  w_period_grati.get('meses', 0) if w_periodo_switch else 0
@@ -619,13 +622,13 @@ class HrPayslipLiquidacion(models.Model):
             w_detcts_mes += " ( " + self.formato_moneda(w_remun_compu_cts, "S/.") + " ÷ 12 x " + str(w_period_cts.get('meses', 0)) + " )  = "
             w_detcts_dia = "- Por " + str(w_period_cts.get('dias', 0))  + " días  "
             w_detcts_dia += " ( " + self.formato_moneda(w_remun_compu_cts, "S/.") + " ÷ 12 ÷ 30 x " + str(w_period_cts.get('dias', 0)) + " )  = "
-            if (tipo_proceso == 0):
-                w_detcts_per = self.x_cens_ccts_peri
-                w_detcts_mes = self.x_cens_ccts_dmes 
-                w_impcts_mes = self.x_cens_ccts_imes
-                w_detcts_dia = self.x_cens_ccts_ddia
-                w_impcts_dia = self.x_cens_ccts_idia
-                w_impcts_tot = self.x_cens_ccts_itot                
+            # if (tipo_proceso == 0):
+                # w_detcts_per = self.x_cens_ccts_peri
+                # w_detcts_mes = self.x_cens_ccts_dmes 
+                # w_impcts_mes = self.x_cens_ccts_imes
+                # w_detcts_dia = self.x_cens_ccts_ddia
+                # w_impcts_dia = self.x_cens_ccts_idia
+                # w_impcts_tot = self.x_cens_ccts_itot                
 
 
 
