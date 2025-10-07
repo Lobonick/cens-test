@@ -67,7 +67,12 @@
                     <group>
                         <group string="Datos Vinculantes">
                             <field name="name" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
-                            <field name="contract_id" string="Contrato Activo" />
+                            <field name="contract_id" 
+                                   string="Contrato Activo"
+                                   domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
+                                   context="{'record.employee_id': employee_id}" 
+                                   options="{&quot;no_create&quot;:true,&quot;no_open&quot;:true}"/>
+
                             <field name="payslip_id" 
                                    string="Boleta de Pago" 
                                    domain="[[&quot;employee_id.id&quot;,&quot;=&quot;,employee_id]]" 
@@ -343,24 +348,31 @@
                     <!-- Sección de observaciones -->
                     <separator string="📝 RESUMEN LIQUIDACIÓN DE BB.SS." style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group name='grupo_seccion_06' attrs="{'invisible': [('generado', '=', False)]}">
-                        <group string="📝 BENEFICIOS TRUNCOS">
+                        <group name="grupo_seccion_0601">
+                            <separator string="✅ BENEFICIOS SOCIALES" style="color: #000000ff; font-weight: bold; font-size: 14px;"/>
                             <field name="x_cens_ccts_itot" string="CTS Trunco" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <field name="x_cens_vaca_itot" string="Vacaciones Truncas (*)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_grat_imes" string="Gratificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_grat_ibon" string="Bonificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
                             <!--
                             <div>
-                            </div>
+                            </div>          ORH
                             <div>
                                 <p style="margin: 1px 0 0 0; font-size: 10px;">* Incluye cálculo y descuento de importe ONP/AFP.</p>
                             </div>
                             -->
-                            <field name="x_cens_grat_imes" string="Gratificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_grat_ibon" string="Bonificaciones Truncas" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <separator string="✅ DESCUENTOS" style="color: #000000ff; font-weight: bold; font-size: 14px;"/>
+                            <field name="x_cens_vaca_iafp" string="Vacaciones &#xA; (descuento x AFP/ONP)" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_desc_otro" string="Descuentos Otros" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_desc_5cat" string="Descuento Rent.5ta" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+
                             <field name="x_cens_liqu_tota" string="TOTAL A PAGAR" readonly="0" 
                                 widget="monetary"
-                                style="font-size: 16px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 3px;"/>
+                                style="font-size: 18px; font-weight: bold; text-align: right; padding: 12px 150px 12px 12px; background-color: #a8e6cf; color: #2d5016; border: 2px solid #7bb8a6; border-radius: 3px;"/>
                             <separator/>
                         </group>
-                        <group string="📝 APORTES">
+                        <group name="grupo_seccion_0602">
+                            <separator string="☑️ APORTES" style="color: #000000ff; font-weight: bold; font-size: 14px;"/>
                             <field name="x_cens_afp_compa" string="Compañía AFP/ONP" style="font-size: 14px;"/>
                             <field name="x_cens_afp_oblig" string="Aporte Obligatorio" style="font-size: 14px;"/>
                             <field name="x_cens_afp_prima" string="Prima Seguro" style="font-size: 14px;"/>
@@ -372,6 +384,10 @@
                                 attrs="{'invisible': [('x_cens_afp_tcomi', '!=', 'FLU')]}" 
                                 style="font-size: 14px;"/>
                             <separator/>
+                            <separator string="☑️ APORTES EMPLEADOR" style="color: #000000ff; font-weight: bold; font-size: 14px;"/>
+                            <field name="x_cens_apor_mbas" string="Monto Base" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+                            <field name="x_cens_apor_essa" string="Aporte ESSALUD 9%" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
+
                         </group>
                     </group>
                     <group name='grupo_seccion_07' attrs="{'invisible': [('generado', '=', False)]}">
@@ -385,15 +401,7 @@
                             <field name="x_cens_en_feriad" string="Feriados" widget="monetary" readonly="1" style="color:rgb(122, 126, 126); font-size: 14px;"/>
                         </group>
                         -->
-                        <group>
-                        </group>
-                        <group string="📝 APORTE DEL EMPLEADOR">
-                            <field name="x_cens_apor_mbas" string="Monto Base" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                            <field name="x_cens_apor_essa" string="Aporte ESSALUD 9%" style="font-size: 14px; text-align: right; padding-right: 150px;"/>
-                        
-                        </group>
                     </group>
-                    <separator/>
                     <!-- Sección de observaciones -->
                     <separator string="📝 OBSERVACIONES DE LIQUIDACIÓN" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group name='grupo_seccion_08' attrs="{'invisible': [('generado', '=', False)]}">
@@ -408,14 +416,14 @@
                     <!-- Sección de observaciones internas del cálculo -->
                     <separator string="🔧 OBSERVACIONES INTERNAS DEL CÁLCULO" style="color: #875A7B; font-weight: bold; font-size: 16px;"/>
                     <group name='grupo_seccion_08' attrs="{'invisible': [('generado', '=', False)]}">
-                        <field name="note_calculos" string="Obsv.Internas" nolabel="1" colspan="2" readonly="1"
+                        <field name="note_calculos" string="Obsv.Internas" nolabel="1" colspan="4" readonly="1"
                                  placeholder="Observaciones internas sobre el cálculo."
                                  style="flex: 1; 
                                         color: #7b3030ff;
                                         font-size: 16px;
                                         text-align: left;
                                         vertical-align: middle;
-                                        max-width: 400px; 
+                                        max-width: 600px; 
                                         background-color: #f4f6b1ff; 
                                         border: 1px solid #f4f6b1ff; 
                                         padding: 10px 8px; 
@@ -451,13 +459,20 @@
 
                                 <!-- Botón Azul (Resumen) -->
                                 <button name="action_actualiza_bbss_boleta" 
-                                        string=" Resumen" 
+                                        string=" Traslada" 
                                         type="object" 
                                         class="btn-info oe_button"
-                                        icon="fa-file-text"
+                                        icon="fa-cog"
                                         style="flex: 1; max-width: 120px; background-color: #3477dcff; border: 1px solid #3477dcff; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
                                         confirm="¿Seguro de TRASLADAR RESUMEN LIQUIDACIÓN a la Boleta de Pago?"/>
                                 
+                                <button name="action_recalcular_bbss" 
+                                        string=" Recalcular" 
+                                        type="object" 
+                                        class="btn-info oe_button"
+                                        icon="fa-calculator"
+                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de RECALCULAR los Beneficios Sociales?"/>
                             </div>
 
                         </group>

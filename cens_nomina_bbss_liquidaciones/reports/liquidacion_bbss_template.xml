@@ -6,6 +6,7 @@
                 <div class="page">
                         <style>
                             @charset "UTF-8";
+                            /* @charset "ISO-8859-1";  */
                             /* .page  */
                             @page {
                                 background: white;
@@ -100,6 +101,13 @@
                                 border-collapse: collapse;
                                 margin-bottom: 15px;
                             }
+                            .info-table2 {
+                                width: 100%;
+                                padding: 15px 8px;
+                                margin: 0 0 5px 0;
+                                border: 1px solid #b9b7b7ff;
+                                margin-bottom: 15px;
+                            }
                             .info-table td {
                                 padding: 5px 8px;
                                 border: 1px solid #ddd;
@@ -161,6 +169,12 @@
                                 margin: 10px 0;
                             }
                             .monetary {
+                                text-align: right;
+                                font-family: monospace;
+                                width: 20%;
+                            }
+                            .monetary2 {
+                                font-size: 18px;
                                 text-align: right;
                                 font-family: monospace;
                                 width: 20%;
@@ -245,27 +259,27 @@
                         <div class="section-title">PARAMETROS DE CALCULO</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label1">Período laboral:</td>
+                                <td class="label1">PERIODO LABORAL:</td>
                                 <td>
                                     <span>Desde </span>
                                     <span t-esc="o.x_cens_periodo_ini" t-options="{'widget': 'date'}"/> al 
                                     <span t-esc="o.x_cens_periodo_fin" t-options="{'widget': 'date'}"/>
                                 </td>
 
-                                <td class="label1">Remuneración Base:</td>
+                                <td class="label1">REMUNERACION BASE:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_base or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label1">Tiempo de Servicio:</td>
+                                <td class="label1">TIEMPO DE SERVICIO:</td>
                                 <td>
                                     <span t-esc="o.x_cens_periodo_aa"/> años, 
                                     <span t-esc="o.x_cens_periodo_mm"/> meses, 
-                                    <span t-esc="o.x_cens_periodo_dd"/> días
+                                    <span t-esc="o.x_cens_periodo_dd"/> dias
                                 </td>
 
-                                <td class="label1">Asignación Familiar:</td>
+                                <td class="label1">ASIGNACIÓN FAMILIAR:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_asig_fami or 0)"/>
                                 </td>
@@ -274,7 +288,7 @@
                                 <td class="label">Moneda:</td>
                                 <td><span t-esc="o.x_cens_moneda"/></td>
 
-                                <td class="label1">1/6 gratificación:</td>
+                                <td class="label1">1/6 GRATIFICACION:</td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_16to or 0)"/>
                                 </td>
@@ -283,7 +297,7 @@
                                 <td> </td>
                                 <td> </td>
                                 
-                                <td class="label">Remuneración Computable:</td>
+                                <td class="label">REMUNERACION COMPUTABLE:</td>
                                 <td class="monetary-total">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_remu_comp or 0)"/>
                                 </td>
@@ -292,7 +306,7 @@
 
                         <!-- __________________________________________________________________ -->
                         <div class="header-calculo">
-                            <h2>Cálculo de Beneficios</h2>
+                            <h2>CALCULO DE BENEFICIOS</h2>
                         </div>
                         <!-- __________________________________________________________________ -->
 
@@ -300,18 +314,18 @@
                         <div class="section-title2">LIQUIDACION CTS TRUNCO</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Periodo:</td>
+                                <td class="label">PERIODO:</td>
                                 <td><span t-esc="o.x_cens_ccts_peri"/></td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x Mes:</td>
+                                <td class="label">CALCULO x MES:</td>
                                 <td><span t-esc="o.x_cens_ccts_dmes"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_imes or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x día:</td>
+                                <td class="label">CALCULO x DIA:</td>
                                 <td><span t-esc="o.x_cens_ccts_ddia"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_idia or 0)"/>
@@ -331,25 +345,25 @@
                         <div class="section-title2">LIQUIDACION VACACIONES TRUNCAS</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Periodo:</td>
+                                <td class="label">PERIODO:</td>
                                 <td><span t-esc="o.x_cens_vaca_peri"/></td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x Año:</td>
+                                <td class="label">CALCULO x ANIO:</td>
                                 <td><span t-esc="o.x_cens_vaca_dano"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iano or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x Mes:</td>
+                                <td class="label">CALCULO x MES:</td>
                                 <td><span t-esc="o.x_cens_vaca_dmes"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_imes or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x día:</td>
+                                <td class="label">CALCULO x DIA:</td>
                                 <td><span t-esc="o.x_cens_vaca_ddia"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_idia or 0)"/>
@@ -385,18 +399,18 @@
                         <div class="section-title2">LIQUIDACION GRATIFICACIONES TRUNCAS</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Periodo:</td>
+                                <td class="label">PERIODO:</td>
                                 <td><span t-esc="o.x_cens_grat_peri"/></td>
                             </tr>
                             <tr>
-                                <td class="label">Cálculo x Mes:</td>
+                                <td class="label">CALCULO x MES:</td>
                                 <td><span t-esc="o.x_cens_grat_dmes"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Gratificación:</td>
+                                <td class="label">GRATIFICACIÓN:</td>
                                 <td><span t-esc="o.x_cens_grat_dbon"/></td>
                                 <td class="monetary">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
@@ -419,28 +433,34 @@
 
                         <!-- Resumen final -->
                         <div class="section-title">RESUMEN LIQUIDACION DE BB.SS.</div>
-                        <table class="info-table">
+                        <table class="info-table2">
                             <tr>
                                 <td class="label">CTS Trunco:</td>
-                                <td class="monetary">
+                                <td class="monetary2">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_ccts_itot or 0)"/>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="label">Vacaciones Truncas (*):</td>
-                                <td class="monetary">
+                                <td class="label">Vacaciones Truncas:</td>
+                                <td class="monetary2">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_itot or 0)"/>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td class="label">(-) Menos AFP/ONP (*):</td>
+                                <td class="monetary2">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_vaca_iafp or 0)"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label">Gratificaciones Truncas:</td>
-                                <td class="monetary">
+                                <td class="monetary2">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_imes or 0)"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label">Bonificaciones Truncas:</td>
-                                <td class="monetary">
+                                <td class="monetary2">
                                     <span t-esc="'{:,.2f}'.format(o.x_cens_grat_ibon or 0)"/>
                                 </td>
                             </tr>
@@ -456,28 +476,50 @@
                         <div class="section-title">INFORMACION DE APORTES</div>
                         <table class="info-table">
                             <tr>
-                                <td class="label">Compañía AFP/ONP:</td>
+                                <td class="label">COMPAÑIA AFP/ONP:</td>
                                 <td><span t-esc="o.x_cens_afp_compa.x_name"/></td>
-                                <td class="label">Aporte Obligatorio:</td>
-                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
+                                <td class="label">APORTE ESSALUD:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_apor_essa or 0)"/>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="label">Prima Seguro:</td>
-                                <td><span t-esc="o.x_cens_afp_prima"/></td>
-                                <td class="label">Tipo Comisión:</td>
-                                <td><span t-esc="o.x_cens_afp_oblig"/></td>
+                                <td class="label">APORTE OBLIGATORIO:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_oblig or 0)"/>
+                                </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td class="label">PRIMA SEGURO:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_prima or 0)"/>
+                                </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td class="label">TIPO COMISION:</td>
+                                <td><span t-esc="o.x_cens_afp_tcomi"/></td>
+                                <td> </td>
+                                <td> </td>
                             </tr>
                             <tr t-if="o.x_cens_afp_oblig == 'MIX'">
-                                <td class="label">Comisión Mixta:</td>
-                                <td><span t-esc="o.x_cens_afp_mixta"/></td>
-                                <td class="label"></td>
-                                <td></td>
+                                <td class="label">COMISION MIXTA:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_mixta or 0)"/>
+                                </td>
+                                <td> </td>
+                                <td> </td>
                             </tr>
                             <tr t-if="o.x_cens_afp_oblig == 'FLU'">
-                                <td class="label">Comisión Flujo:</td>
-                                <td><span t-esc="o.x_cens_afp_flujo"/></td>
-                                <td class="label"></td>
-                                <td></td>
+                                <td class="label">COMISION FLUJO:</td>
+                                <td class="monetary">
+                                    <span t-esc="'{:,.2f}'.format(o.x_cens_afp_flujo or 0)"/>
+                                </td>
+                                <td> </td>
+                                <td> </td>
                             </tr>
                         </table>
 
@@ -489,7 +531,7 @@
                                     <td style="text-align: left; width: 70%; height: 150px; padding: 20px; border: 1px solid #999;">
                                         <p><span t-esc="o.note"/></p>
                                         <p style="font-size: 14px; color: #999;">
-                                            * Las vacaciones truncas incluyen el cálculo y descuento del importe ONP/AFP.
+                                            * Calculada y descontada de las Vacaciones. 
                                         </p>
                                     </td>
                                     <td style="text-align: center; width: 20%; padding: 10px;">
@@ -537,7 +579,7 @@
 
                         <!-- Fecha del documento -->
                         <div style="text-align: center; margin-top: 30px; font-size: 12px;">
-                            Fecha de impresión: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                            FECHA DE IMPRESION: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
                         </div>
                 </div>
             </t>
