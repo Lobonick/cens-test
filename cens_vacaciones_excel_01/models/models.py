@@ -8,6 +8,8 @@ import openpyxl
 from io import BytesIO
 import io
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class HrEmployeeCustom(models.Model):
@@ -359,7 +361,7 @@ class HrLeaveExtended(models.Model):
                     w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
                     w_fecha_cese = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
                     
-                    w_period_vac = self.desglosa_periodo("VACACIONES TRUNCAS", w_fecha_ingr, w_fecha_cese)
+                    w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_cese)
                     w_cant_aa = w_period_vac.get('anios', 0)
                     w_cant_mm = w_period_vac.get('meses', 0)
                     w_cant_dd = w_period_vac.get('dias', 0)
@@ -483,6 +485,68 @@ class HrLeaveExtended(models.Model):
             'url': '/web/content/%s?download=true' % attachment.id,
             'target': 'self',
         }
+    
+
+    # =========================================================
+    # FUNCIÓN: DESGLOSA PERIODO en años, meses y días.
+    # =========================================================    
+    def desglosa_periodo(self, cproceso, fecha_inicial, fecha_final): 
+        """ Calcula el período entre dos fechas en años, meses y días usando el calendario 
+            comercial (360 días/año, 30 días/mes) """ 
+        # Normalización del proceso 
+        w_cproceso = cproceso.upper() 
+        # Extracción de componentes de fecha 
+        dia_ini = fecha_inicial.day 
+        mes_ini = fecha_inicial.month 
+        ano_ini = fecha_inicial.year 
+        dia_fin = fecha_final.day 
+        mes_fin = fecha_final.month 
+        ano_fin = fecha_final.year 
+        # Ajuste de día final para calendario comercial 
+        # Si el día es 31, se considera como 30 
+        if dia_fin == 31: 
+            dia_fin = 30 
+        if dia_ini == 31: 
+            dia_ini = 30 
+        # Cálculo de diferencias (inclusivo para días) 
+        dif_anos = ano_fin - ano_ini 
+        dif_meses = mes_fin - mes_ini 
+        dif_dias = dia_fin - dia_ini + 1 
+        # +1 para incluir ambos días 
+        # Ajuste si los días son negativos 
+        if dif_dias < 0: 
+            dif_dias += 30 
+            dif_meses -= 1 
+        # Ajuste si los meses son negativos 
+        if dif_meses < 0: 
+            dif_meses += 12 
+            dif_anos -= 1 
+        # Asegurar que no haya valores negativos 
+        w_total_anio = max(0, dif_anos) 
+        w_total_mese = max(0, dif_meses) 
+        w_total_dias = max(0, dif_dias) 
+
+        if (w_total_dias >= 30):
+            w_total_dias = 0
+            w_total_mese += 1
+
+        if (w_total_mese == 12):
+            w_total_mese = 0
+            w_total_anio += 1
+        
+        # Logging para debug 
+        _logger.info(f'==========================================') 
+        _logger.info(f'PROCESO: {w_cproceso}') 
+        _logger.info(f'Fecha inicial: {fecha_inicial}') 
+        _logger.info(f'Fecha final: {fecha_final}') 
+        _logger.info(f'RESULTADO: {w_total_anio} años, {w_total_mese} meses, {w_total_dias} días') 
+        _logger.info(f'==========================================') 
+        
+        return { 
+            'anios': w_total_anio, 
+            'meses': w_total_mese, 
+            'dias': w_total_dias 
+            }
 
     # =========================================================
     # FUNCIÓN: Genera CADENA con el STATUS del REGISTRO.
