@@ -546,13 +546,16 @@ class HrLeaveExtended(models.Model):
             w_fech_desde = vacaciones_gozadas.request_date_from
             w_fech_hasta = vacaciones_gozadas.request_date_to
             w_dias_ausen = vacaciones_gozadas.number_of_days_display
-            if (w_fech_desde >= w_fech_ingreso and w_fech_desde <= w_fech_cese):
-                if (w_fech_hasta >= w_fech_ingreso and w_fech_hasta <= w_fech_cese):
-                    w_dias_gozados += w_dias_ausen
-                else:
-                    w_fech_hasta = w_fech_cese
-            else:
-                w_fech_desde = w_fech_ingreso
+
+            w_dias_gozados += w_dias_ausen
+
+            # if (w_fech_desde >= w_fech_ingreso and w_fech_desde <= w_fech_cese):
+            #    if (w_fech_hasta >= w_fech_ingreso and w_fech_hasta <= w_fech_cese):
+            #        w_dias_gozados += w_dias_ausen
+            #    else:
+            #        w_fech_hasta = w_fech_cese
+            # else:
+            #    w_fech_desde = w_fech_ingreso
 
         return w_dias_gozados
     
