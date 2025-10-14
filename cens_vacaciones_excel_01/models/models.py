@@ -408,7 +408,7 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 12, w_dias_acum, cell_format_cent)
 
                     # 'H7', 'Días Vacaciones Gozadas'
-                    w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id))
+                    w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
                     worksheet.write(w_fila, 13, w_cant_dd_gozados, cell_format_cent)
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
