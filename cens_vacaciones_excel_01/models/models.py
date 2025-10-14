@@ -385,11 +385,12 @@ class HrLeaveExtended(models.Model):
                     # -----------------------------------------------------------------------------------------
                     w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
                     w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
+                    w_fecha_actu = date.today()
                     if w_tiene_cese:
                         w_fecha_fina = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
                         w_statu_cont = "CESADO"
                     else:
-                        w_fecha_fina = date.today()
+                        w_fecha_fina = w_fecha_actu
                         w_statu_cont = "Activo"
                     
                     w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_fina)
@@ -405,7 +406,8 @@ class HrLeaveExtended(models.Model):
                     # -----------------------------------------------------------------------------------------
                     # Calculamos el nro de días disponibles
                     # ---------------------------------------
-                    w_tramo_mess = int((((w_cant_aa*360)/30) + w_cant_mm) * 2.5)
+                    w_tramo_anio = int(w_cant_aa*360)
+                    w_tramo_mess = int((((w_tramo_anio/30) if w_tramo_anio > 0 else 0) + w_cant_mm) * 2.5)
                     w_tramo_dias = int(w_cant_dd * (2.5/30))
                     w_dias_acum  = w_tramo_mess + w_tramo_dias 
 
@@ -417,7 +419,16 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 13, w_cant_dd_gozados, cell_format_cent)
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
-                    
+                    w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)  
+                    w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nueva_fing, w_fecha_fina)
+                    w_cant_aa = w_period_vac.get('anios', 0)
+                    w_cant_mm = w_period_vac.get('meses', 0)
+                    w_cant_dd = w_period_vac.get('dias', 0)
+                    w_tramo_mess = int(w_cant_mm * 2.5)
+                    w_tramo_dias = int(w_cant_dd * (2.5/30))
+                    w_dias_acum  = w_tramo_mess + w_tramo_dias
+                    worksheet.write(w_fila, 14, w_dias_acum, cell_format_cent)
+
                     # 'J7', 'Días Vacaciones pendientes'
                     # 'K7', 'Total días Vacaciones Vencidas'
                      
