@@ -161,19 +161,19 @@ class HrLeaveExtended(models.Model):
             worksheet.set_column(1, 1, 33)      #-- Npombre del Empleado
             worksheet.set_column(2, 2, 13)      #-- DNI
             worksheet.set_column(3, 3, 15)      #-- CARGO
-            worksheet.set_column(4, 4, 15)      #-- FECHA INGRESO
-            worksheet.set_column(5, 5, 23)      #-- UNIDAD DE NEGOCIO6
+            worksheet.set_column(4, 4, 23)      #-- UNIDAD DE NEGOCIO6
 
-            worksheet.set_column(6, 6, 13)      #-- Fecha Ingreso
-            worksheet.set_column(7, 7, 13)      #-- Fecha Cese
-            worksheet.set_column(8, 8, 13)      #-- Estatus
-            worksheet.set_column(9, 9, 5)       #-- aa
-            worksheet.set_column(10, 10, 5)     #-- mm
-            worksheet.set_column(11, 11, 5)     #-- dd
+            worksheet.set_column(5, 5, 13)      #-- Fecha Ingreso
+            worksheet.set_column(6, 6, 13)      #-- Fecha Cese
+            worksheet.set_column(7, 7, 13)      #-- Estatus
+            worksheet.set_column(8, 8, 5)       #-- aa
+            worksheet.set_column(9, 9, 5)       #-- mm
+            worksheet.set_column(10, 10, 5)     #-- dd
 
-            worksheet.set_column(12, 12, 13)      #-- 1
-            worksheet.set_column(13, 13, 13)      #-- 2
-            worksheet.set_column(14, 14, 13)      #-- 3
+            worksheet.set_column(11, 11, 13)      #-- 1
+            worksheet.set_column(12, 12, 13)      #-- 2
+            worksheet.set_column(13, 13, 13)      #-- 3
+            worksheet.set_column(14, 14, 15)      #-- FECHA INGRESO
             worksheet.set_column(15, 15, 13)      #-- 4
             worksheet.set_column(16, 16, 13)      #-- 5
 
@@ -211,11 +211,11 @@ class HrLeaveExtended(models.Model):
             worksheet.write('B6', w_usuario_names)
             #-----
             merge_format = workbook.add_format({'align': 'center'})
-            worksheet.merge_range('G6:L6', 'Merged Cells', merge_format)
-            worksheet.write('G6', 'PERIODO LABORAL', cell_format_tut2)
+            worksheet.merge_range('F6:K6', 'Merged Cells', merge_format)
+            worksheet.write('F6', 'PERIODO LABORAL', cell_format_tut2)
 
-            worksheet.merge_range('M6:Q6', 'Merged Cells', merge_format)
-            worksheet.write('M6', 'CÁLCULO ACUMULADO', cell_format_tuti)
+            worksheet.merge_range('L6:Q6', 'Merged Cells', merge_format)
+            worksheet.write('L6', 'CÁLCULO ACUMULADO', cell_format_tuti)
 
             worksheet.merge_range('R6:X6', 'Merged Cells', merge_format)
             worksheet.write('R6', 'PERIODOS GOZADOS', cell_format_tut2)
@@ -255,18 +255,18 @@ class HrLeaveExtended(models.Model):
             worksheet.write('B7', 'NOMBRE DEL EMPLEADO', cell_format_titu)                  #-- 01
             worksheet.write('C7', 'D.N.I.', cell_format_titu)                               #-- 02
             worksheet.write('D7', 'CARGO', cell_format_titu)                                #-- 03
-            worksheet.write('E7', 'FECHA INICIO LABORAL', cell_format_titu)                 #-- 04
-            worksheet.write('F7', 'UNIDAD DE NEGOCIO', cell_format_titu)
+            worksheet.write('E7', 'UNIDAD DE NEGOCIO', cell_format_titu)
 
-            worksheet.write('G7', 'FECHA INGRESO', cell_format_titu)     #-- 06
-            worksheet.write('H7', 'FECHA TÉRMINO', cell_format_titu)              #-- 07
-            worksheet.write('I7', 'MOTIVO', cell_format_titu)   #-- 08
-            worksheet.write('J7', 'Años', cell_format_titu)           #-- 09
-            worksheet.write('K7', 'Meses', cell_format_titu)       #-- 10
-            worksheet.write('L7', 'Días', cell_format_titu)       #-- 10
+            worksheet.write('F7', 'FECHA INGRESO', cell_format_titu)     #-- 06
+            worksheet.write('G7', 'FECHA TÉRMINO', cell_format_titu)              #-- 07
+            worksheet.write('H7', 'MOTIVO', cell_format_titu)   #-- 08
+            worksheet.write('I7', 'Años', cell_format_titu)           #-- 09
+            worksheet.write('J7', 'Meses', cell_format_titu)       #-- 10
+            worksheet.write('K7', 'Días', cell_format_titu)       #-- 10
             
-            worksheet.write('M7', 'Total dias vacaciones acumuladas', cell_format_titu)     #-- 06
-            worksheet.write('N7', 'Días Vacaciones Gozadas', cell_format_titu)              #-- 07
+            worksheet.write('L7', 'Total dias vacaciones acumuladas', cell_format_titu)     #-- 06
+            worksheet.write('M7', 'Días Vacaciones Gozadas', cell_format_titu)              #-- 07
+            worksheet.write('N7', 'Vacaciones NO Gozadas', cell_format_titu)                 #-- 04
             worksheet.write('O7', 'Días vacaciones acumuladas truncas', cell_format_titu)   #-- 08
             worksheet.write('P7', 'Días Vacaciones pendientes', cell_format_titu)           #-- 09
             worksheet.write('Q7', 'Total días Vacaciones Vencidas', cell_format_titu)       #-- 10
@@ -375,11 +375,9 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 2, leave.employee_id.x_studio_documento_identidad, cell_format_cent)#-- DNI
                     if (leave.employee_id.job_id.name):
                         worksheet.write(w_fila, 3, leave.employee_id.job_id.name, cell_format_cent)             #-- Puesto Laboral
-                    if leave.employee_id.first_contract_date :
-                        worksheet.write(w_fila, 4, leave.employee_id.first_contract_date, cell_format_fech)     #-- Fecha INICIO
                     if leave.employee_id.x_studio_negocio_unidad.x_name :
                         w_dato = leave.employee_id.x_studio_negocio_unidad.x_name                               #-- Unidad Negocio
-                        worksheet.write(w_fila, 5, w_dato, cell_format_fech)
+                        worksheet.write(w_fila, 4, w_dato, cell_format_fech)
                     # -----------------------------------------------------------------------------------------
                     # CALCULA DETALLE DE LO GOZADO      -   QUIQUE
                     # -----------------------------------------------------------------------------------------
@@ -397,12 +395,12 @@ class HrLeaveExtended(models.Model):
                     w_cant_aa = w_period_vac.get('anios', 0)
                     w_cant_mm = w_period_vac.get('meses', 0)
                     w_cant_dd = w_period_vac.get('dias', 0)
-                    worksheet.write(w_fila, 6, w_fecha_ingr, cell_format_fech)  #-- Fecha Ingreso
-                    worksheet.write(w_fila, 7, w_fecha_fina, cell_format_fech)  #-- Fecha Final
-                    worksheet.write(w_fila, 8, w_statu_cont, cell_format_cent)  #-- Estatus
-                    worksheet.write(w_fila, 9, w_cant_aa, cell_format_cent)     #-- aa
-                    worksheet.write(w_fila, 10, w_cant_mm, cell_format_cent)    #-- mm
-                    worksheet.write(w_fila, 11, w_cant_dd, cell_format_cent)    #-- dd
+                    worksheet.write(w_fila, 5, w_fecha_ingr, cell_format_fech)  #-- Fecha Ingreso
+                    worksheet.write(w_fila, 6, w_fecha_fina, cell_format_fech)  #-- Fecha Final
+                    worksheet.write(w_fila, 7, w_statu_cont, cell_format_cent)  #-- Estatus
+                    worksheet.write(w_fila, 8, w_cant_aa, cell_format_cent)     #-- aa
+                    worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)    #-- mm
+                    worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)    #-- dd
                     # -----------------------------------------------------------------------------------------
                     # Calculamos el nro de días disponibles
                     # ---------------------------------------
@@ -412,11 +410,15 @@ class HrLeaveExtended(models.Model):
                     w_dias_acum  = w_tramo_mess + w_tramo_dias 
 
                     # 'G7', 'Total dias vacaciones acumuladas
-                    worksheet.write(w_fila, 12, w_dias_acum, cell_format_cent)
+                    worksheet.write(w_fila, 11, w_dias_acum, cell_format_cent)
 
                     # 'H7', 'Días Vacaciones Gozadas'
                     w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
-                    worksheet.write(w_fila, 13, w_cant_dd_gozados, cell_format_cent)
+                    worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_cent)
+
+                    # 'I7', 'Días vacaciones NO acumuladas'
+                    w_cant_dd_nogozados = int(w_dias_acum - w_cant_dd_gozados) 
+                    worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_cent)
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
                     w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)  
