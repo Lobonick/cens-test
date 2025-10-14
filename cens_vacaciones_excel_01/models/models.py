@@ -403,7 +403,12 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 10, w_cant_mm, cell_format_cent)    #-- mm
                     worksheet.write(w_fila, 11, w_cant_dd, cell_format_cent)    #-- dd
                     # -----------------------------------------------------------------------------------------
-    
+                    # Calculamos el nro de días disponibles
+                    # ---------------------------------------
+                    w_tramo_mess = int((((w_cant_aa*360)/30) + w_cant_mm) * 2.5)
+                    w_tramo_dias = int(w_cant_dd * (2.5/30))
+                    w_dias_acum  = w_tramo_mess + w_tramo_dias 
+
                     # 'G7', 'Total dias vacaciones acumuladas
                     worksheet.write(w_fila, 12, w_dias_acum, cell_format_cent)
 
