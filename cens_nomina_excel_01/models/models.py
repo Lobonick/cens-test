@@ -303,7 +303,8 @@ class HrPayslip(models.Model):
 
             worksheet.set_column(88, 88, 5)    #- (Seperador)
 
-            worksheet.set_column(89, 89, 12)    #- FECHA DE CESE
+            worksheet.set_column(89, 89, 12)    #- AFP / ONP
+            worksheet.set_column(90, 90, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -369,6 +370,9 @@ class HrPayslip(models.Model):
 
             worksheet.merge_range('CC7:CJ7', 'Merged Cells', merge_format)
             worksheet.write('CC7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
+
+            worksheet.merge_range('CL7:CM7', 'Merged Cells', merge_format)
+            worksheet.write('CL7', 'AFP / ONP', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -760,7 +764,8 @@ class HrPayslip(models.Model):
             # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
             # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
-            worksheet.write('CL8', 'FECHA CESE', cell_format_tit7)                     #-- 87
+            worksheet.write('CL8', 'AFP/ONP', cell_format_tit7)                     #-- 87
+            worksheet.write('CM8', 'FECHA CESE', cell_format_tit7)                     #-- 87
 
 
             #----------------------------------------------------------------
@@ -845,7 +850,8 @@ class HrPayslip(models.Model):
             worksheet.write('CI9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
             worksheet.write('CJ9', 'ONP', cell_format_sub7)         #-- 74
 
-            worksheet.write('CL9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
+            worksheet.write('CL9', 'Descuento', cell_format_sub7)         #-- 74    AFP/ONP
+            worksheet.write('CM9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
 
             #-----
             #worksheet.autofilter(8, 2, 8, 8)    #--- Coloca FILTROS en datos generales
@@ -1163,9 +1169,12 @@ class HrPayslip(models.Model):
                 # -----------------------------------------
                 if (w_boleta.x_studio_compania_afp):
                     w_nombre_cia = w_boleta.x_studio_compania_afp.x_name
+                    w_tota_afp = w_boleta.x_studio_cese_descuento_afp
+
                     worksheet.write(w_fila, 80, w_nombre_cia, current_format_left)
                     if (w_nombre_cia == 'ONP'):
-                        worksheet.write(w_fila, 87, w_boleta.x_studio_en_afp_onp, current_format_impo)
+                        w_tota_afp += w_boleta.x_studio_en_afp_onp
+                        worksheet.write(w_fila, 87, w_tota_afp, current_format_impo)
                     else:
                         worksheet.write(w_fila, 81, w_boleta.x_studio_en_afp_aporte_obligatorio, current_format_impo)
                         worksheet.write(w_fila, 82, w_boleta.x_studio_en_afp_prima_seguro, current_format_impo)
@@ -1176,13 +1185,16 @@ class HrPayslip(models.Model):
                         if (w_boleta.x_studio_en_tipo_comision == 'FLU'):
                             worksheet.write(w_fila, 85, w_boleta.x_studio_en_comision_flujo, current_format_impo)
 
-                        worksheet.write(w_fila, 86, w_boleta.x_studio_en_afp_onp, current_format_impo)
+                        w_tota_afp += w_boleta.x_studio_en_afp_onp
+                        worksheet.write(w_fila, 86, w_tota_afp, current_format_impo)
                 
                 #
                 # FECHA DE CESE
                 #
                 if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 89, w_boleta.x_studio_cese_fecha, current_format_fech)
+                    worksheet.write(w_fila, 88, "Inc.Liq.", current_format_left)
+                    worksheet.write(w_fila, 89, w_boleta.x_studio_cese_descuento_afp, current_format_impo)
+                    worksheet.write(w_fila, 90, w_boleta.x_studio_cese_fecha, current_format_fech)
 
                 w_fila += 1
 
