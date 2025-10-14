@@ -193,7 +193,7 @@ class HrLeaveExtended(models.Model):
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
             worksheet.insert_image('A1', 'src/user/cens_vacaciones_excel_01/static/description/logo-tiny_96.png')
-            worksheet.insert_image('S2', 'src/user/cens_vacaciones_excel_01/static/description/logo-odoo-tiny.png', 
+            worksheet.insert_image('Y2', 'src/user/cens_vacaciones_excel_01/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.6, 'y_scale': 0.6})
             worksheet.write('B2', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
             worksheet.write('B3', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -215,13 +215,13 @@ class HrLeaveExtended(models.Model):
             worksheet.write('G6', 'PERIODO LABORAL', cell_format_tut2)
 
             worksheet.merge_range('M6:Q6', 'Merged Cells', merge_format)
-            worksheet.write('M6', 'CÁLCULO ACUMULADO', cell_format_tut2)
+            worksheet.write('M6', 'CÁLCULO ACUMULADO', cell_format_tuti)
 
             worksheet.merge_range('R6:X6', 'Merged Cells', merge_format)
-            worksheet.write('R6', 'PERIODOS GOZADOS', cell_format_tuti)
+            worksheet.write('R6', 'PERIODOS GOZADOS', cell_format_tut2)
 
             worksheet.merge_range('Y6:Z6', 'Merged Cells', merge_format)
-            worksheet.write('Y6', 'DEL REGISTRO', cell_format_tut2)
+            worksheet.write('Y6', 'DEL REGISTRO', cell_format_tuti)
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
             # -------------------------------------------------------------------------------------
@@ -343,7 +343,7 @@ class HrLeaveExtended(models.Model):
                             else:
                                 w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
 
-                            worksheet.conditional_format(f'A{w_fila+1}:J{w_fila+1}', {
+                            worksheet.conditional_format(f'A{w_fila+1}:L{w_fila+1}', {
                                     'type': 'formula',
                                     'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfila
@@ -354,9 +354,9 @@ class HrLeaveExtended(models.Model):
                             w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
                                                                              'font_color': '#963634'})
                             
-                            worksheet.conditional_format(f'K{w_fila+1}:T{w_fila+1}', {
+                            worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía
+                                    'criteria': f'NOT(ISBLANK($F${w_fila}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                                 })
 
@@ -470,9 +470,9 @@ class HrLeaveExtended(models.Model):
                 else:
                     w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
 
-                worksheet.conditional_format(f'A{w_fila+1}:J{w_fila+1}', {
+                worksheet.conditional_format(f'A{w_fila+1}:L{w_fila+1}', {
                         'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía #D8E4BC
+                        'criteria': f'NOT(ISBLANK($F${w_fila}))',  # Evalúa si M no está vacía #D8E4BC
                         'format': w_formato_colorfila
                     })
                 
@@ -481,7 +481,7 @@ class HrLeaveExtended(models.Model):
                 w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
                                                                     'font_color': '#963634'})
                 
-                worksheet.conditional_format(f'K{w_fila+1}:T{w_fila+1}', {
+                worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                         'type': 'formula',
                         'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía
                         'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
