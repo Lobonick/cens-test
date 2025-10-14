@@ -299,6 +299,8 @@ class HrLeaveExtended(models.Model):
             w_dato = ""
             w_fila = 7
             w_nord = 0
+            w_dias_acum = 0
+            w_dias_goza = 0
             w_agrupa_ausencias = []
             base_color = '#DDD9C4'
             # w_tipo = leave.holiday_type
@@ -330,6 +332,7 @@ class HrLeaveExtended(models.Model):
                             worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
                             worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
                             worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
+                            w_dias_goza += ausencia['ausencia_numdias']
                             worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
                             if ausencia['ausencia_comenta']:
                                 worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
@@ -345,7 +348,7 @@ class HrLeaveExtended(models.Model):
 
                             worksheet.conditional_format(f'A{w_fila+1}:L{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfila
                                 })
                             
@@ -356,7 +359,7 @@ class HrLeaveExtended(models.Model):
                             
                             worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($F${w_fila}))',  # Evalúa si M no está vacía
+                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                                 })
 
@@ -380,7 +383,6 @@ class HrLeaveExtended(models.Model):
                     # -----------------------------------------------------------------------------------------
                     # CALCULA DETALLE DE LO GOZADO      -   QUIQUE
                     # -----------------------------------------------------------------------------------------
-                    # 'G7', 'Total dias vacaciones acumuladas
                     w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
                     w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
                     if w_tiene_cese:
@@ -394,22 +396,28 @@ class HrLeaveExtended(models.Model):
                     w_cant_aa = w_period_vac.get('anios', 0)
                     w_cant_mm = w_period_vac.get('meses', 0)
                     w_cant_dd = w_period_vac.get('dias', 0)
-                    worksheet.write(w_fila, 6, w_fecha_ingr, cell_format_fech)
-                    worksheet.write(w_fila, 7, w_fecha_fina, cell_format_fech)
-                    worksheet.write(w_fila, 8, w_statu_cont, cell_format_cent)
-
-                    worksheet.write(w_fila, 9, w_cant_aa, cell_format_cent)
-                    worksheet.write(w_fila, 10, w_cant_mm, cell_format_cent)
-                    worksheet.write(w_fila, 11, w_cant_dd, cell_format_cent)  
-  
+                    worksheet.write(w_fila, 6, w_fecha_ingr, cell_format_fech)  #-- Fecha Ingreso
+                    worksheet.write(w_fila, 7, w_fecha_fina, cell_format_fech)  #-- Fecha Final
+                    worksheet.write(w_fila, 8, w_statu_cont, cell_format_cent)  #-- Estatus
+                    worksheet.write(w_fila, 9, w_cant_aa, cell_format_cent)     #-- aa
+                    worksheet.write(w_fila, 10, w_cant_mm, cell_format_cent)    #-- mm
+                    worksheet.write(w_fila, 11, w_cant_dd, cell_format_cent)    #-- dd
+                    # -----------------------------------------------------------------------------------------
+    
+                    # 'G7', 'Total dias vacaciones acumuladas
+                    worksheet.write(w_fila, 12, w_dias_acum, cell_format_cent)
 
                     # 'H7', 'Días Vacaciones Gozadas'
+                    worksheet.write(w_fila, 13, w_dias_goza, cell_format_cent)
+
                     # 'I7', 'Días vacaciones acumuladas truncas'
+                    
                     # 'J7', 'Días Vacaciones pendientes'
                     # 'K7', 'Total días Vacaciones Vencidas'
                      
                     current_employee = leave.employee_id
                     counter = 1
+                    w_nume_dias = 0
                     w_agrupa_ausencias = []
                 else:
                     # Incrementar contador para el empleado actual
@@ -472,7 +480,7 @@ class HrLeaveExtended(models.Model):
 
                 worksheet.conditional_format(f'A{w_fila+1}:L{w_fila+1}', {
                         'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($F${w_fila}))',  # Evalúa si M no está vacía #D8E4BC
+                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía #D8E4BC
                         'format': w_formato_colorfila
                     })
                 
@@ -483,7 +491,7 @@ class HrLeaveExtended(models.Model):
                 
                 worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                         'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($M${w_fila}))',  # Evalúa si M no está vacía
+                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
                         'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                     })
 
