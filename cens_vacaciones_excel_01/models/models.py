@@ -408,7 +408,8 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 12, w_dias_acum, cell_format_cent)
 
                     # 'H7', 'Días Vacaciones Gozadas'
-                    worksheet.write(w_fila, 13, w_dias_goza, cell_format_cent)
+                    w_cant_dd_gozados = int(self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id))
+                    worksheet.write(w_fila, 13, w_cant_dd_gozados, cell_format_cent)
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
                     
@@ -417,7 +418,7 @@ class HrLeaveExtended(models.Model):
                      
                     current_employee = leave.employee_id
                     counter = 1
-                    w_nume_dias = 0
+                    w_dias_goza = 0
                     w_agrupa_ausencias = []
                 else:
                     # Incrementar contador para el empleado actual
@@ -524,6 +525,36 @@ class HrLeaveExtended(models.Model):
             'url': '/web/content/%s?download=true' % attachment.id,
             'target': 'self',
         }
+    
+    # =========================================================
+    # FUNCIÓN: Extrae vacaciones gozadas.
+    # =========================================================    
+    def extrae_vacaciones_gozadas(self, f_ingr, f_cese, id_employee):
+        w_fech_ingreso = f_ingr
+        w_fech_cese    = f_cese
+        w_id_empleado  = id_employee
+
+        # Obtener todas las AUSENCIAS del Empleado
+        ausencias = self.env['hr.leave'].search([
+                                            ('employee_id', '=', w_id_empleado),
+                                            ('state', 'in', ['draft', 'confirm', 'refuse', 'validate1', 'validate'])  
+                                        ])
+        w_dias_gozados = 0
+        # Procesa cada AUSENCIA y extraer los DIAS GOZADOS.
+        for vacaciones_gozadas in ausencias:
+            # Verificar si ya existe un registro para este empleado en el año ejercicio
+            w_fech_desde = vacaciones_gozadas.request_date_from
+            w_fech_hasta = vacaciones_gozadas.request_date_to
+            w_dias_ausen = vacaciones_gozadas.number_of_days_display
+            if (w_fech_desde >= w_fech_ingreso and w_fech_desde <= w_fech_cese):
+                if (w_fech_hasta >= w_fech_ingreso and w_fech_hasta <= w_fech_cese):
+                    w_dias_gozados += w_dias_ausen
+                else:
+                    w_fech_hasta = w_fech_cese
+            else:
+                w_fech_desde = w_fech_ingreso
+
+        return w_dias_gozados
     
 
     # =========================================================
