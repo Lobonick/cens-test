@@ -162,21 +162,30 @@ class HrLeaveExtended(models.Model):
             worksheet.set_column(2, 2, 13)      #-- DNI
             worksheet.set_column(3, 3, 15)      #-- CARGO
             worksheet.set_column(4, 4, 15)      #-- FECHA INGRESO
-            worksheet.set_column(5, 5, 23)      #-- UNIDAD DE NEGOCIO
-            worksheet.set_column(6, 6, 13)      #-- 1
-            worksheet.set_column(7, 7, 13)      #-- 2
-            worksheet.set_column(8, 8, 13)      #-- 3
-            worksheet.set_column(9, 9, 13)      #-- 4
-            worksheet.set_column(10, 10, 13)     #-- 5
-            worksheet.set_column(11, 11, 13)    #-- CODIGO AUSENCIA
-            worksheet.set_column(12, 12, 15)    #-- PERIODO
-            worksheet.set_column(13, 13, 15)    #-- FECHA INICIAL
-            worksheet.set_column(14, 14, 15)    #-- FECHA FINAL
-            worksheet.set_column(15, 15, 8)     #-- NRO DE DÍAS
-            worksheet.set_column(16, 16, 15)    #-- ESTATUS
-            worksheet.set_column(17, 17, 40)    #-- COMENTARIOS
-            worksheet.set_column(18, 18, 20)    #-- Creado Por
-            worksheet.set_column(19, 19, 15)    #-- Creado En
+            worksheet.set_column(5, 5, 23)      #-- UNIDAD DE NEGOCIO6
+
+            worksheet.set_column(6, 6, 13)      #-- Fecha Ingreso
+            worksheet.set_column(7, 7, 13)      #-- Fecha Cese
+            worksheet.set_column(8, 8, 13)      #-- Estatus
+            worksheet.set_column(9, 9, 5)       #-- aa
+            worksheet.set_column(10, 10, 5)     #-- mm
+            worksheet.set_column(11, 11, 5)     #-- dd
+
+            worksheet.set_column(12, 12, 13)      #-- 1
+            worksheet.set_column(13, 13, 13)      #-- 2
+            worksheet.set_column(14, 14, 13)      #-- 3
+            worksheet.set_column(15, 15, 13)      #-- 4
+            worksheet.set_column(16, 16, 13)      #-- 5
+
+            worksheet.set_column(17, 17, 13)    #-- CODIGO AUSENCIA
+            worksheet.set_column(18, 18, 15)    #-- PERIODO
+            worksheet.set_column(19, 19, 15)    #-- FECHA INICIAL
+            worksheet.set_column(20, 20, 15)    #-- FECHA FINAL
+            worksheet.set_column(21, 21, 8)     #-- NRO DE DÍAS
+            worksheet.set_column(22, 22, 15)    #-- ESTATUS
+            worksheet.set_column(23, 23, 40)    #-- COMENTARIOS
+            worksheet.set_column(24, 24, 20)    #-- Creado Por
+            worksheet.set_column(25, 25, 15)    #-- Creado En
             # ------
             worksheet.set_row(6, 39)        # (Fila,Altura)
             worksheet.set_zoom(85)          # %-Zoom
@@ -202,14 +211,17 @@ class HrLeaveExtended(models.Model):
             worksheet.write('B6', w_usuario_names)
             #-----
             merge_format = workbook.add_format({'align': 'center'})
-            worksheet.merge_range('G6:K6', 'Merged Cells', merge_format)
-            worksheet.write('G6', 'CÁLCULO ACUMULADO', cell_format_tut2)
+            worksheet.merge_range('G6:L6', 'Merged Cells', merge_format)
+            worksheet.write('G6', 'PERIODO LABORAL', cell_format_tut2)
 
-            worksheet.merge_range('L6:R6', 'Merged Cells', merge_format)
-            worksheet.write('L6', 'PERIODOS GOZADOS', cell_format_tuti)
+            worksheet.merge_range('M6:Q6', 'Merged Cells', merge_format)
+            worksheet.write('M6', 'CÁLCULO ACUMULADO', cell_format_tut2)
 
-            worksheet.merge_range('S6:T6', 'Merged Cells', merge_format)
-            worksheet.write('S6', 'DEL REGISTRO', cell_format_tut2)
+            worksheet.merge_range('R6:X6', 'Merged Cells', merge_format)
+            worksheet.write('R6', 'PERIODOS GOZADOS', cell_format_tuti)
+
+            worksheet.merge_range('Y6:Z6', 'Merged Cells', merge_format)
+            worksheet.write('Y6', 'DEL REGISTRO', cell_format_tut2)
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
             # -------------------------------------------------------------------------------------
@@ -245,20 +257,30 @@ class HrLeaveExtended(models.Model):
             worksheet.write('D7', 'CARGO', cell_format_titu)                                #-- 03
             worksheet.write('E7', 'FECHA INICIO LABORAL', cell_format_titu)                 #-- 04
             worksheet.write('F7', 'UNIDAD DE NEGOCIO', cell_format_titu)
-            worksheet.write('G7', 'Total dias vacaciones acumuladas', cell_format_titu)     #-- 06
-            worksheet.write('H7', 'Días Vacaciones Gozadas', cell_format_titu)              #-- 07
-            worksheet.write('I7', 'Días vacaciones acumuladas truncas', cell_format_titu)   #-- 08
-            worksheet.write('J7', 'Días Vacaciones pendientes', cell_format_titu)           #-- 09
-            worksheet.write('K7', 'Total días Vacaciones Vencidas', cell_format_titu)       #-- 10
-            worksheet.write('L7', 'CÓDIGO', cell_format_titu)                               #-- 11
-            worksheet.write('M7', 'PERIODO', cell_format_titu)                              #-- 12
-            worksheet.write('N7', 'FECHA INICIAL', cell_format_titu)                        #-- 13
-            worksheet.write('O7', 'FECHA FINAL', cell_format_titu)                          #-- 14
-            worksheet.write('P7', 'TOTAL DÍAS', cell_format_titu)                           #-- 15
-            worksheet.write('Q7', 'ESTADO', cell_format_titu)                               #-- 16
-            worksheet.write('R7', 'COMENTARIOS', cell_format_titu)                          #-- 17
-            worksheet.write('S7', 'CREADO POR', cell_format_tuti)                          #-- 18
-            worksheet.write('T7', 'CREADO EN', cell_format_tuti)                          #-- 19
+
+            worksheet.write('G7', 'FECHA INGRESO', cell_format_titu)     #-- 06
+            worksheet.write('H7', 'FECHA TÉRMINO', cell_format_titu)              #-- 07
+            worksheet.write('I7', 'MOTIVO', cell_format_titu)   #-- 08
+            worksheet.write('J7', 'Años', cell_format_titu)           #-- 09
+            worksheet.write('K7', 'Meses', cell_format_titu)       #-- 10
+            worksheet.write('L7', 'Días', cell_format_titu)       #-- 10
+            
+            worksheet.write('M7', 'Total dias vacaciones acumuladas', cell_format_titu)     #-- 06
+            worksheet.write('N7', 'Días Vacaciones Gozadas', cell_format_titu)              #-- 07
+            worksheet.write('O7', 'Días vacaciones acumuladas truncas', cell_format_titu)   #-- 08
+            worksheet.write('P7', 'Días Vacaciones pendientes', cell_format_titu)           #-- 09
+            worksheet.write('Q7', 'Total días Vacaciones Vencidas', cell_format_titu)       #-- 10
+
+            worksheet.write('R7', 'CÓDIGO', cell_format_titu)                               #-- 11
+            worksheet.write('S7', 'PERIODO', cell_format_titu)                              #-- 12
+            worksheet.write('T7', 'FECHA INICIAL', cell_format_titu)                        #-- 13
+            worksheet.write('U7', 'FECHA FINAL', cell_format_titu)                          #-- 14
+            worksheet.write('V7', 'TOTAL DÍAS', cell_format_titu)                           #-- 15
+            worksheet.write('W7', 'ESTADO', cell_format_titu)                               #-- 16
+            worksheet.write('X7', 'COMENTARIOS', cell_format_titu)                          #-- 17
+
+            worksheet.write('Y7', 'CREADO POR', cell_format_tuti)                          #-- 18
+            worksheet.write('Z7', 'CREADO EN', cell_format_tuti)                          #-- 19
             worksheet.freeze_panes(7, 6)    # (fil,col)
 
             # -------------------------------------------------------------------------------------
@@ -303,16 +325,16 @@ class HrLeaveExtended(models.Model):
                                 w_actual = ausencia['ausencia_periodo']
                                 w_switch = (1 if w_switch == 0 else 0)
                             
-                            worksheet.write(w_fila, 11, ausencia['ausencia_codigo'], cell_format_tiny)
-                            worksheet.write(w_fila, 12, ausencia['ausencia_periodo'], cell_format_cent)
-                            worksheet.write(w_fila, 13, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                            worksheet.write(w_fila, 14, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                            worksheet.write(w_fila, 15, ausencia['ausencia_numdias'], cell_format_nume)
-                            worksheet.write(w_fila, 16, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
+                            worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
+                            worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
+                            worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                            worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                            worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
+                            worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
                             if ausencia['ausencia_comenta']:
-                                worksheet.write(w_fila, 17, ausencia['ausencia_comenta'], cell_format_left)
-                            worksheet.write(w_fila, 18, ausencia['ausencia_creadopor'], cell_format_left)
-                            worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_fech)
+                                worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
+                            worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
+                            worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
                             # ----------------------------------
                             # Colorea el Background de la fila
                             # ----------------------------------
@@ -363,8 +385,10 @@ class HrLeaveExtended(models.Model):
                     w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
                     if w_tiene_cese:
                         w_fecha_fina = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
+                        w_statu_cont = "CESADO"
                     else:
                         w_fecha_fina = date.today()
+                        w_statu_cont = "Activo"
                     
                     w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_fina)
                     w_cant_aa = w_period_vac.get('anios', 0)
@@ -372,9 +396,11 @@ class HrLeaveExtended(models.Model):
                     w_cant_dd = w_period_vac.get('dias', 0)
                     worksheet.write(w_fila, 6, w_fecha_ingr, cell_format_fech)
                     worksheet.write(w_fila, 7, w_fecha_fina, cell_format_fech)
-                    worksheet.write(w_fila, 8, w_cant_aa, cell_format_cent)
-                    worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)
-                    worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)  
+                    worksheet.write(w_fila, 8, w_statu_cont, cell_format_cent)
+
+                    worksheet.write(w_fila, 9, w_cant_aa, cell_format_cent)
+                    worksheet.write(w_fila, 10, w_cant_mm, cell_format_cent)
+                    worksheet.write(w_fila, 11, w_cant_dd, cell_format_cent)  
   
 
                     # 'H7', 'Días Vacaciones Gozadas'
@@ -425,16 +451,16 @@ class HrLeaveExtended(models.Model):
                     w_actual = ausencia['ausencia_periodo']
                     w_switch = (1 if w_switch == 0 else 0)
                 
-                worksheet.write(w_fila, 11, ausencia['ausencia_codigo'], cell_format_tiny)
-                worksheet.write(w_fila, 12, ausencia['ausencia_periodo'], cell_format_cent)
-                worksheet.write(w_fila, 13, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                worksheet.write(w_fila, 14, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                worksheet.write(w_fila, 15, ausencia['ausencia_numdias'], cell_format_nume)
-                worksheet.write(w_fila, 16, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
+                worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
+                worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
+                worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
+                worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
                 if ausencia['ausencia_comenta']:
-                    worksheet.write(w_fila, 17, ausencia['ausencia_comenta'], cell_format_left)
-                worksheet.write(w_fila, 18, ausencia['ausencia_creadopor'], cell_format_left)
-                worksheet.write(w_fila, 19, ausencia['ausencia_creadoen'], cell_format_fech)
+                    worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
+                worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
+                worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
 
                 # ----------------------------------
                 # Colorea el Background de la fila
