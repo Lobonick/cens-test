@@ -1,10 +1,11 @@
 from odoo import api, fields, models
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 import xlsxwriter
 import base64
 import xlrd
 import openpyxl
+import time
 from io import BytesIO
 import io
 from odoo.exceptions import UserError
@@ -359,14 +360,18 @@ class HrLeaveExtended(models.Model):
                     # -----------------------------------------------------------------------------------------
                     # 'G7', 'Total dias vacaciones acumuladas
                     w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
-                    w_fecha_cese = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
+                    w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
+                    if w_tiene_cese:
+                        w_fecha_fina = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
+                    else:
+                        w_fecha_fina = date.today()
                     
-                    w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_cese)
+                    w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_fina)
                     w_cant_aa = w_period_vac.get('anios', 0)
                     w_cant_mm = w_period_vac.get('meses', 0)
                     w_cant_dd = w_period_vac.get('dias', 0)
                     worksheet.write(w_fila, 6, w_fecha_ingr, cell_format_fech)
-                    worksheet.write(w_fila, 7, w_fecha_cese, cell_format_fech)
+                    worksheet.write(w_fila, 7, w_fecha_fina, cell_format_fech)
                     worksheet.write(w_fila, 8, w_cant_aa, cell_format_cent)
                     worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)
                     worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)  
