@@ -479,6 +479,7 @@ class HrLeaveExtended(models.Model):
                             w_dato = f"{leave.request_date_from.year-1}-{leave.request_date_from.year}"
                         else:
                             w_dato = "NONE"
+                        w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso
                         if not self.fecha_esta_entre(w_fecha_ingr, leave.request_date_from, leave.request_date_to):
                             w_agrupa_ausencias.append({
                                     'ausencia_codigo' : leave.x_cens_codiden,
