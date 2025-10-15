@@ -450,7 +450,7 @@ class HrLeaveExtended(models.Model):
                     w_tramo_mess = (w_cant_mm * 2.5)
                     w_tramo_dias = (w_cant_dd * (2.5/30))
                     w_dias_acum  = w_tramo_mess + w_tramo_dias
-                    w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_menos_anio else w_dias_acum
+                    w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if not w_menos_anio else w_dias_acum
                     worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
                     # 'J7', 'Días Vacaciones pendientes'
