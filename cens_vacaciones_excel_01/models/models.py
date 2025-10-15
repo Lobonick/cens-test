@@ -436,8 +436,8 @@ class HrLeaveExtended(models.Model):
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
                     w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)
-                    if (w_nueva_fing.year > w_fecha_fina.year):
-                        w_nueva_fing = date(w_fecha_actu.year-1, w_fecha_ingr.month,w_fecha_ingr.day)
+                    if (w_nueva_fing > w_fecha_fina):
+                        w_nueva_fing = date(w_nueva_fing.year-1, w_nueva_fing.month, w_nueva_fing.day)
                         
                     w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nueva_fing, w_fecha_fina)
                     w_cant_aa = w_period_vac.get('anios', 0)
