@@ -594,6 +594,12 @@ class HrLeaveExtended(models.Model):
     #           de fechas.
     # =========================================================    
     def fecha_esta_entre(self, fecha, fecha_inicio, fecha_final):
+        fecha_obj = fecha
+        inicio_obj = fecha_inicio
+        fin_obj = fecha_final
+        return inicio_obj <= fecha_obj <= fin_obj
+
+    def fecha_entre(self, fecha, fecha_inicio, fecha_final):
         """
         Verifica si una fecha se encuentra entre dos fechas dadas.
 
