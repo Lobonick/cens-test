@@ -600,8 +600,15 @@ class HrLeaveExtended(models.Model):
         fecha_obj = fecha
         inicio_obj = fecha_inicio
         fin_obj = fecha_final
-        w_Resultado = False
-        w_Resultado = ((fecha_obj >= inicio_obj) and (fecha_obj <= fin_obj))
+        w_Resultado = True
+        if (fin_obj < fecha_obj):
+            w_Resultado = False
+        elif (inicio_obj < fecha_obj):
+            w_Resultado = False
+        elif ((fecha_obj >= inicio_obj) and (fecha_obj <= fin_obj)):
+            w_Resultado = False
+        else:
+            w_Resultado = True
         _logger.info(f'COMPARA FECHAS: {inicio_obj} <= {fecha_obj} <= {fin_obj} = {w_Resultado} ')        
         return w_Resultado
 
