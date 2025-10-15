@@ -314,6 +314,7 @@ class HrLeaveExtended(models.Model):
                 # HABILITA DATOS DEL EMPLEADO
                 # ------------------------------
                 w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
+                w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso
                 if not w_tiene_cese:
                     if current_employee != leave.employee_id:
                         if current_employee:
@@ -478,17 +479,18 @@ class HrLeaveExtended(models.Model):
                             w_dato = f"{leave.request_date_from.year-1}-{leave.request_date_from.year}"
                         else:
                             w_dato = "NONE"
-                        w_agrupa_ausencias.append({
-                                'ausencia_codigo' : leave.x_cens_codiden,
-                                'ausencia_periodo': w_dato,
-                                'ausencia_desde'  : leave.request_date_from,
-                                'ausencia_hasta'  : leave.request_date_to,
-                                'ausencia_numdias': leave.number_of_days,
-                                'ausencia_state'  : leave.state,
-                                'ausencia_comenta': leave.name,
-                                'ausencia_creadopor': leave.create_uid.name,
-                                'ausencia_creadoen' : leave.create_date
-                        })
+                        if self.fecha_esta_entre(w_fecha_ingr, leave.request_date_from, leave.request_date_to):
+                            w_agrupa_ausencias.append({
+                                    'ausencia_codigo' : leave.x_cens_codiden,
+                                    'ausencia_periodo': w_dato,
+                                    'ausencia_desde'  : leave.request_date_from,
+                                    'ausencia_hasta'  : leave.request_date_to,
+                                    'ausencia_numdias': leave.number_of_days,
+                                    'ausencia_state'  : leave.state,
+                                    'ausencia_comenta': leave.name,
+                                    'ausencia_creadopor': leave.create_uid.name,
+                                    'ausencia_creadoen' : leave.create_date
+                            })
                         # 'ausencia_periodo': f"{leave.request_date_from.year-1}-{leave.request_date_from.year}",
             if w_tiene_filas:
                 # ------------------------------------------------------
@@ -587,6 +589,31 @@ class HrLeaveExtended(models.Model):
             'target': 'self',
         }
     
+    # =========================================================
+    # FUNCIÓN:  Verifica si fecha se encuentra entre un RANGO 
+    #           de fechas.
+    # =========================================================    
+    def fecha_esta_entre(self, fecha, fecha_inicio, fecha_final):
+        """
+        Verifica si una fecha se encuentra entre dos fechas dadas.
+
+        Args:
+            fecha (str): La fecha a verificar (ej. "2023-05-25").
+            fecha_inicio (str): La fecha de inicio del rango (ej. "1995-01-01").
+            fecha_final (str): La fecha de fin del rango (ej. "2023-12-09").
+
+        Returns:
+            bool: True si la fecha está en el rango, False en caso contrario.
+        """
+        # Convertir las cadenas de texto a objetos datetime para poder compararlas
+        fecha_obj = datetime.strptime(fecha, "%Y-%m-%d").date()
+        inicio_obj = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
+        fin_obj = datetime.strptime(fecha_final, "%Y-%m-%d").date()
+        
+        # Comparar la fecha con el rango
+        return inicio_obj <= fecha_obj <= fin_obj
+
+
     # =========================================================
     # FUNCIÓN: Extrae vacaciones gozadas.
     # =========================================================    
