@@ -279,8 +279,8 @@ class HrLeaveExtended(models.Model):
             worksheet.write('W7', 'ESTADO', cell_format_titu)                               #-- 16
             worksheet.write('X7', 'COMENTARIOS', cell_format_titu)                          #-- 17
 
-            worksheet.write('Y7', 'CREADO POR', cell_format_tuti)                          #-- 18
-            worksheet.write('Z7', 'CREADO EN', cell_format_tuti)                          #-- 19
+            worksheet.write('Y7', 'CREADO POR', cell_format_titu)                          #-- 18
+            worksheet.write('Z7', 'CREADO EN', cell_format_titu)                          #-- 19
             worksheet.freeze_panes(7, 5)    # (fil,col)
 
             # -------------------------------------------------------------------------------------
@@ -370,6 +370,12 @@ class HrLeaveExtended(models.Model):
                                     'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                                 })
+                            
+                            worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
+                                    'type': 'formula',
+                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'format': w_formato_colorfilb
+                                })
 
                             w_fila += 1
 
@@ -429,7 +435,10 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_cent)
 
                     # 'I7', 'Días vacaciones acumuladas truncas'
-                    w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)  
+                    w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)
+                    if (w_nueva_fing.year > w_fecha_fina.year):
+                        w_nueva_fing = date(w_fecha_actu.year-1, w_fecha_ingr.month,w_fecha_ingr.day)
+                        
                     w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nueva_fing, w_fecha_fina)
                     w_cant_aa = w_period_vac.get('anios', 0)
                     w_cant_mm = w_period_vac.get('meses', 0)
@@ -440,6 +449,8 @@ class HrLeaveExtended(models.Model):
                     worksheet.write(w_fila, 14, w_dias_acum, cell_format_cent)
 
                     # 'J7', 'Días Vacaciones pendientes'
+
+
                     # 'K7', 'Total días Vacaciones Vencidas'
                      
                     current_employee = leave.employee_id
@@ -502,13 +513,21 @@ class HrLeaveExtended(models.Model):
                 # ----------------------------------
                 if (w_nord % 2 == 0):  
                     w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
+                    w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
                 else:
                     w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
+                    w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
 
                 worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
                         'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía #D8E4BC
+                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                         'format': w_formato_colorfila
+                    })
+                
+                worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
+                        'type': 'formula',
+                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                        'format': w_formato_colorfilb
                     })
                 
                 w_formato_colorfuente1 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
@@ -521,6 +540,12 @@ class HrLeaveExtended(models.Model):
                         'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
                         'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                     })
+                
+                worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
+                                    'type': 'formula',
+                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'format': w_formato_colorfilb
+                                })
 
             worksheet.activate()
             workbook.close()
