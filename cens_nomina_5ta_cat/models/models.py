@@ -789,7 +789,7 @@ class renta_quinta_Custom(models.Model):
         sueldobasico_por_mes = {mes: 0.00 for mes in range(1, 13)}
         w_tipo_empleado = "NONE"
         
-        for payslip in payslips:
+        for payslip in payslips:                #-- CARGA datos de cada BOLETA encontrada.
             # Determinar el mes de la boleta
             mes_boleta = payslip.date_from.month
             w_tipo_empleado = payslip.x_studio_tipo_planilla
@@ -1223,7 +1223,7 @@ class renta_quinta_Custom(models.Model):
                         # BUSCA LA BOLETA DEL MES Y ACTUALIZA RENTA 
                         # Verifica primero que el mes esté disponible
                         # --------------------------------------------
-                        if (x_mes>8):
+                        if (x_mes>9):
                             boleta = self.env['hr.payslip'].search([
                                             ('employee_id', '=', record.employee_id.id),
                                             ('date_from', '=', f"{record.cens_nano_ejercicio}-{x_mes:02d}-01"),
