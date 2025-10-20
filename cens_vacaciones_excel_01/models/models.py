@@ -315,251 +315,259 @@ class HrLeaveExtended(models.Model):
                 # ------------------------------
                 w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
                 w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso
-                if current_employee != leave.employee_id:
-                    if current_employee:
-                        # Ordenar la lista por ausencia_periodo
-                        w_agrupa_ausencias_ordenada = sorted(w_agrupa_ausencias, key=lambda x: x['ausencia_periodo'])
-
-                        # ---------------------------------------------
-                        # IMPRIME AUSENCIAS ACUMULADAS EN LA MATRIZ
-                        # ---------------------------------------------
-                        w_actual = None
-                        w_switch = 1
-                        for ausencia in w_agrupa_ausencias_ordenada:
-                            if not w_actual == ausencia['ausencia_periodo'] :
-                                w_actual = ausencia['ausencia_periodo']
-                                w_switch = (1 if w_switch == 0 else 0)
-                            
-                            worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
-                            worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
-                            worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                            worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                            worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
-                            w_dias_goza += ausencia['ausencia_numdias']
-                            worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
-                            if ausencia['ausencia_comenta']:
-                                worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
-                            worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
-                            worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
-                            # ----------------------------------
-                            # Colorea el Background de la fila
-                            # ----------------------------------
-                            if (w_nord % 2 == 0):  
-                                w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
-                                w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
-                            else:
-                                w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
-                                w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
-
-                            worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                                    'format': w_formato_colorfila
-                                })
-                            
-                            worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                                    'format': w_formato_colorfilb
-                                })
-                            
-                            w_formato_colorfuente1 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
-                                                                            'font_color': '#E26B0A'})
-                            w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
-                                                                            'font_color': '#963634'})
-                            
-                            worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
-                                    'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
-                                })
-                            
-                            worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                                    'format': w_formato_colorfilb
-                                })
-
-                            w_fila += 1
-
-                    # ------------------------------------
-                    # DATOS DEL NUEVO EMPLEADO DE LA LISTA
-                    # ------------------------------------    
-                    w_nord += 1
+                w_fecha_from = leave.request_date_from
+                w_fecha_to   = leave.request_date_to
+                if self.fecha_esta_entre(w_fecha_ingr, w_fecha_from, w_fecha_to):
                     w_tiene_filas = True
-                    # Reiniciar contador para nuevo empleado
-                    worksheet.write(w_fila, 0, w_nord, cell_format_cent)                                        #-- Ord
-                    worksheet.write(w_fila, 1, leave.employee_id.name, cell_format_left)                        #-- Nombre Empleado
-                    worksheet.write(w_fila, 2, leave.employee_id.x_studio_documento_identidad, cell_format_cent)#-- DNI
-                    if (leave.employee_id.job_id.name):
-                        worksheet.write(w_fila, 3, leave.employee_id.job_id.name, cell_format_cent)             #-- Puesto Laboral
-                    if leave.employee_id.x_studio_negocio_unidad.x_name :
-                        w_dato = leave.employee_id.x_studio_negocio_unidad.x_name                               #-- Unidad Negocio
-                        worksheet.write(w_fila, 4, w_dato, cell_format_fech)
-                    # -----------------------------------------------------------------------------------------
-                    # CALCULA DETALLE DE LO GOZADO      -   QUIQUE
-                    # -----------------------------------------------------------------------------------------
-                    w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
-                    w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
-                    w_fecha_actu = date.today()
-                    if w_tiene_cese:
-                        w_fecha_fina = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
-                        w_statu_cont = "CESADO"
-                    else:
-                        w_fecha_fina = w_fecha_actu
-                        w_statu_cont = "Activo"
-                    
-                    w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_fina)
-                    w_cant_aa = w_period_vac.get('anios', 0)
-                    w_cant_mm = w_period_vac.get('meses', 0)
-                    w_cant_dd = w_period_vac.get('dias', 0)
-                    worksheet.write(w_fila, 5, w_fecha_ingr, cell_format_fech)  #-- Fecha Ingreso
-                    worksheet.write(w_fila, 6, w_fecha_fina, cell_format_fech)  #-- Fecha Final
-                    worksheet.write(w_fila, 7, w_statu_cont, cell_format_cent)  #-- Estatus
-                    worksheet.write(w_fila, 8, w_cant_aa, cell_format_cent)     #-- aa
-                    worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)    #-- mm
-                    worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)    #-- dd
-                    # -----------------------------------------------------------------------------------------
-                    # Calculamos el nro de días disponibles
-                    # ---------------------------------------
-                    w_tramo_anio = (w_cant_aa*360)
-                    w_tramo_mess = ((((w_tramo_anio/30) if w_tramo_anio > 0 else 0) + w_cant_mm) * 2.5)
-                    w_tramo_dias = (w_cant_dd * (2.5/30))
-                    w_dias_acum  = w_tramo_mess + w_tramo_dias 
+                    if current_employee != leave.employee_id:
+                        if current_employee:
+                            # Ordenar la lista por ausencia_periodo
+                            w_agrupa_ausencias_ordenada = sorted(w_agrupa_ausencias, key=lambda x: x['ausencia_periodo'])
 
-                    # 'G7', 'Total dias vacaciones acumuladas
-                    worksheet.write(w_fila, 11, w_dias_acum, cell_format_nume)
+                            # ---------------------------------------------
+                            # IMPRIME AUSENCIAS ACUMULADAS EN LA MATRIZ
+                            # ---------------------------------------------
+                            w_actual = None
+                            w_switch = 1
+                            for ausencia in w_agrupa_ausencias_ordenada:
+                                if not w_actual == ausencia['ausencia_periodo'] :
+                                    w_actual = ausencia['ausencia_periodo']
+                                    w_switch = (1 if w_switch == 0 else 0)
+                                
+                                worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
+                                worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
+                                worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                                worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                                worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
+                                w_dias_goza += ausencia['ausencia_numdias']
+                                worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
+                                if ausencia['ausencia_comenta']:
+                                    worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
+                                worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
+                                worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
+                                # ----------------------------------
+                                # Colorea el Background de la fila
+                                # ----------------------------------
+                                if (w_nord % 2 == 0):  
+                                    w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
+                                    w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
+                                else:
+                                    w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
+                                    w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
 
-                    # 'H7', 'Días Vacaciones Gozadas'
-                    w_cant_dd_gozados = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
-                    worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_nume)
+                                worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
+                                        'type': 'formula',
+                                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                        'format': w_formato_colorfila
+                                    })
+                                
+                                worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
+                                        'type': 'formula',
+                                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                        'format': w_formato_colorfilb
+                                    })
+                                
+                                w_formato_colorfuente1 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
+                                                                                'font_color': '#E26B0A'})
+                                w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
+                                                                                'font_color': '#963634'})
+                                
+                                worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
+                                        'type': 'formula',
+                                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
+                                        'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
+                                    })
+                                
+                                worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
+                                        'type': 'formula',
+                                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                        'format': w_formato_colorfilb
+                                    })
 
-                    # 'I7', 'Días vacaciones NO acumuladas'
-                    w_cant_dd_nogozados = (w_dias_acum - w_cant_dd_gozados) 
-                    worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_nume)
+                                w_fila += 1
 
-                    # 'I7', 'Días vacaciones acumuladas truncas'
-                    w_menos_anio = False
-                    w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)
-                    if (w_nueva_fing > w_fecha_fina):
-                        w_nueva_fing = date(w_nueva_fing.year-1, w_nueva_fing.month, w_nueva_fing.day)
+                        # ------------------------------------
+                        # DATOS DEL NUEVO EMPLEADO DE LA LISTA
+                        # ------------------------------------    
+                        w_nord += 1
+                        w_tiene_filas = True
+                        # Reiniciar contador para nuevo empleado
+                        worksheet.write(w_fila, 0, w_nord, cell_format_cent)                                        #-- Ord
+                        worksheet.write(w_fila, 1, leave.employee_id.name, cell_format_left)                        #-- Nombre Empleado
+                        worksheet.write(w_fila, 2, leave.employee_id.x_studio_documento_identidad, cell_format_cent)#-- DNI
+                        if (leave.employee_id.job_id.name):
+                            worksheet.write(w_fila, 3, leave.employee_id.job_id.name, cell_format_cent)             #-- Puesto Laboral
+                        if leave.employee_id.x_studio_negocio_unidad.x_name :
+                            w_dato = leave.employee_id.x_studio_negocio_unidad.x_name                               #-- Unidad Negocio
+                            worksheet.write(w_fila, 4, w_dato, cell_format_fech)
+                        # -----------------------------------------------------------------------------------------
+                        # CALCULA DETALLE DE LO GOZADO      -   QUIQUE
+                        # -----------------------------------------------------------------------------------------
+                        w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso  #-- FECHA INGRESO
+                        w_tiene_cese = leave.employee_id.contract_id.x_empleado_cesado
+                        w_fecha_actu = date.today()
+                        if w_tiene_cese:
+                            w_fecha_fina = leave.employee_id.contract_id.x_studio_fecha_de_cese     #-- FECHA CESE
+                            w_statu_cont = "CESADO"
+                        else:
+                            w_fecha_fina = w_fecha_actu
+                            w_statu_cont = "Activo"
+                        
+                        w_period_vac = self.desglosa_periodo("PERIODO DE VACACIONES", w_fecha_ingr, w_fecha_fina)
+                        w_cant_aa = w_period_vac.get('anios', 0)
+                        w_cant_mm = w_period_vac.get('meses', 0)
+                        w_cant_dd = w_period_vac.get('dias', 0)
+                        worksheet.write(w_fila, 5, w_fecha_ingr, cell_format_fech)  #-- Fecha Ingreso
+                        worksheet.write(w_fila, 6, w_fecha_fina, cell_format_fech)  #-- Fecha Final
+                        worksheet.write(w_fila, 7, w_statu_cont, cell_format_cent)  #-- Estatus
+                        worksheet.write(w_fila, 8, w_cant_aa, cell_format_cent)     #-- aa
+                        worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)    #-- mm
+                        worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)    #-- dd
+                        # -----------------------------------------------------------------------------------------
+                        # Calculamos el nro de días disponibles
+                        # ---------------------------------------
+                        w_tramo_anio = (w_cant_aa*360)
+                        w_tramo_mess = ((((w_tramo_anio/30) if w_tramo_anio > 0 else 0) + w_cant_mm) * 2.5)
+                        w_tramo_dias = (w_cant_dd * (2.5/30))
+                        w_dias_acum  = w_tramo_mess + w_tramo_dias 
+
+                        # 'G7', 'Total dias vacaciones acumuladas
+                        worksheet.write(w_fila, 11, w_dias_acum, cell_format_nume)
+
+                        # 'H7', 'Días Vacaciones Gozadas'
+                        w_cant_dd_gozados = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
+                        worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_nume)
+
+                        # 'I7', 'Días vacaciones NO acumuladas'
+                        w_cant_dd_nogozados = (w_dias_acum - w_cant_dd_gozados) 
+                        worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_nume)
+
+                        # 'I7', 'Días vacaciones acumuladas truncas'
                         w_menos_anio = False
+                        w_nueva_fing = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)
+                        if (w_nueva_fing > w_fecha_fina):
+                            w_nueva_fing = date(w_nueva_fing.year-1, w_nueva_fing.month, w_nueva_fing.day)
+                            w_menos_anio = False
+                        else:
+                            w_menos_anio = True
+                        
+                        w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nueva_fing, w_fecha_fina)
+                        w_cant_aa = w_period_vac.get('anios', 0)
+                        w_cant_mm = w_period_vac.get('meses', 0)
+                        w_cant_dd = w_period_vac.get('dias', 0)
+                        w_tramo_mess = (w_cant_mm * 2.5)
+                        w_tramo_dias = (w_cant_dd * (2.5/30))
+                        w_dias_acum  = w_tramo_mess + w_tramo_dias
+                        w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if not w_menos_anio else w_dias_acum
+                        worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
+
+                        # 'J7', 'Días Vacaciones pendientes'
+
+
+                        # 'K7', 'Total días Vacaciones Vencidas'
+                        
+                        current_employee = leave.employee_id
+                        counter = 1
+                        w_dias_goza = 0
+                        w_agrupa_ausencias = []
                     else:
-                        w_menos_anio = True
-                    
-                    w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nueva_fing, w_fecha_fina)
-                    w_cant_aa = w_period_vac.get('anios', 0)
-                    w_cant_mm = w_period_vac.get('meses', 0)
-                    w_cant_dd = w_period_vac.get('dias', 0)
-                    w_tramo_mess = (w_cant_mm * 2.5)
-                    w_tramo_dias = (w_cant_dd * (2.5/30))
-                    w_dias_acum  = w_tramo_mess + w_tramo_dias
-                    w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if not w_menos_anio else w_dias_acum
-                    worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
+                        # Incrementar contador para el empleado actual
+                        counter += 1
 
-                    # 'J7', 'Días Vacaciones pendientes'
-
-
-                    # 'K7', 'Total días Vacaciones Vencidas'
-                    
-                    current_employee = leave.employee_id
-                    counter = 1
-                    w_dias_goza = 0
-                    w_agrupa_ausencias = []
+                    # ----------------------------------------
+                    # Captura en MATRIZ la Ausencia
+                    # ----------------------------------------
+                    if current_employee:
+                        if self.estatus_ausencia(leave.state)=="Aprobado":
+                            w_dato = f"{leave.request_date_from.year-1}-{leave.request_date_from.year}"
+                        else:
+                            w_dato = "NONE"
+                        w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso
+                        w_fecha_from = leave.request_date_from
+                        w_fecha_to   = leave.request_date_to
+                        #if self.fecha_esta_entre(w_fecha_ingr, w_fecha_from, w_fecha_to):
+                        w_agrupa_ausencias.append({
+                                'ausencia_codigo' : leave.x_cens_codiden,
+                                'ausencia_periodo': w_dato,
+                                'ausencia_desde'  : leave.request_date_from,
+                                'ausencia_hasta'  : leave.request_date_to,
+                                'ausencia_numdias': leave.number_of_days,
+                                'ausencia_state'  : leave.state,
+                                'ausencia_comenta': leave.name,
+                                'ausencia_creadopor': leave.create_uid.name,
+                                'ausencia_creadoen' : leave.create_date
+                        })
+                        # 'ausencia_periodo': f"{leave.request_date_from.year-1}-{leave.request_date_from.year}",
                 else:
-                    # Incrementar contador para el empleado actual
-                    counter += 1
-
-                # ----------------------------------------
-                # Captura en MATRIZ la Ausencia
-                # ----------------------------------------
-                if current_employee:
-                    if self.estatus_ausencia(leave.state)=="Aprobado":
-                        w_dato = f"{leave.request_date_from.year-1}-{leave.request_date_from.year}"
-                    else:
-                        w_dato = "NONE"
-                    w_fecha_ingr = leave.employee_id.contract_id.x_studio_fecha_de_ingreso
-                    w_fecha_from = leave.request_date_from
-                    w_fecha_to   = leave.request_date_to
-                    #if self.fecha_esta_entre(w_fecha_ingr, w_fecha_from, w_fecha_to):
-                    w_agrupa_ausencias.append({
-                            'ausencia_codigo' : leave.x_cens_codiden,
-                            'ausencia_periodo': w_dato,
-                            'ausencia_desde'  : leave.request_date_from,
-                            'ausencia_hasta'  : leave.request_date_to,
-                            'ausencia_numdias': leave.number_of_days,
-                            'ausencia_state'  : leave.state,
-                            'ausencia_comenta': leave.name,
-                            'ausencia_creadopor': leave.create_uid.name,
-                            'ausencia_creadoen' : leave.create_date
-                    })
-                    # 'ausencia_periodo': f"{leave.request_date_from.year-1}-{leave.request_date_from.year}",
-
+                    w_tiene_filas = False
+            
             # ------------------------------------------------------
             # IMPRIME LO ÚLTIMO DE LA LISTA
             # ------------------------------------------------------
-            # Ordenar la lista por ausencia_periodo
-            w_agrupa_ausencias_ordenada = sorted(w_agrupa_ausencias, key=lambda x: x['ausencia_periodo'])
+            
+            if w_tiene_filas:
+                # Ordenar la lista por ausencia_periodo
+                w_agrupa_ausencias_ordenada = sorted(w_agrupa_ausencias, key=lambda x: x['ausencia_periodo'])
 
-            # ---------------------------------------------
-            # IMPRIME AUSENCIAS ACUMULADAS EN LA MATRIZ
-            # ---------------------------------------------
-            w_actual = None
-            w_switch = 1
-            for ausencia in w_agrupa_ausencias_ordenada:
-                if not w_actual == ausencia['ausencia_periodo'] :
-                    w_actual = ausencia['ausencia_periodo']
-                    w_switch = (1 if w_switch == 0 else 0)
-                
-                worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
-                worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
-                worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
-                worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
-                worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
-                if ausencia['ausencia_comenta']:
-                    worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
-                worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
-                worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
+                # ---------------------------------------------
+                # IMPRIME AUSENCIAS ACUMULADAS EN LA MATRIZ
+                # ---------------------------------------------
+                w_actual = None
+                w_switch = 1
+                for ausencia in w_agrupa_ausencias_ordenada:
+                    if not w_actual == ausencia['ausencia_periodo'] :
+                        w_actual = ausencia['ausencia_periodo']
+                        w_switch = (1 if w_switch == 0 else 0)
+                    
+                    worksheet.write(w_fila, 17, ausencia['ausencia_codigo'], cell_format_tiny)
+                    worksheet.write(w_fila, 18, ausencia['ausencia_periodo'], cell_format_cent)
+                    worksheet.write(w_fila, 19, ausencia['ausencia_desde'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                    worksheet.write(w_fila, 20, ausencia['ausencia_hasta'] if self.estatus_ausencia(ausencia['ausencia_state'])=="Aprobado" else '01/01/1900', cell_format_fech)
+                    worksheet.write(w_fila, 21, ausencia['ausencia_numdias'], cell_format_nume)
+                    worksheet.write(w_fila, 22, self.estatus_ausencia(ausencia['ausencia_state']), cell_format_perd if ausencia['ausencia_state'] == 'refuse' else cell_format_left)
+                    if ausencia['ausencia_comenta']:
+                        worksheet.write(w_fila, 23, ausencia['ausencia_comenta'], cell_format_left)
+                    worksheet.write(w_fila, 24, ausencia['ausencia_creadopor'], cell_format_left)
+                    worksheet.write(w_fila, 25, ausencia['ausencia_creadoen'], cell_format_fech)
 
-                # ----------------------------------
-                # Colorea el Background de la fila
-                # ----------------------------------
-                if (w_nord % 2 == 0):  
-                    w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
-                    w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
-                else:
-                    w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
-                    w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
+                    # ----------------------------------
+                    # Colorea el Background de la fila
+                    # ----------------------------------
+                    if (w_nord % 2 == 0):  
+                        w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
+                        w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
+                    else:
+                        w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
+                        w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
 
-                worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
-                        'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                        'format': w_formato_colorfila
-                    })
-                
-                worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
-                        'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                        'format': w_formato_colorfilb
-                    })
-                
-                w_formato_colorfuente1 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
-                                                                    'font_color': '#E26B0A'})
-                w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
-                                                                    'font_color': '#963634'})
-                
-                worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
-                        'type': 'formula',
-                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
-                        'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
-                    })
-                
-                worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                                    'format': w_formato_colorfilb
-                                })
+                    worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
+                            'type': 'formula',
+                            'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                            'format': w_formato_colorfila
+                        })
+                    
+                    worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
+                            'type': 'formula',
+                            'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                            'format': w_formato_colorfilb
+                        })
+                    
+                    w_formato_colorfuente1 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
+                                                                        'font_color': '#E26B0A'})
+                    w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
+                                                                        'font_color': '#963634'})
+                    
+                    worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
+                            'type': 'formula',
+                            'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
+                            'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
+                        })
+                    
+                    worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
+                                        'type': 'formula',
+                                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                        'format': w_formato_colorfilb
+                                    })
 
             worksheet.activate()
             workbook.close()
