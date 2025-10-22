@@ -13,7 +13,7 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources/Payroll',
- 	'version': '16.0.1.02',
+ 	'version': '16.0.1.03',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',

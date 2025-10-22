@@ -706,9 +706,10 @@ class HrPayslipLiquidacion(models.Model):
                     w_meses_habiles = 0
                     w_mensajes += "\n" + f"- GRATI: No presenta meses hábiles."
             else:
-                w_meses_habiles = (w_fecha_cese.month - w_fecha_tope1.month)
-                if ((w_fecha_tope1.day==1) and (w_fecha_cese.day in [30,31])):
-                    w_meses_habiles += 1
+                w_meses_habiles = w_cant_mm 
+                #(w_fecha_cese.month - w_fecha_tope1.month)
+                #if ((w_fecha_tope1.day==1) and (w_fecha_cese.day in [30,31])):
+                #    w_meses_habiles += 1
 
             w_detgrat_per = "DESDE: " + str(w_fecha_tope1.day) + " de " + self.mes_literal(w_fecha_tope1.month) + " del " + str(w_fecha_tope1.year) + " "
             w_detgrat_per += "AL " + str(w_fecha_tope2.day) + " de " + self.mes_literal(w_fecha_tope2.month) + " del " + str(w_fecha_tope2.year) + " "
