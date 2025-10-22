@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_leave_view_tree_custom" model="ir.ui.view">
+            <field name="name">hr.leave.view.tree.custom</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="export_to_spreadsheet" class="btn btn-primary" string="Histórico Vacaciones" type="object"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_employee_form_vacaciones_inherit">
+            <field name="name">hr.employee.form.vacaciones.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='hr_settings']//field[@name='user_id']" position="before">
+                    <field name="cens_ingreso_laboral" string="Fecha Ingreso laboral:"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+<!--
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='hr_settings']/group[1]/group[@name='active_group']/field[@name='first_contract_date']" position="after">
+                    <field name="cens_ingreso_laboral" string="Fecha Ingreso laboral:"/>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+                    <button name="export_to_spreadsheet" class="btn btn-primary" string="Exportar a Excel" type="object"/>
+                </xpath>
+-->
