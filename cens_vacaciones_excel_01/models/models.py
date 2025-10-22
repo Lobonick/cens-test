@@ -462,10 +462,14 @@ class HrLeaveExtended(models.Model):
                         worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
                         # 'J7', 'Días Vacaciones pendientes'
-
+                        w_dias_pend  = w_cant_dd_nogozados - w_dias_acum
+                        w_dias_pend  = 59 if w_dias_pend >= 60 else w_dias_pend
+                        w_dias_venc  = 0 if w_dias_pend < 60 else (w_cant_dd_nogozados - w_dias_acum) - 59
+                        worksheet.write(w_fila, 15, w_dias_pend, cell_format_nume)
 
                         # 'K7', 'Total días Vacaciones Vencidas'
-                        
+                        worksheet.write(w_fila, 16, w_dias_venc, cell_format_nume)
+
                         current_employee = leave.employee_id
                         counter = 1
                         w_dias_goza = 0
