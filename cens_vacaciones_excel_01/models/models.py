@@ -383,7 +383,6 @@ class HrLeaveExtended(models.Model):
                                         'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                         'format': w_formato_colorfilb
                                     })
-
                                 w_fila += 1
 
                         # ------------------------------------
@@ -435,7 +434,8 @@ class HrLeaveExtended(models.Model):
                         worksheet.write(w_fila, 11, w_dias_acum, cell_format_nume)
 
                         # 'H7', 'Días Vacaciones Gozadas'
-                        w_cant_dd_gozados = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
+                        w_cant_dd_gozados = w_dias_goza 
+                        # (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
                         worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_nume)
 
                         # 'I7', 'Días vacaciones NO acumuladas'
