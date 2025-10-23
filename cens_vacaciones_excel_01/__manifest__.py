@@ -11,7 +11,7 @@
 	'author': "Área de Sistemas - ODOO-CENS-PERÚ",
     'website': "https://www.cens.com.pe",
     'category': 'Human Resources/Time Off',
- 	'version': '16.0.1.04',
+ 	'version': '16.0.1.05',
     'license': 'Other proprietary',
     'contributors': [
         'Enrique Alcántara <ealcantara@cens.com.pe>',

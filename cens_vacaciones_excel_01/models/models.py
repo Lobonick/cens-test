@@ -387,7 +387,7 @@ class HrLeaveExtended(models.Model):
 
                         # ------------------------------------
                         # DATOS DEL NUEVO EMPLEADO DE LA LISTA
-                        # ------------------------------------    
+                        # ------------------------------------
                         w_nord += 1
                         w_tiene_filas = True
                         # Reiniciar contador para nuevo empleado
@@ -434,8 +434,7 @@ class HrLeaveExtended(models.Model):
                         worksheet.write(w_fila, 11, w_dias_acum, cell_format_nume)
 
                         # 'H7', 'Días Vacaciones Gozadas'
-                        w_cant_dd_gozados = w_dias_goza 
-                        # (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
+                        w_cant_dd_gozados = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, leave.employee_id.id))
                         worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_nume)
 
                         # 'I7', 'Días vacaciones NO acumuladas'
@@ -654,19 +653,20 @@ class HrLeaveExtended(models.Model):
         w_id_empleado  = id_employee
 
         # Obtener todas las AUSENCIAS del Empleado
-        ausencias = self.env['hr.leave'].search([
+        w_vacaciones = self.env['hr.leave'].search([
                                             ('employee_id', '=', w_id_empleado),
                                             ('state', 'in', ['draft', 'confirm', 'refuse', 'validate1', 'validate'])  
                                         ])
         w_dias_gozados = 0
         # Procesa cada AUSENCIA y extraer los DIAS GOZADOS.
-        for vacaciones_gozadas in ausencias:
+        for vacaciones_gozadas in w_vacaciones:
             # Verificar si ya existe un registro para este empleado en el año ejercicio
             w_fech_desde = vacaciones_gozadas.request_date_from
             w_fech_hasta = vacaciones_gozadas.request_date_to
             w_dias_ausen = vacaciones_gozadas.number_of_days_display
 
-            w_dias_gozados += w_dias_ausen
+            if self.fecha_esta_entre(w_fech_ingreso, w_fech_desde, w_fech_hasta):
+                w_dias_gozados += w_dias_ausen
 
             # if (w_fech_desde >= w_fech_ingreso and w_fech_desde <= w_fech_cese):
             #    if (w_fech_hasta >= w_fech_ingreso and w_fech_hasta <= w_fech_cese):
