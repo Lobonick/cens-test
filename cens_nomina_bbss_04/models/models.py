@@ -50,7 +50,7 @@ class HrPayslip(models.Model):
         self.recompute()
         pass
 
-    def determina_periodo_cts_old1(self, fecha_inicial, fecha_final):
+    def determina_periodo_cts(self, fecha_inicial, fecha_final):
         ingr_fecha  = fecha_inicial
         cese_fecha  = fecha_final
         ajus_fecha_tope = cese_fecha
