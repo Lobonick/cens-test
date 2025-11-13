@@ -1078,15 +1078,15 @@ class HrPayslip(models.Model):
                         w_smes = 1
                         w_anio += 1
 
-
                 w_Fech_Desde = date(w_anio, 5, 1) if w_smes==11 else date(w_anio-1, 11, 1)
                 w_Fech_Hasta = date(w_anio, 10, 31) if w_smes==11 else date(w_anio, 4, 30)
                 boletas_empleado = self.env['hr.payslip'].search([
                     ('employee_id', '=', w_boleta.employee_id.id),
-                    ('date_from', '>=', w_Fech_Desde),
-                    ('date_from', '<', w_Fech_Hasta),  
                     ('state', 'in', ['draft', 'verify', 'done', 'paid'])
                 ])
+                #    ('date_from', '>=', w_Fech_Desde),
+                #    ('date_from', '<=', w_Fech_Hasta),  
+
                 #---------------------------------------------------------------------------------------------
                 # Crear diccionario mes → días computados
                 dias_por_mes = {boleta.date_from.month: boleta.x_studio_dias_computados 
