@@ -902,13 +902,13 @@ class HrPayslip(models.Model):
 
             w_smes = 11 if w_mes_lote==5 else 5     #-- Posiciona el mes para incrementarlo
             w_anio = w_ano_lote
-            
+
             for w_ind in range(1, 7):
                 w_codchar = 71 + w_ind      # H,I,J,K,L,M
                 w_refcel = chr(w_codchar) + "8"
                 w_refmes = self.mes_literal(w_smes).upper()[:3] + "-" + str(w_anio)  #-- DIAS TRABAJADOS INTERMITENTES
                 worksheet.write(w_refcel, w_refmes, cell_format_tito)
-                w_semestre += 1
+                w_smes += 1
                 if (w_smes > 12):
                     w_smes = 1
                     w_anio += 1
