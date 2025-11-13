@@ -904,7 +904,7 @@ class HrPayslip(models.Model):
             w_anio = w_ano_lote
 
             for w_ind in range(1, 7):
-                w_codchar = 71 + w_ind      # H,I,J,K,L,M
+                w_codchar = 77 + w_ind      # H,I,J,K,L,M
                 w_refcel = chr(w_codchar) + "8"
                 w_refmes = self.mes_literal(w_smes).upper()[:3] + "-" + str(w_anio)  #-- DIAS TRABAJADOS INTERMITENTES
                 worksheet.write(w_refcel, w_refmes, cell_format_tito)
@@ -912,7 +912,7 @@ class HrPayslip(models.Model):
                 if (w_smes > 12):
                     w_smes = 1
                     w_anio += 1
-            worksheet.write('T8', 'TOTAL DIAS', cell_format_titu)              #-- 15  TOTAL DIAS LABORADOS
+            worksheet.write('T8', 'TOTAL LABORADOS', cell_format_titu)              #-- 15  TOTAL DIAS LABORADOS
 
             worksheet.write('U8', 'AÑOS', cell_format_tito)                         #-- 10
             worksheet.write('V8', 'MESES', cell_format_tito)                        #-- 13
@@ -946,7 +946,7 @@ class HrPayslip(models.Model):
             worksheet.write('Q9', 'Días', cell_format_tut4)                #-- SEMESTRE LABORADO
             worksheet.write('R9', 'Días', cell_format_tut4)
             worksheet.write('S9', 'Días', cell_format_tut4)
-            worksheet.write('T9', 'LABORADO', cell_format_tut4)
+            worksheet.write('T9', 'DÍAS', cell_format_tut4)
 
             worksheet.write('U9', 'S/.', cell_format_tut4)                 #-- 12
             worksheet.write('V9', 'S/.', cell_format_tut4)                 #-- 13
@@ -1061,7 +1061,60 @@ class HrPayslip(models.Model):
                 w_impo_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar + w_impo_sext
                 worksheet.write(w_fila, 12, w_impo_remu, current_format_imp2)
                 
+                # --------------------------------------------------
+                #  EXTRAE DIAS LABORADO
+                # --------------------------------------------------
 
+                w_smes = 11 if w_mes_lote==5 else 5     #-- Posiciona el mes para incrementarlo
+                w_anio = w_ano_lote
+
+                for w_ind in range(1, 7):
+                    w_codchar = 77 + w_ind      # H,I,J,K,L,M
+                    w_refcel = chr(w_codchar) + "8"
+                    w_refmes = self.mes_literal(w_smes).upper()[:3] + "-" + str(w_anio)  #-- DIAS TRABAJADOS INTERMITENTES
+                    worksheet.write(w_refcel, w_refmes, cell_format_tito)
+                    w_smes += 1
+                    if (w_smes > 12):
+                        w_smes = 1
+                        w_anio += 1
+
+
+                w_Fech_Desde = date(w_anio, 5, 1) if w_smes==11 else date(w_anio-1, 11, 1)
+                w_Fech_Hasta = date(w_anio, 10, 31) if w_smes==11 else date(w_anio, 4, 30)
+                boletas_empleado = self.env['hr.payslip'].search([
+                    ('employee_id', '=', w_boleta.employee_id.id),
+                    ('date_from', '>=', w_Fech_Desde),
+                    ('date_from', '<', w_Fech_Hasta),  
+                    ('state', 'in', ['draft', 'verify', 'done', 'paid'])
+                ])
+                #---------------------------------------------------------------------------------------------
+                # Crear diccionario mes → días computados
+                dias_por_mes = {boleta.date_from.month: boleta.x_studio_dias_computados 
+                                for boleta in boletas_empleado}
+                vaca_por_mes = {boleta.date_from.month: boleta.x_studio_dias_vacaciones 
+                                for boleta in boletas_empleado}
+                w_acum_dias = 0
+                for w_ind in range(1, 7):
+                    w_codchar = 77 + w_ind      # H,I,J,K,L,M
+                    w_refcel = chr(w_codchar) + "8"
+                    w_col = 12 + w_ind
+                    w_totdias = dias_por_mes.get(w_smes, 0) + vaca_por_mes.get(w_smes, 0)
+                    w_acum_dias += w_totdias
+                    if (w_totdias > 0):
+                        worksheet.write(w_fila, w_col, w_totdias, current_format_cent)
+                    else: 
+                        worksheet.write(w_fila, w_col, "OJO", current_format_cent)
+
+                    w_smes += 1
+                    if (w_smes > 12):
+                        w_smes = 1
+                        w_anio += 1
+
+                w_tota_dtrab = w_acum_dias *  (w_boleta.x_studio_salario_mensual/30)
+                worksheet.write(w_fila, 19, w_tota_dtrab, current_format_imp2)  
+
+
+                # --------------------------------------------------
 
                 w_impo_cano = w_impo_remu if w_impo_remu > 0 else 0.00
                 w_impo_cmes = w_impo_remu/12 if w_impo_remu > 0 else 0.00
