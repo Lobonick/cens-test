@@ -1056,10 +1056,11 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 9, w_boleta.x_studio_salario_mensual, current_format_impo)
                 worksheet.write(w_fila, 10, w_boleta.x_studio_en_asignacion_familiar, current_format_impo)
 
-                w_impo_sext = 0.00
+                w_impo_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar
+                w_impo_sext = self.calcula_sexto_grati(w_fecha_ingr, w_fecha_fiin, w_impo_remu)
                 worksheet.write(w_fila, 11, " " if w_impo_sext==0.00 else w_impo_sext, current_format_impo)
                 
-                w_impo_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar + w_impo_sext
+                w_impo_remu += w_impo_sext
                 worksheet.write(w_fila, 12, w_impo_remu, current_format_imp2)
                 
                 # --------------------------------------------------
@@ -1125,7 +1126,7 @@ class HrPayslip(models.Model):
                 
                 w_cts_costo_mm = ((w_impo_remu/12) * w_period_cts.get('meses', 0))                 #--- Por el rango meses
                 w_cts_costo_dd = (((w_impo_remu/12)/30) * w_period_cts.get('dias', 0))             #--- Por el rango días
-                w_trunco_cts   = (w_tota_dtrab * w_cts_costo_dd)
+                w_trunco_cts   = (w_tota_dtrab * w_impo_cdia)
 
                 worksheet.write(w_fila, 23, w_desgl_anio, current_format_nume)
                 worksheet.write(w_fila, 24, w_desgl_mess, current_format_nume)
@@ -1150,8 +1151,8 @@ class HrPayslip(models.Model):
 
                 w_fila += 1
 
-            worksheet.write(5, 20, "TOTAL GENERAL:", cell_format_left) 
-            worksheet.write(5, 21, w_acum_tota_1, cell_format_impo)
+            # worksheet.write(5, 20, "TOTAL GENERAL:", cell_format_left) 
+            # worksheet.write(5, 21, w_acum_tota_1, cell_format_impo)
 
             worksheet.activate()
             workbook.close()
@@ -1177,6 +1178,67 @@ class HrPayslip(models.Model):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'self',
         }
+
+    # --------------------------------------------------
+    #  CALCULA SEXTO GRATIFICACIONES  
+    # --------------------------------------------------
+    def calcula_sexto_grati(self, w_fecha_ingr, w_fecha_cese, w_total_remu):
+        if (w_total_remu > 0):
+            ajus_anio = w_fecha_cese.year 
+            top1_param = date(ajus_anio, 6, 30)     #-- Pago Grati Julio
+            top2_param = date(ajus_anio-1, 12, 31)  #-- Pago Grati Diciembre
+            w_sexto_costo_mes = 0.00
+            w_sexto_impor_mes = 0.00
+            w_fecha_tope1 = top1_param if w_fecha_cese > top1_param else top2_param
+            w_fecha_tope2 = 0
+            w_fecha_tope3 = 0
+            w_canti_meses = 0
+            w_sexto_costo_mes = 0.00
+            w_sexto_impor_mes = 0.00
+            w_periodo_switch = False
+            w_mensajes = ""
+            if (w_fecha_ingr <= w_fecha_tope1):  
+                w_fecha_tope2 = self.determina_periodo_grati(w_fecha_ingr, w_fecha_tope1)
+                if (w_fecha_ingr < w_fecha_tope2):
+                    w_fecha_tope3 = self.determina_periodo_grati(w_fecha_ingr, w_fecha_tope2)   #-- New Tope2 
+                    w_periodo_switch = True
+                    w_period_grati = self.desglosa_periodo("ÚLTIMA GRATIFICACIÓN", w_fecha_tope2, w_fecha_tope3)
+                    w_sexto_canti_mm = w_period_grati.get('meses', 0)
+                    w_sexto_canti_dd = 0.00                                 #-- w_period_grati.get('dias', 0)
+                    w_canti_meses = w_sexto_canti_mm + (w_period_grati.get('anios', 0)*12) 
+                    if (w_canti_meses > 1):
+                        w_sexto_costo_mes = w_total_remu 
+                        # w_sexto_costo_dia = w_total_remu/30
+                        w_sexto_impor_mes = (w_sexto_costo_mes/6) * w_sexto_canti_mm
+                        # w_sexto_impor_dia = (w_sexto_costo_dia/6) * w_sexto_canti_dd
+
+                        w_sexto_total = w_sexto_impor_mes / 6                   #-- w_sexto_total = (w_sexto_impor_mes + w_sexto_impor_dia) / 6
+                    else:
+                        w_sexto_total = 0.00
+                        #
+                        # NOTA: "SEXTO: Periodo debe ser MAYOR a un mes."
+                        #
+                        w_mensajes += "\n" + "- SEXTO: Periodo debe ser MAYOR a un mes."
+                else:
+                    w_sexto_total = 0.00
+                    #
+                    # NOTA: "SEXTO: No tiene periodo de GRATIFICACIÓN anterior."
+                    #
+                    w_mensajes += "\n" + "- SEXTO: No tiene periodo de GRATIFICACIÓN anterior."
+
+            else:
+                w_sexto_total = 0.00
+                #
+                # NOTA: "SEXTO: Fecha ingreso sobrepasa fecha TOPE ({w_fecha_tope1}) para cálculo "
+                #
+                w_mensajes += "\n" + f"- SEXTO: Fecha de ingreso FUERA DE RANGO para cálculo. "
+
+        else:
+            w_sexto_total = 0.00
+
+        return w_sexto_total
+                
+
 
     @staticmethod
     def mes_literal(nmes):
