@@ -515,35 +515,36 @@ class HrPayslip(models.Model):
             worksheet.set_column(6, 6, 8)       #-- MONEDA
             worksheet.set_column(7, 7, 13)      #-- FECHA INGRESO                   H
             worksheet.set_column(8, 8, 13)      #-- FECHA CESE                      I
-            worksheet.set_column(9, 9, 9)       #-- MES-1                   
-            worksheet.set_column(10, 10, 9)     #-- MES-2                      
-            worksheet.set_column(11, 11, 9)     #-- MES-3                   
-            worksheet.set_column(12, 12, 9)     #-- MES-4             
-            worksheet.set_column(13, 13, 9)     #-- MES-5             
-            worksheet.set_column(14, 14, 9)     #-- MES-6 
-            worksheet.set_column(15, 15, 9)     #-- TOTAL DIAS SEMESTRE             
-
             worksheet.set_column(9, 9, 12)      #-- Sueldo Básico                   J
             worksheet.set_column(10, 10, 12)    #-- Asignación Familiar             K
             worksheet.set_column(11, 11, 12)    #-- Sexto Gratificación             L
             worksheet.set_column(12, 12, 12)    #-- Total Remuneración              M
-            worksheet.set_column(13, 13, 12)    #-- Mes - 01                        N
-            worksheet.set_column(14, 14, 12)    #-- Mes - 02                        O
-            worksheet.set_column(15, 15, 12)    #-- Mes - 03                        P
-            worksheet.set_column(16, 16, 10)    #-- Mes - 04                        Q
-            worksheet.set_column(17, 17, 10)    #-- Mes - 05                        R
-            worksheet.set_column(18, 18, 10)    #-- Mes - 06                        S
-            worksheet.set_column(19, 19, 13)    #-- Total Días Trabajados           T
-            worksheet.set_column(20, 20, 13)    #--            U
-            worksheet.set_column(21, 21, 12)    #-- Importe CTS
-            worksheet.set_column(22, 22, 50)    #-- Observaciones
 
-            worksheet.set_column(23, 23, 5)     #--     (Seperador)
+            worksheet.set_column(13, 13, 10)       #-- MES-1                   
+            worksheet.set_column(14, 14, 10)     #-- MES-2                      
+            worksheet.set_column(15, 15, 10)     #-- MES-3                   
+            worksheet.set_column(16, 16, 10)     #-- MES-4             
+            worksheet.set_column(17, 17, 10)     #-- MES-5             
+            worksheet.set_column(18, 18, 10)     #-- MES-6 
+            worksheet.set_column(19, 19, 10)     #-- TOTAL DIAS SEMESTRE             
 
-            worksheet.set_column(24, 24, 12)    #-- 
-            worksheet.set_column(25, 25, 12)    #--
-            worksheet.set_column(26, 26, 12)    #--     LIQUIDACIONES
-            worksheet.set_column(27, 27, 12)    #--
+            worksheet.set_column(20, 20, 12)    #-- Mes - 01                        N
+            worksheet.set_column(21, 21, 12)    #-- Mes - 02                        O
+            worksheet.set_column(22, 22, 12)    #-- Mes - 03                        P
+            worksheet.set_column(23, 23, 10)    #-- Mes - 04                        Q
+            worksheet.set_column(24, 24, 10)    #-- Mes - 05                        R
+            worksheet.set_column(25, 25, 10)    #-- Mes - 06                        S
+            worksheet.set_column(26, 26, 13)    #-- Total Días Trabajados           T
+            worksheet.set_column(27, 27, 13)    #--            U
+            worksheet.set_column(28, 28, 12)    #-- Importe CTS
+            worksheet.set_column(29, 29, 50)    #-- Observaciones
+
+            worksheet.set_column(30, 30, 5)     #--     (Seperador)
+
+            worksheet.set_column(31, 31, 12)    #-- 
+            worksheet.set_column(32, 32, 12)    #--
+            worksheet.set_column(33, 33, 12)    #--     LIQUIDACIONES
+            worksheet.set_column(34, 34, 12)    #--
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -1062,21 +1063,10 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 12, w_impo_remu, current_format_imp2)
                 
                 # --------------------------------------------------
-                #  EXTRAE DIAS LABORADO
+                #  EXTRAE DIAS LABORADOS
                 # --------------------------------------------------
-
                 w_smes = 11 if w_mes_lote==5 else 5     #-- Posiciona el mes para incrementarlo
                 w_anio = w_ano_lote
-
-                for w_ind in range(1, 7):
-                    w_codchar = 77 + w_ind      # H,I,J,K,L,M
-                    w_refcel = chr(w_codchar) + "8"
-                    w_refmes = self.mes_literal(w_smes).upper()[:3] + "-" + str(w_anio)  #-- DIAS TRABAJADOS INTERMITENTES
-                    worksheet.write(w_refcel, w_refmes, cell_format_tito)
-                    w_smes += 1
-                    if (w_smes > 12):
-                        w_smes = 1
-                        w_anio += 1
 
                 w_Fech_Desde = date(w_anio, 5, 1) if w_smes==11 else date(w_anio-1, 11, 1)
                 w_Fech_Hasta = date(w_anio, 10, 31) if w_smes==11 else date(w_anio, 4, 30)
@@ -1103,14 +1093,15 @@ class HrPayslip(models.Model):
                     if (w_totdias > 0):
                         worksheet.write(w_fila, w_col, w_totdias, current_format_cent)
                     else: 
-                        worksheet.write(w_fila, w_col, "OJO", current_format_cent)
+                        worksheet.write(w_fila, w_col, "-", current_format_cent)
 
                     w_smes += 1
                     if (w_smes > 12):
                         w_smes = 1
                         w_anio += 1
 
-                w_tota_dtrab = w_acum_dias *  (w_boleta.x_studio_salario_mensual/30)
+                # w_tota_dtrab = w_acum_dias *  ((w_impo_remu/360) if w_impo_remu > 0 else 0.00)
+                w_tota_dtrab = w_acum_dias
                 worksheet.write(w_fila, 19, w_tota_dtrab, current_format_imp2)  
 
 
