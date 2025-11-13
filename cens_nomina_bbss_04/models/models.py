@@ -553,7 +553,7 @@ class HrPayslip(models.Model):
             # CABECERA DEL REPORTE
             # -------------------------------------------------------------------------------------
             worksheet.insert_image('A2', 'src/user/cens_nomina_excel_01/static/description/logo-tiny_96.png')
-            worksheet.insert_image('AA2', 'src/user/cens_nomina_excel_01/static/description/Logo-Odoo-tiny.png', 
+            worksheet.insert_image('AD2', 'src/user/cens_nomina_excel_01/static/description/Logo-Odoo-tiny.png', 
                                          {'x_scale': 0.7, 'y_scale': 0.7})
             worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -582,16 +582,16 @@ class HrPayslip(models.Model):
             worksheet.write('N7', 'DIAS LABORADOS INTERMITENTE', cell_format_tuti)
             
             worksheet.merge_range('U7:W7', 'Merged Cells', merge_format)
-            worksheet.write('U7', 'COSTOS UNID.TIEMPO', cell_format_tuti)
+            worksheet.write('U7', 'COSTOS UNID.TIEMPO', cell_format_tut2)
 
             worksheet.merge_range('X7:Z7', 'Merged Cells', merge_format)
-            worksheet.write('X7', 'DESGLOSE PERIODO', cell_format_tut2)
+            worksheet.write('X7', 'DESGLOSE PERIODO', cell_format_tuti)
 
             worksheet.merge_range('AA7:AB7', 'Merged Cells', merge_format)
-            worksheet.write('AA7', 'PERIODO CÁLCULO', cell_format_tuti)
+            worksheet.write('AA7', 'PERIODO CÁLCULO', cell_format_tut2)
 
-            worksheet.merge_range('AC7:AF7', 'Merged Cells', merge_format)
-            worksheet.write('AC7', 'LIQUIDACIÓN BENEFICIOS', cell_format_tut2)
+            worksheet.merge_range('AF7:AI7', 'Merged Cells', merge_format)
+            worksheet.write('AF7', 'LIQUIDACIÓN BENEFICIOS', cell_format_tuti)
             
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
@@ -928,10 +928,10 @@ class HrPayslip(models.Model):
             worksheet.write('AC8', 'IMPORTE CTS', cell_format_tit2)                  #-- 17   REGISTRO EGRESOS
             worksheet.write('AD8', 'OBSERVACIONES', cell_format_titu)                #-- 18
 
-            worksheet.write('AE8', 'VACACIONES TRUNCAS', cell_format_tit8)       #-- 38
-            worksheet.write('AF8', 'CTS TRUNCO', cell_format_tit8)               #-- 39
-            worksheet.write('AG8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
-            worksheet.write('AH8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
+            worksheet.write('AF8', 'VACACIONES TRUNCAS', cell_format_tit8)       #-- 38
+            worksheet.write('AG8', 'CTS TRUNCO', cell_format_tit8)               #-- 39
+            worksheet.write('AH8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
+            worksheet.write('AI8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
 
             #----------------------------------------------------------------
             worksheet.write('I9', '(aaa/mm/dd)', cell_format_tut4)                 #-- 09
@@ -960,10 +960,10 @@ class HrPayslip(models.Model):
             worksheet.write('AC9', 'S/.', cell_format_tut4)                 #-- 21
             worksheet.write('AD9', '', cell_format_tut4)                    #-- 22
 
-            worksheet.write('AE9', '(Cese)', cell_format_sub8)         #-- 40
-            worksheet.write('AF9', '(Cese)', cell_format_sub8)         #-- 41
-            worksheet.write('AG9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
-            worksheet.write('AH9', '(Cese)', cell_format_sub8)         #-- 43
+            worksheet.write('AF9', '(Cese)', cell_format_sub8)         #-- 40
+            worksheet.write('AG9', '(Cese)', cell_format_sub8)         #-- 41
+            worksheet.write('AH9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
+            worksheet.write('AI9', '(Cese)', cell_format_sub8)         #-- 43
 
             #-----
             # worksheet.autofilter(8, 60, 8, 65)  #--- Coloca FILTROS en RESUMEN 
@@ -1122,9 +1122,10 @@ class HrPayslip(models.Model):
                 w_desgl_anio = w_period_cts.get('anios', 0)
                 w_desgl_mess = w_period_cts.get('meses', 0)
                 w_desgl_dias = w_period_cts.get('dias', 0)
-                w_trunco_cts = 0.00
-                w_trunco_cts += ((w_impo_remu/12) * w_period_cts.get('meses', 0))                #--- Por el rango meses
-                w_trunco_cts += (((w_impo_remu/12)/30) * w_period_cts.get('dias', 0))           #--- Por el rango días
+                
+                w_cts_costo_mm = ((w_impo_remu/12) * w_period_cts.get('meses', 0))                 #--- Por el rango meses
+                w_cts_costo_dd = (((w_impo_remu/12)/30) * w_period_cts.get('dias', 0))             #--- Por el rango días
+                w_trunco_cts   = (w_tota_dtrab * w_cts_costo_dd)
 
                 worksheet.write(w_fila, 23, w_desgl_anio, current_format_nume)
                 worksheet.write(w_fila, 24, w_desgl_mess, current_format_nume)
