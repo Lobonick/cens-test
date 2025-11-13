@@ -306,8 +306,21 @@ class HrPayslip(models.Model):
     
 
     def action_listado_cts_intermit(self):
+        # Verificar si se usa un LOTE de Julio o Diciembre
+        w_user = self.env.user.id 
+        w_lote = self.browse(self._context.get('active_ids', []))
+        w_pase = False 
+        for w_boleta in w_lote:
+            w_mes_lote = w_boleta.date_from.month
+            w_ano_lote = w_boleta.date_from.year
+            w_pase = (True if w_mes_lote in [5, 11] else False)
+        
+        if not w_pase:
+            raise UserError(_('CUIDADO: Debe usar un LOTE de MAYO o NOVIEMBRE.'))
+        
         # Crear archivo Excel en memoria
         output = BytesIO()
+        #w_mes_lote = 7 if w_mes_lote == 6 else w_mes_lote   #--Reajusta x el mmomento
         #workbook = xlsxwriter.Workbook(output)
         try:
             # Crear el workbook en el buffer
@@ -887,12 +900,18 @@ class HrPayslip(models.Model):
             worksheet.write('L8', 'SEXTO GRATIFIC', cell_format_titu)               #-- 11
             worksheet.write('M8', 'TOTAL REMUNERACIÓN', cell_format_tit2)           #-- 09
 
-            worksheet.write('N8', 'mm', cell_format_tito)                      #-- 10
-            worksheet.write('O8', 'mm', cell_format_tito)                      #-- 13
-            worksheet.write('P8', 'mm', cell_format_tito)                      #-- 13  SEMESTRE LABORADO
-            worksheet.write('Q8', 'mm', cell_format_titu)                      #-- 12     INTERMITENTES
-            worksheet.write('R8', 'mm', cell_format_titu)                      #-- 13
-            worksheet.write('S8', 'mm', cell_format_titu)                      #-- 14
+            w_smes = 11 if w_mes_lote==5 else 5     #-- Posiciona el mes para incrementarlo
+            w_anio = w_ano_lote
+            
+            for w_ind in range(1, 7):
+                w_codchar = 71 + w_ind      # H,I,J,K,L,M
+                w_refcel = chr(w_codchar) + "8"
+                w_refmes = self.mes_literal(w_smes).upper()[:3] + "-" + str(w_anio)  #-- DIAS TRABAJADOS INTERMITENTES
+                worksheet.write(w_refcel, w_refmes, cell_format_tito)
+                w_semestre += 1
+                if (w_smes > 12):
+                    w_smes = 1
+                    w_anio += 1
             worksheet.write('T8', 'TOTAL DIAS', cell_format_titu)              #-- 15  TOTAL DIAS LABORADOS
 
             worksheet.write('U8', 'AÑOS', cell_format_tito)                         #-- 10
