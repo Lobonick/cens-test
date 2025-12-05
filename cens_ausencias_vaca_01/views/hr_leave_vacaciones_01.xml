@@ -18,8 +18,11 @@
                     <field name="company_id" invisible="1"/>
                     <field name="user_id" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
-                    <field name="name" string="Código"/>
-                    <field name="state"/>
+                    <field name="job_id"/>
+                    <field name="x_studio_documento_identidad"/>
+                    <field name="department_id"/>
+                    <field name="x_studio_negocio_unidad"/>
+                    <field name="x_studio_estado_contrato"/>
                 </tree>
             </field>
         </record>
