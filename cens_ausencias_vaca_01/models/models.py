@@ -12,8 +12,9 @@ import datetime
 _logging = logging.getLogger(__name__)
 
 
-class HrLeaveEmpleados(models.Model):
-
+class HrEmployeeCustom(models.Model):
+    _inherit = 'hr.employee'
+    
     def action_genera_calculo_vaca(self):
         wTexto = ""
 
