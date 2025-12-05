@@ -23,7 +23,7 @@
                     <field name="department_id"/>
                     <field name="x_studio_negocio_unidad"/>
                     <field name="job_id"/>
-                    <field name="x_studio_estado_contrato"/>
+                    <field name="x_studio_estado_contrato" optional="show" widget="badge" decoration-info="x_studio_estado_contrato == 'draft'" decoration-warning="x_studio_estado_contrato == 'close'" decoration-success="x_studio_estado_contrato == 'open'"/>
                 </tree>
             </field>
         </record>
@@ -31,7 +31,7 @@
 
         <!-- ACTION mostrar epleados a seleccionar -->
         <record id="action_ausencias_vaca_01" model="ir.actions.act_window">
-            <field name="name">Cálculo Vacaciciones - Selección</field>
+            <field name="name">Cálculo Vacaciones - Selección</field>
             <field name="res_model">hr.employee</field>
             <field name="view_mode">tree</field>
             <field name="context">{'create': 0}</field>
