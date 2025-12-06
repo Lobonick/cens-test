@@ -170,7 +170,7 @@ class HrEmployeeCustom(models.Model):
             worksheet.write('B3', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H4', 'HISTÓRICO DE VACACIONES - EMPLEADOS CENS', cell_format_cabe)
+            worksheet.write('H4', 'VACACIONES CÁLCULO GENERAL - EMPLEADOS CENS', cell_format_cabe)
             # ------
             worksheet.write('A5', 'FECHA:')
             worksheet.write('B5', datetime.now(), cell_format_fech)
@@ -457,7 +457,8 @@ class HrEmployeeCustom(models.Model):
                                 })
                             w_fila += 1
                 else:
-                    worksheet.write(w_fila, 23, "NO REGISTRA VACACIONES GOZADAS", cell_format_left)            
+                    worksheet.write(w_fila, 23, "NO REGISTRA VACACIONES GOZADAS", cell_format_left)
+                    w_fila += 1            
 
             worksheet.activate()
             workbook.close()

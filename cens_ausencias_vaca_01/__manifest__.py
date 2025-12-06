@@ -13,7 +13,7 @@
 	'author': "Área de Sistemas - CENS-PERÚ",
     "website": "https://www.cens.com.pe",
 	'category': 'Human Resources/Time-Off',
- 	'version': '16.0.1.09',
+ 	'version': '16.0.1.10',
     'license': 'Other proprietary',
 	'depends': ['base','hr','hr_holidays','calendar','resource'],
     'data': [
