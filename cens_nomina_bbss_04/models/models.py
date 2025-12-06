@@ -1138,7 +1138,9 @@ class HrPayslip(models.Model):
                 w_acum_tota_1 += w_trunco_cts
 
                 if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 29, w_boleta.x_studio_cese_comentarios + " " + w_boleta.x_studio_cese_observaciones, current_format_left)
+                    w_coment = (w_boleta.x_studio_cese_comentarios if w_boleta.x_studio_cese_comentarios else "")
+                    w_obsvac = (w_boleta.x_studio_cese_observaciones if w_boleta.x_studio_cese_observaciones else "")
+                    worksheet.write(w_fila, 29, w_coment + " " + w_obsvac, current_format_left)
                     # -----------------------------------------
                     # BOLETA PAGO - CONCEPTOS DE LIQUIDACIÓN  - ASIGNAR CAMPOS REALES
                     # -----------------------------------------
