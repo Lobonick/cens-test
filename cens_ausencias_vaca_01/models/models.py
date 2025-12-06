@@ -283,15 +283,30 @@ class HrEmployeeCustom(models.Model):
             # PROCESA CADA REGISTRO SELECCIONADO EN EL LIST-TREE
             # ------------------------------------------------------
             for employee in sorted_employees:
+
+                w_nord += 1
+                w_tiene_filas = True
+                # ----------------------------------
+                # Colorea el Background de la fila
+                # ----------------------------------
+                if (w_nord % 2 == 0):  
+                    w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
+                    w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
+                else:
+                    w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
+                    w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
+
+                worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
+                        'type': 'formula',
+                        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                        'format': w_formato_colorfila
+                    })
                 # ------------------------------
                 # IMPRIME DATOS DEL EMPLEADO 
                 # ------------------------------
                 w_tiene_cese  = employee.contract_id.x_empleado_cesado
                 w_fecha_ingr  = employee.contract_id.x_studio_fecha_de_ingreso
                 w_employee_id = employee.id
-
-                w_nord += 1
-                w_tiene_filas = True
 
                 worksheet.write(w_fila, 0, w_nord, cell_format_cent)                                        #-- Ord
                 worksheet.write(w_fila, 1, employee.name, cell_format_left)                                 #-- Nombre Empleado
@@ -420,18 +435,18 @@ class HrEmployeeCustom(models.Model):
                             # ----------------------------------
                             # Colorea el Background de la fila
                             # ----------------------------------
-                            if (w_nord % 2 == 0):  
-                                w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
-                                w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
-                            else:
-                                w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
-                                w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
+                            #if (w_nord % 2 == 0):  
+                            #    w_formato_colorfila = workbook.add_format({'bg_color': '#EBF1DE',})
+                            #    w_formato_colorfilb = workbook.add_format({'bg_color': '#EEECE1',})     #-- Cllor Claro
+                            #else:
+                            #    w_formato_colorfila = workbook.add_format({'bg_color': '#D8E4BC'})
+                            #    w_formato_colorfilb = workbook.add_format({'bg_color': '#DDD9C4',})     #-- Color Oscuro
 
-                            worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
-                                    'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
-                                    'format': w_formato_colorfila
-                                })
+                            #worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
+                            #        'type': 'formula',
+                            #        'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                            #        'format': w_formato_colorfila
+                            #    })
                             
                             worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
                                     'type': 'formula',
