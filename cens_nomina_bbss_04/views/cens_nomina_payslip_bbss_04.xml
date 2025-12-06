@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_payslip_tree_inherit_bbss04" model="ir.ui.view">
+            <field name="name">hr.payslip.tree.inherit.bbss04</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="priority">30</field> 
+            <field name="arch" type="xml">
+                <!-- ============================== -->
+                <!--  GENERA REPORTE CALCULO CTS    -->
+                <!-- ============================== -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_listado_cts_intermit" 
+                            string="CTS" 
+                            type="object" 
+                            class="btn-warning oe_button"
+                            icon="fa-file-excel-o"
+                            confirm="¿Seguro de IMPRIMIR listado de CTS Intermitentes?"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
