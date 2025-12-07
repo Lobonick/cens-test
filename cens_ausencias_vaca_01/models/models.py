@@ -445,13 +445,13 @@ class HrEmployeeCustom(models.Model):
                             w_formato_colorfuente2 = workbook.add_format({'bg_color': '#EBF1DE' if (w_nord % 2 == 0) else '#D8E4BC',
                                                                             'font_color': '#963634'})
                             
-                            worksheet.conditional_format(f'R{w_fila}:X{w_fila}', {
+                            worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                                     'type': 'formula',
                                     'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                                 })
                             
-                            worksheet.conditional_format(f'Y{w_fila}:Z{w_fila}', {
+                            worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
                                     'type': 'formula',
                                     'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfilb
