@@ -430,13 +430,13 @@ class HrEmployeeCustom(models.Model):
 
                             worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'criteria': f'NOT(ISBLANK($S${w_fila+1}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfila
                                 })
                             
                             worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'criteria': f'NOT(ISBLANK($S${w_fila+1}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfilb
                                 })
                             
@@ -447,13 +447,13 @@ class HrEmployeeCustom(models.Model):
                             
                             worksheet.conditional_format(f'R{w_fila+1}:X{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si M no está vacía
+                                    'criteria': f'NOT(ISBLANK($S${w_fila+1}))',  # Evalúa si M no está vacía
                                     'format': w_formato_colorfuente1 if w_switch == 0 else w_formato_colorfuente2
                                 })
                             
                             worksheet.conditional_format(f'Y{w_fila+1}:Z{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'criteria': f'NOT(ISBLANK($S${w_fila+1}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfilb
                                 })
                             w_fila += 1
@@ -471,12 +471,12 @@ class HrEmployeeCustom(models.Model):
 
                     worksheet.conditional_format(f'A{w_fila+1}:K{w_fila+1}', {
                             'type': 'formula',
-                            'criteria': f'NOT(ISBLANK($S${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                            'criteria': f'NOT(ISBLANK($Q${w_fila+1}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                             'format': w_formato_colorfila
                         })
                     worksheet.conditional_format(f'L{w_fila+1}:Q{w_fila+1}', {
                                     'type': 'formula',
-                                    'criteria': f'NOT(ISBLANK($Q${w_fila}))',  # Evalúa si columna "M" no está vacía #D8E4BC
+                                    'criteria': f'NOT(ISBLANK($Q${w_fila+1}))',  # Evalúa si columna "M" no está vacía #D8E4BC
                                     'format': w_formato_colorfilb
                                 })
                     w_fila += 1            
