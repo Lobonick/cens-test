@@ -359,7 +359,9 @@ class HrEmployeeCustom(models.Model):
                 w_cant_dd = w_period_vac.get('dias', 0)
                 w_dias_acum  = (w_cant_mm * 30) + (w_cant_dd)
                 w_dias_acum  = w_dias_acum * (2.5/30)
-                w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_retro_anio else w_dias_acum
+
+                w_dias_acum  = (w_dias_acum - w_cant_dd_gozados)
+                # w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_retro_anio else w_dias_acum
                 worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
                 # 'J7', 'Días Vacaciones pendientes'
