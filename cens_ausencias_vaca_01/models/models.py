@@ -345,13 +345,13 @@ class HrEmployeeCustom(models.Model):
                 worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_nume)
 
                 # 'I7', 'Días vacaciones acumuladas truncas'
-                w_menos_anio = False
+                w_retro_anio = False
                 w_nuevo_aniv = date(w_fecha_actu.year, w_fecha_ingr.month,w_fecha_ingr.day)
                 if (w_nuevo_aniv > w_fecha_fina):
                     w_nuevo_aniv = date(w_nuevo_aniv.year-1, w_nuevo_aniv.month, w_nuevo_aniv.day)
-                    w_menos_anio = False
+                    w_retro_anio = True
                 else:
-                    w_menos_anio = True
+                    w_retro_anio = False
                 
                 w_period_vac = self.desglosa_periodo("VACACIONES PERIODO TRUNCO", w_nuevo_aniv, w_fecha_fina)
                 w_cant_aa = w_period_vac.get('anios', 0)
@@ -359,7 +359,7 @@ class HrEmployeeCustom(models.Model):
                 w_cant_dd = w_period_vac.get('dias', 0)
                 w_dias_acum  = (w_cant_mm * 30) + (w_cant_dd)
                 w_dias_acum  = w_dias_acum * (2.5/30)
-                w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_menos_anio else w_dias_acum
+                w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_retro_anio else w_dias_acum
                 worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
                 # 'J7', 'Días Vacaciones pendientes'
