@@ -868,7 +868,7 @@ class HrPayslip(models.Model):
             worksheet.set_column(10, 10, 9)    #-- MES-4             
             worksheet.set_column(11, 11, 9)    #-- MES-5             
             worksheet.set_column(12, 12, 9)    #-- MES-6              
-            worksheet.set_column(13, 13, 12)    #-- IMPORTE TOTAL HORAS
+            worksheet.set_column(13, 13, 12)    #-- IMPORTE TOTAL DIAS
             worksheet.set_column(14, 14, 12)    #-- Mes - 01                        O
             worksheet.set_column(15, 15, 12)    #-- Mes - 02                        P
             worksheet.set_column(16, 16, 12)    #-- Mes - 03                        Q
@@ -1402,7 +1402,7 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 6, w_dato, current_format_cent)                 #-- Moneda
 
                 #---------------------------------------------------------------------------------------------
-                # ESTRA TODAS LAS BOLETAS DEL EMPLEADO CENS EN CURSO
+                # EXTRAE TODAS LAS BOLETAS DEL EMPLEADO CENS EN CURSO
                 # --------------------------------------------------
                 # Buscar todas las boletas del empleado de una vez para posteriormente extraer los datos que
                 # se requieren (w_Fech_Tope, x_studio_dias_vacaciones).
