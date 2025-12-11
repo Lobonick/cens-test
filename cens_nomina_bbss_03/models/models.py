@@ -1407,7 +1407,6 @@ class HrPayslip(models.Model):
                 # Buscar todas las boletas del empleado de una vez para posteriormente extraer los datos que
                 # se requieren (w_Fech_Tope, x_studio_dias_vacaciones).
                 #---------------------------------------------------------------------------------------------
-                #w_semestre = 6
                 w_Fech_Tope = date(w_ano_lote, 7, 1) if w_mes_lote==7 else date(w_ano_lote+1, 1, 1)
                 boletas_empleado = self.env['hr.payslip'].search([
                     ('employee_id', '=', w_boleta.employee_id.id),
@@ -1450,7 +1449,7 @@ class HrPayslip(models.Model):
                 w_ok = 0
                 for codigo in range(79, 85): 
                     w_refcel = chr(codigo)+"8"
-                    w_mes    = codigo-78
+                    w_mes    = w_semestre + codigo-78
                     w_col = 13 + (codigo - 78)
                     w_refmes = hext_por_mes.get(w_mes, 0) + bono_por_mes.get(w_mes, 0) + feri_por_mes.get(w_mes, 0)
                     w_acum_rvari += w_refmes
