@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú de Reporte de Cálculo de Vacaciones -->
+    <menuitem 
+        id="menu_ausencias_vaca_01"
+        name="Vacaciones"
+        parent="hr_holidays.menu_hr_holidays_root"
+        sequence="100"/>
+        <!-- parent="hr_payroll.menu_hr_payroll_payslips" -->
+
+    <!-- Submenú para Control Anual de Renta -->
+    <menuitem 
+        id="menu_ausencias_vaca_01_control"
+        name="Reporte de Cálculo Vacaciones"
+        parent="menu_ausencias_vaca_01"
+        action="action_ausencias_vaca_01"
+        sequence="10"/>
+</odoo>
