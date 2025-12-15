@@ -360,7 +360,7 @@ class HrEmployeeCustom(models.Model):
                 w_vaca_trunc  = (w_cant_mm * 30) + (w_cant_dd)
                 w_vaca_trunc  = int(w_vaca_trunc * (2.5/30))
 
-                w_dias_acum  = (w_dias_acum - w_dias_gozad)
+                #w_dias_acum  = (w_dias_acum - w_dias_gozad)
                 # w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_retro_anio else w_dias_acum
                 worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
