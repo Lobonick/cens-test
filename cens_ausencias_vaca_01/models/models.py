@@ -326,23 +326,23 @@ class HrEmployeeCustom(models.Model):
                 worksheet.write(w_fila, 9, w_cant_mm, cell_format_cent)    #-- mm
                 worksheet.write(w_fila, 10, w_cant_dd, cell_format_cent)    #-- dd
                 # -----------------------------------------------------------------------------------------
-                # Calculamos el nro de días disponibles
+                # Calculamos el nro de días DISPONIBLES
                 # ---------------------------------------
                 w_tramo_anio = (w_cant_aa*360)
                 w_tramo_mess = ((((w_tramo_anio/30) if w_tramo_anio > 0 else 0) + w_cant_mm) * 2.5)
                 w_tramo_dias = (w_cant_dd * (2.5/30))
-                w_dias_acum  = w_tramo_mess + w_tramo_dias 
+                w_dias_dispo  = int(w_tramo_mess + w_tramo_dias)     #-- TOTAL DIAS DISPONIBLES 
 
                 # 'G7', 'Total dias vacaciones acumuladas
-                worksheet.write(w_fila, 11, w_dias_acum, cell_format_nume)
+                worksheet.write(w_fila, 11, w_dias_dispo, cell_format_nume)
 
-                # 'H7', 'Días Vacaciones Gozadas'
-                w_cant_dd_gozados = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, employee.id))
-                worksheet.write(w_fila, 12, w_cant_dd_gozados,cell_format_nume)
+                # 'H7', 'Días Vacaciones GOZADAS'
+                w_dias_gozad = (self.extrae_vacaciones_gozadas(w_fecha_ingr, w_fecha_fina, employee.id))
+                worksheet.write(w_fila, 12, w_dias_gozad, cell_format_nume)
 
-                # 'I7', 'Días vacaciones NO acumuladas'
-                w_cant_dd_nogozados = (w_dias_acum - w_cant_dd_gozados) 
-                worksheet.write(w_fila, 13, w_cant_dd_nogozados,cell_format_nume)
+                # 'I7', 'Días vacaciones NO GOZADAS'
+                w_dias_nogoz = (w_dias_dispo - w_dias_gozad) 
+                worksheet.write(w_fila, 13, w_dias_nogoz, cell_format_nume)
 
                 # 'I7', 'Días vacaciones acumuladas truncas'
                 w_retro_anio = False
@@ -357,15 +357,15 @@ class HrEmployeeCustom(models.Model):
                 w_cant_aa = w_period_vac.get('anios', 0)
                 w_cant_mm = w_period_vac.get('meses', 0)
                 w_cant_dd = w_period_vac.get('dias', 0)
-                w_dias_acum  = (w_cant_mm * 30) + (w_cant_dd)
-                w_dias_acum  = w_dias_acum * (2.5/30)
+                w_vaca_trunc  = (w_cant_mm * 30) + (w_cant_dd)
+                w_vaca_trunc  = int(w_vaca_trunc * (2.5/30))
 
-                w_dias_acum  = (w_dias_acum - w_cant_dd_gozados)
+                w_dias_acum  = (w_dias_acum - w_dias_gozad)
                 # w_dias_acum  = (w_dias_acum - w_cant_dd_gozados) if w_retro_anio else w_dias_acum
                 worksheet.write(w_fila, 14, w_dias_acum, cell_format_nume)
 
                 # 'J7', 'Días Vacaciones pendientes'
-                w_dias_disp  = w_cant_dd_nogozados - w_dias_acum
+                w_dias_disp  = w_dias_nogoz - w_dias_acum
                 w_dias_pend  = 30 if w_dias_disp >= 60 else w_dias_disp
                 w_dias_venc  = w_dias_disp - 30 if w_dias_disp >= 60 else 0
                 worksheet.write(w_fila, 15, w_dias_pend, cell_format_nume)
