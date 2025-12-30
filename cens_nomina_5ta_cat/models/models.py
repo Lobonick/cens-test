@@ -129,6 +129,7 @@ class renta_quinta_Custom(models.Model):
             ], limit=1)
             if contract:
                 # Asignar valores desde el contrato
+                _logger.info('CUIDADO CONTRATO: ', record.employee_id.id, record.employee_id.name)
                 record.contract_id = contract.id if contract else False
                 record.contract_name = contract.name if contract else False
                 record.contract_date_start = contract.date_start if contract else False
