@@ -127,20 +127,21 @@ class renta_quinta_Custom(models.Model):
                 ('employee_id', '=', record.employee_id.id),
                 ('state', '=', 'open')  # Solo contratos activos
             ], limit=1)
-            
-            # Asignar valores desde el contrato
-            record.contract_id = contract.id if contract else False
-            record.contract_name = contract.name if contract else False
-            record.contract_date_start = contract.date_start if contract else False
-            record.contract_date_end = contract.date_end if contract else False
-            record.contract_date_ingreso = contract.x_studio_fecha_de_ingreso if contract else False
-            record.contract_date_cese = contract.x_studio_fecha_de_cese if contract else False
-            record.contract_movili = contract.x_studio_movilidad_mensual if contract else 0.0
-            record.contract_alimen = contract.x_studio_alimentacion if contract else 0.0
-            record.contract_bonifi = contract.x_studio_bonificacion_x_educacion if contract else 0.0
-            record.contract_utilid = contract.x_studio_utilidades_voluntarias if contract else 0.0
-            record.contract_wage = contract.wage if contract else 0.0
-
+            if contract:
+                # Asignar valores desde el contrato
+                record.contract_id = contract.id if contract else False
+                record.contract_name = contract.name if contract else False
+                record.contract_date_start = contract.date_start if contract else False
+                record.contract_date_end = contract.date_end if contract else False
+                record.contract_date_ingreso = contract.x_studio_fecha_de_ingreso if contract else False
+                record.contract_date_cese = contract.x_studio_fecha_de_cese if contract else False
+                record.contract_movili = contract.x_studio_movilidad_mensual if contract else 0.0
+                record.contract_alimen = contract.x_studio_alimentacion if contract else 0.0
+                record.contract_bonifi = contract.x_studio_bonificacion_x_educacion if contract else 0.0
+                record.contract_utilid = contract.x_studio_utilidades_voluntarias if contract else 0.0
+                record.contract_wage = contract.wage if contract else 0.0
+            else:
+                _logger.info('ERROR AL BUSCAR CONTRATO DE: ', record.employee_id.id, record.employee_id.name)
    
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
