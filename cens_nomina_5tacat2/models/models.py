@@ -136,7 +136,8 @@ class renta_quinta_Custom(models.Model):
                 record.contract_date_end = contract.date_end if contract else False
                 record.contract_date_ingreso = contract.x_studio_fecha_de_ingreso if contract else False
                 record.contract_date_cese = contract.x_studio_fecha_de_cese if contract else False
-                record.contract_movili = contract.x_studio_movilidad_mensual if contract else 0.0
+                # record.contract_movili = contract.x_studio_movilidad_mensual if contract else 0.0
+                record.contract_movili = 0.0
                 record.contract_alimen = contract.x_studio_alimentacion if contract else 0.0
                 record.contract_bonifi = contract.x_studio_bonificacion_x_educacion if contract else 0.0
                 record.contract_utilid = contract.x_studio_utilidades_voluntarias if contract else 0.0
