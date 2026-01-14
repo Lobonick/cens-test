@@ -293,13 +293,13 @@
                                 string="Importe AFP/ONP" 
                                 nolabel="1" 
                                 colspan="2"
+                                class="oe_subtotal_footer_separator"
                                 style="padding: 5px; color: red; font-weight: bold; text-align: center; font-size: 14px;"/>
                             -->
                             <field name="x_cens_vaca_itot" 
                                 string="Importe total VACA" 
-                                nolabel="1" 
+                                nolabel="1"
                                 colspan="2" 
-                                class="oe_subtotal_footer_separator"
                                 style="background-color: #128C7E; color: white; font-weight: bold; padding: 8px; border-radius: 5px; text-align: center; font-size: 16px;"/>
                         </group>
                     </group>
@@ -467,12 +467,20 @@
                                         confirm="¿Seguro de TRASLADAR RESUMEN LIQUIDACIÓN a la Boleta de Pago?"/>
                                 
                                 <button name="action_recalcular_bbss" 
-                                        string=" Recalcular" 
+                                        string=" Recálculo Totalizados" 
                                         type="object" 
-                                        class="btn-info oe_button"
+                                        class="btn-success oe_button"
                                         icon="fa-calculator"
                                         style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
-                                        confirm="¿Seguro de RECALCULAR los Beneficios Sociales?"/>
+                                        confirm="¿Seguro de RECALCULAR solo los TOTALIZADOS de los Beneficios Sociales?"/>
+
+                                <button name="action_recalcular_bbss_2" 
+                                        string=" Recálculo Global" 
+                                        type="object" 
+                                        class="btn-success oe_button"
+                                        icon="fa-calculator"
+                                        style="flex: 1; max-width: 120px; background-color: #6f42c1; border: 1px solid #6f42c1; color: #212529; padding: 10px 8px; border-radius: 5px; font-weight: 500;"
+                                        confirm="¿Seguro de RECALCULAR GLOBALMENTE los Beneficios Sociales?"/>
                             </div>
 
                         </group>

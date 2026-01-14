@@ -104,8 +104,8 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_afp_flujo = fields.Float(compute='_calcula_afp_comision_flujo', default=0.00, store=True)
     x_cens_liqu_iafp = fields.Float(string='Descuento AFP', default=0.00, store=True, help='Descuento AFP.')
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
-    x_cens_apor_mbas = fields.Float(compute='_calcula_Monto_Base', default=0.00, store=True)
-    x_cens_apor_essa = fields.Float(compute='_calcula_aporte_essalud', default=0.00, store=True)
+    x_cens_apor_mbas = fields.Float(default=0.00, store=True)
+    x_cens_apor_essa = fields.Float(default=0.00, store=True)
     x_cens_desc_otro = fields.Float(string='Otros descuentos', default=0.00, store=True, help='Al registra el importe de otros descuentos coloque una breve descripción abajo.')
     x_cens_desc_5cat = fields.Float(string='Descuento 5ta.Cat.', default=0.00, store=True, help='Impuesto a la Renta 5ta.Cat.')
     
@@ -416,16 +416,24 @@ class HrPayslipLiquidacion(models.Model):
             r.x_cens_liqu_tota -= (r.x_cens_desc_otro + r.x_cens_desc_5cat)
 
 
-    @api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia')
+    @api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia', 'x_cens_vaca_igoz')
     def _calcula_Monto_Base(self):
         for r in self: 
-            r.x_cens_apor_mbas = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia)
+            r.x_cens_apor_mbas = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia) - r.x_cens_vaca_igoz
+
+    def calculator_Monto_Base(self):
+        for r in self: 
+            r.x_cens_apor_mbas = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia) - r.x_cens_vaca_igoz
 
 
-    @api.depends('x_cens_apor_mbas')
+    @api.depends('x_cens_vaca_itot')
     def _calcula_aporte_essalud(self):
         for r in self: 
-            r.x_cens_apor_essa = (r.x_cens_apor_mbas * 0.09)
+            r.x_cens_apor_essa = (r.x_cens_vaca_itot * 0.09)
+
+    def calculator_aporte_essalud(self):
+        for r in self: 
+            r.x_cens_apor_essa = (r.x_cens_vaca_itot * 0.09)
 
     # ===============================================================================================
     # INICIO - Campos liquidación
@@ -807,7 +815,32 @@ class HrPayslipLiquidacion(models.Model):
             #
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "1"})
+            # self.action_liquidacion_compone()
+            self._calcula_total_ccts()
+            self._calcula_total_vaca()
+            self._calcula_total_grati()
+            self._calcula_total_resumen()
+
+            self.calculator_Monto_Base()
+            self.calculator_aporte_essalud()
+            self.recompute()
+        pass
+
+    def action_recalcular_bbss_2(self):  
+        self.ensure_one()
+        w_mensajes = ""
+        if self.contract_cesado:
+            #
+            self.ensure_one()
+            self.write({'x_cens_tipo_calc': "1"})
             self.action_liquidacion_compone()
+            #self._calcula_total_ccts()
+            #self._calcula_total_vaca()
+            #self._calcula_total_grati()
+            #self._calcula_total_resumen()
+
+            #self.calculator_Monto_Base()
+            #self.calculator_aporte_essalud()
             self.recompute()
         pass
 
@@ -1020,6 +1053,9 @@ class HrPayslipLiquidacion(models.Model):
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "1"})
             self.action_liquidacion_compone()
+            self.calculator_Monto_Base()
+            self.calculator_aporte_essalud()
+
             self.recompute()
         pass
 
@@ -1042,6 +1078,8 @@ class HrPayslipLiquidacion(models.Model):
             self.write({'x_cens_tipo_calc': "2"})
             self.write({'generado': True})
             self.action_liquidacion_compone()
+            self.calculator_Monto_Base()
+            self.calculator_aporte_essalud()
             self.recompute()
         pass
 
