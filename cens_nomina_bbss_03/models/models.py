@@ -763,6 +763,7 @@ class HrPayslip(models.Model):
                 self.write({
                         'x_studio_gratificacion': w_grati_impo,
                         'x_studio_bonificacion_extraordinaria_9': w_grati_boni,
+                        'x_studio_adelanto_gratificacion': w_grati_tota
                     })  
                 
                 w_fila += 1
