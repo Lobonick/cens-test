@@ -767,8 +767,7 @@ class HrPayslip(models.Model):
                     })  
                 
                 w_fila += 1
-
-            self.recompute()
+                self.recompute()
 
         except Exception as e:
             raise UserError(_('Error al generar el Excel: %s') % str(e))
