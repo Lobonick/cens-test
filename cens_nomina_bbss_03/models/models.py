@@ -760,14 +760,14 @@ class HrPayslip(models.Model):
                 #  ACTUALIZA CAMPOS DE LA GRATIFICACION EN LA BOLETA
                 # --------------------------------------------------
                 # self.ensure_one()
-                self.write({
+                w_boleta.write({
                         'x_studio_gratificacion': w_grati_impo,
                         'x_studio_bonificacion_extraordinaria_9': w_grati_boni,
                         'x_studio_ajuste_adelanto_gratificacion': w_grati_tota,
                     })  
                 
                 w_fila += 1
-                self.recompute()
+                w_boleta.recompute()
 
         except Exception as e:
             raise UserError(_('Error al generar el Excel: %s') % str(e))
