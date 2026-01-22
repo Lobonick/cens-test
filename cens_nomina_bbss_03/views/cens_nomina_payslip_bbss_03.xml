@@ -16,6 +16,12 @@
                             class="btn-warning oe_button"
                             icon="fa-file-excel-o"
                             confirm="¿Seguro de IMPRIMIR listado de Gratificaciones?"/>
+                    <button name="action_actualiza_gratificaciones" 
+                            string="Actualiza Gratificaciones" 
+                            type="object" 
+                            class="btn-warning oe_button"
+                            icon="fa-cog"
+                            confirm="¿Seguro de ACTUALIZAR Gratificaciones en las Boletas de Pago?"/>
               </xpath>
         </field>
     </record>
