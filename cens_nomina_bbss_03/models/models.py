@@ -759,14 +759,14 @@ class HrPayslip(models.Model):
                 # --------------------------------------------------
                 #  ACTUALIZA CAMPOS DE LA GRATIFICACION EN LA BOLETA
                 # --------------------------------------------------
-                self.ensure_one()
+                # self.ensure_one()
                 self.write({
                         'x_studio_gratificacion': w_grati_impo,
                         'x_studio_bonificacion_extraordinaria_9': w_grati_boni,
                     })  
                 
                 w_fila += 1
-                
+
             self.recompute()
 
         except Exception as e:
