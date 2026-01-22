@@ -635,7 +635,155 @@ class HrPayslip(models.Model):
         #         'type': 'success',
         #     }
         # }
+    
+
+    # ==========================================================
+    # BOTÓN - ACTUALIZA GRATIFICACIONES EN BOLETAS 
+    # ==========================================================
+    def action_actualiza_gratificaciones(self):
+        # Verificar si se usa un LOTE de Julio o Diciembre
+        w_user = self.env.user.id 
+        w_lote = self.browse(self._context.get('active_ids', []))
+        w_pase = False 
+        for w_boleta in w_lote:
+            w_mes_lote = w_boleta.date_from.month
+            w_ano_lote = w_boleta.date_from.year
+            w_pase = (True if w_mes_lote in [6, 7, 12] else False)
         
+        if not w_pase:
+            raise UserError(_('CUIDADO: Debe usar un LOTE de JULIO o DICIEMBRE.'))
+        
+        try:
+            w_lote = self.browse(self._context.get('active_ids', []))
+            w_dato = ""
+            w_fila = 9
+            w_switch = 0
+            w_acum_tota_1 = 0
+            w_semestre = 0 if w_mes_lote==7 else 6 
+
+            for w_boleta in w_lote:
+                w_codi_tipoplani = w_boleta.employee_id.x_studio_tipo_planilla
+       
+                #---------------------------------------------------------------------------------------------
+                # EXTRAE TODAS LAS BOLETAS DEL EMPLEADO CENS EN CURSO
+                # --------------------------------------------------
+                # Buscar todas las boletas del empleado de una vez para posteriormente extraer los datos que
+                # se requieren (w_Fech_Tope, x_studio_dias_vacaciones).
+                #---------------------------------------------------------------------------------------------
+                w_Fech_Tope = date(w_ano_lote, 7, 1) if w_mes_lote==7 else date(w_ano_lote+1, 1, 1)
+                boletas_empleado = self.env['hr.payslip'].search([
+                    ('employee_id', '=', w_boleta.employee_id.id),
+                    ('date_from', '>=', date(w_ano_lote, w_semestre + 1, 1)),
+                    ('date_from', '<', w_Fech_Tope),  
+                    ('state', 'in', ['draft', 'verify', 'done', 'paid'])
+                ])
+                #---------------------------------------------------------------------------------------------
+                # Crear diccionario mes → días computados
+                dias_por_mes = {boleta.date_from.month: boleta.x_studio_dias_computados 
+                                for boleta in boletas_empleado}
+                vaca_por_mes = {boleta.date_from.month: boleta.x_studio_dias_vacaciones 
+                                for boleta in boletas_empleado}
+                w_acum_dias = 0
+                for codigo in range(72, 78):
+                    w_refcel = chr(codigo) + "8"
+                    w_mes = w_semestre + (codigo - 71)
+                    w_col = 6 + (codigo - 71)
+                    if (w_codi_tipoplani == "INTE"):
+                        w_refmes = dias_por_mes.get(w_mes, 0) + vaca_por_mes.get(w_mes, 0)
+                    else:
+                        w_refmes = 0
+                    w_acum_dias += w_refmes
+                w_tota_dtrab = w_acum_dias *  (w_boleta.x_studio_salario_mensual/30)
+
+                #---------------------------------------------------------------------------------------------
+                # Crear diccionario mes → Remuneración Variable
+                hext_por_mes = {boleta.date_from.month: boleta.x_studio_en_horas_extras 
+                                for boleta in boletas_empleado}
+                bono_por_mes = {boleta.date_from.month: boleta.x_studio_en_bonificacion_cumplimiento 
+                                for boleta in boletas_empleado}
+                feri_por_mes = {boleta.date_from.month: boleta.x_studio_en_feriados 
+                                for boleta in boletas_empleado}
+                w_acum_rvari = 0    #--Remuneración Variable
+                w_ok = 0
+                for codigo in range(79, 85): 
+                    w_refcel = chr(codigo)+"8"
+                    w_mes    = w_semestre + codigo-78
+                    w_col = 13 + (codigo - 78)
+                    w_refmes = hext_por_mes.get(w_mes, 0) + bono_por_mes.get(w_mes, 0) + feri_por_mes.get(w_mes, 0)
+                    w_acum_rvari += w_refmes
+                    w_ok += (1 if w_refmes > 0.00 else 0)
+                w_acum_rvari = (w_acum_rvari if w_ok >= 3 else 0.00) 
+                #---------------------------------------------------------------------------------------------
+                w_prom_rvari = w_acum_rvari/6 if w_acum_rvari>0 else 0.00
+
+                w_dato = w_boleta.x_studio_salario_mensual
+
+                w_dato = w_boleta.x_studio_en_asignacion_familiar
+
+                w_tota_remu = w_boleta.x_studio_salario_mensual + w_boleta.x_studio_en_asignacion_familiar
+
+                if (w_codi_tipoplani == "INTE"):
+                    w_remu_comp = w_tota_dtrab/6 if w_tota_dtrab>0 else 0.00
+                else:
+                    w_remu_comp = w_tota_remu + w_prom_rvari
+
+                w_dato = w_boleta.x_studio_en_inasistencias
+
+                w_fech_ingr = w_boleta.employee_id.x_studio_contrato_actual_inicio           #-- Fecha Inicio Contrato
+
+                if (w_mes_lote == 7):
+                    w_peri_fini = date(w_ano_lote, 1, 1)
+                    w_peri_ffin = date(w_ano_lote, 6, 30) 
+                else:
+                    w_peri_fini = date(w_ano_lote, 7, 1)
+                    w_peri_ffin = date(w_ano_lote, 12, 31)
+
+                if (w_fech_ingr > w_peri_fini):
+                    w_peri_fini = w_fech_ingr
+
+                w_time_work = self.desglosa_periodo("TIEMPO DE TRABAJO", w_peri_fini, w_peri_ffin)
+                w_peri_canti_mm = w_time_work.get('meses', 0)
+                w_peri_canti_dd = w_time_work.get('dias', 0)
+
+                # ------------------------------------------------------------
+                # DETERMINACIÓN FINAL DE LA GRATIFICACIÓN Y LA BONIFICACIÓN
+                # ------------------------------------------------------------
+                if (w_codi_tipoplani == "INTE"):
+                    w_grati_impo = w_remu_comp
+                else:
+                    w_grati_impo = ((w_remu_comp/6 if w_remu_comp>0 else 0.00) * w_peri_canti_mm) 
+                    # w_grati_impo += (((w_remu_comp/6)/30 if w_remu_comp>0 else 0.00) * w_peri_canti_dd) 
+                w_grati_boni = w_grati_impo * 0.09
+                w_grati_tota = w_grati_impo + w_grati_boni
+                
+                # --------------------------------------------------
+                #  ACTUALIZA CAMPOS DE LA GRATIFICACION EN LA BOLETA
+                # --------------------------------------------------
+                # self.ensure_one()
+                w_boleta.write({
+                        'x_studio_gratificacion': w_grati_impo,
+                        'x_studio_bonificacion_extraordinaria_9': w_grati_boni,
+                        'x_studio_ajuste_adelanto_gratificacion': w_grati_tota,
+                    })  
+                
+                w_fila += 1
+                w_boleta.recompute()
+
+        except Exception as e:
+            raise UserError(_('Error al generar el Excel: %s') % str(e))
+
+        return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('PROCESAMIENTO EXITOSO'),
+                    'message': _('Cálculo y actualización de las Gratificaciones se completó correctamente'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+    
+
     # ==========================================================
     # BOTÓN - ACTIVA LISTADO DE GRATIFICACIONES 
     # ==========================================================
