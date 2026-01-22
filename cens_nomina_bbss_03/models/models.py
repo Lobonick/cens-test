@@ -773,7 +773,16 @@ class HrPayslip(models.Model):
         except Exception as e:
             raise UserError(_('Error al generar el Excel: %s') % str(e))
 
-        return
+        return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('PROCESAMIENTO EXITOSO'),
+                    'message': _('Cálculo y actualización de las Gratificaciones se completó correctamente'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
     
 
     # ==========================================================
