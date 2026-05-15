@@ -546,6 +546,12 @@ class HrPayslip(models.Model):
             worksheet.set_column(33, 33, 12)    #--     LIQUIDACIONES
             worksheet.set_column(34, 34, 12)    #--
 
+            worksheet.set_column(35, 35, 5)     #--     (Seperador)
+
+            worksheet.set_column(36, 36, 25)    #--
+            worksheet.set_column(37, 37, 20)    #--     CUENTA CTS
+            worksheet.set_column(38, 38, 25)    #--
+
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
             worksheet.set_zoom(85)          # %-Zoom
@@ -592,6 +598,9 @@ class HrPayslip(models.Model):
 
             worksheet.merge_range('AF7:AI7', 'Merged Cells', merge_format)
             worksheet.write('AF7', 'LIQUIDACIÓN BENEFICIOS', cell_format_tuti)
+
+            worksheet.merge_range('AK7:AM7', 'Merged Cells', merge_format)
+            worksheet.write('AK7', 'CUENTA BANCARIA CTS', cell_format_tut2)
             
             # -------------------------------------------------------------------------------------
             # BARRA DE TITULOS
@@ -933,6 +942,10 @@ class HrPayslip(models.Model):
             worksheet.write('AH8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
             worksheet.write('AI8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
 
+            worksheet.write('AK8', 'ENTID.FINANC', cell_format_tit8)        #-- 36
+            worksheet.write('AL8', 'CUENTA-CTS', cell_format_tit8)          #-- 37     CUENTA CTS
+            worksheet.write('AM8', 'C.C.I.', cell_format_tit8)              #-- 38
+
             #----------------------------------------------------------------
             worksheet.write('I9', '(aaa/mm/dd)', cell_format_tut4)                 #-- 09
             worksheet.write('H9', '(aaa/mm/dd)', cell_format_tut4)         #-- 34
@@ -964,6 +977,10 @@ class HrPayslip(models.Model):
             worksheet.write('AG9', '(Cese)', cell_format_sub8)         #-- 41
             worksheet.write('AH9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
             worksheet.write('AI9', '(Cese)', cell_format_sub8)         #-- 43
+
+            worksheet.write('AK9', '(Reg.Ficha)', cell_format_sub8)         #-- 36
+            worksheet.write('AL9', '(Reg.Ficha)', cell_format_sub8)         #-- 37      CUENTA CTS
+            worksheet.write('AM9', '(Reg.Ficha)', cell_format_sub8)         #-- 38
 
             #-----
             # worksheet.autofilter(8, 60, 8, 65)  #--- Coloca FILTROS en RESUMEN 
@@ -1155,9 +1172,16 @@ class HrPayslip(models.Model):
                 # CUENTA CTS - Datos vienen de la Ficha Empleado
                 # ------------------------------------------------
                 w_dato = w_boleta.employee_id.x_studio_cts_banco.name
-                worksheet.write(w_fila, 36, w_dato, current_format_left)
-                worksheet.write(w_fila, 37, w_boleta.employee_id.x_studio_cts_cuenta, current_format_cent)
-                worksheet.write(w_fila, 38, w_boleta.employee_id.x_studio_cts_cci, current_format_cent)
+                w_dato = w_dato if w_dato else ""
+                worksheet.write(w_fila, 36, w_dato, current_format_cent)
+
+                w_dato = w_boleta.employee_id.x_studio_cts_cuenta
+                w_dato = w_dato if w_dato else ""
+                worksheet.write(w_fila, 37, w_dato, current_format_cent)
+
+                w_dato = w_boleta.employee_id.x_studio_cts_cci
+                w_dato = w_dato if w_dato else ""
+                worksheet.write(w_fila, 38, w_dato, current_format_cent)
 
 
                 w_fila += 1
