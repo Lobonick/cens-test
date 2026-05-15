@@ -559,7 +559,7 @@ class HrPayslip(models.Model):
             worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
             cell_format_cabe.set_font_name('Arial Black')
             cell_format_cabe.set_font_size(11)
-            worksheet.write('H5', 'COMPENSACIÓN POR TIEMPO DE SERVICIOS - CÁLCULO CTS - MODALIDAD INTERMITENTE', cell_format_cabe)
+            worksheet.write('H5', 'COMPENSACIÓN POR TIEMPO DE SERVICIOS - CÁLCULO CTS - MODALIDAD MIXTA', cell_format_cabe)
             # ------
             worksheet.write('A6', 'FECHA:')
             worksheet.write('B6', datetime.now(), cell_format_fech)
@@ -1150,6 +1150,15 @@ class HrPayslip(models.Model):
                     worksheet.write(w_fila, 34, w_boleta.x_studio_cese_bonif_grati_trunca, current_format_impo)
                 else:
                     worksheet.write(w_fila, 29, " ", current_format_left)
+
+                # ------------------------------------------------
+                # CUENTA CTS - Datos vienen de la Ficha Empleado
+                # ------------------------------------------------
+                w_dato = w_boleta.employee_id.x_studio_cts_banco
+                worksheet.write(w_fila, 36, w_dato, current_format_left)
+                worksheet.write(w_fila, 37, w_boleta.employee_id.x_studio_cts_cuenta, current_format_cent)
+                worksheet.write(w_fila, 38, w_boleta.employee_id.x_studio_cts_cci, current_format_cent)
+
 
                 w_fila += 1
 
