@@ -1154,7 +1154,7 @@ class HrPayslip(models.Model):
                 # ------------------------------------------------
                 # CUENTA CTS - Datos vienen de la Ficha Empleado
                 # ------------------------------------------------
-                w_dato = w_boleta.employee_id.x_studio_cts_banco
+                w_dato = w_boleta.employee_id.x_studio_cts_banco.name
                 worksheet.write(w_fila, 36, w_dato, current_format_left)
                 worksheet.write(w_fila, 37, w_boleta.employee_id.x_studio_cts_cuenta, current_format_cent)
                 worksheet.write(w_fila, 38, w_boleta.employee_id.x_studio_cts_cci, current_format_cent)
