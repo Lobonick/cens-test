@@ -51,24 +51,22 @@ class HrPayslipImportWizard(models.TransientModel):
             # WorkSheet: NÓMINA
             # =============================================================================
             CAMPOS_PERMITIDOS = [
-                'x_studio_licencia_fallecimiento',
-                'x_studio_licencia_materpater',
-                'x_studio_dias_vacaciones',
-                'x_studio_dias_con_goce',
-                'x_studio_descanso_medico',
                 'x_studio_feriados_dias',
                 'x_studio_bonificacion_extraordinaria',
-                'x_studio_horas_extras_importe',
-                'x_studio_descanso_vacacional',
+
                 'x_studio_reembolso_movilidad',
                 'x_studio_reembolso_combustible',
-                'x_studio_adelanto_gratificacion',
+
                 'x_studio_descuento_inasistencias',
                 'x_studio_dias_sin_goce',
+
+                'x_studio_adelanto_gratificacion',
                 'x_studio_adelanto_sueldo',
                 'x_studio_descuento_tardanzas_min',
                 'x_studio_retencion_judicial',
-                'x_studio_descuento_prestamos'
+                'x_studio_descuento_prestamos',
+
+                'x_cens_importe_renta_5ta'
             ]
 
             def tiene_valor_xlsx(valor, field_type):
@@ -79,6 +77,9 @@ class HrPayslipImportWizard(models.TransientModel):
                 # Para campos numéricos
                 if field_type in ['integer', 'float', 'monetary']:
                     if isinstance(valor, (int, float)):
+                        if valor==-1:
+                            valor = 0
+                            return True
                         return valor > 0
                     if isinstance(valor, str):
                         try:
@@ -208,8 +209,18 @@ class HrPayslipImportWizard(models.TransientModel):
                         # VALIDACIÓN PRINCIPAL: Solo actualizar si cumple ambas condiciones
                         tiene_valor_valido = tiene_valor_xlsx(valor_procesado, field_type)
                         campo_esta_vacio = campo_vacio_en_bd(valor_actual_bd, field_type)
-                        
-                        if tiene_valor_valido and campo_esta_vacio:
+
+                        # ------------------------------------------------
+                        # VERIFICA SI ES -1 (Sólo en caso de números)
+                        # ------------------------------------------------
+                        # Para campos numéricos
+                        if field_type in ['integer', 'float', 'monetary']:
+                            if isinstance(valor_procesado, (int, float)):
+                                if valor_procesado == -1:
+                                    valor_procesado = 0
+                        # -------------------------------------------------
+                                
+                        if tiene_valor_valido:      #-- and campo_esta_vacio:
                             values_to_update[header] = valor_procesado
                             campos_actualizados += 1
                             

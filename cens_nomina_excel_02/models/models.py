@@ -478,13 +478,13 @@ class HrPayslip(models.Model):
             worksheet.write(w_fila, 16, 0, cell_format_nume)
             worksheet.write(w_fila, 17, 0, cell_format_nume)
 
-            worksheet.write(w_fila, 19, w_dato, cell_format_nume)
-            worksheet.write(w_fila, 20, w_dato, cell_format_nume)
-            worksheet.write(w_fila, 21, w_dato, cell_format_nume)
-            worksheet.write(w_fila, 22, w_dato, cell_format_nume)
-            worksheet.write(w_fila, 23, w_dato, cell_format_nume)
+            worksheet.write(w_fila, 19, w_dato, cell_format_impo)
+            worksheet.write(w_fila, 20, w_dato, cell_format_impo)
+            worksheet.write(w_fila, 21, w_dato, cell_format_impo)
+            worksheet.write(w_fila, 22, w_dato, cell_format_impo)
+            worksheet.write(w_fila, 23, w_dato, cell_format_impo)
 
-            worksheet.write(w_fila, 25, w_dato, cell_format_nume)
+            worksheet.write(w_fila, 25, w_dato, cell_format_impo)
 
 
             # worksheet.write(w_fila, 28, w_boleta.x_studio_adelanto_sueldo, cell_format_impo)
