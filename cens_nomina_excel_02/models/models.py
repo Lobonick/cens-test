@@ -165,16 +165,16 @@ class HrPayslip(models.Model):
         worksheet.set_column(12, 12, 5)     #-M- Separador
         worksheet.set_column(13, 13, 12)    #-N- 
         worksheet.set_column(14, 14, 12)    #-O- 
-        worksheet.set_column(15, 15, 5)     #-P- Separador 
+        worksheet.set_column(15, 15, 2)     #-P- Separador 
         worksheet.set_column(16, 16, 12)    #-Q- 
         worksheet.set_column(17, 17, 12)    #-R- 
-        worksheet.set_column(18, 18, 5)     #-S- Separador 
+        worksheet.set_column(18, 18, 2)     #-S- Separador 
         worksheet.set_column(19, 19, 12)    #-T- Adelanto Gratificación
         worksheet.set_column(20, 20, 12)    #-U- Adelanto Sueldo
         worksheet.set_column(21, 21, 12)    #-V- Descuento Tardanza
         worksheet.set_column(22, 22, 12)    #-W- Retención Judicial
         worksheet.set_column(23, 23, 12)    #-X- Descuento Préstamos
-        worksheet.set_column(24, 24, 5)     #-Y- Separador
+        worksheet.set_column(24, 24, 2)     #-Y- Separador
         worksheet.set_column(25, 25, 12)    #-Z- Renta 5ta
         worksheet.set_column(26, 26, 10)    #-AA-
         worksheet.set_column(27, 27, 10)    #-AB-
@@ -192,7 +192,7 @@ class HrPayslip(models.Model):
         # CABECERA DEL REPORTE
         # -------------------------------------------------------------------------------------
         worksheet.insert_image('A2', 'src/user/cens_nomina_excel_02/static/description/logo-tiny_96.png')
-        worksheet.insert_image('Q2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
+        worksheet.insert_image('X2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.6, 'y_scale': 0.6})
         worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
         worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
