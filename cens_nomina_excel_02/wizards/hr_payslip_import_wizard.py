@@ -66,7 +66,8 @@ class HrPayslipImportWizard(models.TransientModel):
                 'x_studio_retencion_judicial',
                 'x_studio_descuento_prestamos',
 
-                'x_cens_importe_renta_5ta'
+                'x_studio_importe_renta_5ta',
+                'x_studio_descuento_vales',
             ]
 
             def tiene_valor_xlsx(valor, field_type):
@@ -311,18 +312,18 @@ class HrPayslipImportWizard(models.TransientModel):
                         # -----------------------------------------
                         w_ocurren_id = sheet_horas.cell_value(row, 5)  # ID Ocurrencia
                         if w_ocurren_id:
-                            # Buscar si existe el registro
-                            one2many_obj = self.env['x_hr_payslip_line_b90e1']
-                            registro_existente = one2many_obj.browse(int(w_ocurren_id))
+                            # # Buscar si existe el registro
+                             one2many_obj = self.env['x_hr_payslip_line_b90e1']
+                             registro_existente = one2many_obj.browse(int(w_ocurren_id))
     
-                            if registro_existente.exists():
-                                # Actualizar registro existente
-                                registro_existente.write(valores)
-                                _logger.info(f'Actualizado registro ID {w_ocurren_id} para nómina {w_record_id}')
-                            else:
-                                # Crear nuevo registro
-                                nuevo_registro = one2many_obj.create(valores)
-                                _logger.info(f'Creado nuevo registro ID {nuevo_registro.id} para nómina {w_record_id}')
+                            # if registro_existente.exists():
+                            #     # Actualizar registro existente
+                            #     registro_existente.write(valores)
+                            #     _logger.info(f'Actualizado registro ID {w_ocurren_id} para nómina {w_record_id}')
+                            # else:
+                            #     # Crear nuevo registro
+                            #     nuevo_registro = one2many_obj.create(valores)
+                            #     _logger.info(f'Creado nuevo registro ID {nuevo_registro.id} para nómina {w_record_id}')
                         else:
                             # Crear nuevo registro
                             one2many_obj = self.env['x_hr_payslip_line_b90e1']
