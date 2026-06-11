@@ -177,8 +177,8 @@ class HrPayslip(models.Model):
         worksheet.set_column(24, 24, 2)     #-Y- Separador
         worksheet.set_column(25, 25, 12)    #-Z- Renta 5ta
         worksheet.set_column(26, 26, 12)    #-AA- Descuento x Vales
-        worksheet.set_column(27, 27, 10)    #-AB-
-        worksheet.set_column(28, 28, 10)    #-AC-
+        worksheet.set_column(27, 27, 5)    #-AB-
+        worksheet.set_column(28, 28, 10)    #-AC- Dias Computados
         worksheet.set_column(29, 29, 10)    #-AD-
         worksheet.set_column(30, 30, 10)    #-AE-
         worksheet.set_column(31, 31, 10)    #-AF-
@@ -192,7 +192,7 @@ class HrPayslip(models.Model):
         # CABECERA DEL REPORTE
         # -------------------------------------------------------------------------------------
         worksheet.insert_image('A2', 'src/user/cens_nomina_excel_02/static/description/logo-tiny_96.png')
-        worksheet.insert_image('X2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
+        worksheet.insert_image('Z2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.6, 'y_scale': 0.6})
         worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
         worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -328,6 +328,8 @@ class HrPayslip(models.Model):
         worksheet.write('Z8', 'RENTA 5TA', cell_format_titu)
         worksheet.write('AA8', 'DESCUENTO POR VALES', cell_format_titu)
 
+        worksheet.write('AC8', 'DIAS COMPUTADOS', cell_format_titu)
+
         #-----
         # worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
         # worksheet.write('K9', 'DIAS', cell_format_tut3)                 #-- 10
@@ -357,6 +359,8 @@ class HrPayslip(models.Model):
 
         worksheet.write('Z9', 'S/.', cell_format_tut4)                 #-- 28
         worksheet.write('AA9', 'S/.', cell_format_tut4)
+
+        worksheet.write('AC9', 'DIAS', cell_format_tut3)
 
         #-----
         worksheet.freeze_panes(9, 4)
@@ -404,7 +408,9 @@ class HrPayslip(models.Model):
             'x_studio_descuento_prestamos',
             'separador4',
             'x_studio_importe_renta_5ta',
-            'x_studio_descuento_vales'
+            'x_studio_descuento_vales',
+            'separador4',
+            'x_studio_dias_computados'
         ]
 
         # Escribir encabezados
@@ -482,6 +488,8 @@ class HrPayslip(models.Model):
 
             worksheet.write(w_fila, 25, w_boleta.x_studio_importe_renta_5ta, cell_format_impo)
             worksheet.write(w_fila, 26, w_boleta.x_studio_descuento_vales, cell_format_impo)
+            wDato = 0
+            worksheet.write(w_fila, 28, wDato, cell_format_nume)
             
             w_fila += 1
 
