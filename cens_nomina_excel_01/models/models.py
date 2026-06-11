@@ -301,11 +301,12 @@ class HrPayslip(models.Model):
             worksheet.set_column(85, 85, 12)    
             worksheet.set_column(86, 86, 12)    #--   
             worksheet.set_column(87, 87, 12)    #-
+            worksheet.set_column(88, 88, 12)
 
-            worksheet.set_column(88, 88, 5)    #- (Seperador)
+            worksheet.set_column(89, 89, 5)    #- (Seperador)
 
-            worksheet.set_column(89, 89, 12)    #- AFP / ONP
-            worksheet.set_column(90, 90, 12)    #- FECHA DE CESE
+            worksheet.set_column(90, 90, 12)    #- AFP / ONP
+            worksheet.set_column(91, 91, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -351,29 +352,29 @@ class HrPayslip(models.Model):
             worksheet.merge_range('AR7:BC7', 'Merged Cells', merge_format)
             worksheet.write('AR7', 'D E S C U E N T O S', cell_format_sup3)
 
-            worksheet.merge_range('BC7:BG7', 'Merged Cells', merge_format)
-            worksheet.write('BC7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
+            worksheet.merge_range('BD7:BH7', 'Merged Cells', merge_format)
+            worksheet.write('BD7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
 
-            worksheet.merge_range('BI7:BN7', 'Merged Cells', merge_format)
-            worksheet.write('BI7', 'RESUMEN TOTALIZADO', cell_format_sup5)
+            worksheet.merge_range('BJ7:BO7', 'Merged Cells', merge_format)
+            worksheet.write('BJ7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BP7:BQ7', 'Merged Cells', merge_format)
-            worksheet.write('BP7', 'APORTES', cell_format_sup5)
+            worksheet.merge_range('BQ7:BR7', 'Merged Cells', merge_format)
+            worksheet.write('BQ7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('BR7:BU7', 'Merged Cells', merge_format)
-            worksheet.write('BR7', 'PROVISIONES', cell_format_sup5)
+            worksheet.merge_range('BS7:BV7', 'Merged Cells', merge_format)
+            worksheet.write('BS7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('BW7:BW7', 'Merged Cells', merge_format)
-            worksheet.write('BW7', 'COSTO', cell_format_sup5)
+            worksheet.merge_range('BX7:BX7', 'Merged Cells', merge_format)
+            worksheet.write('BX7', 'COSTO', cell_format_sup5)
 
-            worksheet.merge_range('BY7:CA7', 'Merged Cells', merge_format)
-            worksheet.write('BY7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
+            worksheet.merge_range('BZ7:CB7', 'Merged Cells', merge_format)
+            worksheet.write('BZ7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
 
-            worksheet.merge_range('CC7:CJ7', 'Merged Cells', merge_format)
-            worksheet.write('CC7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CD7:CK7', 'Merged Cells', merge_format)
+            worksheet.write('CD7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
 
-            worksheet.merge_range('CL7:CM7', 'Merged Cells', merge_format)
-            worksheet.write('CL7', 'AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CM7:CN7', 'Merged Cells', merge_format)
+            worksheet.write('CM7', 'AFP / ONP', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -738,7 +739,7 @@ class HrPayslip(models.Model):
 
             worksheet.write('BQ8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
             worksheet.write('BR8', 'EPS', cell_format_tit6)                     #-- 62      
-            worksheet.write('BW8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
+            worksheet.write('BS8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
             worksheet.write('BT8', 'VACACIONES', cell_format_tit7)              #-- 64
             worksheet.write('BU8', 'GRATIFICAC', cell_format_tit7)              #-- 65
             worksheet.write('BV8', 'BONIFIC GRATIFIC', cell_format_tit7)        #-- 66
@@ -755,7 +756,7 @@ class HrPayslip(models.Model):
             worksheet.write('CE8', 'IMPORTE OBLIGATORIO', cell_format_tit7)     #-- 80
             worksheet.merge_range('CF8:CF9', 'Merged Cells', merge_format)
             worksheet.write('CF8', 'PRIMA SEGURO', cell_format_tit7)            #-- 81      DESAGREGADO AFP
-            worksheet.merge_range('CG8:CG8', 'Merged Cells', merge_format)
+            worksheet.merge_range('CG8:CI8', 'Merged Cells', merge_format)
             worksheet.write('CG8', 'COMISIÓN', cell_format_tit6)
             # worksheet.write('CE8', 'TIPO COMISIÓN', cell_format_tit7)           #-- 82
             # worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
@@ -845,7 +846,7 @@ class HrPayslip(models.Model):
             worksheet.write('BU9', '(Empr)', cell_format_sub7)         #-- 74
             worksheet.write('BV9', '(Empr)', cell_format_sub7)         #-- 75
 
-            worksheet.write('BW9', '(Mensual)', cell_format_sub5)      #-- 75      COSTO MENSUAL
+            worksheet.write('BX9', '(Mensual)', cell_format_sub5)      #-- 75      COSTO MENSUAL
 
             worksheet.write('CG9', 'TIPO', cell_format_sub6)         #-- 70      COMISIÓN
             worksheet.write('CH9', 'MIXTA', cell_format_sub6)         #-- 71      
