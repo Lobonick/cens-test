@@ -1012,13 +1012,13 @@ class HrPayslip(models.Model):
                 #worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 
                 # w_opci 
-                if (_boleta.employee_id.x_studio_centro_de_costos):
+                if (w_boleta.employee_id.x_studio_centro_de_costos):
                     w_opci = int(w_boleta.employee_id.x_studio_centro_de_costos)
                 else:
                     w_opci = 0
                 w_dato = self.centro_costo(w_opci).upper()
                 worksheet.write(w_fila, 7, w_dato, current_format_cent)
-                
+
                 if (w_switch == 0):
                     w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)
                     worksheet.write('H4', 'PLANILLA GENERAL DE SUELDOS - EMPLEADOS CENS - ' + w_dato, cell_format_cabe)
