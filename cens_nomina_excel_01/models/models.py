@@ -1010,7 +1010,10 @@ class HrPayslip(models.Model):
                 w_ano = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').year
                 w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
                 #worksheet.write(w_fila, 7, w_dato, current_format_cent)
-                w_dato = w_boleta.employee_id.x_studio_centro_de_costos
+                
+                w_opci = w_boleta.employee_id.x_studio_centro_de_costos
+                w_dato = self.centro_costo(w_opci).upper()
+
                 worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 if (w_switch == 0):
                     w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)
@@ -1259,8 +1262,21 @@ class HrPayslip(models.Model):
             'target': 'self',
         }
 
- 
-
+    def centro_costo(self, ncosto):
+        w_costo = ncosto
+        w_costo_name = ""
+        if (w_costo == 1):
+            w_costo_name = "Costo Directo"
+        elif (w_costo == 2):
+            w_costo_name = "Costo Indirecto"
+        elif (w_costo == 3):
+            w_costo_name = "Gasto Ventas"
+        elif (w_costo == 4):
+            w_costo_name = "Gasto General"
+        else:
+            w_costo_name = "UNDEFINED"
+        return w_costo_name
+    
     def mes_literal(self, nmes):
         w_mes = nmes
         if (w_mes == 1):
