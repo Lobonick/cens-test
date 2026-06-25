@@ -200,8 +200,8 @@ class HrPayslip(models.Model):
             worksheet.set_column(1, 1, 14)      #-- Boleta 
             worksheet.set_column(2, 2, 33)      #-- Npombre del Empleado
             worksheet.set_column(3, 3, 13)      #-- DNI
-            worksheet.set_column(4, 4, 20)      #-- CARGO
-            worksheet.set_column(5, 5, 15)      #-- AREA
+            worksheet.set_column(4, 4, 30)      #-- CARGO
+            worksheet.set_column(5, 5, 20)      #-- AREA
             worksheet.set_column(6, 6, 11)      #-- LOTE
             worksheet.set_column(7, 7, 13)      #-- FECHA INGRESO
             worksheet.set_column(8, 8, 20)      #-- UNIDAD DE NEGOCIO
@@ -992,13 +992,12 @@ class HrPayslip(models.Model):
                 w_dato = w_boleta.employee_id.name
                 worksheet.write(w_fila, 2, w_dato, current_format_left)
                 worksheet.write(w_fila, 3, w_boleta.x_studio_dni, current_format_cent)
-                worksheet.write(w_fila, 4, w_boleta.x_studio_dni, current_format_cent)
 
                 w_dato = w_boleta.employee_id.job_id.name
-                worksheet.write(w_fila, 5, w_dato, current_format_cent)
+                worksheet.write(w_fila, 4, w_dato, current_format_cent)
 
                 w_dato = w_boleta.employee_id.department_id.name
-                worksheet.write(w_fila, 6, w_dato, current_format_cent)
+                worksheet.write(w_fila, 5, w_dato, current_format_cent)
 
                 # w_dato = w_boleta.payslip_run_id.name
                 w_dato = ""
