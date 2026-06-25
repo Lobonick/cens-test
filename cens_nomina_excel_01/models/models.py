@@ -203,7 +203,7 @@ class HrPayslip(models.Model):
             worksheet.set_column(4, 4, 20)      #-- UNIDAD DE NEGOCIO
             worksheet.set_column(5, 5, 30)      #-- CARGO
             worksheet.set_column(6, 6, 20)      #-- DEPARTAMENTO
-            worksheet.set_column(7, 7, 11)      #-- LOTE
+            worksheet.set_column(7, 7, 20)      #-- CENTRO DE COSTO
             worksheet.set_column(8, 8, 13)      #-- FECHA INGRESO
             worksheet.set_column(9, 9, 8)       #-- MONEDA
             worksheet.set_column(10, 10, 12)      #-- DIAS COMPUTADOS
@@ -672,10 +672,10 @@ class HrPayslip(models.Model):
             worksheet.merge_range('F8:F9', 'Merged Cells', merge_format)
             worksheet.write('F8', 'CARGO', cell_format_titu)                       #-- 03
             worksheet.merge_range('G8:G9', 'Merged Cells', merge_format)
-            worksheet.write('G8', 'AREA', cell_format_titu)                       #-- 03
+            worksheet.write('G8', 'DEPARTAMENTO', cell_format_titu)                       #-- 03
 
             worksheet.merge_range('H8:H9', 'Merged Cells', merge_format)
-            worksheet.write('H8', 'LOTE', cell_format_titu)                         #-- 04
+            worksheet.write('H8', 'CENTRO COSTO', cell_format_titu)                         #-- 04
             worksheet.merge_range('I8:I9', 'Merged Cells', merge_format)
             worksheet.write('I8', 'FECHA INGRESO', cell_format_titu)                #-- 05
             worksheet.merge_range('J8:J9', 'Merged Cells', merge_format)
@@ -1009,6 +1009,8 @@ class HrPayslip(models.Model):
                 w_dia = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').day
                 w_ano = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').year
                 w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
+                #worksheet.write(w_fila, 7, w_dato, current_format_cent)
+                w_dato = w_boleta.employee_id.x_studio_centro_de_costos
                 worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 if (w_switch == 0):
                     w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)
