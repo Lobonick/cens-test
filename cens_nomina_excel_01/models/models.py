@@ -1011,8 +1011,9 @@ class HrPayslip(models.Model):
                 w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
                 #worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 
-                w_opci = w_boleta.employee_id.x_studio_centro_de_costos
-                w_dato = self.centro_costo(w_opci).upper()
+                # w_opci 
+                w_dato = w_boleta.employee_id.x_studio_centro_de_costos.value
+                # w_dato = self.centro_costo(w_opci).upper()
 
                 worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 if (w_switch == 0):
