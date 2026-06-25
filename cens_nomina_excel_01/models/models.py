@@ -707,7 +707,7 @@ class HrPayslip(models.Model):
             worksheet.write('AG8', 'HORAS EXTRAS', cell_format_tit1)            #-- 29
             worksheet.write('AH8', 'VACACIONES', cell_format_tit1)              #-- 30
             worksheet.write('AI8', 'DESCANSO VACACIONAL', cell_format_tit1)     #-- 31
-            worksheet.write('AJ8', 'REINTEGRO AFECTO', cell_format_tit2)            #-- 32   AQUI BORRAR -------------------
+            worksheet.write('AJ8', 'REINTEGRO AFECTO', cell_format_tit1)            #-- 32   AQUI BORRAR -------------------
 
             worksheet.write('AK8', 'ALIMENTACIÓN', cell_format_tit2)            #-- 32
             worksheet.write('AL8', 'MOVILIDAD', cell_format_tit2)               #-- 33
@@ -808,7 +808,7 @@ class HrPayslip(models.Model):
             worksheet.write('AG9', '(+)', cell_format_sub1)         #-- 33
             worksheet.write('AH9', '(+)', cell_format_sub1)         #-- 23
             worksheet.write('AI9', '(+)', cell_format_sub1)         #-- 24
-            worksheet.write('AJ9', '(+)', cell_format_sub2)         #-- 34
+            worksheet.write('AJ9', '(+)', cell_format_sub1)         #-- 34
 
             worksheet.write('AK9', '(n)', cell_format_sub2)         #-- 34
             worksheet.write('AL9', '(n)', cell_format_sub2)         #-- 35
