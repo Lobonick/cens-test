@@ -200,11 +200,11 @@ class HrPayslip(models.Model):
             worksheet.set_column(1, 1, 14)      #-- Boleta 
             worksheet.set_column(2, 2, 33)      #-- Npombre del Empleado
             worksheet.set_column(3, 3, 13)      #-- DNI
-            worksheet.set_column(4, 4, 30)      #-- CARGO
-            worksheet.set_column(5, 5, 20)      #-- AREA
-            worksheet.set_column(6, 6, 11)      #-- LOTE
-            worksheet.set_column(7, 7, 13)      #-- FECHA INGRESO
-            worksheet.set_column(8, 8, 20)      #-- UNIDAD DE NEGOCIO
+            worksheet.set_column(4, 4, 20)      #-- UNIDAD DE NEGOCIO
+            worksheet.set_column(5, 5, 30)      #-- CARGO
+            worksheet.set_column(6, 6, 20)      #-- DEPARTAMENTO
+            worksheet.set_column(7, 7, 11)      #-- LOTE
+            worksheet.set_column(8, 8, 13)      #-- FECHA INGRESO
             worksheet.set_column(9, 9, 8)       #-- MONEDA
             worksheet.set_column(10, 10, 12)      #-- DIAS COMPUTADOS
             worksheet.set_column(11, 11, 12)      #-- 
@@ -666,17 +666,18 @@ class HrPayslip(models.Model):
             worksheet.write('C8', 'NOMBRE DEL EMPLEADO', cell_format_titu)          #-- 02
             worksheet.merge_range('D8:D9', 'Merged Cells', merge_format)
             worksheet.write('D8', 'D.N.I.', cell_format_titu)                       #-- 03
-            worksheet.merge_range('E8:E9', 'Merged Cells', merge_format)
-            worksheet.write('E8', 'CARGO', cell_format_titu)                       #-- 03
-            worksheet.merge_range('F8:F9', 'Merged Cells', merge_format)
-            worksheet.write('F8', 'AREA', cell_format_titu)                       #-- 03
 
+            worksheet.merge_range('E8:E9', 'Merged Cells', merge_format)
+            worksheet.write('E8', 'UNIDAD NEGOCIO', cell_format_titu)               #-- 06
+            worksheet.merge_range('F8:F9', 'Merged Cells', merge_format)
+            worksheet.write('F8', 'CARGO', cell_format_titu)                       #-- 03
             worksheet.merge_range('G8:G9', 'Merged Cells', merge_format)
-            worksheet.write('G8', 'LOTE', cell_format_titu)                         #-- 04
+            worksheet.write('G8', 'AREA', cell_format_titu)                       #-- 03
+
             worksheet.merge_range('H8:H9', 'Merged Cells', merge_format)
-            worksheet.write('H8', 'FECHA INGRESO', cell_format_titu)                #-- 05
+            worksheet.write('H8', 'LOTE', cell_format_titu)                         #-- 04
             worksheet.merge_range('I8:I9', 'Merged Cells', merge_format)
-            worksheet.write('I8', 'UNIDAD NEGOCIO', cell_format_titu)               #-- 06
+            worksheet.write('I8', 'FECHA INGRESO', cell_format_titu)                #-- 05
             worksheet.merge_range('J8:J9', 'Merged Cells', merge_format)
             worksheet.write('J8', 'MONEDA', cell_format_titu)                       #-- 07
             worksheet.merge_range('K8:K9', 'Merged Cells', merge_format)
@@ -993,11 +994,14 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 2, w_dato, current_format_left)
                 worksheet.write(w_fila, 3, w_boleta.x_studio_dni, current_format_cent)
 
-                w_dato = w_boleta.employee_id.job_id.name
+                w_dato = w_boleta.employee_id.x_studio_unidad_negocio
                 worksheet.write(w_fila, 4, w_dato, current_format_cent)
 
-                w_dato = w_boleta.employee_id.department_id.name
+                w_dato = w_boleta.employee_id.job_id.name
                 worksheet.write(w_fila, 5, w_dato, current_format_cent)
+
+                w_dato = w_boleta.employee_id.department_id.name
+                worksheet.write(w_fila, 6, w_dato, current_format_cent)
 
                 # w_dato = w_boleta.payslip_run_id.name
                 w_dato = ""
@@ -1005,7 +1009,7 @@ class HrPayslip(models.Model):
                 w_dia = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').day
                 w_ano = datetime.strptime(str(w_boleta.date_to), '%Y-%m-%d').year
                 w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)[:3]
-                worksheet.write(w_fila, 6, w_dato, current_format_cent)
+                worksheet.write(w_fila, 7, w_dato, current_format_cent)
                 if (w_switch == 0):
                     w_dato = str(w_ano) + "-" + self.mes_literal(w_mes)
                     worksheet.write('H4', 'PLANILLA GENERAL DE SUELDOS - EMPLEADOS CENS - ' + w_dato, cell_format_cabe)
@@ -1013,10 +1017,7 @@ class HrPayslip(models.Model):
                     w_switch = 1
                 
                 w_dato = w_boleta.employee_id.first_contract_date
-                worksheet.write(w_fila, 7, w_dato, current_format_fech)
-              
-                w_dato = w_boleta.employee_id.x_studio_unidad_negocio
-                worksheet.write(w_fila, 8, w_dato, current_format_cent)
+                worksheet.write(w_fila, 8, w_dato, current_format_fech)
                 
                 w_dato = w_boleta.currency_id.name
                 worksheet.write(w_fila, 9, w_dato, current_format_cent)
