@@ -1265,13 +1265,13 @@ class HrPayslip(models.Model):
     def centro_costo(self, ncosto):
         w_costo = ncosto
         w_costo_name = ""
-        if (w_costo == 1):
+        if (w_costo == '1'):
             w_costo_name = "Costo Directo"
-        elif (w_costo == 2):
+        elif (w_costo == '2'):
             w_costo_name = "Costo Indirecto"
-        elif (w_costo == 3):
+        elif (w_costo == '3'):
             w_costo_name = "Gasto Ventas"
-        elif (w_costo == 4):
+        elif (w_costo == '4'):
             w_costo_name = "Gasto General"
         else:
             w_costo_name = "UNDEFINED"
