@@ -167,7 +167,7 @@ class HrPayslip(models.Model):
         worksheet.set_column(12, 12, 12)    #-K- REINTEGRO AFECTO
         worksheet.set_column(13, 13, 12)    #-L- REINTEGRO INAFECTO
 
-        worksheet.set_column(14, 14, 5)     #-M- Separador
+        worksheet.set_column(14, 14, 2)     #-M- Separador
 
         worksheet.set_column(15, 15, 12)    #-N- REEMBOLSO MOVILIDAD
         worksheet.set_column(16, 16, 12)    #-O- REEMBOLSO COMBUSTIBLE
@@ -423,7 +423,7 @@ class HrPayslip(models.Model):
             'separador4',
             'x_studio_importe_renta_5ta',
             'x_studio_descuento_vales',
-            'x_studio_en_otros_descuentos'
+            'x_studio_en_otros_descuentos',
             'separador4',
             'x_studio_dias_computados'
         ]

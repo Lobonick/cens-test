@@ -53,6 +53,8 @@ class HrPayslipImportWizard(models.TransientModel):
             CAMPOS_PERMITIDOS = [
                 'x_studio_feriados_dias',
                 'x_studio_bonificacion_extraordinaria',
+                'x_studio_reintegro_afecto',
+                'x_studio_reintegro_inafecto',
 
                 'x_studio_reembolso_movilidad',
                 'x_studio_reembolso_combustible',
@@ -68,7 +70,8 @@ class HrPayslipImportWizard(models.TransientModel):
 
                 'x_studio_importe_renta_5ta',
                 'x_studio_descuento_vales',
-                'x_studio_dias_computados',
+                'x_studio_en_otros_descuentos',
+                'x_studio_dias_computados'
             ]
 
             def tiene_valor_xlsx(valor, field_type):
