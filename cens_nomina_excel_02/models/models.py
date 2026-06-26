@@ -509,7 +509,7 @@ class HrPayslip(models.Model):
             worksheet.write(w_fila, 29, w_boleta.x_studio_en_otros_descuentos, cell_format_impo)
             
             wDato = 0
-            worksheet.write(w_fila, 28, wDato, cell_format_nume)
+            worksheet.write(w_fila, 31, wDato, cell_format_nume)
             
             w_fila += 1
 
