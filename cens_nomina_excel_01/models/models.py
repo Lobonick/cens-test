@@ -367,10 +367,10 @@ class HrPayslip(models.Model):
             worksheet.merge_range('BR7:BW7', 'Merged Cells', merge_format)
             worksheet.write('BR7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BY7:CD7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BY7:CZ7', 'Merged Cells', merge_format)
             worksheet.write('BY7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('CF7:CA7', 'Merged Cells', merge_format)
+            worksheet.merge_range('CA7:CD7', 'Merged Cells', merge_format)
             worksheet.write('BX7', 'PROVISIONES', cell_format_sup5)
 
             worksheet.merge_range('CF7:CF7', 'Merged Cells', merge_format)
