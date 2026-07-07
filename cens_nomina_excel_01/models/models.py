@@ -367,11 +367,11 @@ class HrPayslip(models.Model):
             worksheet.merge_range('BR7:BW7', 'Merged Cells', merge_format)
             worksheet.write('BR7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BY7:CZ7', 'Merged Cells', merge_format)
+            worksheet.merge_range('BY7:BZ7', 'Merged Cells', merge_format)
             worksheet.write('BY7', 'APORTES', cell_format_sup5)
 
             worksheet.merge_range('CA7:CD7', 'Merged Cells', merge_format)
-            worksheet.write('BX7', 'PROVISIONES', cell_format_sup5)
+            worksheet.write('CA7', 'PROVISIONES', cell_format_sup5)
 
             worksheet.merge_range('CF7:CF7', 'Merged Cells', merge_format)
             worksheet.write('CF7', 'COSTO', cell_format_sup5)
@@ -782,8 +782,8 @@ class HrPayslip(models.Model):
             # worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
             # worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
 
-            worksheet.merge_range('CO8:CP8', 'Merged Cells', merge_format)
-            worksheet.write('CO8', 'TOTALES', cell_format_tit31)
+            worksheet.merge_range('CR8:CS8', 'Merged Cells', merge_format)
+            worksheet.write('CR8', 'TOTALES', cell_format_tit31)
             # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
             # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
