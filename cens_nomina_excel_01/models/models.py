@@ -312,10 +312,10 @@ class HrPayslip(models.Model):
             worksheet.set_column(95, 95, 12)    #-- Total AFP
             worksheet.set_column(96, 96, 12)    #-- Total ONP
 
-            worksheet.set_column(94, 97, 5)    #- (Seperador)
+            worksheet.set_column(97, 97, 5)    #- (Seperador)
 
-            worksheet.set_column(95, 98, 12)    #- AFP / ONP
-            worksheet.set_column(96, 99, 12)    #- FECHA DE CESE
+            worksheet.set_column(98, 98, 12)    #- AFP / ONP
+            worksheet.set_column(99, 99, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
