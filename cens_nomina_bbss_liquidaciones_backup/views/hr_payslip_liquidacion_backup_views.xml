@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_payslip_liquidacion_backup_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.liquidacion.backup.tree</field>
+        <field name="model">hr.payslip.liquidacion.backup</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'restored'" create="false">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="source_res_id"/>
+                <field name="backup_date"/>
+                <field name="field_count"/>
+                <field name="state"/>
+                <field name="restored_res_id"/>
+                <field name="restored_date"/>
+                <button name="action_run_restore" type="object" string="Restaurar"
+                        class="btn-link"
+                        attrs="{'invisible': [('state', '=', 'restored')]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_liquidacion_backup_form" model="ir.ui.view">
+        <field name="name">hr.payslip.liquidacion.backup.form</field>
+        <field name="model">hr.payslip.liquidacion.backup</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="employee_id"/>
+                            <field name="source_res_id"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="backup_date"/>
+                            <field name="field_count"/>
+                            <field name="restored_res_id"/>
+                            <field name="restored_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Datos Respaldados (JSON)">
+                            <field name="data_json" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_payslip_liquidacion_backup" model="ir.actions.act_window">
+        <field name="name">Respaldos - Liquidación BBSS</field>
+        <field name="res_model">hr.payslip.liquidacion.backup</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smart_action">
+                Aún no hay respaldos registrados.
+            </p>
+            <p>
+                Use la acción <b>"Ejecutar Respaldo BBSS Ahora"</b> desde el
+                menú de Acciones (⚙, arriba de la lista) mientras el módulo
+                <i>cens_nomina_bbss_liquidaciones</i> siga instalado, antes de
+                desinstalarlo o de un UPGRADE riesgoso.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hr_payslip_liquidacion_backup"
+              name="Respaldo Liquidación BBSS"
+              parent="hr_payroll.menu_hr_payroll_payslips"
+              action="action_hr_payslip_liquidacion_backup"
+              sequence="110"/>
+
+</odoo>
