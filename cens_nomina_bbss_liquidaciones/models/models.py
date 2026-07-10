@@ -298,15 +298,13 @@ class HrPayslipLiquidacion(models.Model):
 
     @api.depends('contract_cesado')
     def _calcula_mensaje_nota_automatic(self):
-        w_mensaje = ""
         for record in self:
-            if not record.contract_cesado :
-                w_mensaje += "Recuerde que sólo podrá liquidar Beneficios Sociales al personal que se encuentre cesado."  + "\n"
+            if not record.contract_cesado:
+                w_mensaje = "Recuerde que sólo podrá liquidar Beneficios Sociales al personal que se encuentre cesado."  + "\n"
                 w_mensaje += "El BOTÓN para GENERAR los cálculos de Liquidación BB.SS. no está disponible para NO CESADOS. "  + "\n"
             else:
-                w_mensaje += "Para proceder con el cálculo presione en el BOTÓN VERDE de GENERAR LIQUIDACIÓN y aparecerá el cálculo de BB.SS."
-
-        self.write({'note_automatic': w_mensaje})
+                w_mensaje = "Para proceder con el cálculo presione en el BOTÓN VERDE de GENERAR LIQUIDACIÓN y aparecerá el cálculo de BB.SS."
+            record.note_automatic = w_mensaje
 
 
     @api.depends('x_cens_vaca_itot')
@@ -412,7 +410,7 @@ class HrPayslipLiquidacion(models.Model):
         return w_Dato
 
 
-    @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot', 'x_cens_vaca_iafp', 'x_cens_desc_otro', 'x_cens_desc_5cat', 'x_cens_rein_afec')
+    @api.depends('x_cens_ccts_itot', 'x_cens_vaca_itot', 'x_cens_grat_itot', 'x_cens_vaca_iafp', 'x_cens_desc_otro', 'x_cens_desc_5cat', 'x_cens_rein_afec', 'x_cens_rein_inaf')
     def _calcula_liquidacion_total(self):
         for r in self: 
             r.x_cens_liqu_tota = (r.x_cens_ccts_itot + (r.x_cens_vaca_itot - r.x_cens_vaca_iafp) + r.x_cens_grat_itot) ## ORH
@@ -696,7 +694,8 @@ class HrPayslipLiquidacion(models.Model):
             w_detvaca_dia += " ( " + self.formato_moneda(w_total_remu, "S/.") + " ÷ 12 ÷ 30 x " + str(w_cant_dd) + " )  = "
             
             w_impvaca_tot = (w_impvaca_ano + w_impvaca_mes + w_impvaca_dia) - w_impo_dd_gozados
-            w_impvaca_afp = self.calcula_descuento_afp(w_impvaca_tot + self.x_cens_rein_afec)
+            w_impvaca_tot += self.x_cens_rein_afec   #-- Reintegro Afecto se suma al total de Vacaciones Truncas
+            w_impvaca_afp = self.calcula_descuento_afp(w_impvaca_tot)
             w_impvaca_tot = w_impvaca_tot   #-- No le restael AFP  (- w_impvaca_afp)
 
 
@@ -1142,21 +1141,23 @@ class HrPayslipLiquidacion(models.Model):
             
             # Usar directamente el nombre de la plantilla
             report_name = 'cens_nomina_bbss_liquidaciones.liquidacion_bbss_document'
-            
-            # Configurar contexto
-            context = dict(self.env.context)
-            context.update({
-                'lang': 'es_PE',
-                'tz': 'America/Lima',
-            })
-            
+
+            # IMPORTANTE: pasar 'lang'/'tz' dentro de data={'context': ...}
+            # NO cambia el idioma real de renderizado (ese diccionario solo
+            # llega como variable al template, no como contexto de entorno).
+            # Para que los caracteres acentuados (tildes, ñ) y los textos
+            # traducibles se generen correctamente, hay que aplicar el
+            # contexto con with_context() tanto al registro como al
+            # servicio de reportes.
+            self_localizado = self.with_context(lang='es_PE', tz='America/Lima')
+            Report = self.env['ir.actions.report'].with_context(lang='es_PE', tz='America/Lima')
+
             # Generar PDF usando el servicio de reportes
-            pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(
-                report_name, 
-                self.ids,
-                data={'context': context}
+            pdf_content, content_type = Report._render_qweb_pdf(
+                report_name,
+                self_localizado.ids,
             )
-            
+
             if not pdf_content:
                 raise UserError("No se pudo generar el contenido del PDF")
             
