@@ -413,7 +413,7 @@
                             <separator string="✅ DESCUENTOS"
                                 style="color: #000000ff; font-weight: bold; font-size: 14px;" />
                             <field name="x_cens_vaca_iafp"
-                                string="Vacaciones &#xA; (descuento x AFP/ONP)"
+                                string="AFP/ONP (Vacac.+ Reinteg.)"
                                 style="font-size: 14px; text-align: right; padding-right: 150px;" />
                             <field name="x_cens_desc_otro" string="Descuentos Otros"
                                 style="font-size: 14px; text-align: right; padding-right: 150px;" />

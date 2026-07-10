@@ -107,7 +107,7 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_rein_inaf = fields.Float(string='Reintegro Inafecto', default=0.00, store=True, help='Reintegro Inafecto.')    
     x_cens_liqu_tota = fields.Float(compute='_calcula_liquidacion_total', default=0.00, store=True)
 
-    x_cens_apor_mbas = fields.Float(default=0.00, store=True)
+    x_cens_apor_mbas = fields.Float(compute='_calcula_monto_base', default=0.00, store=True)
     x_cens_apor_essa = fields.Float(default=0.00, store=True)
     x_cens_desc_otro = fields.Float(string='Otros descuentos', default=0.00, store=True, help='Al registra el importe de otros descuentos coloque una breve descripción abajo.')
     x_cens_desc_5cat = fields.Float(string='Descuento 5ta.Cat.', default=0.00, store=True, help='Impuesto a la Renta 5ta.Cat.')
@@ -307,7 +307,7 @@ class HrPayslipLiquidacion(models.Model):
             record.note_automatic = w_mensaje
 
 
-    @api.depends('x_cens_vaca_itot')
+    @api.depends('x_cens_vaca_itot', 'x_cens_rein_afec')
     def _calcula_afp_comision_flujo(self):
         for record in self:
             w_comi_flujo = record.setup_afp_id.x_comision_flujo
@@ -327,7 +327,7 @@ class HrPayslipLiquidacion(models.Model):
                 w_impo_flujo = 0.00
             record.write({'x_cens_afp_flujo': w_impo_flujo})
 
-    @api.depends('x_cens_vaca_itot')
+    @api.depends('x_cens_vaca_itot', 'x_cens_rein_afec')
     def _calcula_afp_comision_mixta(self):
         for record in self:
             w_comi_mixta = record.setup_afp_id.x_comision_mixta
@@ -347,7 +347,7 @@ class HrPayslipLiquidacion(models.Model):
                 w_impo_mixta = 0.00
             record.write({'x_cens_afp_mixta': w_impo_mixta})
 
-    @api.depends('x_cens_vaca_itot')
+    @api.depends('x_cens_vaca_itot', 'x_cens_rein_afec')
     def _calcula_afp_prima_seguro(self):
         for record in self:
             w_segu_prima = record.setup_afp_id.x_prima_seguro
@@ -365,7 +365,7 @@ class HrPayslipLiquidacion(models.Model):
             record.write({'x_cens_afp_prima': w_impo_prima})
 
   
-    @api.depends('x_cens_vaca_itot')
+    @api.depends('x_cens_vaca_itot', 'x_cens_rein_afec')
     def _calcula_afp_aporte_obligatorio(self):
         for record in self:
             w_apor_oblig = record.setup_afp_id.x_aporte_obligatorio
