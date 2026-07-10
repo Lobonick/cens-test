@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payslip_liquidacion_backup_manager,hr.payslip.liquidacion.backup.manager,model_hr_payslip_liquidacion_backup,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_hr_payslip_liquidacion_backup_user,hr.payslip.liquidacion.backup.user,model_hr_payslip_liquidacion_backup,hr_payroll.group_hr_payroll_user,1,0,0,0
+access_hr_payslip_liquidacion_backup_wizard_manager,hr.payslip.liquidacion.backup.wizard.manager,model_hr_payslip_liquidacion_backup_wizard,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_hr_payslip_liquidacion_backup_wizard_user,hr.payslip.liquidacion.backup.wizard.user,model_hr_payslip_liquidacion_backup_wizard,hr_payroll.group_hr_payroll_user,1,1,1,1
