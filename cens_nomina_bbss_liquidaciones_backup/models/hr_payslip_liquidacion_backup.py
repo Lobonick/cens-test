@@ -142,13 +142,7 @@ class HrPayslipLiquidacionBackup(models.Model):
                 'message': _('%s registro(s) nuevos, %s actualizados.') % (created, updated),
                 'type': 'success',
                 'sticky': False,
-                'next': {
-                    'type': 'ir.actions.act_window',
-                    'name': _('Respaldos - Liquidación BBSS'),
-                    'res_model': 'hr.payslip.liquidacion.backup',
-                    'view_mode': 'tree,form',
-                    'target': 'current',
-                },
+                'next': {'type': 'ir.actions.act_window_close'},
             },
         }
 
@@ -159,7 +153,11 @@ class HrPayslipLiquidacionBackup(models.Model):
         """Recrea en hr.payslip.liquidacion los registros seleccionados de
         este respaldo. Solo se escriben campos propios (no 'related' ni
         'compute') que existan en el modelo de destino en este momento; los
-        campos calculados se recalculan solos a partir de sus dependencias."""
+        campos calculados se recalculan solos a partir de sus dependencias.
+
+        Se puede ejecutar cuantas veces se quiera, incluso sobre respaldos
+        que ya estén en estado 'Restaurado': cada ejecución vuelve a crear
+        el registro en el modelo de destino y actualiza la referencia."""
         if not self:
             raise UserError(_("Seleccione al menos un registro de respaldo para restaurar."))
 
@@ -175,9 +173,6 @@ class HrPayslipLiquidacionBackup(models.Model):
         skipped = 0
 
         for backup in self:
-            if backup.state == 'restored':
-                skipped += 1
-                continue
             try:
                 data = json.loads(backup.data_json or '{}')
             except ValueError:
@@ -214,3 +209,15 @@ class HrPayslipLiquidacionBackup(models.Model):
                 'sticky': False,
             },
         }
+
+    # ------------------------------------------------------------------
+    # BOTÓN (cabecera del formulario): Restaurar TODOS los registros
+    # ------------------------------------------------------------------
+    @api.model
+    def action_run_restore_all(self):
+        """Restaura de una sola vez TODOS los respaldos existentes, sin
+        necesidad de seleccionarlos uno a uno desde la lista."""
+        backups = self.search([])
+        if not backups:
+            raise UserError(_("No hay respaldos registrados para restaurar."))
+        return backups.action_run_restore()

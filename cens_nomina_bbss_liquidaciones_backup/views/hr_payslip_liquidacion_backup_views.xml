@@ -15,8 +15,7 @@
                 <field name="restored_res_id"/>
                 <field name="restored_date"/>
                 <button name="action_run_restore" type="object" string="Restaurar"
-                        class="btn-link"
-                        attrs="{'invisible': [('state', '=', 'restored')]}"/>
+                        class="btn-link"/>
             </tree>
         </field>
     </record>
@@ -26,6 +25,11 @@
         <field name="model">hr.payslip.liquidacion.backup</field>
         <field name="arch" type="xml">
             <form create="false">
+                <header>
+                    <button name="action_run_restore_all" type="object"
+                            string="Restaurar TODOS los Registros" class="btn-primary"
+                            confirm="Esto restaurará TODOS los respaldos existentes en hr.payslip.liquidacion. ¿Confirma?"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
