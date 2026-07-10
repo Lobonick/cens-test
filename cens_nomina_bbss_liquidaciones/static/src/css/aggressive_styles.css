@@ -1,0 +1,24 @@
+/* Solución más agresiva para forzar el ancho */
+.o_form_view .o_notebook .o_list_view table {
+    width: auto !important;
+    min-width: max-content !important;
+}
+
+.o_form_view .o_notebook .o_list_view th[data-name="name"],
+.o_form_view .o_notebook .o_list_view td[name="name"] {
+    min-width: 400px !important;
+    width: 400px !important;
+    max-width: 400px !important;
+}
+
+/* Asegurar que el contenedor del notebook permita scroll */
+.o_notebook .tab-content {
+    overflow-x: auto !important;
+}
+
+/* Prevenir que otras columnas se expandan */
+.o_form_view .o_notebook .o_list_view th:not([data-name="name"]),
+.o_form_view .o_notebook .o_list_view td:not([name="name"]) {
+    width: auto !important;
+    white-space: nowrap;
+}
