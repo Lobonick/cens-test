@@ -247,75 +247,78 @@ class HrPayslip(models.Model):
             worksheet.set_column(44, 44, 12)    #-- Gratific.Trunca      LIQUIDACIONES
             worksheet.set_column(45, 45, 12)    #-- Bonif.Grati.Trunca
 
-            worksheet.set_column(46, 46, 12)    #-- AFP
-            worksheet.set_column(47, 47, 12)    #-- 5TA     DESCUENTOS X LBS
-            worksheet.set_column(48, 48, 12)    #-- OTROS
+            worksheet.set_column(46, 46, 12)    #-- REINTEGRO AFECTO      (LIQUIDACIONES)
+            worksheet.set_column(47, 47, 12)    #-- REINTEGRO INAFECTO   (LIQUIDACIONES)
 
-            worksheet.set_column(49, 49, 12)    #-- 
-            worksheet.set_column(50, 50, 12)    #--
-            worksheet.set_column(51, 51, 12)    #-- Compañia
-            worksheet.set_column(52, 52, 12)    #-- AFP
-            worksheet.set_column(53, 53, 12)    #-- ONP 
-            worksheet.set_column(54, 54, 12)    #--
-            worksheet.set_column(55, 55, 12)    #--     DESCUENTOS
+            worksheet.set_column(48, 48, 12)    #-- AFP
+            worksheet.set_column(49, 49, 12)    #-- 5TA     DESCUENTOS X LBS
+            worksheet.set_column(50, 50, 12)    #-- OTROS
+
+            worksheet.set_column(51, 51, 12)    #--
+            worksheet.set_column(52, 52, 12)    #--
+            worksheet.set_column(53, 53, 12)    #-- Compañia
+            worksheet.set_column(54, 54, 12)    #-- AFP
+            worksheet.set_column(55, 55, 12)    #-- ONP
             worksheet.set_column(56, 56, 12)    #--
-            worksheet.set_column(57, 57, 12)    #--
+            worksheet.set_column(57, 57, 12)    #--     DESCUENTOS
             worksheet.set_column(58, 58, 12)    #--
             worksheet.set_column(59, 59, 12)    #--
-            worksheet.set_column(60, 60, 12)    #--     Descto.Vales
-            worksheet.set_column(61, 61, 12)    #--     Otros descuentos
+            worksheet.set_column(60, 60, 12)    #--
+            worksheet.set_column(61, 61, 12)    #--
+            worksheet.set_column(62, 62, 12)    #--     Descto.Vales
+            worksheet.set_column(63, 63, 12)    #--     Otros descuentos
 
-            worksheet.set_column(62, 62, 12)    #-- Adel.Remuneración    
-            worksheet.set_column(63, 63, 12)    #-- Reembolso Movilidad
-            worksheet.set_column(64, 64, 12)    #-- Adel.Gratific.        INCREMENTOS DIRECTOS
-            worksheet.set_column(65, 65, 12)    #-- Indemnizac.Despido
-            worksheet.set_column(66, 66, 12)    #-- Devoluc.Descto.Indebido
-            worksheet.set_column(67, 67, 12)    #-- REINTEGROS INAFECTOS
+            worksheet.set_column(64, 64, 12)    #-- Adel.Remuneración
+            worksheet.set_column(65, 65, 12)    #-- Reembolso Movilidad
+            worksheet.set_column(66, 66, 12)    #-- Adel.Gratific.        INCREMENTOS DIRECTOS
+            worksheet.set_column(67, 67, 12)    #-- Indemnizac.Despido
+            worksheet.set_column(68, 68, 12)    #-- Devoluc.Descto.Indebido
+            worksheet.set_column(69, 69, 12)    #-- REINTEGROS INAFECTOS
 
-            worksheet.set_column(68, 68, 5)    #--     (Seperador)
+            worksheet.set_column(70, 70, 5)    #--     (Seperador)
 
-            worksheet.set_column(69, 69, 12)    #-- Total Ingresos
-            worksheet.set_column(70, 70, 12)    #-- Total CNR
-            worksheet.set_column(71, 71, 12)    #-- Total Desctos.          RESUMEN TOTALIZADO     
-            worksheet.set_column(72, 72, 12)    #-- Total Increment.Directos
-            worksheet.set_column(73, 73, 12)    #-- Total Concepto LBS
-            worksheet.set_column(74, 74, 12)    #-- TOTAL NETO
+            worksheet.set_column(71, 71, 12)    #-- Total Ingresos
+            worksheet.set_column(72, 72, 12)    #-- Total CNR
+            worksheet.set_column(73, 73, 12)    #-- Total Desctos.          RESUMEN TOTALIZADO
+            worksheet.set_column(74, 74, 12)    #-- Total Increment.Directos
+            worksheet.set_column(75, 75, 12)    #-- Total Concepto LBS
+            worksheet.set_column(76, 76, 12)    #-- TOTAL NETO
 
-            worksheet.set_column(75, 75, 5)     #--   (Seperador)
+            worksheet.set_column(77, 77, 5)     #--   (Seperador)
 
-            worksheet.set_column(76, 76, 12)    #-- ESSALUD    
-            worksheet.set_column(77, 77, 12)    #-- EPS         APORTES 
+            worksheet.set_column(78, 78, 12)    #-- ESSALUD
+            worksheet.set_column(79, 79, 12)    #-- EPS         APORTES
 
-            worksheet.set_column(78, 78, 12)    #-- CTS
-            worksheet.set_column(79, 79, 12)    #-- Vacaciones
-            worksheet.set_column(80, 80, 12)    #-- Gratificaciones     PROVISIONES  
-            worksheet.set_column(81, 81, 12)    #-- Bonific.Gratific.        
-
-            worksheet.set_column(82, 82, 5)     #--    (Seperador)
-
-            worksheet.set_column(83, 83, 15)    #-- TOTAL COSTO
+            worksheet.set_column(80, 80, 12)    #-- CTS
+            worksheet.set_column(81, 81, 12)    #-- Vacaciones
+            worksheet.set_column(82, 82, 12)    #-- Gratificaciones     PROVISIONES
+            worksheet.set_column(83, 83, 12)    #-- Bonific.Gratific.
 
             worksheet.set_column(84, 84, 5)     #--    (Seperador)
 
-            worksheet.set_column(85, 85, 30)    #-- Banco   
-            worksheet.set_column(86, 86, 30)    #-- Cuenta      DETALLE CTA BANCO
-            worksheet.set_column(87, 87, 30)    #-- CCI    
+            worksheet.set_column(85, 85, 15)    #-- TOTAL COSTO
 
-            worksheet.set_column(88, 88, 5)     #--    (Seperador)
+            worksheet.set_column(86, 86, 5)     #--    (Seperador)
 
-            worksheet.set_column(89, 89, 12)    #-- Compañia   
-            worksheet.set_column(90, 90, 12)    #-- Importe Obligatorio
-            worksheet.set_column(91, 91, 12)    #-- Prima Seguro
-            worksheet.set_column(92, 92, 10)    #-- COMISION - Tipo  
-            worksheet.set_column(93, 93, 12)    #-- COMISION - Mixta   DESAGREGHADO AFP/ONP
-            worksheet.set_column(94, 94, 12)    #-- COMISION - Flujo  
-            worksheet.set_column(95, 95, 12)    #-- Total AFP
-            worksheet.set_column(96, 96, 12)    #-- Total ONP
+            worksheet.set_column(87, 87, 30)    #-- Banco
+            worksheet.set_column(88, 88, 30)    #-- Cuenta      DETALLE CTA BANCO
+            worksheet.set_column(89, 89, 30)    #-- CCI
 
-            worksheet.set_column(97, 97, 5)    #- (Seperador)
+            worksheet.set_column(90, 90, 5)     #--    (Seperador)
 
-            worksheet.set_column(98, 98, 12)    #- AFP / ONP
-            worksheet.set_column(99, 99, 12)    #- FECHA DE CESE
+            worksheet.set_column(91, 91, 12)    #-- Compañia
+            worksheet.set_column(92, 92, 12)    #-- Importe Obligatorio
+            worksheet.set_column(93, 93, 12)    #-- Prima Seguro
+            worksheet.set_column(94, 94, 10)    #-- COMISION - Tipo
+            worksheet.set_column(95, 95, 12)    #-- COMISION - Mixta   DESAGREGHADO AFP/ONP
+            worksheet.set_column(96, 96, 12)    #-- COMISION - Flujo
+            worksheet.set_column(97, 97, 12)    #-- Total AFP
+            worksheet.set_column(98, 98, 12)    #-- Total ONP
+
+            worksheet.set_column(99, 99, 5)    #- (Seperador)
+
+            worksheet.set_column(100, 100, 12)    #- AFP / ONP
+            worksheet.set_column(101, 101, 12)    #- FECHA DE CESE
 
             # ------
             worksheet.set_row(7, 27)        # (Fila,Altura)
@@ -355,35 +358,35 @@ class HrPayslip(models.Model):
             worksheet.merge_range('AK7:AP7', 'Merged Cells', merge_format)
             worksheet.write('AK7', 'CONCEPTOS NO REMUNERATIVOS', cell_format_sup2)
 
-            worksheet.merge_range('AQ7:AW7', 'Merged Cells', merge_format)
+            worksheet.merge_range('AQ7:AY7', 'Merged Cells', merge_format)
             worksheet.write('AQ7', 'CONCEPTOS LIQUIDACIÓN', cell_format_sup8)
 
-            worksheet.merge_range('AX7:BJ7', 'Merged Cells', merge_format)
-            worksheet.write('AX7', 'D E S C U E N T O S', cell_format_sup3)
+            worksheet.merge_range('AZ7:BL7', 'Merged Cells', merge_format)
+            worksheet.write('AZ7', 'D E S C U E N T O S', cell_format_sup3)
 
-            worksheet.merge_range('BK7:BP7', 'Merged Cells', merge_format)
-            worksheet.write('BK7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
+            worksheet.merge_range('BM7:BR7', 'Merged Cells', merge_format)
+            worksheet.write('BM7', 'INCREMENTOS DIRECTOS', cell_format_sup4)
 
-            worksheet.merge_range('BR7:BW7', 'Merged Cells', merge_format)
-            worksheet.write('BR7', 'RESUMEN TOTALIZADO', cell_format_sup5)
+            worksheet.merge_range('BT7:BY7', 'Merged Cells', merge_format)
+            worksheet.write('BT7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('BY7:BZ7', 'Merged Cells', merge_format)
-            worksheet.write('BY7', 'APORTES', cell_format_sup5)
+            worksheet.merge_range('CA7:CB7', 'Merged Cells', merge_format)
+            worksheet.write('CA7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('CA7:CD7', 'Merged Cells', merge_format)
-            worksheet.write('CA7', 'PROVISIONES', cell_format_sup5)
+            worksheet.merge_range('CC7:CF7', 'Merged Cells', merge_format)
+            worksheet.write('CC7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('CF7:CF7', 'Merged Cells', merge_format)
-            worksheet.write('CF7', 'COSTO', cell_format_sup5)
+            worksheet.merge_range('CH7:CH7', 'Merged Cells', merge_format)
+            worksheet.write('CH7', 'COSTO', cell_format_sup5)
 
-            worksheet.merge_range('CH7:CJ7', 'Merged Cells', merge_format)
-            worksheet.write('CH7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
+            worksheet.merge_range('CJ7:CL7', 'Merged Cells', merge_format)
+            worksheet.write('CJ7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
 
-            worksheet.merge_range('CL7:CS7', 'Merged Cells', merge_format)
-            worksheet.write('CL7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CN7:CU7', 'Merged Cells', merge_format)
+            worksheet.write('CN7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
 
-            worksheet.merge_range('CU7:CV7', 'Merged Cells', merge_format)
-            worksheet.write('CU7', 'AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CW7:CX7', 'Merged Cells', merge_format)
+            worksheet.write('CW7', 'AFP / ONP', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -727,68 +730,71 @@ class HrPayslip(models.Model):
             worksheet.write('AS8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
             worksheet.write('AT8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
 
-            worksheet.merge_range('AU8:AW8', 'Merged Cells', merge_format)
-            worksheet.write('AU8', 'DESCUENTOS LBS ( - )', cell_format_sub8)
+            worksheet.merge_range('AU8:AV8', 'Merged Cells', merge_format)
+            worksheet.write('AU8', 'REINTEGROS', cell_format_sub8)
 
-            worksheet.write('AX8', 'LICEN SIN GOCE:', cell_format_tit3)         #-- 42
-            worksheet.write('AY8', 'ADELANTO SUELDO', cell_format_tit3)         #-- 43
-            worksheet.merge_range('AZ8:BB8', 'Merged Cells', merge_format)
-            worksheet.write('AZ8', 'AFP / ONP', cell_format_tit31)
-            worksheet.write('BC8', 'INASISTENCIAS', cell_format_tit3)           #-- 45
-            worksheet.write('BD8', 'TARDANZAS', cell_format_tit3)               #-- 46      DESCUENTOS
-            worksheet.write('BE8', 'RENTA 5TA.CAT', cell_format_tit3)           #-- 47
-            worksheet.write('BF8', 'RETEN JUDIC (Alimentos)', cell_format_tit3) #-- 48
-            worksheet.write('BG8', 'DESCTO NO DEDUCIBLE', cell_format_tit3)     #-- 49
-            worksheet.write('BH8', 'APORTES EPS', cell_format_tit3)             #-- 50
-            worksheet.write('BI8', 'DESCUENTO VALES', cell_format_tit3)
-            worksheet.write('BJ8', 'OTROS DESCUENTOS', cell_format_tit3)
+            worksheet.merge_range('AW8:AY8', 'Merged Cells', merge_format)
+            worksheet.write('AW8', 'DESCUENTOS LBS ( - )', cell_format_sub8)
 
-            worksheet.write('BK8', 'ADELANT REMUNERAC', cell_format_tit4)       #-- 51
-            worksheet.write('BL8', 'REMMB MOVILIDAD', cell_format_tit4)         #-- 52      INCREMENTOS DIRECTOS
-            worksheet.write('BM8', 'ADELANTO GRATIFIC', cell_format_tit4)       #-- 53
-            worksheet.write('BN8', 'IDEMNIZAC DESPIDO', cell_format_tit4)       #-- 54
-            worksheet.write('BO8', 'DEVOLUCIÓN DSCTO INDEB', cell_format_tit4)  #-- 55
-            worksheet.write('BP8', 'REINTEGROS INAFECTOS', cell_format_tit4)    #-- 55
+            worksheet.write('AZ8', 'LICEN SIN GOCE:', cell_format_tit3)         #-- 42
+            worksheet.write('BA8', 'ADELANTO SUELDO', cell_format_tit3)         #-- 43
+            worksheet.merge_range('BB8:BD8', 'Merged Cells', merge_format)
+            worksheet.write('BB8', 'AFP / ONP', cell_format_tit31)
+            worksheet.write('BE8', 'INASISTENCIAS', cell_format_tit3)           #-- 45
+            worksheet.write('BF8', 'TARDANZAS', cell_format_tit3)               #-- 46      DESCUENTOS
+            worksheet.write('BG8', 'RENTA 5TA.CAT', cell_format_tit3)           #-- 47
+            worksheet.write('BH8', 'RETEN JUDIC (Alimentos)', cell_format_tit3) #-- 48
+            worksheet.write('BI8', 'DESCTO NO DEDUCIBLE', cell_format_tit3)     #-- 49
+            worksheet.write('BJ8', 'APORTES EPS', cell_format_tit3)             #-- 50
+            worksheet.write('BK8', 'DESCUENTO VALES', cell_format_tit3)
+            worksheet.write('BL8', 'OTROS DESCUENTOS', cell_format_tit3)
 
-            worksheet.write('BR8', 'TOTAL INGRESOS', cell_format_tit5)          #-- 57
-            worksheet.write('BS8', 'TOTAL C-N-R', cell_format_tit5)             #-- 58      
-            worksheet.write('BT8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 59      RESUMEN
-            worksheet.write('BU8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 60
-            worksheet.write('BN8', 'TOT CONCEPT LBS', cell_format_tit8)         #-- 58
-            worksheet.write('BW8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
+            worksheet.write('BM8', 'ADELANT REMUNERAC', cell_format_tit4)       #-- 51
+            worksheet.write('BN8', 'REMMB MOVILIDAD', cell_format_tit4)         #-- 52      INCREMENTOS DIRECTOS
+            worksheet.write('BO8', 'ADELANTO GRATIFIC', cell_format_tit4)       #-- 53
+            worksheet.write('BP8', 'IDEMNIZAC DESPIDO', cell_format_tit4)       #-- 54
+            worksheet.write('BQ8', 'DEVOLUCIÓN DSCTO INDEB', cell_format_tit4)  #-- 55
+            worksheet.write('BR8', 'REINTEGROS INAFECTOS', cell_format_tit4)    #-- 55
 
-            worksheet.write('BY8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
-            worksheet.write('BZ8', 'EPS', cell_format_tit6)                     #-- 62      
-            worksheet.write('CA8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
-            worksheet.write('CB8', 'VACACIONES', cell_format_tit7)              #-- 64
-            worksheet.write('CC8', 'GRATIFICAC', cell_format_tit7)              #-- 65
-            worksheet.write('CD8', 'BONIFIC GRATIFIC', cell_format_tit7)        #-- 66
+            worksheet.write('BT8', 'TOTAL INGRESOS', cell_format_tit5)          #-- 57
+            worksheet.write('BU8', 'TOTAL C-N-R', cell_format_tit5)             #-- 58
+            worksheet.write('BV8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 59      RESUMEN
+            worksheet.write('BW8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 60
+            worksheet.write('BP8', 'TOT CONCEPT LBS', cell_format_tit8)         #-- 58
+            worksheet.write('BY8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
 
-            worksheet.write('CF8', 'COSTO EMPLEADO', cell_format_tit5)          #-- 68
+            worksheet.write('CA8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
+            worksheet.write('CB8', 'EPS', cell_format_tit6)                     #-- 62
+            worksheet.write('CC8', 'CTS', cell_format_tit7)                     #-- 63      PROVISIONES
+            worksheet.write('CD8', 'VACACIONES', cell_format_tit7)              #-- 64
+            worksheet.write('CE8', 'GRATIFICAC', cell_format_tit7)              #-- 65
+            worksheet.write('CF8', 'BONIFIC GRATIFIC', cell_format_tit7)        #-- 66
 
-            worksheet.write('CH8', 'BANCO', cell_format_tit7)                   #-- 64
-            worksheet.write('CI8', 'CUENTA', cell_format_tit7)                  #-- 65      DETALLE CTAS BANCARIAS
-            worksheet.write('CJ8', 'CCI', cell_format_tit7)                     #-- 66
+            worksheet.write('CH8', 'COSTO EMPLEADO', cell_format_tit5)          #-- 68
 
-            worksheet.merge_range('CL8:CL9', 'Merged Cells', merge_format)
-            worksheet.write('CL8', 'COMPAÑIA', cell_format_tit7)                #-- 79
-            worksheet.merge_range('CM8:CM9', 'Merged Cells', merge_format)
-            worksheet.write('CM8', 'IMPORTE OBLIGATORIO', cell_format_tit7)     #-- 80
+            worksheet.write('CJ8', 'BANCO', cell_format_tit7)                   #-- 64
+            worksheet.write('CK8', 'CUENTA', cell_format_tit7)                  #-- 65      DETALLE CTAS BANCARIAS
+            worksheet.write('CL8', 'CCI', cell_format_tit7)                     #-- 66
+
             worksheet.merge_range('CN8:CN9', 'Merged Cells', merge_format)
-            worksheet.write('CN8', 'PRIMA SEGURO', cell_format_tit7)            #-- 81      DESAGREGADO AFP
-            worksheet.merge_range('CO8:CQ8', 'Merged Cells', merge_format)
-            worksheet.write('CO8', 'COMISIÓN', cell_format_tit6)
+            worksheet.write('CN8', 'COMPAÑIA', cell_format_tit7)                #-- 79
+            worksheet.merge_range('CO8:CO9', 'Merged Cells', merge_format)
+            worksheet.write('CO8', 'IMPORTE OBLIGATORIO', cell_format_tit7)     #-- 80
+            worksheet.merge_range('CP8:CP9', 'Merged Cells', merge_format)
+            worksheet.write('CP8', 'PRIMA SEGURO', cell_format_tit7)            #-- 81      DESAGREGADO AFP
+            worksheet.merge_range('CQ8:CS8', 'Merged Cells', merge_format)
+            worksheet.write('CQ8', 'COMISIÓN', cell_format_tit6)
             # worksheet.write('CE8', 'TIPO COMISIÓN', cell_format_tit7)           #-- 82
             # worksheet.write('CF8', 'COMISIÓN MIXTA', cell_format_tit7)          #-- 83
             # worksheet.write('CG8', 'COMISIÓN FLUJO', cell_format_tit7)          #-- 84
 
-            worksheet.merge_range('CR8:CS8', 'Merged Cells', merge_format)
-            worksheet.write('CR8', 'TOTALES', cell_format_tit31)
+            worksheet.merge_range('CT8:CU8', 'Merged Cells', merge_format)
+            worksheet.write('CT8', 'TOTALES', cell_format_tit31)
             # worksheet.write('CH8', 'AFP', cell_format_tit7)                     #-- 86      TOTAL AFP/ONP
             # worksheet.write('CI8', 'ONP', cell_format_tit7)                     #-- 87
 
-            worksheet.write('CU8', 'AFP/ONP', cell_format_tit7)                     #-- 87
-            worksheet.write('CV8', 'FECHA CESE', cell_format_tit7)                     #-- 87
+            worksheet.write('CW8', 'AFP/ONP', cell_format_tit7)                     #-- 87
+            worksheet.write('CX8', 'FECHA CESE', cell_format_tit7)                     #-- 87
 
 
             #----------------------------------------------------------------
@@ -832,60 +838,63 @@ class HrPayslip(models.Model):
             worksheet.write('AS9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
             worksheet.write('AT9', '(Cese)', cell_format_sub8)         #-- 43
 
-            worksheet.write('AU9', 'AFP/ONP', cell_format_tit8) 
-            worksheet.write('AV9', 'RENTA 5TA', cell_format_tit8) 
-            worksheet.write('AW9', 'OTROS', cell_format_tit8) 
+            worksheet.write('AU9', 'AFECTO', cell_format_tit8)
+            worksheet.write('AV9', 'INAFECTO', cell_format_tit8)
 
-            worksheet.write('AX9', '(-)', cell_format_sub3)         #-- 44
-            worksheet.write('AY9', '(-)', cell_format_sub3)         #-- 45
-            worksheet.write('AZ9', 'COMPAÑIA', cell_format_sub31)         #-- 46
-            worksheet.write('BA9', 'AFP', cell_format_sub31)         #-- 46
-            worksheet.write('BB9', 'ONP', cell_format_sub31)         #-- 46      
-            worksheet.write('BC9', '(-)', cell_format_sub3)         #-- 47
-            worksheet.write('BD9', '(-)', cell_format_sub3)         #-- 48      DESCUENTOS
-            worksheet.write('BE9', '(-)', cell_format_sub3)         #-- 49
-            worksheet.write('BF9', '(-)', cell_format_sub3)         #-- 50      
-            worksheet.write('BG9', '(-)', cell_format_sub3)         #-- 51
-            worksheet.write('BH9', '(-)', cell_format_sub3)         #-- 52
-            worksheet.write('BI9', '(-)', cell_format_sub3)
-            worksheet.write('BJ9', '(-)', cell_format_sub3)
+            worksheet.write('AW9', 'AFP/ONP', cell_format_tit8)
+            worksheet.write('AX9', 'RENTA 5TA', cell_format_tit8)
+            worksheet.write('AY9', 'OTROS', cell_format_tit8)
 
-            worksheet.write('BK9', '(d)', cell_format_sub4)         #-- 53
-            worksheet.write('BL9', '(d)', cell_format_sub4)         #-- 54      INCREMENTOS DIRECTOS
-            worksheet.write('BM9', '(d)', cell_format_sub4)         #-- 55
-            worksheet.write('BN9', '(d)', cell_format_sub4)         #-- 56
-            worksheet.write('BO9', '(d)', cell_format_sub4)         #-- 57
-            worksheet.write('BP9', '(d)', cell_format_sub4)
+            worksheet.write('AZ9', '(-)', cell_format_sub3)         #-- 44
+            worksheet.write('BA9', '(-)', cell_format_sub3)         #-- 45
+            worksheet.write('BB9', 'COMPAÑIA', cell_format_sub31)         #-- 46
+            worksheet.write('BC9', 'AFP', cell_format_sub31)         #-- 46
+            worksheet.write('BD9', 'ONP', cell_format_sub31)         #-- 46
+            worksheet.write('BE9', '(-)', cell_format_sub3)         #-- 47
+            worksheet.write('BF9', '(-)', cell_format_sub3)         #-- 48      DESCUENTOS
+            worksheet.write('BG9', '(-)', cell_format_sub3)         #-- 49
+            worksheet.write('BH9', '(-)', cell_format_sub3)         #-- 50
+            worksheet.write('BI9', '(-)', cell_format_sub3)         #-- 51
+            worksheet.write('BJ9', '(-)', cell_format_sub3)         #-- 52
+            worksheet.write('BK9', '(-)', cell_format_sub3)
+            worksheet.write('BL9', '(-)', cell_format_sub3)
 
-            worksheet.write('BR9', '(Acum)', cell_format_tit1)         #-- 64
-            worksheet.write('BS9', '(Acum)', cell_format_tit2)         #-- 65      RESUMEN TOTALIZADO
-            worksheet.write('BT9', '(Acum)', cell_format_tit3)         #-- 66
-            worksheet.write('BU9', '(Acum)', cell_format_tit4)         #-- 67
-            worksheet.write('BV9', '(Acum)', cell_format_tit4)         #-- 67
-            worksheet.write('BW9', '(Acum)', cell_format_sub5)         #-- 68
+            worksheet.write('BM9', '(d)', cell_format_sub4)         #-- 53
+            worksheet.write('BN9', '(d)', cell_format_sub4)         #-- 54      INCREMENTOS DIRECTOS
+            worksheet.write('BO9', '(d)', cell_format_sub4)         #-- 55
+            worksheet.write('BP9', '(d)', cell_format_sub4)         #-- 56
+            worksheet.write('BQ9', '(d)', cell_format_sub4)         #-- 57
+            worksheet.write('BR9', '(d)', cell_format_sub4)
 
-            worksheet.write('BY9', '(Empr)', cell_format_sub6)         #-- 70      APORTES
-            worksheet.write('BZ9', '(Empr)', cell_format_sub6)         #-- 71      
-            worksheet.write('CA9', '(Empr)', cell_format_sub7)         #-- 72      PROVISIONES
-            worksheet.write('CB9', '(Empr)', cell_format_sub7)         #-- 73
-            worksheet.write('CC9', '(Empr)', cell_format_sub7)         #-- 74
-            worksheet.write('CD9', '(Empr)', cell_format_sub7)         #-- 75
+            worksheet.write('BT9', '(Acum)', cell_format_tit1)         #-- 64
+            worksheet.write('BU9', '(Acum)', cell_format_tit2)         #-- 65      RESUMEN TOTALIZADO
+            worksheet.write('BV9', '(Acum)', cell_format_tit3)         #-- 66
+            worksheet.write('BW9', '(Acum)', cell_format_tit4)         #-- 67
+            worksheet.write('BX9', '(Acum)', cell_format_tit4)         #-- 67
+            worksheet.write('BY9', '(Acum)', cell_format_sub5)         #-- 68
 
-            worksheet.write('CF9', '(Mensual)', cell_format_sub5)      #-- 75      COSTO MENSUAL
+            worksheet.write('CA9', '(Empr)', cell_format_sub6)         #-- 70      APORTES
+            worksheet.write('CB9', '(Empr)', cell_format_sub6)         #-- 71
+            worksheet.write('CC9', '(Empr)', cell_format_sub7)         #-- 72      PROVISIONES
+            worksheet.write('CD9', '(Empr)', cell_format_sub7)         #-- 73
+            worksheet.write('CE9', '(Empr)', cell_format_sub7)         #-- 74
+            worksheet.write('CF9', '(Empr)', cell_format_sub7)         #-- 75
 
-            worksheet.write('CH9', 'FINANCIERA', cell_format_sub6)         #-- 70      COMISIÓN
-            worksheet.write('CI9', '(Número)', cell_format_sub6)         #-- 71      
-            worksheet.write('CJ9', '(Número)', cell_format_sub6)         #-- 72    
+            worksheet.write('CH9', '(Mensual)', cell_format_sub5)      #-- 75      COSTO MENSUAL
 
-            worksheet.write('CO9', 'TIPO', cell_format_sub6)         #-- 70      COMISIÓN
-            worksheet.write('CP9', 'MIXTA', cell_format_sub6)         #-- 71      
-            worksheet.write('CQ9', 'FLUJO', cell_format_sub6)         #-- 72    
-              
-            worksheet.write('CR9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
-            worksheet.write('CT9', 'ONP', cell_format_sub7)         #-- 74
+            worksheet.write('CJ9', 'FINANCIERA', cell_format_sub6)         #-- 70      COMISIÓN
+            worksheet.write('CK9', '(Número)', cell_format_sub6)         #-- 71
+            worksheet.write('CL9', '(Número)', cell_format_sub6)         #-- 72
 
-            worksheet.write('CU9', 'Descuento', cell_format_sub7)         #-- 74    AFP/ONP
-            worksheet.write('CV9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
+            worksheet.write('CQ9', 'TIPO', cell_format_sub6)         #-- 70      COMISIÓN
+            worksheet.write('CR9', 'MIXTA', cell_format_sub6)         #-- 71
+            worksheet.write('CS9', 'FLUJO', cell_format_sub6)         #-- 72
+
+            worksheet.write('CT9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
+            worksheet.write('CV9', 'ONP', cell_format_sub7)         #-- 74
+
+            worksheet.write('CW9', 'Descuento', cell_format_sub7)         #-- 74    AFP/ONP
+            worksheet.write('CX9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
 
             #-----
             #worksheet.autofilter(8, 2, 8, 8)    #--- Coloca FILTROS en datos generales
@@ -894,7 +903,7 @@ class HrPayslip(models.Model):
             #worksheet.autofilter(8, 39, 8, 42)  #--- Coloca FILTROS en Liquidación
             #worksheet.autofilter(8, 43, 8, 52)  #--- Coloca FILTROS en Descuentos
             #worksheet.autofilter(8, 53, 8, 57)  #--- Coloca FILTROS en Incrementos Indirectos   
-            worksheet.autofilter(8, 65, 8, 70)  #--- Coloca FILTROS en RESUMEN 
+            worksheet.autofilter(8, 67, 8, 72)  #--- Coloca FILTROS en RESUMEN
             #-----
             worksheet.freeze_panes(9, 4)    #--- Inmoviliza Paneles
 
@@ -1100,44 +1109,47 @@ class HrPayslip(models.Model):
                 worksheet.write(w_fila, 44, w_boleta.x_studio_cese_grati_trunca, current_format_impo)
                 worksheet.write(w_fila, 45, w_boleta.x_studio_cese_bonif_grati_trunca, current_format_impo)
 
-                worksheet.write(w_fila, 46, -w_boleta.x_studio_cese_descuento_afp, current_format_impo)
-                worksheet.write(w_fila, 47, -w_boleta.x_studio_cese_descuento_renta_5ta, current_format_impo)
-                worksheet.write(w_fila, 48, -w_boleta.x_studio_cese_otros_descuentos, current_format_impo)
+                worksheet.write(w_fila, 46, w_boleta.x_studio_reintegros_afectos, current_format_impo)
+                worksheet.write(w_fila, 47, w_boleta.x_studio_reintegros_inafectos, current_format_impo)
+
+                worksheet.write(w_fila, 48, -w_boleta.x_studio_cese_descuento_afp, current_format_impo)
+                worksheet.write(w_fila, 49, -w_boleta.x_studio_cese_descuento_renta_5ta, current_format_impo)
+                worksheet.write(w_fila, 50, -w_boleta.x_studio_cese_otros_descuentos, current_format_impo)
 
 
                 # -----------------------------------------
                 # BOLETA PAGO - DESCUENTOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 49, w_boleta.x_studio_en_licencia_sin_ghaber, current_format_impo)
-                worksheet.write(w_fila, 50, w_boleta.x_studio_en_adelanto_sueldo, current_format_impo)
+                worksheet.write(w_fila, 51, w_boleta.x_studio_en_licencia_sin_ghaber, current_format_impo)
+                worksheet.write(w_fila, 52, w_boleta.x_studio_en_adelanto_sueldo, current_format_impo)
                 if (w_boleta.x_studio_compania_afp):
                     w_nombre_cia = w_boleta.x_studio_compania_afp.x_name
-                    worksheet.write(w_fila, 51, w_nombre_cia, current_format_left)
+                    worksheet.write(w_fila, 53, w_nombre_cia, current_format_left)
                     if (w_nombre_cia == 'ONP'):
-                        worksheet.write(w_fila, 52, " ", current_format_impo)
-                        worksheet.write(w_fila, 53, w_boleta.x_studio_en_afp_onp, current_format_impo)
+                        worksheet.write(w_fila, 54, " ", current_format_impo)
+                        worksheet.write(w_fila, 55, w_boleta.x_studio_en_afp_onp, current_format_impo)
                     else:
-                        worksheet.write(w_fila, 52, w_boleta.x_studio_en_afp_onp, current_format_impo)
-                        worksheet.write(w_fila, 53, " ", current_format_impo)
+                        worksheet.write(w_fila, 54, w_boleta.x_studio_en_afp_onp, current_format_impo)
+                        worksheet.write(w_fila, 55, " ", current_format_impo)
 
-                worksheet.write(w_fila, 54, w_boleta.x_studio_en_inasistencias, current_format_impo)
-                worksheet.write(w_fila, 55, w_boleta.x_studio_en_tardanzas, current_format_impo)
-                worksheet.write(w_fila, 56, w_boleta.x_studio_en_renta_5ta, current_format_impo)
-                worksheet.write(w_fila, 57, w_boleta.x_studio_en_retencion_judicial, current_format_impo)
-                worksheet.write(w_fila, 58, w_boleta.x_studio_en_descuento_prestamos, current_format_impo)
-                worksheet.write(w_fila, 59, w_boleta.x_studio_aporte_eps_2, current_format_impo)
-                worksheet.write(w_fila, 60, w_boleta.x_studio_en_descuento_vales, current_format_impo)
-                worksheet.write(w_fila, 61, w_boleta.x_studio_en_otros_descuentos, current_format_impo)
-                
+                worksheet.write(w_fila, 56, w_boleta.x_studio_en_inasistencias, current_format_impo)
+                worksheet.write(w_fila, 57, w_boleta.x_studio_en_tardanzas, current_format_impo)
+                worksheet.write(w_fila, 58, w_boleta.x_studio_en_renta_5ta, current_format_impo)
+                worksheet.write(w_fila, 59, w_boleta.x_studio_en_retencion_judicial, current_format_impo)
+                worksheet.write(w_fila, 60, w_boleta.x_studio_en_descuento_prestamos, current_format_impo)
+                worksheet.write(w_fila, 61, w_boleta.x_studio_aporte_eps_2, current_format_impo)
+                worksheet.write(w_fila, 62, w_boleta.x_studio_en_descuento_vales, current_format_impo)
+                worksheet.write(w_fila, 63, w_boleta.x_studio_en_otros_descuentos, current_format_impo)
+
                 # -----------------------------------------
                 # BOLETA PAGO - INCREMENTOS DIRECTOS
                 # -----------------------------------------
-                worksheet.write(w_fila, 62, w_boleta.x_studio_en_reembolso, current_format_impo)
-                worksheet.write(w_fila, 63, w_boleta.x_studio_en_reembolso_movilidad, current_format_impo)
-                worksheet.write(w_fila, 64, w_boleta.x_studio_en_adelanto_gratificacion, current_format_impo)
-                worksheet.write(w_fila, 65, w_boleta.x_studio_en_indemniza_despido_arbitrario, current_format_impo)
-                worksheet.write(w_fila, 66, w_boleta.x_studio_especial_ac, current_format_impo)
-                worksheet.write(w_fila, 67, w_boleta.x_studio_en_reintegro_inafecto, current_format_impo)
+                worksheet.write(w_fila, 64, w_boleta.x_studio_en_reembolso, current_format_impo)
+                worksheet.write(w_fila, 65, w_boleta.x_studio_en_reembolso_movilidad, current_format_impo)
+                worksheet.write(w_fila, 66, w_boleta.x_studio_en_adelanto_gratificacion, current_format_impo)
+                worksheet.write(w_fila, 67, w_boleta.x_studio_en_indemniza_despido_arbitrario, current_format_impo)
+                worksheet.write(w_fila, 68, w_boleta.x_studio_especial_ac, current_format_impo)
+                worksheet.write(w_fila, 69, w_boleta.x_studio_en_reintegro_inafecto, current_format_impo)
 
                 # -----------------------------------------
                 # BOLETA PAGO - TOTALIZADO RESUMEN
@@ -1151,27 +1163,27 @@ class HrPayslip(models.Model):
                 w_tota_lbs -= w_boleta.x_studio_cese_descuento_renta_5ta
                 w_tota_lbs -= w_boleta.x_studio_cese_otros_descuentos
 
-                worksheet.write(w_fila, 69, w_boleta.x_studio_en_gross, current_format_impo)
-                worksheet.write(w_fila, 70, w_boleta.x_studio_en_total_remuneracion_bruta, current_format_impo)
-                worksheet.write(w_fila, 71, -w_boleta.x_studio_total_descuentos, current_format_impo)
-                worksheet.write(w_fila, 72, w_boleta.x_studio_sub_total_incremespeciales, current_format_impo)
-                worksheet.write(w_fila, 73, w_tota_lbs, current_format_impo)
+                worksheet.write(w_fila, 71, w_boleta.x_studio_en_gross, current_format_impo)
+                worksheet.write(w_fila, 72, w_boleta.x_studio_en_total_remuneracion_bruta, current_format_impo)
+                worksheet.write(w_fila, 73, -w_boleta.x_studio_total_descuentos, current_format_impo)
+                worksheet.write(w_fila, 74, w_boleta.x_studio_sub_total_incremespeciales, current_format_impo)
+                worksheet.write(w_fila, 75, w_tota_lbs, current_format_impo)
                 w_tota_gen = w_boleta.x_studio_en_total_remuneracion + w_tota_lbs
-                worksheet.write(w_fila, 74, w_tota_gen, current_format_imp2)
+                worksheet.write(w_fila, 76, w_tota_gen, current_format_imp2)
                 w_acum_tota_1 += w_tota_gen
 
                 # -----------------------------------------
                 # APORTES
                 # -----------------------------------------
-                worksheet.write(w_fila, 76, w_boleta.x_studio_aporte_a_essalud, current_format_impo)
-                worksheet.write(w_fila, 77, w_boleta.x_studio_en_aportes_eps, current_format_impo)
+                worksheet.write(w_fila, 78, w_boleta.x_studio_aporte_a_essalud, current_format_impo)
+                worksheet.write(w_fila, 79, w_boleta.x_studio_en_aportes_eps, current_format_impo)
                 # -----------------------------------------
                 # PROVISIONES
                 # -----------------------------------------
-                worksheet.write(w_fila, 78, w_boleta.x_studio_en_provision_cts, current_format_impo)
-                worksheet.write(w_fila, 79, w_boleta.x_studio_en_provision_vacaciones, current_format_impo)
-                worksheet.write(w_fila, 80, w_boleta.x_studio_en_provision_gratificacion, current_format_impo)
-                worksheet.write(w_fila, 81, w_boleta.x_studio_en_provision_bonigrati, current_format_impo)
+                worksheet.write(w_fila, 80, w_boleta.x_studio_en_provision_cts, current_format_impo)
+                worksheet.write(w_fila, 81, w_boleta.x_studio_en_provision_vacaciones, current_format_impo)
+                worksheet.write(w_fila, 82, w_boleta.x_studio_en_provision_gratificacion, current_format_impo)
+                worksheet.write(w_fila, 83, w_boleta.x_studio_en_provision_bonigrati, current_format_impo)
                 # -----------------------------------------
                 # COSTO DEL MES
                 # -----------------------------------------
@@ -1213,20 +1225,20 @@ class HrPayslip(models.Model):
                 w_total_costo += w_boleta.x_studio_en_provision_vacaciones
                 w_total_costo += w_boleta.x_studio_en_provision_gratificacion
                 w_total_costo += w_boleta.x_studio_en_provision_bonigrati
-                worksheet.write(w_fila, 83, w_total_costo, current_format_imp2)
+                worksheet.write(w_fila, 85, w_total_costo, current_format_imp2)
 
                 # -----------------------------------------
                 # DETALLE CUENTA BANCARIA
                 # -----------------------------------------
                 w_dato = w_boleta.employee_id.x_studio_nombre_banco
-                worksheet.write(w_fila, 85, w_dato, current_format_imp2)
+                worksheet.write(w_fila, 87, w_dato, current_format_imp2)
 
                 w_dato = w_boleta.employee_id.x_studio_numero_cuenta
-                worksheet.write(w_fila, 86, w_dato, current_format_imp2)
+                worksheet.write(w_fila, 88, w_dato, current_format_imp2)
 
                 w_dato = w_boleta.employee_id.x_studio_cci
-                worksheet.write(w_fila, 87, w_dato, current_format_imp2)
-                
+                worksheet.write(w_fila, 89, w_dato, current_format_imp2)
+
                 # -----------------------------------------
                 # DESAGREGADO DE AFP/ONP
                 # -----------------------------------------
@@ -1234,35 +1246,35 @@ class HrPayslip(models.Model):
                     w_nombre_cia = w_boleta.x_studio_compania_afp.x_name
                     w_tota_afp = w_boleta.x_studio_cese_descuento_afp
 
-                    worksheet.write(w_fila, 89, w_nombre_cia, current_format_left)
+                    worksheet.write(w_fila, 91, w_nombre_cia, current_format_left)
                     if (w_nombre_cia == 'ONP'):
                         w_tota_afp += w_boleta.x_studio_en_afp_onp
-                        worksheet.write(w_fila, 96, w_tota_afp, current_format_impo)
+                        worksheet.write(w_fila, 98, w_tota_afp, current_format_impo)
                     else:
-                        worksheet.write(w_fila, 90, w_boleta.x_studio_en_afp_aporte_obligatorio, current_format_impo)
-                        worksheet.write(w_fila, 91, w_boleta.x_studio_en_afp_prima_seguro, current_format_impo)
+                        worksheet.write(w_fila, 92, w_boleta.x_studio_en_afp_aporte_obligatorio, current_format_impo)
+                        worksheet.write(w_fila, 93, w_boleta.x_studio_en_afp_prima_seguro, current_format_impo)
                         # w_boleta.x_studio_en_tipo_comision
-                        worksheet.write(w_fila, 92, w_boleta.x_studio_en_tipo_comision, current_format_cent)
+                        worksheet.write(w_fila, 94, w_boleta.x_studio_en_tipo_comision, current_format_cent)
                         if (w_boleta.x_studio_en_tipo_comision == 'MIX'):
-                            worksheet.write(w_fila, 93, w_boleta.x_studio_en_comision_mixta, current_format_impo)
+                            worksheet.write(w_fila, 95, w_boleta.x_studio_en_comision_mixta, current_format_impo)
                         if (w_boleta.x_studio_en_tipo_comision == 'FLU'):
-                            worksheet.write(w_fila, 94, w_boleta.x_studio_en_comision_flujo, current_format_impo)
+                            worksheet.write(w_fila, 96, w_boleta.x_studio_en_comision_flujo, current_format_impo)
 
                         w_tota_afp += w_boleta.x_studio_en_afp_onp
-                        worksheet.write(w_fila, 95, w_tota_afp, current_format_impo)
-                
+                        worksheet.write(w_fila, 97, w_tota_afp, current_format_impo)
+
                 #
                 # FECHA DE CESE
                 #
                 if w_boleta.x_studio_cesado:
-                    worksheet.write(w_fila, 97, "Inc.Liq.", current_format_left)
-                    worksheet.write(w_fila, 98, w_boleta.x_studio_cese_descuento_afp, current_format_impo)
-                    worksheet.write(w_fila, 99, w_boleta.x_studio_cese_fecha, current_format_fech)
+                    worksheet.write(w_fila, 99, "Inc.Liq.", current_format_left)
+                    worksheet.write(w_fila, 100, w_boleta.x_studio_cese_descuento_afp, current_format_impo)
+                    worksheet.write(w_fila, 101, w_boleta.x_studio_cese_fecha, current_format_fech)
 
                 w_fila += 1
 
-            worksheet.write(5, 73, "TOTAL GENERAL:", cell_format_left)
-            worksheet.write(5, 74, w_acum_tota_1, cell_format_impo)
+            worksheet.write(5, 75, "TOTAL GENERAL:", cell_format_left)
+            worksheet.write(5, 76, w_acum_tota_1, cell_format_impo)
 
             worksheet.activate()
             workbook.close()
