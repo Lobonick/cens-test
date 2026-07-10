@@ -725,13 +725,13 @@ class HrPayslip(models.Model):
             worksheet.write('AO8', 'UTILIDAD VOLUNT', cell_format_tit2)         #-- 36
             worksheet.write('AP8', 'VALE COMBUSTIBLE', cell_format_tit2)           #-- 37
 
-            worksheet.write('AQ8', 'VACACIONES TRUNCAS', cell_format_tit8)       #-- 38
-            worksheet.write('AR8', 'CTS TRUNCO', cell_format_tit8)               #-- 39
-            worksheet.write('AS8', 'GRATIFIC TRUNCA', cell_format_tit8)          #-- 40     LIQUIDACIÓN
-            worksheet.write('AT8', 'BONIF.GRATI TRUNCA', cell_format_tit8)       #-- 41
+            worksheet.write('AQ8', 'VACACIONES TRUNCAS', cell_format_sub8)       #-- 38
+            worksheet.write('AR8', 'CTS TRUNCO', cell_format_sub8)               #-- 39
+            worksheet.write('AS8', 'GRATIFIC TRUNCA', cell_format_sub8)          #-- 40     LIQUIDACIÓN
+            worksheet.write('AT8', 'BONIF.GRATI TRUNCA', cell_format_sub8)       #-- 41
 
             worksheet.merge_range('AU8:AV8', 'Merged Cells', merge_format)
-            worksheet.write('AU8', 'REINTEGROS', cell_format_sub8)
+            worksheet.write('AU8', 'REINTEGROS', cell_format_tit8)
 
             worksheet.merge_range('AW8:AY8', 'Merged Cells', merge_format)
             worksheet.write('AW8', 'DESCUENTOS LBS ( - )', cell_format_sub8)
@@ -760,7 +760,7 @@ class HrPayslip(models.Model):
             worksheet.write('BU8', 'TOTAL C-N-R', cell_format_tit5)             #-- 58
             worksheet.write('BV8', 'TOTAL DESCTOS', cell_format_tit5)           #-- 59      RESUMEN
             worksheet.write('BW8', 'TOTAL INCR.DIREC', cell_format_tit5)        #-- 60
-            worksheet.write('BP8', 'TOT CONCEPT LBS', cell_format_tit8)         #-- 58
+            worksheet.write('BX8', 'TOT CONCEPT LBS', cell_format_tit8)         #-- 58
             worksheet.write('BY8', 'TOTAL-NETO', cell_format_tit5)              #-- 59
 
             worksheet.write('CA8', 'ESSALUD', cell_format_tit6)                 #-- 61      APORTES
@@ -833,16 +833,16 @@ class HrPayslip(models.Model):
             worksheet.write('AO9', '(n)', cell_format_sub2)         #-- 38
             worksheet.write('AP9', '(n)', cell_format_sub2)         #-- 39
             
-            worksheet.write('AQ9', '(Cese)', cell_format_sub8)         #-- 40
-            worksheet.write('AR9', '(Cese)', cell_format_sub8)         #-- 41
-            worksheet.write('AS9', '(Cese)', cell_format_sub8)         #-- 42      LIQUIDACIONES
-            worksheet.write('AT9', '(Cese)', cell_format_sub8)         #-- 43
+            worksheet.write('AQ9', '(Cese)', cell_format_tit8)         #-- 40
+            worksheet.write('AR9', '(Cese)', cell_format_tit8)         #-- 41
+            worksheet.write('AS9', '(Cese)', cell_format_tit8)         #-- 42      LIQUIDACIONES
+            worksheet.write('AT9', '(Cese)', cell_format_tit8)         #-- 43
 
-            worksheet.write('AU9', 'AFECTO', cell_format_tit8)
-            worksheet.write('AV9', 'INAFECTO', cell_format_tit8)
+            worksheet.write('AU9', 'AFECTO', cell_format_sub8)         #--          REINTEGROS
+            worksheet.write('AV9', 'INAFECTO', cell_format_sub8)
 
             worksheet.write('AW9', 'AFP/ONP', cell_format_tit8)
-            worksheet.write('AX9', 'RENTA 5TA', cell_format_tit8)
+            worksheet.write('AX9', 'RENTA 5TA', cell_format_tit8)      #--          DESCUENTOS
             worksheet.write('AY9', 'OTROS', cell_format_tit8)
 
             worksheet.write('AZ9', '(-)', cell_format_sub3)         #-- 44
@@ -891,7 +891,7 @@ class HrPayslip(models.Model):
             worksheet.write('CS9', 'FLUJO', cell_format_sub6)         #-- 72
 
             worksheet.write('CT9', 'AFP', cell_format_sub7)         #-- 73      TOTALES
-            worksheet.write('CV9', 'ONP', cell_format_sub7)         #-- 74
+            worksheet.write('CU9', 'ONP', cell_format_sub7)         #-- 74
 
             worksheet.write('CW9', 'Descuento', cell_format_sub7)         #-- 74    AFP/ONP
             worksheet.write('CX9', 'dd/mm/aaaa', cell_format_sub7)         #-- 76   FECHA DE CESES
