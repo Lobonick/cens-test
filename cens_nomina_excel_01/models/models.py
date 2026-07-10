@@ -1159,6 +1159,8 @@ class HrPayslip(models.Model):
                 w_tota_lbs += w_boleta.x_studio_cese_cts_trunco
                 w_tota_lbs += w_boleta.x_studio_cese_grati_trunca
                 w_tota_lbs += w_boleta.x_studio_cese_bonif_grati_trunca
+                w_tota_lbs += w_boleta.x_studio_reintegros_afectos
+                w_tota_lbs += w_boleta.x_studio_reintegros_inafectos
                 w_tota_lbs -= w_boleta.x_studio_cese_descuento_afp
                 w_tota_lbs -= w_boleta.x_studio_cese_descuento_renta_5ta
                 w_tota_lbs -= w_boleta.x_studio_cese_otros_descuentos
