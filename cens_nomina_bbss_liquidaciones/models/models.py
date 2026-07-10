@@ -86,7 +86,8 @@ class HrPayslipLiquidacion(models.Model):
     x_cens_vaca_dgoz = fields.Char(string='- Vacaciones Gozadas', default='', store=True, help='Vacacioes Gozadas')
     x_cens_vaca_igoz = fields.Monetary(string='Importe Vacaciones Gozadas', store=True, currency_field='currency_id', help='Importe Vacaciones Gozadas.')
     x_cens_vaca_dafp = fields.Char(string='- Descuento AFP/ONP', default='', store=True, help='Descuento AFP/ONP')
-    x_cens_vaca_iafp = fields.Monetary(string='Importe AFP/ONP', store=True, currency_field='currency_id', help='Importe AFP/ONP.')
+    # x_cens_vaca_iafp = fields.Monetary(string='Importe AFP/ONP', store=True, currency_field='currency_id', help='Importe AFP/ONP.')
+    x_cens_vaca_iafp = fields.Monetary(compute='_calcula_total_iafp', string='Importe AFP/ONP', store=True, currency_field='currency_id', help='Importe AFP/ONP.')
     x_cens_vaca_itot = fields.Monetary(compute='_calcula_total_vaca', string='Importe total VACA', store=True, currency_field='currency_id', help='Importe total VACA.')
 
     x_cens_grat_peri = fields.Char(string='Periodo', default='', store=True, help='Periodo de tiempo para liquidación GRATI')
@@ -246,6 +247,12 @@ class HrPayslipLiquidacion(models.Model):
             w_dato += record.x_cens_vaca_idia
             w_dato -= record.x_cens_vaca_igoz 
             record['x_cens_vaca_itot'] = w_dato
+
+    api.depends('x_cens_rein_afec', 'x_cens_rein_inaf')
+    def _calcula_total_iafp(self):
+        # ----------------------- CALCULA TOTAL AFP --------------------------
+        self.action_recalcular_bbss_2()
+
 
     api.depends('x_cens_grat_imes', 'x_cens_grat_ibon')
     def _calcula_total_grati(self):
@@ -419,12 +426,12 @@ class HrPayslipLiquidacion(models.Model):
             
 
     @api.depends('x_cens_vaca_iano', 'x_cens_vaca_imes', 'x_cens_vaca_idia', 'x_cens_vaca_igoz', 'x_cens_rein_afec')
-    def _calcula_Monto_Base(self):
+    def _calcula_monto_base(self):
         for r in self: 
             w_tot_afectos = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia + r.x_cens_rein_afec) - r.x_cens_vaca_igoz
             r.write({ 'x_cens_apor_mbas': w_tot_afectos})
 
-    def calculator_Monto_Base(self):
+    def calculator_monto_base(self):
         for r in self: 
             w_tot_afectos = (r.x_cens_vaca_iano + r.x_cens_vaca_imes + r.x_cens_vaca_idia + r.x_cens_rein_afec) - r.x_cens_vaca_igoz
             r.write({ 'x_cens_apor_mbas': w_tot_afectos})
@@ -698,7 +705,6 @@ class HrPayslipLiquidacion(models.Model):
             
             w_impvaca_tot = (w_impvaca_ano + w_impvaca_mes + w_impvaca_dia) - w_impo_dd_gozados
             w_impvaca_afp = self.calcula_descuento_afp(w_impvaca_tot + self.x_cens_rein_afec)
-            #w_impvaca_tot = w_impvaca_tot   #-- No le restael AFP  (- w_impvaca_afp)
 
 
             # --------------------------------------------------
@@ -826,7 +832,7 @@ class HrPayslipLiquidacion(models.Model):
             self._calcula_total_grati()
             self._calcula_total_resumen()
 
-            self.calculator_Monto_Base()
+            self.calculator_monto_base()
             self.calculator_aporte_essalud()
             self.recompute()
         pass
@@ -844,7 +850,7 @@ class HrPayslipLiquidacion(models.Model):
             #self._calcula_total_grati()
             #self._calcula_total_resumen()
 
-            #self.calculator_Monto_Base()
+            #self.calculator_monto_base()
             #self.calculator_aporte_essalud()
             self.recompute()
         pass
@@ -1060,7 +1066,7 @@ class HrPayslipLiquidacion(models.Model):
             self.ensure_one()
             self.write({'x_cens_tipo_calc': "1"})
             self.action_liquidacion_compone()
-            self.calculator_Monto_Base()
+            self.calculator_monto_base()
             self.calculator_aporte_essalud()
 
             self.recompute()
@@ -1085,7 +1091,7 @@ class HrPayslipLiquidacion(models.Model):
             self.write({'x_cens_tipo_calc': "2"})
             self.write({'generado': True})
             self.action_liquidacion_compone()
-            self.calculator_Monto_Base()
+            self.calculator_monto_base()
             self.calculator_aporte_essalud()
             self.recompute()
         pass
