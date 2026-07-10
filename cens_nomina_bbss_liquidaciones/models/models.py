@@ -850,8 +850,8 @@ class HrPayslipLiquidacion(models.Model):
             #self._calcula_total_grati()
             #self._calcula_total_resumen()
 
-            #self.calculator_monto_base()
-            #self.calculator_aporte_essalud()
+            self.calculator_monto_base()
+            self.calculator_aporte_essalud()
             self.recompute()
         pass
 
