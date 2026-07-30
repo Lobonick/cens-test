@@ -184,13 +184,14 @@ class HrPayslip(models.Model):
         worksheet.set_column(27, 27, 12)    #-Z- Renta 5ta
         worksheet.set_column(28, 28, 12)    #-AA- Descuento x Vales
         worksheet.set_column(29, 29, 12)    #-AB- OTROS DESCUENTOS
-        worksheet.set_column(30, 30, 5)     #-AC- Separador
+        worksheet.set_column(30, 30, 5)     #- Separador
         worksheet.set_column(31, 31, 12)    #-AD- Dias Computados
-        worksheet.set_column(32, 32, 10)    #-AE-
-        worksheet.set_column(33, 33, 10)    #-AF-
-        worksheet.set_column(34, 34, 10)    #--
-
-
+        worksheet.set_column(32, 32, 5)     #- Separador
+        worksheet.set_column(33, 33, 12)    #- Gratificación
+        worksheet.set_column(34, 34, 12)    #- Bonificación
+        worksheet.set_column(35, 35, 5)     #- Separador
+        worksheet.set_column(36, 36, 12)    #- Adelanto Gratific.
+        
         # ------
         worksheet.set_row(7, 27)        # (Fila,Altura)
         worksheet.set_zoom(85)          # %-Zoom
@@ -198,7 +199,7 @@ class HrPayslip(models.Model):
         # CABECERA DEL REPORTE
         # -------------------------------------------------------------------------------------
         worksheet.insert_image('A2', 'src/user/cens_nomina_excel_02/static/description/logo-tiny_96.png')
-        worksheet.insert_image('Z2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
+        worksheet.insert_image('AB2', 'src/user/cens_nomina_excel_02/static/description/logo-odoo-tiny.png', 
                                          {'x_scale': 0.6, 'y_scale': 0.6})
         worksheet.write('B3', 'CARRIER ENTERPRISE NETWORK SOLUTIONS SAC', cell_format_empr)
         worksheet.write('B4', 'Gestión Humana - Nóminas - CENS-PERÚ')
@@ -225,8 +226,8 @@ class HrPayslip(models.Model):
         worksheet.merge_range('S7:AD7', 'Merged Cells', merge_format)
         worksheet.write('S7', 'D   E   S   C   U   E   N   T   O   S', cell_format_tuti)
 
-        # worksheet.merge_range('AH7:AQ7', 'Merged Cells', merge_format)
-        # worksheet.write('AH7', 'DISTRIBUCIÓN DE COSTOS', cell_format_tuti)
+        worksheet.merge_range('AH7:AK7', 'Merged Cells', merge_format)
+        worksheet.write('AH7', 'GRATIFICACIONES ', cell_format_tut3)
         # -------------------------------------------------------------------------------------
         # BARRA DE TITULOS
         # -------------------------------------------------------------------------------------
@@ -340,6 +341,10 @@ class HrPayslip(models.Model):
 
         worksheet.write('AF8', 'DIAS COMPUTADOS', cell_format_titu)
 
+        worksheet.write('AH8', 'GRATIFICACIÓN', cell_format_titu)
+        worksheet.write('AI8', 'BONIFICACIÓN EXTRAORD', cell_format_titu)
+        worksheet.write('AK8', 'ADELANTO GRATIFICACIÓN', cell_format_titu)
+
         #-----
         # worksheet.write('J9', 'DIAS', cell_format_tut3)                 #-- 09
         # worksheet.write('K9', 'DIAS', cell_format_tut3)                 #-- 10
@@ -373,6 +378,10 @@ class HrPayslip(models.Model):
         worksheet.write('AD9', 'S/.', cell_format_tut4)         #-- OTROS DESCUENTOS
 
         worksheet.write('AF9', 'DIAS', cell_format_tut3)
+
+        worksheet.write('AH9', 'S/.', cell_format_tut4)
+        worksheet.write('AI9', 'S/.', cell_format_tut4)
+        worksheet.write('AK9', 'S/.', cell_format_tut4)
 
         #-----
         worksheet.freeze_panes(9, 4)
@@ -425,7 +434,12 @@ class HrPayslip(models.Model):
             'x_studio_descuento_vales',
             'x_studio_en_otros_descuentos',
             'separador4',
-            'x_studio_dias_computados'
+            'x_studio_dias_computados',
+            'separador4',
+            'x_studio_gratificacion',
+            'x_studio_bonificacion_extraordinaria_9',
+            'separador4',
+            'x_studio_ajuste_adelanto_gratificacion',
         ]
 
         # Escribir encabezados
@@ -510,6 +524,11 @@ class HrPayslip(models.Model):
             
             wDato = 0
             worksheet.write(w_fila, 31, wDato, cell_format_nume)
+
+            wDato = 0.00
+            worksheet.write(w_fila, 33, wDato, cell_format_impo)
+            worksheet.write(w_fila, 34, wDato, cell_format_impo)
+            worksheet.write(w_fila, 36, wDato, cell_format_impo)
             
             w_fila += 1
 

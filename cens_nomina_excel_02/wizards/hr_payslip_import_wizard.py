@@ -71,7 +71,11 @@ class HrPayslipImportWizard(models.TransientModel):
                 'x_studio_importe_renta_5ta',
                 'x_studio_descuento_vales',
                 'x_studio_en_otros_descuentos',
-                'x_studio_dias_computados'
+                'x_studio_dias_computados',
+
+                'x_studio_gratificacion',
+                'x_studio_bonificacion_extraordinaria_9',
+                'x_studio_ajuste_adelanto_gratificacion',
             ]
 
             def tiene_valor_xlsx(valor, field_type):
