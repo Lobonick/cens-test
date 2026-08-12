@@ -380,23 +380,23 @@ class HrPayslip(models.Model):
             worksheet.merge_range('BX7:CD7', 'Merged Cells', merge_format)
             worksheet.write('BX7', 'RESUMEN TOTALIZADO', cell_format_sup5)
 
-            worksheet.merge_range('CA7:CB7', 'Merged Cells', merge_format)
-            worksheet.write('CA7', 'APORTES', cell_format_sup5)
+            worksheet.merge_range('CF7:CG7', 'Merged Cells', merge_format)
+            worksheet.write('CF7', 'APORTES', cell_format_sup5)
 
-            worksheet.merge_range('CC7:CF7', 'Merged Cells', merge_format)
-            worksheet.write('CC7', 'PROVISIONES', cell_format_sup5)
+            worksheet.merge_range('CH7:CK7', 'Merged Cells', merge_format)
+            worksheet.write('CH7', 'PROVISIONES', cell_format_sup5)
 
-            worksheet.merge_range('CH7:CH7', 'Merged Cells', merge_format)
-            worksheet.write('CH7', 'COSTO', cell_format_sup5)
+            worksheet.merge_range('CM7:CM7', 'Merged Cells', merge_format)
+            worksheet.write('CM7', 'COSTO', cell_format_sup5)
 
-            worksheet.merge_range('CJ7:CL7', 'Merged Cells', merge_format)
-            worksheet.write('CJ7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
+            worksheet.merge_range('CO7:CQ7', 'Merged Cells', merge_format)
+            worksheet.write('CO7', 'CUENTA BANCARIA ABONO', cell_format_sup5)
 
-            worksheet.merge_range('CN7:CU7', 'Merged Cells', merge_format)
-            worksheet.write('CN7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('CS7:CZ7', 'Merged Cells', merge_format)
+            worksheet.write('CS7', 'DESAGREGADO AFP / ONP', cell_format_sup5)
 
-            worksheet.merge_range('CW7:CX7', 'Merged Cells', merge_format)
-            worksheet.write('CW7', 'AFP / ONP', cell_format_sup5)
+            worksheet.merge_range('DB7:DC7', 'Merged Cells', merge_format)
+            worksheet.write('DB7', 'AFP / ONP', cell_format_sup5)
 
 
             # -------------------------------------------------------------------------------------
@@ -923,7 +923,7 @@ class HrPayslip(models.Model):
             #worksheet.autofilter(8, 39, 8, 42)  #--- Coloca FILTROS en Liquidación
             #worksheet.autofilter(8, 43, 8, 52)  #--- Coloca FILTROS en Descuentos
             #worksheet.autofilter(8, 53, 8, 57)  #--- Coloca FILTROS en Incrementos Indirectos   
-            worksheet.autofilter(8, 67, 8, 76)  #--- Coloca FILTROS en RESUMEN
+            #worksheet.autofilter(8, 67, 8, 76)  #--- Coloca FILTROS en RESUMEN
             #-----
             worksheet.freeze_panes(9, 4)    #--- Inmoviliza Paneles
 
